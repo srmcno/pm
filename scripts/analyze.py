@@ -84,6 +84,19 @@ def analyze_wallet(raw, candidate):
     longshot_vol = sum((t["usdcSize"] or 0) for t in buys if (t["price"] or 0) < 0.10)
     fav_vol = sum((t["usdcSize"] or 0) for t in buys if (t["price"] or 0) > 0.90)
 
+    # Two-sided volume: buying both outcomes of the same market is liquidity
+    # provision / arbitrage, not opinion — the market-maker fingerprint.
+    mkt_side_vol = defaultdict(lambda: defaultdict(float))
+    for t in trades:
+        if t["side"] == "BUY" and t.get("conditionId"):
+            mkt_side_vol[t["conditionId"]][t.get("outcomeIndex") or 0] += t["usdcSize"] or 0
+    two_sided = 0.0
+    for sides_vol in mkt_side_vol.values():
+        tot = sum(sides_vol.values())
+        if len(sides_vol) >= 2 and min(sides_vol.values()) >= 0.2 * max(sides_vol.values()):
+            two_sided += tot
+    both_sides_share = two_sided / buy_usdc if buy_usdc else 0.0
+
     ev_vol = defaultdict(float)
     ev_title = {}
     for t in trades:
@@ -129,7 +142,9 @@ def analyze_wallet(raw, candidate):
     med = pctl(sizes, 0.5)
     avg = vol / n if n else 0
     tpd = n / active_days if active_days else 0
-    if raw.get("truncated") or (n >= 8000 and med < 300):
+    # A market maker buys both outcomes of the same markets (minting/arbing);
+    # a high-frequency wallet that stays one-sided is a fast sharp, not a maker.
+    if (raw.get("truncated") or n >= 8000) and both_sides_share >= 0.35:
         archetype = "Market maker / HFT"
     elif top_cat == "Crypto" and top_cat_share >= 0.6 and tpd >= 30:
         archetype = "Crypto scalper"
@@ -169,6 +184,7 @@ def analyze_wallet(raw, candidate):
         "p95TradeUsd": round(pctl(sizes, 0.95), 2),
         "maxTradeUsd": round(sizes[-1], 2) if sizes else 0,
         "buyShare": round(buy_share, 4),
+        "bothSidesShare": round(both_sides_share, 4),
         "vwBuyPrice": round(vw_buy_price, 4) if vw_buy_price is not None else None,
         "longshotShare": round(longshot_vol / buy_usdc, 4) if buy_usdc else None,
         "favoriteShare": round(fav_vol / buy_usdc, 4) if buy_usdc else None,

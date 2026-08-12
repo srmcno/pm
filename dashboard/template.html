@@ -437,6 +437,7 @@ function detailRow(w) {
     ["p95 trade", fmtUsd(w.p95TradeUsd)], ["Buy share", fmtPct(w.buyShare)],
     ["Avg buy price", w.vwBuyPrice == null ? "—" : Math.round(w.vwBuyPrice * 100) + "¢"],
     ["Longshot buys", fmtPct(w.longshotShare)], ["Favorite buys", fmtPct(w.favoriteShare)],
+    ["Both-sides volume", fmtPct(w.bothSidesShare)],
     ["Markets traded", fmtInt(w.distinctMarkets)], ["Active days", fmtInt(w.activeDays) + " / 90"],
     ["Trades / active day", fmtInt(w.tradesPerActiveDay)], ["Top-5 event share", fmtPct(w.top5EventShare)],
   ];
