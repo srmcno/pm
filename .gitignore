@@ -1,0 +1,4 @@
+# Raw per-wallet API dumps (~300 MB) — regenerate with scripts/fetch_data.py
+data/raw/
+__pycache__/
+node_modules/
