@@ -67,7 +67,28 @@ unverified rather than assumed.
 | `pmx/exits.py` | Take-profit, reversal, stop, time rails |
 | `pmx/feed.py` | Dual feed and market identity resolution |
 | `pmx/engine.py` | Stage orchestration |
-| `pmx/cli.py` | `preflight` · `scan` · `watch` · `explain` |
+| `pmx/publish.py` | Writes `dashboard/data/engine.json` for the live site |
+| `pmx/cli.py` | `preflight` · `scan` · `watch` · `settle` · `explain` |
+
+### On the live site
+
+`.github/workflows/engine-shift.yml` runs this engine in self-chaining
+~2-hour shifts, exactly like the original watcher, and publishes
+`dashboard/data/engine.json` on every new signal and every 10-minute
+heartbeat. The dashboard's **Consensus engine** panel polls it every 60 s
+alongside the original engine's `signals.json`, so both run in public and can
+disagree.
+
+The two never write the same files — this engine owns
+`dashboard/data/engine.json` and `data/live/engine-*`; the original owns
+`data/signals`, `data/paper` and `dashboard/data/{signals,paper}.json` — which
+is what lets them push to the same branch without fighting. They also use
+separate concurrency groups, so one crashing does not take the other down.
+
+Because the engine refuses far more than it accepts, the panel publishes its
+diagnostics too: how many markets drew weighted backing, how many reached two
+effective backers, which rail did the refusing, and how far calibration has
+progressed. A quiet engine should be legible as *selective*, not broken.
 
 ---
 
@@ -246,6 +267,28 @@ The timestamps `/trades` returns are correct — they match block time to the
 second — but the endpoint serves a cached window minutes old and **does not
 advance between rapid polls**: three polls two seconds apart returned
 identical rows ageing 224.9 s → 227.0 s → 229.1 s.
+
+Running both feeds together for six minutes against the live watchlist, the
+chain won almost every race:
+
+| | fills |
+|---|---|
+| detected first on-chain | **60** |
+| detected first via `/activity` | 2 |
+| duplicates suppressed (chain got there first) | 56 |
+
+Median age of the two REST-first fills: **2.2 s**. So `/activity` is a
+genuinely good reconciler — it is seconds behind, not minutes — but the chain
+feed still beat it on **97%** of fills. Both run; the chain triggers and REST
+backfills metadata and covers dropped connections.
+
+One operational detail that cost a debugging cycle: public Polygon RPCs are
+load-balanced pools whose members index at slightly different speeds, so an
+`eth_getLogs` whose `toBlock` is the head that one node just reported gets
+rejected by another with `invalid block range params`. Observed directly — a
+2-block window ending at the head failed repeatedly while a 3-block window
+ending one block earlier succeeded. `OnChainFeed` therefore stays
+`SAFETY_BLOCKS` behind the tip and caps each request at `MAX_RANGE` blocks.
 
 `scripts/watch.py` polls this endpoint every 30–45 s and the README describes
 it as reacting "within about a minute". It is structurally **~4 minutes

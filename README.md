@@ -18,7 +18,7 @@ Everything runs on Polymarket's public APIs. No keys, no accounts, no real money
 | Signal engine | `scripts/signals.py` | Finds outcomes that several historically profitable wallets are independently net-buying right now. Writes `data/signals/latest.json` + `reports/signals-latest.md`. |
 | Paper trader | `scripts/papertrade.py` | Simulates the copy strategy with a virtual bankroll — live loop and out-of-sample backtest. Writes `reports/paper-latest.md` / `reports/backtest-latest.md`. |
 | Live executor | `scripts/livetrade.py` | The only tool that can touch real money — ships disarmed. `plan` is a keyless dry run; `execute` needs your keys, two explicit flags, and enforces hard caps + a STOP file. See the arming checklist in its docstring. |
-| Consensus engine | `scripts/pmx/` | A second-generation pipeline that runs alongside the above: specialty-weighted voting instead of a flat backer count, fractional-Kelly sizing instead of fixed stakes, sub-second on-chain detection instead of polling, and active exits instead of holding to resolution. Architecture and the measurements behind it: **[`docs/ENGINE.md`](docs/ENGINE.md)**. |
+| Consensus engine | `scripts/pmx/` | A second-generation pipeline that runs alongside the above and publishes to the same site: specialty-weighted voting instead of a flat backer count, fractional-Kelly sizing instead of fixed stakes, sub-second on-chain detection instead of polling, and active exits instead of holding to resolution. Its own shift (`engine-shift.yml`) feeds the dashboard's **Consensus engine** panel. Architecture and the measurements behind it: **[`docs/ENGINE.md`](docs/ENGINE.md)**. |
 
 ## Quick start
 
@@ -101,15 +101,26 @@ pushes use the workflow token, which GitHub never lets trigger on-push
 workflows, so the watcher explicitly dispatches the deploy after each
 publish. It stays live end to end:
 
+- The v2 consensus engine (`engine-shift.yml`) runs its own back-to-back
+  ~2-hour shifts on a separate concurrency group, detecting fills from
+  Polygon logs and republishing `dashboard/data/engine.json` on every signal
+  and every 10-minute heartbeat. Both engines are live on the page at once,
+  free to disagree.
 - A cloud watcher (`watch-shift.yml`) runs back-to-back ~2-hour shifts,
-  polling the trade feed every 45 s. It reacts to new consensus within about
-  a minute, and every ~15 minutes it re-prices standing signals, re-marks the
-  paper account, and pushes the data — each push redeploys the site.
+  polling the global trade feed every 45 s, and every ~15 minutes it
+  re-prices standing signals, re-marks the paper account, and pushes the data
+  — each push redeploys the site. Note the feed it polls is itself the
+  bottleneck: `data-api /trades` was measured serving data **~260 s behind
+  block time** and not advancing between rapid polls, so this watcher's real
+  reaction time is minutes, not the sub-minute its poll interval suggests.
+  That measurement is what the v2 engine's on-chain feed exists to fix; see
+  [`docs/ENGINE.md`](docs/ENGINE.md) §3.1.
 - A watchdog (`watch-watchdog.yml`) checks twice an hour that a shift is
   actually running and dispatches one if GitHub dropped the scheduled start.
-- The page itself re-fetches `data/signals.json` and `data/paper.json` every
-  60 s and shows a **bot live / bot stale** pill, so a dead pipeline is
-  visible instead of silently serving old numbers.
+- The page itself re-fetches `data/signals.json`, `data/paper.json` and
+  `data/engine.json` every 60 s and shows a **bot live / bot stale** pill per
+  engine, so one dead pipeline is visible instead of being masked by the
+  other still publishing.
 
 ## The arb desk
 

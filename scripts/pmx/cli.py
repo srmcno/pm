@@ -27,6 +27,7 @@ from .consensus import vote_weight                       # noqa: E402
 from .engine import ConsensusEngine                      # noqa: E402
 from .execute import ExecutionClient, Rejected           # noqa: E402
 from .feed import DualFeed                               # noqa: E402
+from .publish import build_payload, publish, signal_row   # noqa: E402
 from .sizing import Portfolio                            # noqa: E402
 
 JOURNAL = os.path.join(pmlib.BASE, "data", "live", "engine-journal.jsonl")
@@ -124,6 +125,7 @@ def cmd_scan(args):
 
     cands = eng.score()
     fired = [c for c in cands if not c.rejected]
+    multi = sum(1 for c in cands if len(c.backers) >= 2)
     print(f"\n{len(cands)} markets with any weighted backing; "
           f"{len(fired)} clear Sigma >= {cfg.consensus.theta_trigger} "
           f"and N_eff >= {cfg.consensus.min_effective_backers}")
@@ -140,18 +142,12 @@ def cmd_scan(args):
     # position cap below what preflight reports as tradable.
     portfolio = Portfolio(cash=cfg.sizing.bankroll, positions=[])
     ex = ExecutionClient(cfg, dry_run=True, journal=journal)
+    rows = []
     for c in signals[:args.top]:
         d = c.detail
-        book = None
-        if d.get("tokenId"):
-            try:
-                raw = pmlib.get_json(f"{pmlib.CLOB_API}/book",
-                                     {"token_id": d["tokenId"]})
-                if raw:
-                    book = Book.parse(raw, d["tokenId"])
-            except Exception:                              # noqa: BLE001
-                book = None
+        book = _fetch_book(d.get("tokenId"))
         decision, econ = eng.size(c, portfolio, book)
+        rows.append(signal_row(c, decision, econ))
         # Journal every fired signal, traded or not: `settle` reads these to
         # build the calibration set, and a signal we declined still carries a
         # valid (price, Sigma, outcome) observation.
@@ -186,6 +182,12 @@ def cmd_scan(args):
                 ex.submit_entry(plan)
             except Rejected as e:
                 print(f"    execution rejected: {e}")
+
+    out = publish(build_payload(cfg, profiles, eng, rows, source="pmx.cli scan",
+                                candidates=len(cands), multi_backer=multi,
+                                watchlist_size=len(watch),
+                                warnings=eng.preflight()))
+    print(f"\nPublished {out}")
     return 0
 
 
@@ -199,29 +201,84 @@ def cmd_watch(args):
           f"({'chain + REST' if feed.chain else 'REST only — pass --rpc for sub-second'})",
           flush=True)
     _seed_window(eng, watch, args.hours)
+    # The seed just ingested the last `hours` of history; anything older than
+    # this moment is not a new detection and must not be timed as one.
+    feed.rest.prime()
     deadline = time.time() + args.minutes * 60 if args.minutes else None
+    portfolio = Portfolio(cash=cfg.sizing.bankroll, positions=[])
     seen = set()
+    last_beat = 0.0
+
     while not deadline or time.time() < deadline:
         fills = feed.poll()
         if fills:
             eng.ingest(fills)
             eng.prune(time.time())
-            for c in eng.enrich([c for c in eng.score() if not c.rejected],
-                                max_days=args.max_days):
-                k = (c.condition_id, c.outcome_index)
-                if k in seen:
-                    continue
+
+        # Republish on every new signal AND on a heartbeat. The heartbeat is
+        # not cosmetic: the page shows "updated N min ago" and goes stale
+        # when nothing arrives, so a quiet engine that never republishes is
+        # indistinguishable on the site from a dead one.
+        beat_due = time.time() - last_beat >= args.heartbeat_minutes * 60
+        if not fills and not beat_due:
+            time.sleep(cfg.feed.data_api_poll_s)
+            continue
+
+        cands = eng.score()
+        fired = [c for c in cands if not c.rejected]
+        multi = sum(1 for c in cands if len(c.backers) >= 2)
+        live = eng.enrich(fired, max_days=args.max_days)
+
+        rows, fresh = [], []
+        for c in live:
+            book = _fetch_book(c.detail.get("tokenId"))
+            decision, econ = eng.size(c, portfolio, book)
+            rows.append(signal_row(c, decision, econ))
+            k = (c.condition_id, c.outcome_index)
+            if k not in seen:
                 seen.add(k)
+                fresh.append(c)
                 d = c.detail
                 print(f"  SIGNAL Sigma={c.sigma:.2f} N_eff={c.n_eff:.2f} "
                       f"{d.get('question','?')[:52]} -> {d.get('outcome')} "
-                      f"@ {d['currentPrice']:.3f}", flush=True)
+                      f"@ {d['currentPrice']:.3f} · stake ${decision.stake:.2f} "
+                      f"({decision.binding})", flush=True)
                 journal(action="SIGNAL", sigma=c.sigma, nEff=c.n_eff,
                         conditionId=c.condition_id,
                         outcomeIndex=c.outcome_index, category=c.category, **d)
+
+        publish(build_payload(cfg, profiles, eng, rows, source="pmx.cli watch",
+                              feed="chain+rest" if feed.chain else "rest",
+                              candidates=len(cands), multi_backer=multi,
+                              watchlist_size=len(watch),
+                              warnings=eng.preflight()))
+        if beat_due:
+            last_beat = time.time()
+            # Settle resolved signals into observations before publishing, so
+            # the calibration counter on the page moves in step with the data.
+            try:
+                cmd_settle(args)
+            except SystemExit:
+                pass
+        if args.git_push and (fresh or beat_due):
+            pmlib.publish_repo(
+                ["dashboard/data/engine.json", "data/live"],
+                "auto: engine signal" if fresh else "auto: engine heartbeat")
+        eng.rejections.clear()
         time.sleep(cfg.feed.data_api_poll_s)
+
     print(json.dumps(feed.summary(), indent=1))
     return 0
+
+
+def _fetch_book(token_id):
+    if not token_id:
+        return None
+    try:
+        raw = pmlib.get_json(f"{pmlib.CLOB_API}/book", {"token_id": token_id})
+        return Book.parse(raw, token_id) if raw else None
+    except Exception:                                      # noqa: BLE001
+        return None
 
 
 def cmd_settle(args):
@@ -332,6 +389,10 @@ def main():
     p.add_argument("--minutes", type=float, default=0)
     p.add_argument("--max-days", type=float, default=7.0)
     p.add_argument("--rpc", default=None, help="Polygon RPC for the chain feed")
+    p.add_argument("--heartbeat-minutes", type=float, default=10.0,
+                   help="republish and settle this often even when quiet")
+    p.add_argument("--git-push", action="store_true",
+                   help="commit and push the published data so the site updates")
     p.set_defaults(fn=cmd_watch)
 
     sub.add_parser("settle").set_defaults(fn=cmd_settle)

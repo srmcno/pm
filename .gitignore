@@ -3,6 +3,3 @@ data/raw/
 __pycache__/
 node_modules/
 data/cache/
-data/edge_profiles.json
-data/live/engine-journal.jsonl
-data/live/observations.jsonl

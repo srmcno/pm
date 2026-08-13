@@ -121,6 +121,19 @@
   .asof {
     text-align: center; color: var(--muted); font-size: 12.5px; margin: 0 0 14px;
   }
+  h2 .tag {
+    font-family: var(--display); font-size: 10.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; vertical-align: 3px; margin-left: 8px;
+    padding: 2px 8px 1px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted);
+  }
+  /* The engine refuses far more than it accepts, so the panel has to explain
+     a quiet state as clearly as a busy one. */
+  p.note {
+    max-width: 760px; margin: -6px auto 14px; text-align: center;
+    color: var(--muted); font-size: 12.5px; line-height: 1.55;
+  }
+  p.note code { font-size: 12px; }
   .pill {
     display: inline-block; padding: 2px 9px 1px; margin-right: 7px;
     border-radius: 999px; font-family: var(--display); font-size: 10.5px;
@@ -316,6 +329,23 @@
     </div>
   </section>
 
+  <section id="engine">
+    <h2>Consensus engine <span class="tag">v2</span></h2>
+    <p class="asof" id="eng-asof"></p>
+    <p class="note" id="eng-note"></p>
+    <div class="tablewrap">
+      <table class="main" id="engtable">
+        <thead><tr>
+          <th class="l">Market</th><th class="l">Buy</th><th>Price</th>
+          <th title="Sum of specialty-weighted votes">&Sigma;</th>
+          <th title="Effective backer count: (&Sigma;v)&sup2;/&Sigma;v&sup2; — how many wallets the consensus really rests on">N<sub>eff</sub></th>
+          <th>Backers</th><th>Stake</th><th class="l">Limited by</th><th></th>
+        </tr></thead>
+        <tbody id="engbody"></tbody>
+      </table>
+    </div>
+  </section>
+
   <section id="ledger">
     <h2>Bot ledger</h2>
     <p class="asof" id="paper-asof"></p>
@@ -386,6 +416,7 @@
 <script id="data" type="application/json">/*__DATA__*/</script>
 <script id="signals-snapshot" type="application/json">/*__SIGNALS__*/</script>
 <script id="paper-snapshot" type="application/json">/*__PAPER__*/</script>
+<script id="engine-snapshot" type="application/json">/*__ENGINE__*/</script>
 <script>
 "use strict";
 /* Theme: black by default; the toggle flips and remembers the choice. */
@@ -484,7 +515,7 @@ function readSnapshot(id) {
   try { return JSON.parse(document.getElementById(id).textContent); }
   catch (e) { return null; }
 }
-const LIVE = { signals: readSnapshot("signals-snapshot"), paper: readSnapshot("paper-snapshot") };
+const LIVE = { signals: readSnapshot("signals-snapshot"), paper: readSnapshot("paper-snapshot"), engine: readSnapshot("engine-snapshot") };
 function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
   return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
@@ -495,8 +526,10 @@ function lastBeatTs() {
   return Math.max((LIVE.paper && LIVE.paper.updatedAt) || 0,
     (LIVE.signals && LIVE.signals.meta && LIVE.signals.meta.generatedAt) || 0);
 }
-function statusPill() {
-  const ts = lastBeatTs();
+function statusPill(atTs) {
+  // Each engine reports its own freshness: one can be publishing happily
+  // while the other's shift has died, and a shared pill would hide that.
+  const ts = atTs != null ? atTs : lastBeatTs();
   const live = ts && (Date.now() / 1000 - ts) / 60 < 40;
   const el = document.createElement("span");
   el.className = "pill " + (live ? "live" : "stale");
@@ -629,6 +662,69 @@ function equitySparkline(curve, w, h) {
   return svg;
 }
 
+function renderEngine() {
+  const body = document.getElementById("engbody");
+  const asof = document.getElementById("eng-asof");
+  const note = document.getElementById("eng-note");
+  body.replaceChildren(); asof.replaceChildren(); note.replaceChildren();
+  const p = LIVE.engine;
+  if (!p || !p.meta) {
+    note.textContent = "The v2 engine has not published yet.";
+    return;
+  }
+  const m = p.meta, dg = p.diagnostics || {};
+  asof.append(statusPill(m.generatedAt),
+    `Updated ${ago(m.generatedAt)} · ${m.watchlistSize} wallets watched · ` +
+    `${m.votingRights} specialty voting rights · feed: ${m.feed} · ` +
+    `Σ ≥ ${m.theta} and N_eff ≥ ${m.minEffectiveBackers} to fire`);
+
+  // Calibration state decides whether stakes are Kelly or bootstrap, so it
+  // belongs on the page rather than only in the logs.
+  const bits = [];
+  bits.push(m.calibrated
+    ? `Probability model fitted (λ = ${m.lambda}) — stakes are fractional Kelly.`
+    : `Probability model not yet fitted (${m.observations}/${m.observationsNeeded} settled signals) — stakes are the smallest legal position, not Kelly.`);
+  if (!(p.signals || []).length) {
+    bits.push(`No signal right now: ${dg.candidates || 0} markets drew weighted backing, ` +
+      `${dg.multiBacker || 0} drew two or more specialists, none cleared both rails. ` +
+      `That is the engine being selective, not stalled.`);
+    const top = Object.entries(dg.rejections || {}).sort((a, b) => b[1] - a[1])[0];
+    if (top) bits.push(`Most common reason: ${top[0]} (${top[1]} markets).`);
+  }
+  note.textContent = bits.join(" ");
+
+  const sigs = p.signals || [];
+  if (!sigs.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td"); td.colSpan = 9; td.className = "l";
+    td.textContent = "Waiting for two independent specialists to agree on a still-open market.";
+    tr.appendChild(td); body.appendChild(tr);
+    return;
+  }
+  for (const s of sigs) {
+    const tr = document.createElement("tr");
+    const mkTd = (cls) => { const td = document.createElement("td"); if (cls) td.className = cls; tr.appendChild(td); return td; };
+    mkTd("l").textContent = s.question || "?";
+    const side = mkTd("l"); side.textContent = s.outcome || "?"; side.style.fontWeight = "600";
+    mkTd().textContent = s.currentPrice != null ? Math.round(s.currentPrice * 100) + "¢" : "—";
+    mkTd().textContent = s.sigma != null ? s.sigma.toFixed(2) : "—";
+    const ne = mkTd(); ne.textContent = s.nEff != null ? s.nEff.toFixed(2) : "—";
+    ne.title = "How many wallets the consensus really rests on";
+    const bk = mkTd(); bk.textContent = s.backerCount;
+    bk.title = (s.backers || []).map(b =>
+      `${b.name || b.wallet.slice(0, 10)}  W=${b.weight}  $${Math.round(b.netUsd).toLocaleString()} @ ${b.avgPrice ?? "—"}`).join("\n");
+    mkTd().textContent = s.stake ? `$${s.stake.toFixed(2)}` : "—";
+    mkTd("l").textContent = s.binding || "—";
+    const act = mkTd();
+    const url = OUTLINK(s.slug, s.eventSlug);
+    if (url) {
+      const a = document.createElement("a"); a.href = url; a.target = "_blank";
+      a.rel = "noopener"; a.textContent = "Open ↗"; act.appendChild(a);
+    }
+    body.appendChild(tr);
+  }
+}
+
 async function refreshLive() {
   const bust = "?t=" + Math.floor(Date.now() / 60000);
   try {
@@ -639,12 +735,18 @@ async function refreshLive() {
     const r = await fetch("data/paper.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.paper = await r.json();
   } catch (e) { /* offline snapshot stays */ }
+  try {
+    const r = await fetch("data/engine.json" + bust, { cache: "no-store" });
+    if (r.ok) LIVE.engine = await r.json();
+  } catch (e) { /* offline snapshot stays */ }
   // Always re-render: "x min ago" and the live/stale pill must keep ticking
   // even when a fetch fails or nothing changed.
   renderSignals();
+  renderEngine();
   renderLedger();
 }
 renderSignals();
+renderEngine();
 renderLedger();
 refreshLive();
 setInterval(refreshLive, 60000);
