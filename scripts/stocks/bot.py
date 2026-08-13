@@ -262,6 +262,10 @@ def cmd_run(args):
             # desk never exits supervision while holding live shares.
             live_held = [p for p in st["positions"] if p.get("liveOpen")]
             if live_held:
+                # Holding live shares ALWAYS blocks exit, even when a quote
+                # is momentarily unavailable — the flatten simply retries on
+                # the next pass.
+                pending = True
                 raw, _feed = stocklib.live_quotes(
                     [p["symbol"] for p in live_held])
                 for p in live_held:
@@ -271,7 +275,9 @@ def cmd_run(args):
                                                  time.time())
                         print(f"  flattening live-held {p['symbol']} at "
                               f"shutdown", flush=True)
-                        pending = True
+                    else:
+                        print(f"  no quote for live-held {p['symbol']}; "
+                              f"retrying flatten", flush=True)
             paperdesk.save(st)
             if not pending:
                 break
@@ -281,10 +287,10 @@ def cmd_run(args):
             # the CID on the closed record, and that order can still fill.
             pending_opens = (
                 [p for p in st["positions"]
-                 if p.get("liveCid") and not p.get("liveOpen")]
+                 if p.get("liveCid") and not p.get("liveOpenFinal")]
                 + [c for c in st["closed"]
                    if not c.get("mirrored") and c.get("liveCid")
-                   and not c.get("liveOpen")])
+                   and not c.get("liveOpenFinal")])
             if now_ts > cancel_after:
                 # Cancellation is retried on EVERY pass until each pending
                 # open confirms terminal — a transient lookup or DELETE
@@ -338,22 +344,25 @@ def _reconcile_mirrors(executor, st, save=None):
 
     def settle_open(rec):
         """Resolve what the opening order actually did live. Returns
-        'live' (shares are held, possibly a partial), 'dead' (nothing ever
-        filled), or 'pending' (keep checking)."""
+        'live' (the order is terminal and shares are held, possibly a
+        partial), 'dead' (terminal with nothing filled), or 'pending'
+        (keep checking). ANY positive filled quantity is recorded as live
+        exposure immediately — a working partially-filled order already
+        holds shares — while liveOpenFinal marks terminal settlement."""
         status, filled = livedesk.order_state(executor, rec["liveCid"])
-        if status == "filled" or \
-                (status in livedesk.FAILED_STATUSES and filled > 0):
-            # A terminal order with a partial fill still put shares on the
-            # book; they are live exposure and must be closed like any
-            # other, at the actually-filled quantity.
+        if filled > 0:
             rec["liveOpen"] = True
             rec["liveQty"] = filled
-            if status != "filled":
+        if status == "filled":
+            rec["liveOpenFinal"] = True
+            return "live"
+        if status in livedesk.FAILED_STATUSES:
+            if rec.get("liveOpen"):
+                rec["liveOpenFinal"] = True
                 print(f"  alpaca open for {rec['symbol']} ended '{status}' "
                       f"with {filled:g} of {rec['shares']:g} filled; "
                       f"tracking the partial", flush=True)
-            return "live"
-        if status in livedesk.FAILED_STATUSES:
+                return "live"
             return "dead"
         if status == "not_found":
             # "Never landed" is only concluded after SUSTAINED 404s — at
@@ -372,7 +381,7 @@ def _reconcile_mirrors(executor, st, save=None):
         return "pending"
 
     for p in st["positions"]:
-        if p.get("liveCid") and not p.get("liveOpen"):
+        if p.get("liveCid") and not p.get("liveOpenFinal"):
             outcome = settle_open(p)
             if outcome == "dead":
                 # The open never happened; the position stays paper-only
@@ -385,9 +394,9 @@ def _reconcile_mirrors(executor, st, save=None):
     for c in st["closed"]:
         if c.get("mirrored"):
             continue
-        if not c.get("liveOpen"):
-            # The open was submitted but unconfirmed when the paper side
-            # closed; settle what actually happened live before deciding.
+        if not c.get("liveOpenFinal"):
+            # The open was submitted but not terminally settled when the
+            # paper side closed; settle what actually happened live first.
             if not c.get("liveCid"):
                 c["mirrored"] = True     # never touched the live account
                 continue
@@ -396,6 +405,10 @@ def _reconcile_mirrors(executor, st, save=None):
                 c["mirrored"] = True     # open died; nothing live to close
                 continue
             if outcome == "pending":
+                # The paper side is closed, so any FURTHER fill is
+                # unwanted: cancel the working remainder and keep watching
+                # until the order settles terminally.
+                livedesk.cancel_by_client_id(executor, c["liveCid"])
                 pending = True
                 continue
         cid = c.get("closeCid")

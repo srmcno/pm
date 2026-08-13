@@ -265,6 +265,19 @@ class TestMirrorReconciliation(unittest.TestCase):
         self.assertTrue(c.get("mirrored"))
         self.assertFalse(pending)
 
+    def test_working_partial_open_counts_as_live_exposure(self):
+        # a partially_filled WORKING order already holds shares: exposure is
+        # recorded immediately while reconciliation keeps watching the
+        # unfilled remainder
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100"}
+        pending = self._run([], {"pm-o-IBIT-100": ("partially_filled", 2.0)},
+                            [], positions=[p])
+        self.assertTrue(p.get("liveOpen"))
+        self.assertEqual(p["liveQty"], 2.0)
+        self.assertNotIn("liveOpenFinal", p)
+        self.assertTrue(pending)
+
     def test_partially_filled_dead_open_still_gets_closed(self):
         # a canceled opening order that filled 3 of 5 shares put real live
         # exposure on the book; those shares must be closed, not forgotten
