@@ -1,0 +1,54 @@
+name: Weekly dashboard refresh
+
+# Re-pulls the full 90-day dataset, re-analyzes the cohort, rebuilds the
+# dashboard, and commits the result. Netlify (or any static host watching
+# the repo) redeploys automatically. Takes 1–3 hours; free on public repos.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "41 7 * * 1"   # Mondays 07:41 UTC
+
+concurrency:
+  group: refresh-dashboard
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/polymarket-wallets-analysis-m81p4j
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch the full cohort (slow)
+        working-directory: scripts
+        run: |
+          python3 fetch_data.py
+          python3 refetch_capped.py
+
+      - name: Analyze and rebuild the dashboard
+        working-directory: scripts
+        run: |
+          python3 analyze.py
+          python3 build_dashboard.py
+
+      - name: Commit refreshed dashboard
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/analyzed.json dashboard/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "auto: weekly dashboard refresh $(date -u +'%Y-%m-%d')"
+          git pull --rebase origin claude/polymarket-wallets-analysis-m81p4j || true
+          git push origin HEAD:claude/polymarket-wallets-analysis-m81p4j
