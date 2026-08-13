@@ -83,6 +83,13 @@ def sell_side_fees(shares, price):
     return shares * price * SEC_FEE_PER_DOLLAR + shares * TAF_PER_SHARE
 
 
+def quote_is_fresh(q, now, max_age_s):
+    """Entry-gate freshness. A quote with no venue timestamp cannot prove it
+    is current, so it fails closed — usable for marks and exits, not entries."""
+    ts = q.get("ts")
+    return bool(ts) and (now - ts) <= max_age_s
+
+
 def fill_price(symbol, quote, side_is_buy, cfg):
     """Simulated fill. With a real NBBO quote (dict with bid/ask) the fill is
     the touch plus slippage — a buy lifts the ask, a sell hits the bid. With
@@ -128,8 +135,10 @@ def open_position(st, snap, quote_px, cfg: StrategyConfig, now=None):
            "reason": snap.reason}
     st["cash"] = round(st["cash"] - pos["cost"], 4)
     if snap.action == "short":
-        # Opening a short is a sale; regulatory fees apply on this leg.
-        st["cash"] = round(st["cash"] - sell_side_fees(shares, px), 4)
+        # Opening a short is a sale; regulatory fees apply on this leg. The
+        # fee is recorded on the position so realized P&L includes it.
+        pos["openFee"] = round(sell_side_fees(shares, px), 4)
+        st["cash"] = round(st["cash"] - pos["openFee"], 4)
     st["positions"].append(pos)
     log(st, action="OPEN", **{k: pos[k] for k in
         ("symbol", "side", "shares", "entry", "cost", "reason")})
@@ -143,7 +152,7 @@ def close_position(st, pos, quote_px, why, cfg: StrategyConfig, now=None):
         proceeds = pos["shares"] * px - sell_side_fees(pos["shares"], px)
     else:
         proceeds = pos["shares"] * (2 * pos["entry"] - px)
-    pnl = round(proceeds - pos["cost"], 2)
+    pnl = round(proceeds - pos["cost"] - pos.get("openFee", 0.0), 2)
     st["cash"] = round(st["cash"] + proceeds, 4)
     st["positions"].remove(pos)
     closed = {**pos, "exit": round(px, 4), "closedAt": int(now or time.time()),
@@ -224,12 +233,15 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
                         key=lambda s: -abs(s.dislocation_bps))
         for snap in ranked:
             # Latency gate: the measured edge decays within minutes, so an
-            # entry priced off a stale quote has already missed it. Exits are
-            # never gated — leaving late beats not leaving.
+            # entry priced off a stale — or unverifiable — quote has already
+            # missed it. Exits are never gated: leaving late beats not
+            # leaving.
             q = quote_objs[snap.symbol]
-            if q.get("ts") and now - q["ts"] > cfg.max_quote_age_s:
+            if not quote_is_fresh(q, now, cfg.max_quote_age_s):
+                ts = q.get("ts")
                 log(st, action="SKIP", symbol=snap.symbol,
-                    reason=f"quote {now - q['ts']:.0f}s old")
+                    reason=(f"quote {now - ts:.0f}s old" if ts
+                            else "quote has no venue timestamp"))
                 continue
             open_position(st, snap, q, cfg, now)
 

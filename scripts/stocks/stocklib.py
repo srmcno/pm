@@ -76,13 +76,18 @@ def crypto_mids(symbols=("BTCUSDT", "ETHUSDT")):
 
 
 def crypto_klines(symbol, interval="1m", start_ms=None, end_ms=None, limit=1000):
-    """OHLCV rows: [openTime, open, high, low, close, volume, closeTime, ...]."""
+    """OHLCV rows: [openTime, open, high, low, close, volume, closeTime, ...].
+
+    Returns [] when the venue answered with no rows for the window and None
+    when the request itself failed — callers that paginate must not treat a
+    failed request as a hole in history."""
     params = {"symbol": symbol, "interval": interval, "limit": limit}
     if start_ms:
         params["startTime"] = int(start_ms)
     if end_ms:
         params["endTime"] = int(end_ms)
-    return get_json(f"{MEXC}/klines", params) or []
+    rows = get_json(f"{MEXC}/klines", params)
+    return rows if isinstance(rows, list) else None
 
 
 def crypto_minutes(symbol, start_ts, end_ts):
@@ -95,11 +100,23 @@ def crypto_minutes(symbol, start_ts, end_ts):
     out = {}
     cur = int(start_ts) * 1000
     end_ms = int(end_ts) * 1000
+    failures = 0
     while cur < end_ms:
         page_end = min(end_ms, cur + 1000 * 60_000)
         rows = crypto_klines(symbol, "1m", start_ms=cur, end_ms=page_end)
+        if rows is None:
+            # Request failure, not a hole: skipping the page would silently
+            # drop up to ~17 hours of driver data from any replay built on
+            # it. Retry the same window; give up loudly if the venue stays
+            # unreachable.
+            failures += 1
+            if failures > 3:
+                raise RuntimeError(f"MEXC kline requests failing for {symbol}")
+            time.sleep(2.0 * failures)
+            continue
+        failures = 0
         if not rows:
-            cur = page_end + 60_000       # hole in history; skip forward
+            cur = page_end + 60_000       # confirmed hole; skip forward
             continue
         for r in rows:
             out[int(r[0]) // 1000] = float(r[4])
@@ -110,7 +127,7 @@ def crypto_minutes(symbol, start_ts, end_ts):
 
 
 def crypto_daily_closes(symbol, days=90):
-    rows = crypto_klines(symbol, "1d", limit=days)
+    rows = crypto_klines(symbol, "1d", limit=days) or []
     return {int(r[0]) // 1000: float(r[4]) for r in rows}
 
 
@@ -286,10 +303,13 @@ def alpaca_quotes(symbols):
                 continue
             ts = q.get("t") or ""
             try:
-                age_ref = datetime.fromisoformat(ts.replace("Z", "+00:00"))
-                epoch = age_ref.timestamp()
+                epoch = datetime.fromisoformat(
+                    ts.replace("Z", "+00:00")).timestamp()
             except ValueError:
-                epoch = time.time()
+                # A malformed venue timestamp must not masquerade as fresh;
+                # ts=None keeps the quote usable for marks and exits while
+                # the entry gate fails closed on it.
+                epoch = None
             out[sym] = {"price": (bid + ask) / 2.0, "bid": bid, "ask": ask,
                         "ts": epoch}
         return out or None
@@ -299,8 +319,9 @@ def alpaca_quotes(symbols):
 
 def live_quotes(symbols):
     """Best available quotes: Alpaca NBBO when keys are present, otherwise
-    Yahoo last prices. Every row carries the venue timestamp so staleness is
-    measured rather than assumed."""
+    Yahoo last prices. Rows carry the venue timestamp when the venue supplies
+    one and ts=None when it does not — staleness is measured, never assumed,
+    and entries fail closed on an unverifiable quote."""
     quotes = alpaca_quotes(symbols)
     if quotes is not None:
         return quotes, "alpaca"
@@ -309,5 +330,5 @@ def live_quotes(symbols):
         q = quote(sym)
         if q and q.get("price"):
             out[sym] = {"price": q["price"], "bid": None, "ask": None,
-                        "ts": q.get("marketTime") or time.time()}
+                        "ts": q.get("marketTime")}
     return out, "yahoo"

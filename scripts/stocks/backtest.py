@@ -14,7 +14,7 @@ from datetime import datetime
 
 from . import stocklib
 from .strategy import UNIVERSE, StrategyConfig, evaluate, exit_check, fit_all_betas
-from .paperdesk import fill_price
+from .paperdesk import fill_price, sell_side_fees
 
 REPORT = "reports/stocks-backtest.md"
 
@@ -128,10 +128,11 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                         exit_q = bars[i + 1][1]
                         fpx = fill_price(sym, exit_q, pos["side"] == "short", cfg)
                         if pos["side"] == "long":
-                            proceeds = pos["shares"] * fpx
+                            proceeds = (pos["shares"] * fpx
+                                        - sell_side_fees(pos["shares"], fpx))
                         else:
                             proceeds = pos["shares"] * (2 * pos["entry"] - fpx)
-                        pnl = proceeds - pos["cost"]
+                        pnl = proceeds - pos["cost"] - pos.get("openFee", 0.0)
                         cash += proceeds
                         closed.append({**pos, "exit": round(fpx, 4),
                                        "closedAt": t, "pnl": round(pnl, 2),
@@ -145,13 +146,24 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                     stake = min(cash, (cash + sum(p["cost"] for p in open_pos.values()))
                                 * cfg.risk_frac)
                     if stake >= 10.0:
-                        shares = stake / fpx
-                        open_pos[sym] = {
-                            "symbol": sym, "side": snap.action,
-                            "shares": shares, "entry": round(fpx, 4),
-                            "cost": stake, "openedAt": t,
-                            "entryDislocationBps": snap.dislocation_bps}
-                        cash -= stake
+                        # Same sizing the paper/live path applies: shorts are
+                        # whole shares only, and a short open is a sale with
+                        # regulatory fees on the leg.
+                        if snap.action == "short":
+                            shares = float(int(stake / fpx))
+                        else:
+                            shares = stake / fpx
+                        if shares > 0:
+                            cost = shares * fpx
+                            open_fee = (sell_side_fees(shares, fpx)
+                                        if snap.action == "short" else 0.0)
+                            open_pos[sym] = {
+                                "symbol": sym, "side": snap.action,
+                                "shares": shares, "entry": round(fpx, 4),
+                                "cost": cost, "openFee": round(open_fee, 4),
+                                "openedAt": t,
+                                "entryDislocationBps": snap.dislocation_bps}
+                            cash -= cost + open_fee
             t += step_s
         # forced flat at session end
         for sym, pos in list(open_pos.items()):
@@ -159,11 +171,13 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
             if not bars:
                 continue
             fpx = fill_price(sym, bars[-1][4], pos["side"] == "short", cfg)
-            proceeds = (pos["shares"] * fpx if pos["side"] == "long"
+            proceeds = (pos["shares"] * fpx - sell_side_fees(pos["shares"], fpx)
+                        if pos["side"] == "long"
                         else pos["shares"] * (2 * pos["entry"] - fpx))
             cash += proceeds
             closed.append({**pos, "exit": round(fpx, 4), "closedAt": bars[-1][0],
-                           "pnl": round(proceeds - pos["cost"], 2),
+                           "pnl": round(proceeds - pos["cost"]
+                                        - pos.get("openFee", 0.0), 2),
                            "exitReason": "close", "day": day})
             del open_pos[sym]
 
@@ -180,6 +194,7 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
         "winRate": round(len(wins) / len(closed), 3) if closed else None,
         "avgPnl": round(sum(c["pnl"] for c in closed) / len(closed), 2) if closed else None,
         "byDay": {d: round(p, 2) for d, p in sorted(by_day.items())},
+        "sessionDays": all_days,
         "exitReasons": dict(sorted(
             ((r, sum(1 for c in closed if c["exitReason"] == r))
              for r in {c["exitReason"] for c in closed}),
@@ -254,11 +269,15 @@ def sweep(grid=None, range_="5d", interval="1m", train_frac=0.6,
                 interval=interval, write=False)
         if "error" in r:
             return [{"error": r["error"]}]
-        days = sorted(r["byDay"])
+        # Split on every market session in the window, not on days the config
+        # happened to trade — otherwise each config gets its own train/test
+        # boundary and the held-out periods are not comparable. A session
+        # with no trades scores zero.
+        days = r["sessionDays"]
         cut = max(1, int(len(days) * train_frac))
         train_days, test_days = days[:cut], days[cut:]
-        train = sum(r["byDay"][d] for d in train_days)
-        test = sum(r["byDay"][d] for d in test_days)
+        train = sum(r["byDay"].get(d, 0.0) for d in train_days)
+        test = sum(r["byDay"].get(d, 0.0) for d in test_days)
         n_train = sum(1 for c in r["trades_detail"] if c["day"] in train_days)
         rows.append({**dict(zip(keys, combo)),
                      "trainPnl": round(train, 2), "testPnl": round(test, 2),

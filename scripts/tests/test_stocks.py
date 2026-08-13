@@ -139,6 +139,25 @@ class TestExits(unittest.TestCase):
                        mins_to_close=120, cfg=self.cfg))
 
 
+class TestQuoteGate(unittest.TestCase):
+    def test_fresh_quote_passes(self):
+        from stocks.paperdesk import quote_is_fresh
+        self.assertTrue(quote_is_fresh({"ts": 990.0}, now=1000.0,
+                                       max_age_s=20.0))
+
+    def test_stale_quote_fails(self):
+        from stocks.paperdesk import quote_is_fresh
+        self.assertFalse(quote_is_fresh({"ts": 900.0}, now=1000.0,
+                                        max_age_s=20.0))
+
+    def test_missing_timestamp_fails_closed(self):
+        # a quote that cannot prove its age must not be treated as fresh
+        from stocks.paperdesk import quote_is_fresh
+        self.assertFalse(quote_is_fresh({"ts": None}, now=1000.0,
+                                        max_age_s=20.0))
+        self.assertFalse(quote_is_fresh({}, now=1000.0, max_age_s=20.0))
+
+
 class TestAccounting(unittest.TestCase):
     def test_short_pnl_is_entry_minus_exit(self):
         from stocks.paperdesk import default_state, close_position
@@ -154,6 +173,25 @@ class TestAccounting(unittest.TestCase):
         closed = close_position(st, pos, 45.0, "reverted", cfg, now=60)
         self.assertGreater(closed["pnl"], 45.0)
         self.assertLess(closed["pnl"], 50.5)
+
+    def test_short_open_fee_lands_in_reported_pnl(self):
+        # the opening-sale fee is deducted from cash at open; realized P&L
+        # must include it or trade stats and equity drift apart
+        from stocks.paperdesk import default_state, close_position
+        from stocks.strategy import StrategyConfig
+        cfg = StrategyConfig()
+        cfg.slippage_bps = 0.0
+        results = []
+        for fee in (0.0, 1.0):
+            st = default_state(1000.0)
+            pos = {"symbol": "IBIT", "side": "short", "shares": 10.0,
+                   "entry": 50.0, "cost": 500.0, "openFee": fee,
+                   "openedAt": 0, "reason": "t"}
+            st["positions"].append(pos)
+            st["cash"] -= pos["cost"] + fee
+            results.append(close_position(st, pos, 45.0, "reverted",
+                                          cfg, now=60)["pnl"])
+        self.assertAlmostEqual(results[0] - results[1], 1.0, places=6)
 
     def test_daily_loss_halt(self):
         from stocks.paperdesk import default_state, _day
