@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786657736,
+  "generatedAt": 1786659249,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -18,21 +18,21 @@
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
      "name": "donthackme",
      "quality": 0.88,
-     "netUsd": 1650.4,
-     "avgPrice": 0.8831,
+     "netUsd": 1679.24,
+     "avgPrice": 0.8825,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 2.544587194383447
+     "lastTradeAgoH": 1.4,
+     "score": 2.629770749729489
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.73,
-     "netUsd": 1136.35,
-     "avgPrice": 0.8953,
+     "netUsd": 1149.43,
+     "avgPrice": 0.8948,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 2.1108507407953594
+     "lastTradeAgoH": 1.4,
+     "score": 2.1815143719346897
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -41,20 +41,20 @@
      "netUsd": 589.34,
      "avgPrice": 0.9122,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.9,
-     "score": 1.9491438383088917
+     "lastTradeAgoH": 7.3,
+     "score": 1.9152862145048504
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 3376.09,
-   "score": 6.6046,
+   "totalNetUsd": 3418.01,
+   "score": 6.7266,
    "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
    "outcome": "No",
    "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
    "currentPrice": 0.855,
-   "backersAvgEntry": 0.8969,
-   "driftSinceEntry": -0.0419,
+   "backersAvgEntry": 0.8965,
+   "driftSinceEntry": -0.0415,
    "endDate": "2026-08-13T00:00:00Z",
    "slug": "will-count-binface-win-less-than-10-of-votes-in-the-clacton-parliamentary-by-election-20260708142507719",
    "eventSlug": "clacton-by-election-count-binface-vote-20260708142507718"
