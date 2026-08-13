@@ -151,7 +151,7 @@ def compute_signals(trades_by_wallet, watchlist, now, hours,
     return signals
 
 
-def enrich(signals, top, max_drift=0.15):
+def enrich(signals, top, max_drift=0.15, max_days=None):
     """Attach live market metadata; drop dead or priced-out markets."""
     res = pmlib.MarketResolver()
     kept = []
@@ -161,6 +161,13 @@ def enrich(signals, top, max_drift=0.15):
         m = res.get(s["conditionId"])
         if not m or m["closed"]:
             continue
+        if max_days is not None and m.get("endDate"):
+            try:
+                end_ts = time.mktime(time.strptime(m["endDate"][:10], "%Y-%m-%d"))
+                if end_ts - time.time() > max_days * 86400:
+                    continue  # resolves too far out — capital would sit locked
+            except ValueError:
+                pass
         oi = s["outcomeIndex"] if s["outcomeIndex"] is not None else 0
         prices = m["outcomePrices"]
         cur = prices[oi] if oi < len(prices) else None
@@ -236,6 +243,8 @@ def main():
     ap.add_argument("--top", type=int, default=15)
     ap.add_argument("--min-pnl", type=float, default=100_000)
     ap.add_argument("--max-wallets", type=int, default=60)
+    ap.add_argument("--max-days", type=float, default=None,
+                    help="skip markets resolving more than this many days out")
     args = ap.parse_args()
 
     analyzed = pmlib.load_analyzed()
@@ -254,7 +263,7 @@ def main():
                               min_net_usd=args.min_net_usd,
                               min_backers=args.min_backers)
     print(f"Raw consensus candidates: {len(signals)}")
-    signals = enrich(signals, args.top)
+    signals = enrich(signals, args.top, max_days=args.max_days)
     print(f"Live signals after enrichment: {len(signals)}")
 
     meta = {"generatedAt": now, "hours": args.hours,
