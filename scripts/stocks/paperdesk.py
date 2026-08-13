@@ -179,7 +179,6 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     fixed_now = now
     now = now or time.time()
     mins_left = stocklib.minutes_to_close()
-    drv_prices = stocklib.crypto_mids(tuple({m["driver"] for m in UNIVERSE.values()}))
     # One batched quote call: real NBBO with venue timestamps when Alpaca
     # keys are present, Yahoo last prices otherwise.
     raw_quotes, feed = stocklib.live_quotes(list(UNIVERSE))
@@ -191,6 +190,11 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     if fixed_now is None:
         now = time.time()
     anchor_ts = now - cfg.anchor_minutes * 60
+    # The crypto driver is sampled AFTER the potentially slow equity
+    # fetches, so the dislocation always compares the freshest crypto
+    # print against equity quotes whose own staleness the entry gate
+    # bounds — never a driver that aged while Yahoo gap-fills ran.
+    drv_prices = stocklib.crypto_mids(tuple({m["driver"] for m in UNIVERSE.values()}))
     quotes, quote_objs, ages, snaps = {}, {}, [], []
 
     day = _day(st)

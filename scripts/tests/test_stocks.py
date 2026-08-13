@@ -295,16 +295,41 @@ class TestMirrorReconciliation(unittest.TestCase):
         self.assertIsNone(c.get("mirrored"))
         self.assertTrue(pending)
 
-    def test_never_landed_open_clears_after_probes(self):
+    def test_never_landed_open_clears_after_sustained_probes(self):
         # a dead open becomes permanently paper-only: resubmitting later
-        # would chase the stale signal that priced the original entry
+        # would chase the stale signal that priced the original entry. The
+        # conclusion requires a sustained 404 streak (count AND elapsed
+        # time), never a burst inside one poll cycle.
         p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
-             "liveCid": "pm-o-IBIT-100", "liveNotFound": 2}
+             "liveCid": "pm-o-IBIT-100", "liveNotFound": 2,
+             "liveNotFoundSince": 0}
         pending = self._run([], {"pm-o-IBIT-100": ("not_found", 0.0)}, [],
                             positions=[p])
         self.assertIsNone(p["liveCid"])
         self.assertTrue(p.get("liveDead"))
         self.assertFalse(pending)
+
+    def test_burst_404s_within_a_cycle_stay_pending(self):
+        # three quick 404s without elapsed wall-clock time must NOT kill
+        # the order — a slowly indexed accepted submission still resolves
+        import time as _t
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100", "liveNotFound": 5,
+             "liveNotFoundSince": _t.time()}
+        pending = self._run([], {"pm-o-IBIT-100": ("not_found", 0.0)}, [],
+                            positions=[p])
+        self.assertEqual(p["liveCid"], "pm-o-IBIT-100")
+        self.assertTrue(pending)
+
+    def test_404_streak_resets_on_other_responses(self):
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100", "liveNotFound": 2,
+             "liveNotFoundSince": 0}
+        pending = self._run([], {"pm-o-IBIT-100": ("accepted", 0.0)}, [],
+                            positions=[p])
+        self.assertNotIn("liveNotFound", p)
+        self.assertNotIn("liveNotFoundSince", p)
+        self.assertTrue(pending)
 
 
 class TestAccounting(unittest.TestCase):

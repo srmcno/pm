@@ -289,11 +289,19 @@ def _reconcile_mirrors(executor, st, save=None):
         if status in livedesk.FAILED_STATUSES:
             return "dead"
         if status == "not_found":
-            # The submission never landed. Probe a few times before
-            # concluding, in case the venue is slow to index the order.
+            # "Never landed" is only concluded after SUSTAINED 404s — at
+            # least three probes spanning two minutes of wall clock — and
+            # the streak resets on any other response, so a slowly indexed
+            # or intermittently unavailable accepted order is never
+            # converted into a dead one within a poll cycle.
             rec["liveNotFound"] = rec.get("liveNotFound", 0) + 1
-            if rec["liveNotFound"] >= 3:
+            rec.setdefault("liveNotFoundSince", time.time())
+            if rec["liveNotFound"] >= 3 and \
+                    time.time() - rec["liveNotFoundSince"] >= 120:
                 return "dead"
+            return "pending"
+        rec.pop("liveNotFound", None)
+        rec.pop("liveNotFoundSince", None)
         return "pending"
 
     for p in st["positions"]:
