@@ -1,6 +1,6 @@
 # Equities desk — replay backtest
 
-Generated 2026-08-13 13:41 UTC · range 5d · entries filled at the next bar's open plus costs.
+Generated 2026-08-13 13:51 UTC · range 5d · entries filled at the next bar's open plus costs.
 
 ## $1000 → $1003.77 (+0.38%)
 

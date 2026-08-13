@@ -191,7 +191,10 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                                 "openedAt": bars[i + 1][0],
                                 "entryDislocationBps": snap.dislocation_bps}
                             cash -= cost + open_fee
-            if not halted and open_pos:
+            if not halted:
+                # Checked every bar, including flat ones: realized losses
+                # alone can breach the rail, and production would refuse to
+                # open the next trade.
                 eq = cash
                 for sym, pos in open_pos.items():
                     mark = last_px.get(sym, pos["entry"])
