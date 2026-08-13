@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-13 04:17 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-13 04:28 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 A signal means several historically profitable wallets (market makers excluded) independently put meaningful money on the same outcome recently. It is information, not a guarantee — treat it as a shortlist for your own judgment.
 
 ## 1. Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? — **No**
 
-- Score **4.62** · 3 backers · net $810 staked
+- Score **4.58** · 3 backers · net $810 staked
 - Backers' average entry 0.50 → current price **0.47** (moved against them -0.03 since entry)
 - Resolves by 2026-08-15
 
@@ -18,7 +18,7 @@ A signal means several historically profitable wallets (market makers excluded) 
 
 ## 2. Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? — **No**
 
-- Score **4.62** · 3 backers · net $1,582 staked
+- Score **4.58** · 3 backers · net $1,582 staked
 - Backers' average entry 0.75 → current price **0.78** (already moved +0.02 since entry)
 - Resolves by 2026-08-15
 
@@ -30,7 +30,7 @@ A signal means several historically profitable wallets (market makers excluded) 
 
 ## 3. Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? — **No**
 
-- Score **3.15** · 3 backers · net $5,561 staked
+- Score **3.12** · 3 backers · net $5,561 staked
 - Backers' average entry 0.89 → current price **0.93** (already moved +0.03 since entry)
 - Resolves by 2026-08-13
 
