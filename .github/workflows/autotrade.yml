@@ -11,6 +11,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write   # dispatches the Pages deploy after committing data
 
 jobs:
   cycle:
@@ -57,6 +58,8 @@ jobs:
           if [ -n "$PM_PROXY_ADDRESS" ]; then python3 livetrade.py status; fi
 
       - name: Commit journal and reports back
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -65,3 +68,5 @@ jobs:
           git commit -m "auto: trading cycle $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin claude/polymarket-wallets-analysis-m81p4j || true
           git push origin HEAD:claude/polymarket-wallets-analysis-m81p4j
+          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
+          gh workflow run jekyll-gh-pages.yml --ref claude/polymarket-wallets-analysis-m81p4j || true

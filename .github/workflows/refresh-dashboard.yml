@@ -14,6 +14,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write   # dispatches the Pages deploy after committing the rebuild
 
 jobs:
   refresh:
@@ -44,6 +45,8 @@ jobs:
           python3 build_dashboard.py
 
       - name: Commit refreshed dashboard
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -52,3 +55,5 @@ jobs:
           git commit -m "auto: weekly dashboard refresh $(date -u +'%Y-%m-%d')"
           git pull --rebase origin claude/polymarket-wallets-analysis-m81p4j || true
           git push origin HEAD:claude/polymarket-wallets-analysis-m81p4j
+          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
+          gh workflow run jekyll-gh-pages.yml --ref claude/polymarket-wallets-analysis-m81p4j || true
