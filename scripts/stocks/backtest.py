@@ -158,8 +158,11 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                             proceeds = pos["shares"] * (2 * pos["entry"] - fpx)
                         pnl = proceeds - pos["cost"] - pos.get("openFee", 0.0)
                         cash += proceeds
+                        # The exit records the fill bar, same as openedAt, so
+                        # published hold durations match the accounting.
                         closed.append({**pos, "exit": round(fpx, 4),
-                                       "closedAt": t, "pnl": round(pnl, 2),
+                                       "closedAt": bars[i + 1][0],
+                                       "pnl": round(pnl, 2),
                                        "exitReason": why, "day": day})
                         del open_pos[sym]
                 elif snap.action != "none" and not halted \
@@ -334,6 +337,10 @@ def validate(cfg=None, range_="1mo", interval="5m", bankroll=1000.0):
         "config": {k: getattr(cfg, k) for k in CONFIG_KEYS},
     }
     bt = stocklib.load_state("backtest.json", {})
+    if not isinstance(bt, dict) or "returnPct" not in bt:
+        # Never write a validation-only artifact: the dashboard and report
+        # consumers expect the base replay fields around it.
+        return {"error": "no base replay result; run the backtest first"}
     bt["validation"] = block
     stocklib.save_state("backtest.json", bt)
     return block
@@ -359,7 +366,7 @@ def sweep(grid=None, range_="5d", interval="1m", train_frac=0.6,
     combos = list(product(*(grid[k] for k in keys)))
     for i, combo in enumerate(combos):
         cfg = StrategyConfig()
-        for k, v in zip(keys, combo):
+        for k, v in zip(keys, combo, strict=True):
             setattr(cfg, k, v)
         r = run(bankroll=bankroll, range_=range_, cfg=cfg, verbose=False,
                 interval=interval, write=False)
@@ -374,8 +381,7 @@ def sweep(grid=None, range_="5d", interval="1m", train_frac=0.6,
         train_days, test_days = days[:cut], days[cut:]
         train = sum(r["byDay"].get(d, 0.0) for d in train_days)
         test = sum(r["byDay"].get(d, 0.0) for d in test_days)
-        n_train = sum(1 for c in r["trades_detail"] if c["day"] in train_days)
-        rows.append({**dict(zip(keys, combo)),
+        rows.append({**dict(zip(keys, combo, strict=True)),
                      "trainPnl": round(train, 2), "testPnl": round(test, 2),
                      "trainDays": len(train_days), "testDays": len(test_days),
                      "trades": r["trades"], "winRate": r["winRate"],

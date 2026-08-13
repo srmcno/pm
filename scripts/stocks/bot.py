@@ -193,17 +193,18 @@ def cmd_run(args):
                       flush=True)
                 time.sleep(3)
                 continue
-        before = {id(p) for p in st["positions"]}
         snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
         if executor:
             from stocks import livedesk
             # Closes created by this step are submitted before any new
             # opens; the paper desk additionally never re-enters a symbol
             # in the cycle that closed it, so an old close and its
-            # replacement's open can never race at the broker.
+            # replacement's open can never race at the broker. Positions
+            # are identified by the absence of a liveCid, never by object
+            # identity — id() values can be reused within one step.
             _reconcile_mirrors(executor, st, save=paperdesk.save)
             for p in st["positions"]:
-                if id(p) not in before and not p.get("liveCid"):
+                if not p.get("liveCid"):
                     # The CID is assigned and DURABLY SAVED before the
                     # network call: if the order is accepted but the
                     # response is lost — or the process dies mid-flight —

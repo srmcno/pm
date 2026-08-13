@@ -1,6 +1,6 @@
 # Equities desk — replay backtest
 
-Generated 2026-08-13 13:51 UTC · range 5d · entries filled at the next bar's open plus costs.
+Generated 2026-08-13 13:54 UTC · range 5d · entries filled at the next bar's open plus costs.
 
 ## $1000 → $1003.77 (+0.38%)
 
@@ -16,9 +16,9 @@ Generated 2026-08-13 13:51 UTC · range 5d · entries filled at the next bar's o
 
 | symbol | beta | n | r² |
 |---|---|---|---|
-| MSTR | 1.789 | 46 | 0.527 |
-| COIN | 1.518 | 46 | 0.538 |
-| MARA | 1.196 | 46 | 0.177 |
-| RIOT | 0.866 | 46 | 0.082 |
-| IBIT | 1.023 | 46 | 0.888 |
-| ETHA | 1.039 | 46 | 0.891 |
+| MSTR | 1.794 | 47 | 0.525 |
+| COIN | 1.519 | 47 | 0.538 |
+| MARA | 1.197 | 47 | 0.178 |
+| RIOT | 0.869 | 47 | 0.083 |
+| IBIT | 1.023 | 47 | 0.888 |
+| ETHA | 1.039 | 47 | 0.891 |

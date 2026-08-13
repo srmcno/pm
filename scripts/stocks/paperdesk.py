@@ -85,9 +85,14 @@ def sell_side_fees(shares, price):
 
 def quote_is_fresh(q, now, max_age_s):
     """Entry-gate freshness. A quote with no venue timestamp cannot prove it
-    is current, so it fails closed — usable for marks and exits, not entries."""
+    is current, so it fails closed — usable for marks and exits, not entries.
+    A timestamp meaningfully ahead of now is equally unverifiable (venue
+    clock fault or bad payload); only small clock skew is tolerated."""
     ts = q.get("ts")
-    return bool(ts) and (now - ts) <= max_age_s
+    if not ts:
+        return False
+    age = now - ts
+    return -2.0 <= age <= max_age_s
 
 
 def fill_price(symbol, quote, side_is_buy, cfg):
@@ -113,7 +118,8 @@ def open_position(st, snap, quote_px, cfg: StrategyConfig, now=None):
         return None
     if any(p["symbol"] == snap.symbol for p in st["positions"]):
         return None
-    eq = equity(st, {snap.symbol: quote_px})
+    mark = quote_px["price"] if isinstance(quote_px, dict) else quote_px
+    eq = equity(st, {snap.symbol: mark})
     stake = round(eq * cfg.risk_frac, 2)
     if stake < 10.0 or stake > st["cash"]:
         stake = min(stake, round(st["cash"], 2))
@@ -213,6 +219,10 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
             and not day["halted"]:
         day["halted"] = True
         log(st, action="HALT", reason="daily loss limit")
+    if day["halted"]:
+        # Flatten on every halted cycle, not only the tripping one: a
+        # symbol with no quote in that cycle would otherwise keep its
+        # exposure until an ordinary exit fired, unbounded by the rail.
         for p in list(st["positions"]):
             if p["symbol"] in quote_objs:
                 close_position(st, p, quote_objs[p["symbol"]], "halt", cfg, now)

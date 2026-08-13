@@ -44,12 +44,14 @@ class StrategyConfig:
     # (train on the first 3 sessions, score on the held-out last 2) and
     # confirmed on 22 sessions of 5-minute bars with the driver aligned to
     # each bar's close and fills at the next bar's open (dislocations seen
-    # up to ~300s late). This configuration is positive in all three views
-    # — train +$6.07 and held-out +$1.02 per $1000 on the 1m window, +0.94%
-    # over 49 trades in the month stress — with a worst stress day of
-    # -$4.14. The tighter 90bps/20-minute variant scored comparably in the
-    # stress but lost money on the held-out sessions. The edge decays
-    # within minutes, which is why entries are gated on quote freshness.
+    # up to ~300s late). At selection this configuration was the only
+    # leader positive in all three views — training days, held-out days,
+    # and the month stress — while the tighter 90bps/20-minute variant
+    # scored comparably in the stress but lost money on the held-out
+    # sessions. Both replay windows roll daily, so the committed
+    # backtest.json is the live source for current numbers, not this
+    # comment. The edge decays within minutes, which is why entries are
+    # gated on quote freshness.
     entry_bps: float = 75.0          # |d| to open
     exit_bps: float = 12.0           # |d| to close on reversion
     stop_bps: float = 70.0           # adverse widening beyond entry level
@@ -154,10 +156,14 @@ def fit_beta(stock_closes, crypto_closes, bounds):
 
 
 def fit_all_betas(cfg: StrategyConfig):
-    """Fit and persist betas for the whole universe. Refit at most daily."""
+    """Fit and persist betas for the whole universe. Refit at most daily —
+    unless the requested lookback differs from the cached fit, so a sweep or
+    validation run with a custom lookback can never leak its betas into a
+    later replay or live session."""
     state = stocklib.load_state("betas.json", {})
     today = time.strftime("%Y-%m-%d")
-    if state.get("date") == today and state.get("betas"):
+    if state.get("date") == today and state.get("betas") \
+            and state.get("lookbackDays") == cfg.beta_lookback_days:
         return state["betas"]
     crypto_cache = {}
     betas = {}
@@ -171,7 +177,8 @@ def fit_all_betas(cfg: StrategyConfig):
         if beta is None:
             beta = sum(meta["betaBounds"]) / 2.0
         betas[sym] = {"beta": round(beta, 3), "n": n, "r2": round(r2, 3)}
-    stocklib.save_state("betas.json", {"date": today, "betas": betas})
+    stocklib.save_state("betas.json", {"date": today, "betas": betas,
+                                       "lookbackDays": cfg.beta_lookback_days})
     return betas
 
 

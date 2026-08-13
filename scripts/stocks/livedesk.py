@@ -130,10 +130,14 @@ def mirror_position(client: Alpaca, pos, opening, attempt=0):
     terminal order state via order_state() before recording anything done."""
     side = ("buy" if pos["side"] == "long" else "sell") if opening else \
            ("sell" if pos["side"] == "long" else "buy")
-    # A close flattens what is actually held live (liveQty), which can be
-    # less than the paper size when the opening order only partially filled.
-    qty = max(1, int(pos.get("liveQty") or pos["shares"])) if not opening \
-        else max(1, int(pos["shares"]))
+    # Quantities pass through as the paper desk sized them: Alpaca accepts
+    # fractional quantities on market DAY orders for long positions, and the
+    # paper desk already floors shorts to whole shares, so truncating here
+    # would make live diverge from paper. A close flattens what is actually
+    # held live (liveQty), which can be less than the paper size when the
+    # opening order only partially filled.
+    qty = round(float(pos.get("liveQty") or pos["shares"]), 4) if not opening \
+        else round(float(pos["shares"]), 4)
     cid = mirror_cid(pos, opening, attempt)
     try:
         return client.submit(pos["symbol"], qty, side, client_order_id=cid)

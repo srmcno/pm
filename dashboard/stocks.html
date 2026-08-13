@@ -249,9 +249,12 @@ function render(d) {
       `Entries fill at the next bar's open plus spread and slippage.`;
     if (b.validation) {
       const v = b.validation;
+      const worst = typeof v.worstDay === "number"
+        ? `${v.worstDay < 0 ? "-" : "+"}$${Math.abs(v.worstDay).toFixed(2)}`
+        : "—";
       txt += ` Stress validation on ${v.range}/${v.interval} bars ` +
         `(${v.fillNote}): ${v.returnPct >= 0 ? "+" : ""}${v.returnPct}% over ` +
-        `${v.trades} trades, worst day $${Math.abs(v.worstDay).toFixed(2)}.`;
+        `${v.trades} trades, worst day ${worst}.`;
     }
     bt.textContent = txt;
   } else {

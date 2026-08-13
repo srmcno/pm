@@ -318,17 +318,22 @@ def alpaca_quotes(symbols):
 
 
 def live_quotes(symbols):
-    """Best available quotes: Alpaca NBBO when keys are present, otherwise
-    Yahoo last prices. Rows carry the venue timestamp when the venue supplies
-    one and ts=None when it does not — staleness is measured, never assumed,
-    and entries fail closed on an unverifiable quote."""
-    quotes = alpaca_quotes(symbols)
-    if quotes is not None:
+    """Best available quotes: Alpaca NBBO when keys are present, Yahoo last
+    prices otherwise — and Yahoo fills any per-symbol gaps in a partial
+    Alpaca answer, because a symbol with no quote at all would lose its
+    marks, stops, and time exits. Rows carry the venue timestamp when the
+    venue supplies one and ts=None when it does not — staleness is measured,
+    never assumed, and entries fail closed on an unverifiable quote. The
+    "alpaca" feed label is only returned when the batched feed covered the
+    whole universe; the faster poll cadence in bot.py depends on it."""
+    quotes = alpaca_quotes(symbols) or {}
+    missing = [s for s in symbols if s not in quotes]
+    if quotes and not missing:
         return quotes, "alpaca"
-    out = {}
-    for sym in symbols:
+    out = dict(quotes)
+    for sym in missing:
         q = quote(sym)
         if q and q.get("price"):
             out[sym] = {"price": q["price"], "bid": None, "ask": None,
                         "ts": q.get("marketTime")}
-    return out, "yahoo"
+    return out, ("alpaca+yahoo" if quotes else "yahoo")

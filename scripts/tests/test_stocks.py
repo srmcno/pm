@@ -84,9 +84,9 @@ class TestSignal(unittest.TestCase):
         self.assertIn("driver move", s.reason)
 
     def test_entry_threshold_scales_with_costs(self):
-        # ~180bps dislocation clears the 90bps entry on a tight-spread
-        # instrument but not the cost-scaled threshold of one whose round
-        # trip alone costs ~200bps
+        # ~180bps dislocation clears the base entry threshold on a
+        # tight-spread instrument but not the cost-scaled threshold of one
+        # whose round trip alone costs ~200bps
         kw = dict(price=99.2, anchor_price=100.0, driver_price=100.5,
                   driver_anchor_price=100.0, beta=2.0, cfg=self.cfg)
         self.assertEqual(evaluate("X", spread_bps=200, **kw).action, "none")
@@ -156,6 +156,47 @@ class TestQuoteGate(unittest.TestCase):
         self.assertFalse(quote_is_fresh({"ts": None}, now=1000.0,
                                         max_age_s=20.0))
         self.assertFalse(quote_is_fresh({}, now=1000.0, max_age_s=20.0))
+
+    def test_future_stamped_quote_fails(self):
+        # a venue clock fault must not make a quote look freshly minted;
+        # only small skew is tolerated
+        from stocks.paperdesk import quote_is_fresh
+        self.assertFalse(quote_is_fresh({"ts": 1100.0}, now=1000.0,
+                                        max_age_s=20.0))
+        self.assertTrue(quote_is_fresh({"ts": 1001.0}, now=1000.0,
+                                       max_age_s=20.0))
+
+
+class TestHaltFlatten(unittest.TestCase):
+    def test_halted_day_flattens_position_when_quote_returns(self):
+        # a position whose symbol had no quote on the tripping cycle must
+        # still be flattened on a later halted cycle, not survive until an
+        # ordinary exit fires
+        import time as _t
+        from stocks import paperdesk, stocklib
+        from stocks.strategy import RollingTape, StrategyConfig
+        cfg = StrategyConfig()
+        st = paperdesk.default_state(1000.0)
+        pos = {"symbol": "IBIT", "side": "long", "shares": 5.0,
+               "entry": 60.0, "cost": 300.0, "openedAt": 0, "reason": "t"}
+        st["positions"].append(pos)
+        st["cash"] -= pos["cost"]
+        st["day"] = {"date": _t.strftime("%Y-%m-%d"), "trades": 0,
+                     "pnl": 0.0, "halted": True, "startEquity": 1000.0}
+        orig = (stocklib.crypto_mids, stocklib.live_quotes,
+                stocklib.minutes_to_close)
+        stocklib.crypto_mids = lambda syms: {}
+        stocklib.live_quotes = lambda syms: (
+            {"IBIT": {"price": 60.0, "bid": None, "ask": None,
+                      "ts": 1000.0}}, "yahoo")
+        stocklib.minutes_to_close = lambda: 120.0
+        try:
+            paperdesk.step(st, cfg, {}, RollingTape(), now=1000.0)
+        finally:
+            (stocklib.crypto_mids, stocklib.live_quotes,
+             stocklib.minutes_to_close) = orig
+        self.assertEqual(st["positions"], [])
+        self.assertEqual(st["closed"][-1]["exitReason"], "halt")
 
 
 class TestMirrorReconciliation(unittest.TestCase):
