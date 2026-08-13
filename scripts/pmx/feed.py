@@ -343,7 +343,11 @@ class DataApiFeed:
         for t in rows:
             ts = t.get("timestamp") or 0
             newest = max(newest, ts)
-            if ts <= since:
+            # Strict < : the boundary second is re-read on every poll, so a
+            # fill indexed late under an already-seen timestamp still comes
+            # through. DualFeed.remember suppresses the resulting repeats;
+            # this class must not be polled without that dedup layer.
+            if ts < since:
                 break                      # rows are newest-first
             token_id = str(t.get("asset") or "")
             meta = self.tokens.get(token_id) if token_id else {}

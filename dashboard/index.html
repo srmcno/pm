@@ -118,6 +118,46 @@
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent; color: transparent;
   }
+  .topnav {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 10px 22px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav .brand {
+    font-family: var(--display); font-size: 13px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink); text-decoration: none;
+    white-space: nowrap;
+  }
+  .topnav .navlinks { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+  .topnav .navlinks a {
+    color: var(--muted); text-decoration: none; font-size: 12.5px;
+    letter-spacing: 0.04em; padding: 3px 2px; border-bottom: 1px solid transparent;
+  }
+  .topnav .navlinks a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .deskgrid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px; margin: 4px 0 26px;
+  }
+  .deskcard {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 3px; padding: 13px 15px 12px;
+  }
+  .deskcard:hover { border-color: var(--accent); }
+  .desk-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .desk-name {
+    font-family: var(--display); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .desk-big { font-size: 21px; font-weight: 650; margin: 7px 0 2px;
+    font-variant-numeric: tabular-nums; }
+  .desk-big.pos { color: var(--up); } .desk-big.neg { color: var(--down); }
+  .desk-sub { color: var(--muted); font-size: 12px; }
+
   .asof {
     text-align: center; color: var(--muted); font-size: 12.5px; margin: 0 0 14px;
   }
@@ -301,6 +341,18 @@
   }
 </style>
 
+<nav class="topnav" aria-label="Site">
+  <a class="brand" href="./">Moffitt Money</a>
+  <div class="navlinks">
+    <a href="#desks">Overview</a>
+    <a href="#signals">Signals</a>
+    <a href="#engine">Engine</a>
+    <a href="#ledger">Ledger</a>
+    <a href="#cohort">Wallets</a>
+    <a href="arb.html">Arb Desk</a>
+    <a href="stocks.html">Stocks</a>
+  </div>
+</nav>
 <div class="wrap">
   <button id="themetoggle" type="button" aria-label="Switch color theme" title="Switch theme">◐</button>
   <header class="masthead">
@@ -309,8 +361,32 @@
     <h1>Moffitt Money</h1>
     <div class="rule" aria-hidden="true"><span class="dia"></span></div>
     <p class="lede" id="lede"></p>
-    <p class="lede" style="margin-top:6px"><a href="arb.html">Arb desk — MEXC micro-cap scanner ↗</a></p>
   </header>
+
+  <section id="desks">
+    <div class="deskgrid">
+      <a class="deskcard" href="#signals">
+        <div class="desk-head"><span class="desk-name">Smart Money</span><span id="desk-sm-pill"></span></div>
+        <div class="desk-big" id="desk-sm-big">—</div>
+        <div class="desk-sub" id="desk-sm-sub">Polymarket copy signals</div>
+      </a>
+      <a class="deskcard" href="#engine">
+        <div class="desk-head"><span class="desk-name">Engine v2</span><span id="desk-en-pill"></span></div>
+        <div class="desk-big" id="desk-en-big">—</div>
+        <div class="desk-sub" id="desk-en-sub">Weighted consensus</div>
+      </a>
+      <a class="deskcard" href="arb.html">
+        <div class="desk-head"><span class="desk-name">Arb Desk</span><span id="desk-ar-pill"></span></div>
+        <div class="desk-big" id="desk-ar-big">—</div>
+        <div class="desk-sub" id="desk-ar-sub">MEXC triangular scanner</div>
+      </a>
+      <a class="deskcard" href="stocks.html">
+        <div class="desk-head"><span class="desk-name">Stocks</span><span id="desk-st-pill"></span></div>
+        <div class="desk-big" id="desk-st-big">—</div>
+        <div class="desk-sub" id="desk-st-sub">Crypto lead-lag equities</div>
+      </a>
+    </div>
+  </section>
 
   <div class="tiles" id="tiles"></div>
 
@@ -557,7 +633,7 @@ function renderSignals() {
   if (!sigs.length) {
     const tr = document.createElement("tr");
     const td = document.createElement("td"); td.colSpan = 8; td.className = "l";
-    td.textContent = "No consensus among the sharps right now — the bot is waiting.";
+    td.textContent = "No qualifying consensus in the current window.";
     tr.appendChild(td); body.appendChild(tr);
     return;
   }
@@ -662,6 +738,62 @@ function equitySparkline(curve, w, h) {
   return svg;
 }
 
+function renderDesks() {
+  const set = (id, txt, cls) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = txt;
+    el.className = el.className.replace(/ (pos|neg)$/, "") + (cls ? " " + cls : "");
+  };
+  const pill = (id, ts) => {
+    const el = document.getElementById(id);
+    if (el) el.replaceChildren(statusPill(ts));
+  };
+  const money = v => (v >= 0 ? "+" : "") + "$" + Math.abs(v).toFixed(2);
+
+  const sig = LIVE.signals, pap = LIVE.paper;
+  if (pap) {
+    const ret = pap.equity - pap.bankrollStart;
+    set("desk-sm-big", "$" + pap.equity.toFixed(2), ret >= 0 ? "pos" : "neg");
+    set("desk-sm-sub", `${(sig && sig.signals || []).length} active signals · ` +
+      `${pap.closedCount || (pap.closed || []).length} settled`);
+    pill("desk-sm-pill", lastBeatTs());
+  }
+  const en = LIVE.engine;
+  if (en && en.meta) {
+    const dg = en.diagnostics || {};
+    set("desk-en-big", String(dg.fired || 0),
+        (dg.fired || 0) > 0 ? "pos" : "");
+    set("desk-en-sub", en.meta.calibrated
+      ? `λ fitted · ${en.meta.votingRights} voting rights`
+      : `calibrating ${en.meta.observations}/${en.meta.observationsNeeded} · ` +
+        `${en.meta.votingRights} voting rights`);
+    pill("desk-en-pill", en.meta.generatedAt);
+  }
+  const ar = LIVE.arb;
+  if (ar) {
+    const acct = ar.paper || ar.account || {};
+    const eq = acct.equity != null ? acct.equity : acct.balance;
+    if (eq != null) {
+      set("desk-ar-big", "$" + Number(eq).toFixed(2),
+          eq >= (acct.start || acct.bankrollStart || eq) ? "pos" : "neg");
+    }
+    const nOpp = (ar.opportunities || ar.verified || []).length;
+    set("desk-ar-sub", `${nOpp} verified cycles · ${ar.pairCount || "~2,100"} pairs`);
+    pill("desk-ar-pill", (ar.meta && ar.meta.generatedAt) || ar.updatedAt || ar.t);
+  }
+  const stx = LIVE.stocks;
+  if (stx && stx.account) {
+    const a = stx.account;
+    set("desk-st-big", "$" + a.equity.toFixed(2),
+        a.equity >= a.bankrollStart ? "pos" : "neg");
+    const day = a.day || {};
+    set("desk-st-sub", `${stx.meta.market} · today ${money(day.pnl || 0)} ` +
+      `over ${day.trades || 0} trades`);
+    pill("desk-st-pill", stx.meta.generatedAt);
+  }
+}
+
 function renderEngine() {
   const body = document.getElementById("engbody");
   const asof = document.getElementById("eng-asof");
@@ -678,18 +810,16 @@ function renderEngine() {
     `${m.votingRights} specialty voting rights · feed: ${m.feed} · ` +
     `Σ ≥ ${m.theta} and N_eff ≥ ${m.minEffectiveBackers} to fire`);
 
-  // Calibration state decides whether stakes are Kelly or bootstrap, so it
-  // belongs on the page rather than only in the logs.
   const bits = [];
+  for (const w of m.warnings || []) bits.push(`Configuration: ${w}`);
   bits.push(m.calibrated
-    ? `Probability model fitted (λ = ${m.lambda}) — stakes are fractional Kelly.`
-    : `Probability model not yet fitted (${m.observations}/${m.observationsNeeded} settled signals) — stakes are the smallest legal position, not Kelly.`);
+    ? `Sizing: fractional Kelly (λ = ${m.lambda}).`
+    : `Sizing: minimum stake until calibrated (${m.observations}/${m.observationsNeeded} settled signals).`);
   if (!(p.signals || []).length) {
-    bits.push(`No signal right now: ${dg.candidates || 0} markets drew weighted backing, ` +
-      `${dg.multiBacker || 0} drew two or more specialists, none cleared both rails. ` +
-      `That is the engine being selective, not stalled.`);
+    bits.push(`Scored ${dg.candidates || 0} markets, ${dg.multiBacker || 0} multi-backer; ` +
+      `none met the Σ and N_eff thresholds.`);
     const top = Object.entries(dg.rejections || {}).sort((a, b) => b[1] - a[1])[0];
-    if (top) bits.push(`Most common reason: ${top[0]} (${top[1]} markets).`);
+    if (top) bits.push(`Primary constraint: ${top[0]} (${top[1]}).`);
   }
   note.textContent = bits.join(" ");
 
@@ -697,7 +827,7 @@ function renderEngine() {
   if (!sigs.length) {
     const tr = document.createElement("tr");
     const td = document.createElement("td"); td.colSpan = 9; td.className = "l";
-    td.textContent = "Waiting for two independent specialists to agree on a still-open market.";
+    td.textContent = "No active signals.";
     tr.appendChild(td); body.appendChild(tr);
     return;
   }
@@ -739,15 +869,25 @@ async function refreshLive() {
     const r = await fetch("data/engine.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.engine = await r.json();
   } catch (e) { /* offline snapshot stays */ }
+  try {
+    const r = await fetch("data/arb.json" + bust, { cache: "no-store" });
+    if (r.ok) LIVE.arb = await r.json();
+  } catch (e) { /* card stays in its last state */ }
+  try {
+    const r = await fetch("data/stocks.json" + bust, { cache: "no-store" });
+    if (r.ok) LIVE.stocks = await r.json();
+  } catch (e) { /* card stays in its last state */ }
   // Always re-render: "x min ago" and the live/stale pill must keep ticking
   // even when a fetch fails or nothing changed.
   renderSignals();
   renderEngine();
   renderLedger();
+  renderDesks();
 }
 renderSignals();
 renderEngine();
 renderLedger();
+renderDesks();
 refreshLive();
 setInterval(refreshLive, 60000);
 

@@ -1,0 +1,67 @@
+name: Stocks desk market-hours shift
+
+# Runs the equities desk during the US regular session. Crons are UTC and
+# fixed; the bot checks the market clock itself and exits outside regular
+# hours, so a DST shift or holiday session costs nothing but an idle start.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "25 13 * * 1-5"   # 09:25 ET during EDT
+    - cron: "25 15 * * 1-5"
+    - cron: "25 17 * * 1-5"
+    - cron: "25 19 * * 1-5"
+
+concurrency:
+  group: stocks-shift
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  shift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 118
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+      APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Trade one shift
+        working-directory: scripts
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          python3 -m stocks.bot run --minutes 110 --git-push --push-minutes 10
+
+      - name: Refresh the replay backtest after the close
+        working-directory: scripts
+        run: python3 -m stocks.bot backtest --range 5d \
+             || echo "::warning::backtest refresh failed"
+
+      - name: Commit desk state
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for p in dashboard/data/stocks.json data/stocks reports; do
+            [ -e "$p" ] && git add "$p"
+          done
+          git diff --cached --quiet && exit 0
+          git commit -m "auto: stocks shift $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" \
+            || { git rebase --abort || true; echo "::error::rebase failed"; exit 1; }
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" \
+            || echo "::warning::pages dispatch failed — site refreshes on the next push"

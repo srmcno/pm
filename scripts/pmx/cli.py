@@ -136,8 +136,15 @@ def _seed_window(eng, watch, hours, feed=None):
             total += 1
     eng.ingest(fills)
     if feed is not None:
+        # Register only fills the live feeds can re-encounter: the REST poll
+        # re-reads from just before the seed started and the chain feed looks
+        # back ~12 blocks, so anything older cannot be replayed. Registering
+        # the full seed (which can exceed the dedup cache's capacity) risks
+        # evicting the overlap keys before the first poll runs.
+        overlap_cutoff = time.time() - 900
         for f in fills:
-            feed.remember(f)
+            if f.timestamp >= overlap_cutoff:
+                feed.remember(f)
     return total
 
 
@@ -349,7 +356,8 @@ def cmd_settle(args):
     stays empty, lambda stays 0, and the engine can never graduate from flat
     bootstrap stakes to Kelly no matter how long it runs.
 
-    Idempotent: each (market, outcome, signal time) is recorded once.
+    Idempotent: each (conditionId, outcomeIndex) is recorded once, regardless
+    of how many shifts re-journalled the signal.
     """
     from . import calibrate as calmod
     resolver = pmlib.MarketResolver()

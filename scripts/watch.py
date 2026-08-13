@@ -41,7 +41,31 @@ def trade_key(wallet, t):
             t.get("side") or "", t.get("price") or 0, t.get("size") or 0)
 
 
-def poll_feed(last_seen_ts, watch_set, seen_keys, max_pages=6):
+def _repair_outcome_index(t, resolver):
+    """Map the feed's outcomeIndex to a real index.
+
+    The global trade feed emits a 999 placeholder on a meaningful share of
+    rows (measured 2.8%-54% depending on active markets). Consumed as an
+    index it buckets flow under an outcome that does not exist and the
+    signal is dropped downstream without a trace. The outcome name is always
+    present, so it is authoritative.
+    """
+    idx = t.get("outcomeIndex")
+    cid = t.get("conditionId")
+    if not cid:
+        return idx
+    m = resolver.get(cid) or {}
+    outcomes = m.get("outcomes") or []
+    if isinstance(idx, int) and 0 <= idx < max(1, len(outcomes)):
+        return idx
+    name = (t.get("outcome") or "").strip().lower()
+    for i, o in enumerate(outcomes):
+        if str(o).strip().lower() == name:
+            return i
+    return None
+
+
+def poll_feed(last_seen_ts, watch_set, seen_keys, resolver, max_pages=6):
     """Fetch platform trades newer than last_seen_ts; keep watchlist rows.
 
     The feed shifts under us between page fetches, so the same fill can
@@ -65,10 +89,13 @@ def poll_feed(last_seen_ts, watch_set, seen_keys, max_pages=6):
             w = (t.get("proxyWallet") or "").lower()
             if w not in watch_set:
                 continue
+            oi = _repair_outcome_index(t, resolver)
+            if oi is None:
+                continue
             row = {
                 "wallet": w, "timestamp": ts,
                 "conditionId": t.get("conditionId"),
-                "outcomeIndex": t.get("outcomeIndex"),
+                "outcomeIndex": oi,
                 "side": t.get("side"),
                 "size": t.get("size"),
                 "usdcSize": (t.get("size") or 0) * (t.get("price") or 0),
@@ -138,6 +165,7 @@ def main():
     seen = set(tuple(k) for k in (json.load(open(SEEN_PATH))
                                   if os.path.exists(SEEN_PATH) else []))
     snooze = {}  # signal key -> retry-at ts, for candidates enrich rejected
+    resolver = pmlib.MarketResolver()
     last_seen_ts = now
     deadline = time.time() + args.duration_minutes * 60 if args.duration_minutes else None
 
@@ -148,7 +176,8 @@ def main():
             break
         time.sleep(args.poll_seconds)
         try:
-            fresh, last_seen_ts = poll_feed(last_seen_ts, watch_set, seen_keys)
+            fresh, last_seen_ts = poll_feed(last_seen_ts, watch_set, seen_keys,
+                                            resolver)
         except Exception as e:  # noqa: BLE001 — a bad poll must not kill the watch
             print(f"poll error: {e}", flush=True)
             fresh = []  # fall through: heartbeats must survive a feed outage

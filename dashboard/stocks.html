@@ -1,0 +1,268 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moffitt Money — Stocks</title>
+<style>
+  :root {
+    --display: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --surface: #ffffff; --bg: #faf8f2;
+    --ink: #101010; --ink-2: #45433c; --muted: #837d6c;
+    --border: rgba(16, 16, 16, 0.16); --accent: #a9852e;
+    --up: #006300; --down: #d03b3b; --grid: rgba(16,16,16,0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --surface: #101010; --bg: #0a0a0a;
+      --ink: #f7f4ec; --ink-2: #c9c4b4; --muted: #8b8676;
+      --border: rgba(212, 175, 90, 0.30); --accent: #d4af5a;
+      --up: #0ca30c; --down: #e05f5f; --grid: rgba(247,244,236,0.08);
+    }
+  }
+  :root[data-theme="dark"] {
+    --surface: #101010; --bg: #0a0a0a;
+    --ink: #f7f4ec; --ink-2: #c9c4b4; --muted: #8b8676;
+    --border: rgba(212, 175, 90, 0.30); --accent: #d4af5a;
+    --up: #0ca30c; --down: #e05f5f; --grid: rgba(247,244,236,0.08);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .topnav { position: sticky; top: 0; z-index: 40; display: flex;
+    align-items: center; justify-content: space-between; gap: 16px;
+    padding: 10px 22px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  .topnav .brand { font-size: 13px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink); text-decoration: none; }
+  .topnav .navlinks { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+  .topnav .navlinks a { color: var(--muted); text-decoration: none;
+    font-size: 12.5px; padding: 3px 2px;
+    border-bottom: 1px solid transparent; }
+  .topnav .navlinks a:hover { color: var(--accent);
+    border-bottom-color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
+  header.page { text-align: center; margin: 10px 0 26px; }
+  h1 { font-size: 30px; letter-spacing: 0.04em; margin: 4px 0 6px; }
+  .kicker { color: var(--muted); font-size: 12px; letter-spacing: 0.2em;
+    text-transform: uppercase; margin: 0; }
+  .lede { color: var(--ink-2); max-width: 74ch; margin: 0 auto; }
+  .asof { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+  .pill { display: inline-block; padding: 2px 9px 1px; margin-right: 7px;
+    border-radius: 999px; font-size: 10.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; vertical-align: 1px; }
+  .pill.live { background: rgba(12,163,12,0.14); color: var(--up); }
+  .pill.stale { background: rgba(224,95,95,0.14); color: var(--down); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; margin: 18px 0 26px; }
+  .tile { background: var(--surface); border: 1px solid var(--border);
+    border-radius: 3px; padding: 12px 14px; }
+  .tile .label { color: var(--muted); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; }
+  .tile .value { font-size: 22px; font-weight: 650; margin-top: 4px;
+    font-variant-numeric: tabular-nums; }
+  .tile .sub { color: var(--muted); font-size: 12px; }
+  .pos { color: var(--up); } .neg { color: var(--down); }
+  h2 { font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-2); border-bottom: 1px solid var(--border);
+    padding-bottom: 6px; margin: 34px 0 12px; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th { color: var(--muted); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; text-align: right; padding: 6px 8px;
+    border-bottom: 1px solid var(--border); }
+  td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--grid); }
+  th.l, td.l { text-align: left; }
+  .empty { color: var(--muted); text-align: center; padding: 16px 0; }
+  .note { color: var(--muted); font-size: 12.5px; max-width: 86ch; }
+  .tablewrap { overflow-x: auto; }
+  .foot { color: var(--muted); font-size: 12.5px; max-width: 86ch;
+    margin: 46px auto 0; text-align: center; }
+  a { color: var(--accent); }
+</style>
+
+<nav class="topnav" aria-label="Site">
+  <a class="brand" href="./">Moffitt Money</a>
+  <div class="navlinks">
+    <a href="./#desks">Overview</a>
+    <a href="./#signals">Signals</a>
+    <a href="./#engine">Engine</a>
+    <a href="./#cohort">Wallets</a>
+    <a href="arb.html">Arb Desk</a>
+    <a href="stocks.html">Stocks</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page">
+    <p class="kicker">Moffitt Money</p>
+    <h1>Stocks Desk</h1>
+    <p class="lede">Intraday long/short trading of digital-asset proxy equities
+      (MSTR, COIN, IBIT, ETHA and peers) against their crypto reference
+      prices, which trade around the clock and reprice ahead of the equity
+      tape. Positions open on dislocation against the trailing half hour of
+      driver movement, close on reversion, and are flattened before the
+      close. Paper account; live execution ships
+      disarmed.</p>
+    <p class="asof" id="asof">Loading…</p>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <h2>Signal board</h2>
+  <p class="note" id="boardnote"></p>
+  <div class="tablewrap"><table>
+    <thead><tr>
+      <th class="l">Symbol</th><th>Price</th><th class="l">Driver</th>
+      <th>Driver px</th><th>β</th><th>Driver move</th><th>Dislocation</th>
+      <th class="l">State</th>
+    </tr></thead>
+    <tbody id="board"></tbody>
+  </table></div>
+
+  <h2>Open positions</h2>
+  <div class="tablewrap"><table>
+    <thead><tr>
+      <th class="l">Side</th><th class="l">Symbol</th><th>Shares</th>
+      <th>Entry</th><th>Cost</th><th class="l">Basis</th>
+    </tr></thead>
+    <tbody id="positions"></tbody>
+  </table></div>
+
+  <h2>Recent trades</h2>
+  <div class="tablewrap"><table>
+    <thead><tr>
+      <th class="l">Side</th><th class="l">Symbol</th><th>Entry</th>
+      <th>Exit</th><th>P&amp;L</th><th class="l">Exit reason</th>
+    </tr></thead>
+    <tbody id="trades"></tbody>
+  </table></div>
+
+  <h2>Replay backtest</h2>
+  <div id="backtest" class="note"></div>
+
+  <p class="foot">Fills are simulated at quote ± half-spread ± slippage.
+    Betas are fitted daily from 60 days of closes and instruments whose
+    driver explains under 25% of daily variance are excluded. The desk halts
+    itself for the day past a 10% drawdown and holds nothing overnight.
+    Live execution requires an Alpaca account, explicit arming flags, and is
+    subject to the pattern day trader rule below $25,000 account equity.</p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = (v, d=2) => v == null ? "—" : Number(v).toFixed(d);
+const money = v => (v >= 0 ? "+" : "−") + "$" + Math.abs(v).toFixed(2);
+
+function pill(ts) {
+  const live = ts && (Date.now() / 1000 - ts) / 60 < 20;
+  const el = document.createElement("span");
+  el.className = "pill " + (live ? "live" : "stale");
+  el.textContent = live ? "desk live" : "desk stale";
+  return el;
+}
+function ago(ts) {
+  const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
+  return m < 2 ? "just now" : m < 90 ? `${m} min ago`
+    : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
+}
+function tile(label, value, sub, cls) {
+  const d = document.createElement("div"); d.className = "tile";
+  d.innerHTML = `<div class="label"></div><div class="value"></div><div class="sub"></div>`;
+  d.children[0].textContent = label;
+  d.children[1].textContent = value;
+  if (cls) d.children[1].classList.add(cls);
+  d.children[2].textContent = sub || "";
+  return d;
+}
+function row(cells) {
+  const tr = document.createElement("tr");
+  for (const [txt, cls] of cells) {
+    const td = document.createElement("td");
+    if (cls) td.className = cls;
+    td.textContent = txt;
+    tr.appendChild(td);
+  }
+  return tr;
+}
+
+function render(d) {
+  const m = d.meta, a = d.account, day = a.day || {};
+  const asof = $("asof");
+  asof.replaceChildren(pill(m.generatedAt),
+    `Updated ${ago(m.generatedAt)} · market ${m.market} · ` +
+    `${m.universe.length} symbols · ${(m.riskFrac * 100).toFixed(0)}% risk / position`);
+
+  const t = $("tiles"); t.replaceChildren();
+  const ret = a.equity - a.bankrollStart;
+  t.append(
+    tile("Equity", "$" + fmt(a.equity), `started $${fmt(a.bankrollStart)}`,
+         ret >= 0 ? "pos" : "neg"),
+    tile("Today", money(day.pnl || 0),
+         `${day.trades || 0} trades` + (day.halted ? " · halted" : ""),
+         (day.pnl || 0) >= 0 ? "pos" : "neg"),
+    tile("Open", String(a.openPositions), "positions"),
+    tile("All time", `${a.wins}/${a.closedTrades}`, "winning trades"));
+
+  const board = $("board"); board.replaceChildren();
+  for (const s of d.board || []) {
+    board.append(row([
+      [s.symbol, "l"], [fmt(s.price), ""], [s.driver, "l"],
+      [fmt(s.driverPrice), ""], [fmt(s.beta), ""],
+      [fmt(s.driverMoveBps, 0) + " bps", s.driverMoveBps >= 0 ? "pos" : "neg"],
+      [fmt(s.dislocationBps, 0) + " bps",
+       Math.abs(s.dislocationBps) >= (m.entryBps || 45) ? "neg" : ""],
+      [s.action !== "none" ? s.action.toUpperCase() + " — " + s.reason : s.reason, "l"],
+    ]));
+  }
+  if (!(d.board || []).length)
+    board.append(row([["no data (market closed or feed unavailable)", "l empty"]]));
+
+  const pos = $("positions"); pos.replaceChildren();
+  for (const p of d.positions || []) {
+    pos.append(row([
+      [p.side.toUpperCase(), "l " + (p.side === "long" ? "pos" : "neg")],
+      [p.symbol, "l"], [fmt(p.shares), ""], [fmt(p.entry), ""],
+      ["$" + fmt(p.cost), ""], [p.reason, "l"],
+    ]));
+  }
+  if (!(d.positions || []).length)
+    pos.append(row([["none", "l empty"]]));
+
+  const tr = $("trades"); tr.replaceChildren();
+  for (const c of d.recentTrades || []) {
+    tr.append(row([
+      [c.side.toUpperCase(), "l"], [c.symbol, "l"], [fmt(c.entry), ""],
+      [fmt(c.exit), ""], [money(c.pnl), c.pnl >= 0 ? "pos" : "neg"],
+      [c.exitReason, "l"],
+    ]));
+  }
+  if (!(d.recentTrades || []).length)
+    tr.append(row([["none yet", "l empty"]]));
+
+  const bt = $("backtest");
+  if (d.backtest && !d.backtest.error) {
+    const b = d.backtest;
+    bt.textContent =
+      `${b.range} replay: $${b.bankroll} → $${b.finalEquity} ` +
+      `(${b.returnPct >= 0 ? "+" : ""}${b.returnPct}%) over ${b.trades} trades, ` +
+      `win rate ${b.winRate != null ? Math.round(b.winRate * 100) : "—"}%. ` +
+      `Entries fill at the next bar's open plus spread and slippage.`;
+  } else {
+    bt.textContent = "Not yet generated. Run: python3 -m stocks.bot backtest";
+  }
+  $("boardnote").textContent =
+    `Dislocation = equity move minus β × driver move over the trailing ` +
+    `${m.anchorMinutes || 30} minutes. Entries require ≥ ${m.entryBps || 60} bps ` +
+    `against a driver move of ≥ ${m.minDriverMoveBps || 35} bps; weakly ` +
+    `coupled symbols are excluded.`;
+}
+
+async function refresh() {
+  try {
+    const r = await fetch("data/stocks.json?t=" + Math.floor(Date.now() / 30000),
+                          { cache: "no-store" });
+    if (r.ok) render(await r.json());
+  } catch (e) { /* keep last render */ }
+}
+refresh();
+setInterval(refresh, 30000);
+</script>

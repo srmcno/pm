@@ -308,13 +308,17 @@ def cmd_backtest(args):
     lat = (sum(latency_costs) / len(latency_costs)) if latency_costs else 0.0
 
     verdict = (
-        "Copying did NOT beat holding cash in this window. The latency cost is real. Do not fund this."
+        "Negative out-of-sample return; the copy delay costs more than the "
+        "signal earns in this window."
         if ret <= 0 else
-        "Positive, but the profit sits in a handful of trades — one window of luck, not proof. Keep paper trading; do not fund."
+        "Positive but concentrated in a small number of trades; not "
+        "statistically meaningful at this sample size."
         if concentration > 0.6 or len(closed_trades) < 15 else
-        "The strategy showed a broad-based edge in this window — worth continuing to paper trade across more weeks before drawing conclusions."
+        "Broad-based positive return in this window; requires further "
+        "out-of-sample confirmation."
         if ret > 15 else
-        "Mildly positive and diversified — interesting, unproven. Keep paper trading; do not fund."
+        "Marginally positive and diversified; below the threshold of "
+        "significance at this sample size."
     )
     now = int(time.time())
     os.makedirs(REP_DIR, exist_ok=True)

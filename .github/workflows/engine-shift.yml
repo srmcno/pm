@@ -78,7 +78,13 @@ jobs:
 
       - name: Settle resolved signals into calibration observations
         working-directory: scripts
-        run: python3 -m pmx.cli settle || true
+        # A settle failure must not discard the shift's watch data — the
+        # commit step below still runs — but it must be visible, so the step
+        # records the failure instead of masking it with a blanket || true.
+        run: |
+          if ! python3 -m pmx.cli settle; then
+            echo "::warning::settle failed — observations lag until next shift"
+          fi
 
       - name: Commit engine state back
         run: |
@@ -106,8 +112,11 @@ jobs:
           # version is always the right resolution (same convention as
           # pmlib.publish_repo). A rebase that still fails must be aborted or
           # a lingering .git/rebase-* state silently no-ops every later push.
+          # A rebase failure on an ephemeral runner loses the commit when
+          # the job ends — that must surface as a red run, not a green one.
           git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" \
-            || { git rebase --abort || true; exit 0; }
+            || { git rebase --abort || true; echo "::error::rebase failed — shift results not pushed"; exit 1; }
           git push origin "HEAD:${GITHUB_REF_NAME}"
           # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
-          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" || true
+          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" \
+            || echo "::warning::pages dispatch failed — site refreshes on the next push"

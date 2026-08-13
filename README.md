@@ -18,7 +18,8 @@ Everything runs on Polymarket's public APIs. No keys, no accounts, no real money
 | Signal engine | `scripts/signals.py` | Finds outcomes that several historically profitable wallets are independently net-buying right now. Writes `data/signals/latest.json` + `reports/signals-latest.md`. |
 | Paper trader | `scripts/papertrade.py` | Simulates the copy strategy with a virtual bankroll — live loop and out-of-sample backtest. Writes `reports/paper-latest.md` / `reports/backtest-latest.md`. |
 | Live executor | `scripts/livetrade.py` | The only tool that can touch real money — ships disarmed. `plan` is a keyless dry run; `execute` needs your keys, two explicit flags, and enforces hard caps + a STOP file. See the arming checklist in its docstring. |
-| Consensus engine | `scripts/pmx/` | A second-generation pipeline that runs alongside the above and publishes to the same site: specialty-weighted voting instead of a flat backer count, fractional-Kelly sizing instead of fixed stakes, sub-second on-chain detection instead of polling, and active exits instead of holding to resolution. Its own shift (`engine-shift.yml`) feeds the dashboard's **Consensus engine** panel. Architecture and the measurements behind it: **[`docs/ENGINE.md`](docs/ENGINE.md)**. |
+| Consensus engine | `scripts/pmx/` | A second-generation pipeline that runs alongside the above and publishes to the same site: specialty-weighted voting instead of a flat backer count, calibration-gated fractional-Kelly sizing (minimum stakes until the probability model is fitted from settled outcomes), near-real-time on-chain fill detection (0-2 s measured) instead of polling, and active exits instead of holding to resolution. Its own shift (`engine-shift.yml`) feeds the dashboard's **Consensus engine** panel. Architecture and measurements: **[`docs/ENGINE.md`](docs/ENGINE.md)**. |
+| Stocks desk | `scripts/stocks/` | Intraday long/short trading of digital-asset proxy equities (MSTR, COIN, IBIT, ETHA and peers) against their 24/7 crypto reference prices. Betas fitted daily; entries on dislocation, exits on reversion; flat before the close; self-halting past a daily drawdown limit. Paper account by default; Alpaca execution ships disarmed and is subject to the pattern day trader rule below $25,000 equity. Page: `stocks.html`. |
 
 ## Quick start
 
@@ -79,8 +80,8 @@ conviction is the net stake relative to that wallet's own median trade.
 - **The latency cost is measured** — the report shows the average difference
   between the fill and the price when the signal fired.
 
-Run it before believing anything about copy-trading. The verdict line in
-`reports/backtest-latest.md` is generated from the numbers, not from hope.
+The verdict line in `reports/backtest-latest.md` is computed from the
+results table.
 
 ### Results on the full dataset (Jun 28 – Aug 12 window)
 
@@ -117,10 +118,12 @@ publish. It stays live end to end:
   [`docs/ENGINE.md`](docs/ENGINE.md) §3.1.
 - A watchdog (`watch-watchdog.yml`) checks twice an hour that a shift is
   actually running and dispatches one if GitHub dropped the scheduled start.
-- The page itself re-fetches `data/signals.json`, `data/paper.json` and
-  `data/engine.json` every 60 s and shows a **bot live / bot stale** pill per
-  engine, so one dead pipeline is visible instead of being masked by the
-  other still publishing.
+- The stocks desk (`stocks-shift.yml`) trades US regular sessions on
+  weekday crons, publishing `dashboard/data/stocks.json` and its own page.
+- The landing page carries a navigation bar and an overview strip with one
+  status card per desk (smart money, engine v2, arb, stocks), each with its
+  own live/stale pill, so a dead pipeline is visible instead of being masked
+  by the others still publishing. Data files re-fetch every 60 s.
 
 ## The arb desk
 
@@ -217,7 +220,7 @@ It ships disarmed, under the same rails as the rest of the desk.
 - `https://gamma-api.polymarket.com/markets` — market metadata & resolution
 - `https://clob.polymarket.com/prices-history`, `/midpoint` — prices
 
-## Honest limitations
+## Limitations
 
 - The cohort is leaderboard-seeded: a strong wallet that never surfaced on any
   leaderboard window doesn't appear.
@@ -225,7 +228,6 @@ It ships disarmed, under the same rails as the rest of the desk.
   volume lands in "Other".
 - 90-day PnL comes from Polymarket's own per-user PnL series (realized +
   mark-to-market).
-- Signals are information, not advice. Past profitability of a wallet is a weak
-  predictor of its future trades' value — that is precisely what the backtest
-  is for. Nothing here places real orders, and nothing here should be read as a
-  promise that $20 becomes more than $20.
+- Signals are inputs for review, not trade instructions. Past profitability
+  of a wallet is a weak predictor of its future trades' value; the backtest
+  exists to measure exactly that. Nothing ships armed.

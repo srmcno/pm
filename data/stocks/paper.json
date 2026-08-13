@@ -1,0 +1,10 @@
+{
+ "bankrollStart": 1000.0,
+ "cash": 1000.0,
+ "createdAt": 1786622317,
+ "positions": [],
+ "closed": [],
+ "equityCurve": [],
+ "log": [],
+ "day": {}
+}
