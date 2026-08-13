@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 9.6255,
+ "cash": 8.0855,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -14,8 +14,8 @@
    "costUsd": 1.6,
    "openedAt": 1786587299,
    "signalScore": 5.3524,
-   "markPrice": 0.855,
-   "valueUsd": 1.52
+   "markPrice": 0.835,
+   "valueUsd": 1.4845
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.465,
-   "valueUsd": 1.4544
+   "markPrice": 0.46,
+   "valueUsd": 1.4387
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -100,6 +100,20 @@
    "signalScore": 4.9278,
    "markPrice": 0.0005,
    "valueUsd": 0.0166
+  },
+  {
+   "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
+   "outcomeIndex": 1,
+   "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
+   "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "shares": 1.7111,
+   "entryPrice": 0.9,
+   "costUsd": 1.54,
+   "openedAt": 1786629946,
+   "signalScore": 5.7408,
+   "markPrice": 0.875,
+   "valueUsd": 1.4972
   }
  ],
  "closed": [
@@ -358,6 +372,11 @@
    "t": 1786629040,
    "equity": 17.4225,
    "cash": 9.6255
+  },
+  {
+   "t": 1786629946,
+   "equity": 17.3285,
+   "cash": 8.0855
   }
  ],
  "log": [
@@ -446,6 +465,14 @@
    "outcome": "Hanwha Life Esports",
    "stake": 1.83,
    "price": 0.055
+  },
+  {
+   "t": 1786629946,
+   "action": "BUY",
+   "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "stake": 1.54,
+   "price": 0.9
   }
  ]
 }
