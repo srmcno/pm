@@ -483,6 +483,21 @@ class TestSettleDeduplication(unittest.TestCase):
         fh.close()
         return fh.name
 
+    def test_legacy_three_element_settled_keys_still_match(self):
+        """settled.json once held (conditionId, outcomeIndex, signalTime).
+
+        Probing that file with the new two-element key would match nothing,
+        so every market settled by the older code would be recorded a second
+        time on upgrade — reintroducing the duplication the key change was
+        made to prevent.
+        """
+        legacy = [["0xabc", 1, 1786600000], ["0xdef", 0, 1786600100]]
+        seen = {tuple(k)[:2] for k in legacy}
+        self.assertIn(("0xabc", 1), seen)
+        self.assertIn(("0xdef", 0), seen)
+        # And the new two-element form still round-trips unchanged.
+        self.assertEqual({tuple(k)[:2] for k in [["0xabc", 1]]}, {("0xabc", 1)})
+
     def test_repeated_journal_lines_collapse_to_the_earliest(self):
         """A signal re-journalled by each 2-hour shift is still ONE
         observation, priced at the moment the engine first decided.

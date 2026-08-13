@@ -346,8 +346,12 @@ def cmd_settle(args):
     from . import calibrate as calmod
     resolver = pmlib.MarketResolver()
     seen_path = os.path.join(pmlib.BASE, "data", "live", "settled.json")
-    seen = set(tuple(k) for k in (json.load(open(seen_path))
-                                  if os.path.exists(seen_path) else []))
+    # Keys were once (conditionId, outcomeIndex, signalTime). Probing that
+    # file with the two-element key would find nothing, so every market
+    # settled by the older code would be recorded a second time -- the exact
+    # duplication this key change exists to prevent. Truncate on load.
+    seen = {tuple(k)[:2] for k in (json.load(open(seen_path))
+                                   if os.path.exists(seen_path) else [])}
     journaled, added, pending = 0, 0, 0
     # One observation per (market, outcome) — NOT per journal line. A signal
     # that stays live across several two-hour shifts is re-journalled by each
