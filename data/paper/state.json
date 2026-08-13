@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 5.7055,
+ "cash": 7.7817,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.795,
-   "valueUsd": 2.4865
+   "markPrice": 0.805,
+   "valueUsd": 2.5178
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -42,8 +42,8 @@
    "costUsd": 1.35,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.485,
-   "valueUsd": 0.8448
+   "markPrice": 0.475,
+   "valueUsd": 0.8274
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -84,8 +84,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.1735,
-   "valueUsd": 0.7606
+   "markPrice": 0.175,
+   "valueUsd": 0.7672
   },
   {
    "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
@@ -100,20 +100,6 @@
    "signalScore": 5.7408,
    "markPrice": 0.93,
    "valueUsd": 1.5913
-  },
-  {
-   "conditionId": "0x7a78a3a1dfc9d3b26d7da8b30aaf12127451d1a067fe54ddca22fc5cbe862802",
-   "outcomeIndex": 1,
-   "tokenId": "24393800223473647404325127552224094751546244351715138029940619686078097364351",
-   "question": "Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B",
-   "outcome": "FaZe",
-   "shares": 2.0762,
-   "entryPrice": 0.525,
-   "costUsd": 1.09,
-   "openedAt": 1786638137,
-   "signalScore": 6.6422,
-   "markPrice": 0.9995,
-   "valueUsd": 2.0752
   }
  ],
  "closed": [
@@ -184,6 +170,23 @@
    "settledAt": 1786640230,
    "settlePrice": 0.0,
    "pnl": -1.29
+  },
+  {
+   "conditionId": "0x7a78a3a1dfc9d3b26d7da8b30aaf12127451d1a067fe54ddca22fc5cbe862802",
+   "outcomeIndex": 1,
+   "tokenId": "24393800223473647404325127552224094751546244351715138029940619686078097364351",
+   "question": "Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B",
+   "outcome": "FaZe",
+   "shares": 2.0762,
+   "entryPrice": 0.525,
+   "costUsd": 1.09,
+   "openedAt": 1786638137,
+   "signalScore": 6.6422,
+   "markPrice": 0.9995,
+   "valueUsd": 2.0752,
+   "settledAt": 1786664701,
+   "settlePrice": 1.0,
+   "pnl": 0.9862
   }
  ],
  "equityCurve": [
@@ -596,6 +599,11 @@
    "t": 1786663794,
    "equity": 17.4256,
    "cash": 5.7055
+  },
+  {
+   "t": 1786664701,
+   "equity": 17.4471,
+   "cash": 7.7817
   }
  ],
  "log": [
@@ -722,6 +730,13 @@
    "question": "Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage",
    "price": 0.0,
    "pnl": -1.29
+  },
+  {
+   "t": 1786664701,
+   "action": "SETTLE",
+   "question": "Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B",
+   "price": 1.0,
+   "pnl": 0.9862
   }
  ]
 }
