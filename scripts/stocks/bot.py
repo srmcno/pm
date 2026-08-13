@@ -241,6 +241,22 @@ def cmd_run(args):
         if telemetry.get("feed") == "alpaca":
             sleep_s = max(3.0, cfg.poll_seconds / 3.0)
         time.sleep(sleep_s)
+    if executor:
+        # The paper-session deadline never abandons live orders: a DAY
+        # order can fill after the process stops, so pending mirrors keep
+        # being reconciled past the deadline until settled — bounded by a
+        # grace period, after which the next session's startup
+        # reconciliation picks the persisted state back up.
+        settle_deadline = time.time() + 1800
+        while _reconcile_mirrors(executor, st, save=paperdesk.save):
+            paperdesk.save(st)
+            if time.time() > settle_deadline:
+                print("  ALERT: live orders still unsettled at shutdown; "
+                      "the next session resumes reconciliation", flush=True)
+                break
+            print("  settling pending live orders before shutdown",
+                  flush=True)
+            time.sleep(15)
     paperdesk.save(st)
     if args.git_push:
         _git_push()

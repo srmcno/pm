@@ -115,6 +115,13 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                 return
             eq = cash
             for s2, p2 in open_pos.items():
+                if p2["openedAt"] > now_ts:
+                    # Entry committed but not yet filled — it belongs to the
+                    # next bar, so it is drawdown-neutral at this instant: a
+                    # gap between this close and its future fill must not
+                    # manufacture a fictitious breach.
+                    eq += p2["cost"] + p2.get("openFee", 0.0)
+                    continue
                 mark = last_px.get(s2, p2["entry"])
                 eq += (p2["shares"] * mark if p2["side"] == "long"
                        else p2["shares"] * (2 * p2["entry"] - mark))
@@ -123,10 +130,17 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                 return
             halted = True
             # Production flattens at the quotes that tripped the rail; the
-            # replay does the same with each symbol's latest close.
+            # replay does the same with each symbol's latest close. An
+            # entry that has not filled yet closes at its own fill print —
+            # entered and immediately exited, paying only the costs.
             for s2, p2 in list(open_pos.items()):
-                mark = last_px.get(s2, p2["entry"])
-                fpx = fill_price(s2, mark, p2["side"] == "short", cfg)
+                if p2["openedAt"] > now_ts:
+                    fpx = p2["entry"]
+                    closed_ts = p2["openedAt"]
+                else:
+                    mark = last_px.get(s2, p2["entry"])
+                    fpx = fill_price(s2, mark, p2["side"] == "short", cfg)
+                    closed_ts = now_ts
                 if p2["side"] == "long":
                     proceeds = (p2["shares"] * fpx
                                 - sell_side_fees(p2["shares"], fpx))
@@ -134,7 +148,7 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                     proceeds = p2["shares"] * (2 * p2["entry"] - fpx)
                 cash += proceeds
                 closed.append({**p2, "exit": round(fpx, 4),
-                               "closedAt": now_ts,
+                               "closedAt": closed_ts,
                                "pnl": round(proceeds - p2["cost"]
                                             - p2.get("openFee", 0.0), 2),
                                "exitReason": "halt", "day": day})

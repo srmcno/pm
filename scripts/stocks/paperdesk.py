@@ -180,21 +180,19 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     now = now or time.time()
     mins_left = stocklib.minutes_to_close()
     # One batched quote call: real NBBO with venue timestamps when Alpaca
-    # keys are present, Yahoo last prices otherwise.
+    # keys are present, Yahoo last prices otherwise. The crypto driver is
+    # sampled AFTER the potentially slow equity fetches, so the dislocation
+    # always compares the freshest crypto print against equity quotes whose
+    # own staleness the entry gate bounds.
     raw_quotes, feed = stocklib.live_quotes(list(UNIVERSE))
+    drv_prices = stocklib.crypto_mids(tuple({m["driver"] for m in UNIVERSE.values()}))
     # Freshness, quote ages, and the rolling anchor are all measured
-    # against the wall clock AFTER the fetches: slow sequential requests
-    # can take longer than the permitted clock skew, and a venue may
-    # legitimately stamp a quote later than a cycle-start timestamp
-    # captured before them.
+    # against the wall clock AFTER every retrieval — equity and crypto —
+    # so time spent in any slow request counts against the quotes' age
+    # instead of hiding inside a stale cycle-start timestamp.
     if fixed_now is None:
         now = time.time()
     anchor_ts = now - cfg.anchor_minutes * 60
-    # The crypto driver is sampled AFTER the potentially slow equity
-    # fetches, so the dislocation always compares the freshest crypto
-    # print against equity quotes whose own staleness the entry gate
-    # bounds — never a driver that aged while Yahoo gap-fills ran.
-    drv_prices = stocklib.crypto_mids(tuple({m["driver"] for m in UNIVERSE.values()}))
     quotes, quote_objs, ages, snaps = {}, {}, [], []
 
     day = _day(st)
