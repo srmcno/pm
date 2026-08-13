@@ -88,20 +88,6 @@
    "valueUsd": 0.9667
   },
   {
-   "conditionId": "0x3a128e0a8ffd4b487c52237eae1fbafde68edaeec9a38d33c2375f7cd6140f69",
-   "outcomeIndex": 1,
-   "tokenId": "76166142632502863111636033986770521770002601481581842235949590565123761079906",
-   "question": "LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
-   "outcome": "Hanwha Life Esports",
-   "shares": 33.2727,
-   "entryPrice": 0.055,
-   "costUsd": 1.83,
-   "openedAt": 1786623720,
-   "signalScore": 4.9278,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0166
-  },
-  {
    "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
    "outcomeIndex": 1,
    "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
@@ -164,6 +150,23 @@
    "settledAt": 1786621302,
    "settlePrice": 0.0,
    "pnl": -1.63
+  },
+  {
+   "conditionId": "0x3a128e0a8ffd4b487c52237eae1fbafde68edaeec9a38d33c2375f7cd6140f69",
+   "outcomeIndex": 1,
+   "tokenId": "76166142632502863111636033986770521770002601481581842235949590565123761079906",
+   "question": "LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
+   "outcome": "Hanwha Life Esports",
+   "shares": 33.2727,
+   "entryPrice": 0.055,
+   "costUsd": 1.83,
+   "openedAt": 1786623720,
+   "signalScore": 4.9278,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0166,
+   "settledAt": 1786636040,
+   "settlePrice": 0.0,
+   "pnl": -1.83
   }
  ],
  "equityCurve": [
@@ -421,6 +424,11 @@
    "t": 1786635130,
    "equity": 16.1192,
    "cash": 6.7955
+  },
+  {
+   "t": 1786636040,
+   "equity": 16.1026,
+   "cash": 6.7955
   }
  ],
  "log": [
@@ -525,6 +533,13 @@
    "outcome": "Team Falcons",
    "stake": 1.29,
    "price": 0.215
+  },
+  {
+   "t": 1786636040,
+   "action": "SETTLE",
+   "question": "LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
+   "price": 0.0,
+   "pnl": -1.83
   }
  ]
 }
