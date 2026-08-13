@@ -241,7 +241,15 @@ def cmd_watch(args):
     seed_started = time.time()
     _seed_window(eng, watch, args.hours, feed=feed)
     feed.rest.prime(at=seed_started)
-    deadline = time.time() + args.minutes * 60 if args.minutes else None
+    # Measured from launch, not from the end of the seed. Seeding 60 wallets
+    # takes minutes, so a deadline started afterwards silently overruns by
+    # that much -- enough for a 115-minute watch inside a 118-minute CI job
+    # to be killed before it can settle observations and push its results.
+    # `--minutes` now means what the caller wrote.
+    deadline = seed_started + args.minutes * 60 if args.minutes else None
+    if deadline and time.time() >= deadline:
+        print(f"Seeding consumed the whole {args.minutes:g}-minute budget — "
+              f"publishing once and exiting.", flush=True)
     portfolio = Portfolio(cash=cfg.sizing.bankroll, positions=[])
     # Which signals this engine has already announced, carried across shifts.
     # A shift is two hours; a signal can outlive several of them, and a fresh

@@ -52,6 +52,10 @@ jobs:
         working-directory: scripts
         run: python3 -m pmx.cli preflight
 
+      # 105 minutes of watching inside a 118-minute job leaves ~13 for
+      # checkout, dependencies, preflight, and — the part that matters — the
+      # settle and commit steps below. At 115 the job hit its timeout with
+      # the shift's results still unpushed.
       - name: Watch for one shift
         working-directory: scripts
         env:
@@ -64,11 +68,11 @@ jobs:
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
           if [ -n "$PMX_RPC" ]; then
-            python3 -m pmx.cli watch --minutes 115 --git-push \
+            python3 -m pmx.cli watch --minutes 105 --git-push \
               --heartbeat-minutes 10 --rpc "$PMX_RPC"
           else
             echo "No POLYGON_RPC_URL secret — REST-only detection."
-            python3 -m pmx.cli watch --minutes 115 --git-push \
+            python3 -m pmx.cli watch --minutes 105 --git-push \
               --heartbeat-minutes 10
           fi
 
