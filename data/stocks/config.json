@@ -1,10 +1,10 @@
 {
- "entry_bps": 90.0,
+ "entry_bps": 75.0,
  "exit_bps": 12.0,
  "stop_bps": 70.0,
  "min_driver_move_bps": 25.0,
  "anchor_minutes": 20.0,
- "max_hold_minutes": 20.0,
+ "max_hold_minutes": 45.0,
  "flatten_minutes_before_close": 5.0,
  "slippage_bps": 3.0,
  "max_quote_age_s": 20.0,

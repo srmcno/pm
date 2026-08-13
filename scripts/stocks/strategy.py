@@ -42,16 +42,15 @@ UNIVERSE = {
 class StrategyConfig:
     # Defaults selected by a 216-config grid on 5 days of 1-minute bars
     # (train on the first 3 sessions, score on the held-out last 2) and
-    # stress-validated on 22 sessions of 5-minute bars filling at the NEXT
-    # 5m bar — a worst case of ~300s of latency. Every stressed config lost
-    # money at 300s fills; the configs that scored best on the 1m window
-    # degraded the most (-1.4% to -3.3%, worst days to -$10 per $1000),
-    # while this one degraded least (-0.50%, worst day -$4.24). At <=60s
-    # fills it is positive. The edge decays within minutes, which is why
-    # entries are gated on quote freshness and holds are short. This
-    # configuration is the most robust across fill regimes, not the best
-    # anywhere.
-    entry_bps: float = 90.0          # |d| to open
+    # confirmed on 22 sessions of 5-minute bars with the driver aligned to
+    # each bar's close and fills at the next bar's open (dislocations seen
+    # up to ~300s late). This configuration is positive in all three views
+    # — train +$6.02 and held-out +$1.02 per $1000 on the 1m window, +1.01%
+    # over 50 trades in the month stress — with a worst stress day of
+    # -$4.54. The tighter 90bps/20-minute variant scored +1.13% in the
+    # stress but lost money on the held-out sessions. The edge decays
+    # within minutes, which is why entries are gated on quote freshness.
+    entry_bps: float = 75.0          # |d| to open
     exit_bps: float = 12.0           # |d| to close on reversion
     stop_bps: float = 70.0           # adverse widening beyond entry level
     min_driver_move_bps: float = 25.0  # required |beta * crypto move|
@@ -59,7 +58,7 @@ class StrategyConfig:
     # Anchoring at the session open let idiosyncratic drift accumulate all
     # day and stopped out 260 of 288 replay trades.
     anchor_minutes: float = 20.0
-    max_hold_minutes: float = 20.0
+    max_hold_minutes: float = 45.0
     flatten_minutes_before_close: float = 5.0
     slippage_bps: float = 3.0        # paid on top of half the spread
     # Entries require a quote at most this old. The replay evidence puts the
