@@ -105,6 +105,41 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
         day_start_eq = cash
         halted = False
         last_px = {}
+
+        def rail_check(now_ts):
+            """Halt-and-flatten the moment marks or realized losses breach
+            the limit — checked before every symbol's decisions, like the
+            production desk, so no entry can slip in after the breach."""
+            nonlocal halted, cash
+            if halted:
+                return
+            eq = cash
+            for s2, p2 in open_pos.items():
+                mark = last_px.get(s2, p2["entry"])
+                eq += (p2["shares"] * mark if p2["side"] == "long"
+                       else p2["shares"] * (2 * p2["entry"] - mark))
+            if (day_start_eq - eq) / max(day_start_eq, 1e-9) \
+                    < cfg.max_daily_loss_frac:
+                return
+            halted = True
+            # Production flattens at the quotes that tripped the rail; the
+            # replay does the same with each symbol's latest close.
+            for s2, p2 in list(open_pos.items()):
+                mark = last_px.get(s2, p2["entry"])
+                fpx = fill_price(s2, mark, p2["side"] == "short", cfg)
+                if p2["side"] == "long":
+                    proceeds = (p2["shares"] * fpx
+                                - sell_side_fees(p2["shares"], fpx))
+                else:
+                    proceeds = p2["shares"] * (2 * p2["entry"] - fpx)
+                cash += proceeds
+                closed.append({**p2, "exit": round(fpx, 4),
+                               "closedAt": now_ts,
+                               "pnl": round(proceeds - p2["cost"]
+                                            - p2.get("openFee", 0.0), 2),
+                               "exitReason": "halt", "day": day})
+                del open_pos[s2]
+
         t = open_ts
         while t <= last_ts:
             for sym, bars in day_bars.items():
@@ -117,6 +152,10 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                 bar = bars[i]
                 px = bar[4]
                 last_px[sym] = px
+                # The rail is evaluated at this symbol's fresh mark, BEFORE
+                # its exit/entry decisions: an earlier symbol's loss or this
+                # bar's own move must not let a later entry through.
+                rail_check(t)
                 meta = UNIVERSE[sym]
                 if betas[sym]["r2"] < cfg.min_beta_r2:
                     continue
@@ -194,39 +233,9 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                                 "openedAt": bars[i + 1][0],
                                 "entryDislocationBps": snap.dislocation_bps}
                             cash -= cost + open_fee
-            if not halted:
-                # Checked every bar, including flat ones: realized losses
-                # alone can breach the rail, and production would refuse to
-                # open the next trade.
-                eq = cash
-                for sym, pos in open_pos.items():
-                    mark = last_px.get(sym, pos["entry"])
-                    eq += (pos["shares"] * mark if pos["side"] == "long"
-                           else pos["shares"] * (2 * pos["entry"] - mark))
-                if (day_start_eq - eq) / max(day_start_eq, 1e-9) \
-                        >= cfg.max_daily_loss_frac:
-                    halted = True
-                    # Production flattens at the quotes that tripped the
-                    # rail; the replay does the same with each symbol's
-                    # latest close, not at some later snapshot that may
-                    # never come.
-                    for sym, pos in list(open_pos.items()):
-                        mark = last_px.get(sym, pos["entry"])
-                        fpx = fill_price(sym, mark, pos["side"] == "short",
-                                         cfg)
-                        if pos["side"] == "long":
-                            proceeds = (pos["shares"] * fpx
-                                        - sell_side_fees(pos["shares"], fpx))
-                        else:
-                            proceeds = pos["shares"] * (2 * pos["entry"] - fpx)
-                        cash += proceeds
-                        closed.append({**pos, "exit": round(fpx, 4),
-                                       "closedAt": t,
-                                       "pnl": round(proceeds - pos["cost"]
-                                                    - pos.get("openFee", 0.0),
-                                                    2),
-                                       "exitReason": "halt", "day": day})
-                        del open_pos[sym]
+            # Checked again after the last symbol so realized losses on
+            # flat or thinly-quoted bars still trip the rail this cycle.
+            rail_check(t)
             t += step_s
         # forced flat at session end
         for sym, pos in list(open_pos.items()):

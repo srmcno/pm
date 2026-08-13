@@ -280,6 +280,21 @@ class TestMirrorReconciliation(unittest.TestCase):
         self.assertEqual(c["closeCid"], "pm-c-IBIT-100")
         self.assertNotIn("mirrorAttempts", c)
 
+    def test_partial_close_keeps_blocking_and_resubmits_residual(self):
+        # a close that died with 2 of 5 shares filled leaves 3 live; the
+        # record must stay pending (blocking new trading) and the residual
+        # must resubmit at the reduced quantity
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "liveQty": 5.0, "closeCid": "pm-c-IBIT-100"}
+        submitted = []
+        pending = self._run([c], {"pm-c-IBIT-100": ("canceled", 2.0)},
+                            submitted)
+        self.assertEqual(c["liveQty"], 3.0)
+        self.assertEqual(submitted, [("IBIT", False, 1)])
+        self.assertEqual(c["closeCid"], "pm-c-IBIT-100-a1")
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
     def test_never_landed_open_clears_after_probes(self):
         p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
              "liveCid": "pm-o-IBIT-100", "liveNotFound": 2}

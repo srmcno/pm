@@ -324,21 +324,32 @@ def _reconcile_mirrors(executor, st, save=None):
                 continue
             if status in livedesk.FAILED_STATUSES:
                 if filled > 0:
-                    # Terminal with a partial fill: retrying the full
-                    # quantity would over-close. Surface it instead of
-                    # guessing.
-                    c["mirrored"] = True
-                    print(f"  ALERT: close for {c['symbol']} ended "
-                          f"'{status}' with {filled:g} of "
-                          f"{c.get('liveQty') or c['shares']:g} filled; "
-                          f"reconcile the live position manually", flush=True)
-                    continue
+                    # Terminal with a partial fill: shares remain live, so
+                    # the record STAYS pending — new paper decisions remain
+                    # blocked — and the residual resubmits at the reduced
+                    # quantity under the next attempt id.
+                    remaining = round((c.get("liveQty") or c["shares"])
+                                      - filled, 4)
+                    c["liveQty"] = remaining
+                    print(f"  alpaca close for {c['symbol']} ended "
+                          f"'{status}' with {filled:g} filled; resubmitting "
+                          f"the remaining {remaining:g}", flush=True)
+                    if remaining <= 0:
+                        c["mirrored"] = True
+                        continue
                 c["mirrorAttempts"] = attempt = attempt + 1
                 if attempt >= 5:
-                    c["mirrored"] = True
+                    # Never mark a live position done just because retries
+                    # ran out: the record stays pending, which keeps new
+                    # trading blocked — the safe state for real money — and
+                    # stops resubmitting so a hard-rejecting broker is not
+                    # spammed. Clearing it requires closing the live
+                    # position and resetting the record.
                     print(f"  ALERT: close mirror failed {attempt}x for "
-                          f"{c['symbol']}; the live position needs a manual "
-                          f"close", flush=True)
+                          f"{c['symbol']}; trading stays blocked until the "
+                          f"live position is closed (manually if needed)",
+                          flush=True)
+                    pending = True
                     continue
             # status == "not_found": the submission never landed — fall
             # through and resubmit under the SAME attempt id, which stays

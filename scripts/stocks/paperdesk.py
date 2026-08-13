@@ -176,6 +176,7 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     """One evaluation cycle: quotes, exits, entries, mark. Returns snapshot
     rows for publication. Dislocation is measured against the tape value
     `cfg.anchor_minutes` back for both the equity and its driver."""
+    fixed_now = now
     now = now or time.time()
     anchor_ts = now - cfg.anchor_minutes * 60
     mins_left = stocklib.minutes_to_close()
@@ -183,6 +184,12 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     # One batched quote call: real NBBO with venue timestamps when Alpaca
     # keys are present, Yahoo last prices otherwise.
     raw_quotes, feed = stocklib.live_quotes(list(UNIVERSE))
+    # Freshness and quote ages are measured against the wall clock AFTER
+    # the fetches: slow sequential requests can take longer than the
+    # permitted clock skew, and a venue may legitimately stamp a quote
+    # later than a cycle-start timestamp captured before them.
+    if fixed_now is None:
+        now = time.time()
     quotes, quote_objs, ages, snaps = {}, {}, [], []
 
     day = _day(st)
