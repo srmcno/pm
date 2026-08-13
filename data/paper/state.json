@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.7955,
+ "cash": 5.7055,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -14,8 +14,8 @@
    "costUsd": 1.6,
    "openedAt": 1786587299,
    "signalScore": 5.3524,
-   "markPrice": 0.86,
-   "valueUsd": 1.5289
+   "markPrice": 0.865,
+   "valueUsd": 1.5378
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.47,
-   "valueUsd": 1.47
+   "markPrice": 0.475,
+   "valueUsd": 1.4857
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -42,8 +42,8 @@
    "costUsd": 1.35,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.89,
-   "valueUsd": 1.5503
+   "markPrice": 0.83,
+   "valueUsd": 1.4458
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -98,8 +98,8 @@
    "costUsd": 1.54,
    "openedAt": 1786629946,
    "signalScore": 5.7408,
-   "markPrice": 0.91,
-   "valueUsd": 1.5571
+   "markPrice": 0.875,
+   "valueUsd": 1.4972
   },
   {
    "conditionId": "0x460bdcf944a67e2d6b7f3c1dae547f09881640ba4cc49f43e32f825600f192ec",
@@ -114,6 +114,20 @@
    "signalScore": 8.8521,
    "markPrice": 0.0005,
    "valueUsd": 0.003
+  },
+  {
+   "conditionId": "0x7a78a3a1dfc9d3b26d7da8b30aaf12127451d1a067fe54ddca22fc5cbe862802",
+   "outcomeIndex": 1,
+   "tokenId": "24393800223473647404325127552224094751546244351715138029940619686078097364351",
+   "question": "Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B",
+   "outcome": "FaZe",
+   "shares": 2.0762,
+   "entryPrice": 0.525,
+   "costUsd": 1.09,
+   "openedAt": 1786638137,
+   "signalScore": 6.6422,
+   "markPrice": 0.515,
+   "valueUsd": 1.0692
   }
  ],
  "closed": [
@@ -434,6 +448,11 @@
    "t": 1786636952,
    "equity": 16.2926,
    "cash": 6.7955
+  },
+  {
+   "t": 1786638137,
+   "equity": 16.132,
+   "cash": 5.7055
   }
  ],
  "log": [
@@ -545,6 +564,14 @@
    "question": "LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
    "price": 0.0,
    "pnl": -1.83
+  },
+  {
+   "t": 1786638137,
+   "action": "BUY",
+   "question": "Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B",
+   "outcome": "FaZe",
+   "stake": 1.09,
+   "price": 0.525
   }
  ]
 }
