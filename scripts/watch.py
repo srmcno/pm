@@ -98,7 +98,7 @@ def git_publish(message):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--poll-seconds", type=int, default=45)
+    ap.add_argument("--poll-seconds", type=int, default=30)
     ap.add_argument("--duration-minutes", type=float, default=0,
                     help="0 = run until stopped")
     ap.add_argument("--hours", type=int, default=48)
@@ -208,7 +208,11 @@ def main():
                 json.dump([list(k) for k in seen], f)
 
         if args.paper:
-            run_step(["papertrade.py", "trade"])
+            # The aggressive tested variant (16% of cash, +64.8% vs +42.3%
+            # in-window, double the drawdown by construction) — paper only;
+            # the real-money rails in data/live/config.json are untouched.
+            run_step(["papertrade.py", "trade",
+                      "--risk-frac", "0.16", "--max-positions", "10"])
             run_step(["papertrade.py", "mark"])
         if args.execute:
             run_step(["livetrade.py", "execute", "--live",

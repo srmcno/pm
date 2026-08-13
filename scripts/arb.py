@@ -32,6 +32,7 @@ import json
 import os
 import time
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 
 import pmlib
 
@@ -42,7 +43,7 @@ STATE = os.path.join(ARB_DIR, "state.json")
 DASH = os.path.join(pmlib.BASE, "dashboard", "data", "arb.json")
 REPORT = os.path.join(pmlib.BASE, "reports", "arb-latest.md")
 
-BRIDGES = ("USDC", "USD1", "BTC", "ETH")
+BRIDGES = ("USDC", "USD1", "BTC", "ETH", "USDE", "EUR")
 GATE_TAKER = 0.002          # Gate.io spot default taker
 SIZES = (5.0, 10.0, 20.0)   # candidate start sizes in USDT
 HIST_DIR = os.path.join(ARB_DIR, "history")
@@ -199,6 +200,7 @@ def verify_triangle(opp, info, books_cache):
         if sym not in books_cache:
             books_cache[sym] = depth(sym)
     best = None
+    viable = {}
     for size in SIZES:
         amt = size
         ok = True
@@ -214,10 +216,13 @@ def verify_triangle(opp, info, books_cache):
             break  # thinner books won't fit bigger sizes either
         profit = amt - size
         bps = profit / size * 10_000
-        if profit > 0.005 and (best is None or profit > best["profitUsd"]):
-            best = {"sizeUsd": size, "profitUsd": round(profit, 4),
-                    "verifiedBps": round(bps, 1)}
+        if profit > 0.005:
+            viable[size] = round(profit, 4)
+            if best is None or profit > best["profitUsd"]:
+                best = {"sizeUsd": size, "profitUsd": round(profit, 4),
+                        "verifiedBps": round(bps, 1)}
     if best:
+        best["viable"] = viable
         opp.update(best)
     return best is not None
 
@@ -339,21 +344,27 @@ def save_state(st):
 
 
 def paper_execute(st, opps, now):
-    """Round-trip each verified cycle once per cooldown window."""
+    """Round-trip verified cycles at the largest depth-verified size that
+    fits the bankroll. A persisting edge is re-struck every 60 s — each
+    strike is re-verified against freshly fetched depth, which is exactly
+    how a live bot keeps taking an edge until the book drains."""
     done = 0
     for o in opps:
         if done >= 3:
             break
         key = o["path"] + "|" + "|".join(s for s, _ in map(tuple, o["legs"]))
-        if now - st["cooldown"].get(key, 0) < 120:
+        if now - st["cooldown"].get(key, 0) < 30:
             continue
-        size = min(o["sizeUsd"], st["cash"] * 0.5)
-        if size < o["sizeUsd"]:      # depth was walked at sizeUsd; stay honest
-            continue                 # and skip rather than assume linear fills
+        cap = st["cash"] * 0.75
+        picks = [(s, p) for s, p in (o.get("viable") or {}).items() if s <= cap]
+        if not picks:
+            continue  # nothing depth-verified fits — never assume linear fills
+        size, profit = max(picks, key=lambda x: x[1])
         st["cooldown"][key] = now
-        st["cash"] = round(st["cash"] + o["profitUsd"], 4)
-        st["trades"].append({"t": now, "path": o["path"], "sizeUsd": o["sizeUsd"],
-                             "profitUsd": o["profitUsd"], "bps": o["verifiedBps"]})
+        st["cash"] = round(st["cash"] + profit, 4)
+        st["trades"].append({"t": now, "path": o["path"], "sizeUsd": size,
+                             "profitUsd": profit,
+                             "bps": round(profit / size * 10_000, 1)})
         st["tradeCountAll"] = st.get("tradeCountAll", 0) + 1
         done += 1
     st["cooldown"] = {k: v for k, v in st["cooldown"].items() if now - v < 3600}
@@ -515,7 +526,16 @@ def publish(st, meta, opps, watching, micro, gaps, now):
         f.write("\n".join(lines) + "\n")
 
 
-def scan_once(st, prev_keys):
+# Slow-lane cache: at 2s scan cadence the fast path is one bulk call plus
+# CPU; Gate, 24h volumes, and the tape-heavy microstructure board refresh
+# on their own timer so they never sit between an edge and its execution.
+_slow = {"at": 0.0, "gaps": [], "micro": []}
+_last_hist = 0.0
+_scan_n = 0
+
+
+def scan_once(st, prev_keys, execute=False):
+    global _last_hist, _scan_n
     now = int(time.time())
     info = exchange_info()
     book = book_tickers()
@@ -524,16 +544,19 @@ def scan_once(st, prev_keys):
         # publishing it would show a zero-pair scan on the site and record
         # every previous edge as decayed. Skip the cycle instead.
         raise RuntimeError(f"incomplete snapshot (info {len(info)}, book {len(book)})")
-    # Gate is fetched here, seconds after the MEXC snapshot, so cross-venue
-    # gaps compare near-simultaneous books instead of straddling the whole
-    # depth-verification phase and publishing phantom dislocations.
-    gaps = cross_venue_gaps(book, info)
     tris = build_triangles(info)
     # A wide screen (anything above -15 bps) keeps a "watching" list of
     # near-misses so the page shows the engine breathing between real edges.
     screened = screen_triangles(tris, book, info, min_bps=-15.0)
     live = [o for o in screened if o["screenBps"] >= 1.0]
     books_cache = {}
+    if live:
+        # Depth for every candidate leg in parallel — the verify path is
+        # the race, and sequential fetches were most of its latency.
+        syms = list({sym for o in live[:12] for sym, _ in o["legs"]})
+        with ThreadPoolExecutor(max_workers=6) as ex:
+            for sym, d in zip(syms, ex.map(depth, syms)):
+                books_cache[sym] = d
     verified = []
     for o in live[:12]:
         if verify_triangle(o, info, books_cache):
@@ -545,24 +568,36 @@ def scan_once(st, prev_keys):
         st["decay"]["checked"] += len(prev_keys)
         st["decay"]["survived"] += len(prev_keys & cur_keys)
     executed = paper_execute(st, verified, now)
-    micro_syms = [o["legs"][0][0] for o in verified]
-    micro_syms += [o["legs"][0][0] for o in watching[:4]]
-    micro_syms += [g["symbol"] for g in gaps[:3]]
-    record_history(now, verified, watching, book)
-    seen, micro = set(), []
-    for sym in micro_syms:
-        if sym in seen or len(micro) >= 8:
-            continue
-        seen.add(sym)
-        micro.append(microstructure(sym, info, books_cache))
+    fired = 0
+    if execute and verified:
+        import arblive
+        fired = arblive.execute_opps(verified, info)
+    if time.time() - _slow["at"] > 60:
+        _slow["at"] = time.time()
+        _slow["gaps"] = cross_venue_gaps(book, info)
+        micro_syms = [o["legs"][0][0] for o in verified]
+        micro_syms += [o["legs"][0][0] for o in watching[:4]]
+        micro_syms += [g["symbol"] for g in _slow["gaps"][:3]]
+        seen, micro = set(), []
+        for sym in micro_syms:
+            if sym in seen or len(micro) >= 8:
+                continue
+            seen.add(sym)
+            micro.append(microstructure(sym, info, books_cache))
+        _slow["micro"] = micro
+    if verified or time.time() - _last_hist >= 15:
+        _last_hist = time.time()
+        record_history(now, verified, watching, book)
     meta = {"pairs": len(book), "triangles": len(tris),
             "screened": len(live), "verified": len(verified)}
-    publish(st, meta, verified, watching, micro, gaps, now)
+    publish(st, meta, verified, watching, _slow["micro"], _slow["gaps"], now)
     save_state(st)
-    print(f"{time.strftime('%H:%M:%S')} pairs {len(book)} · cycles {len(tris)} "
-          f"· live {len(live)} · verified {len(verified)} · "
-          f"executed {executed} · equity ${st['cash']:.2f}", flush=True)
-    return cur_keys, executed
+    _scan_n += 1
+    if verified or executed or fired or _scan_n % 30 == 1:
+        print(f"{time.strftime('%H:%M:%S')} pairs {len(book)} · cycles {len(tris)} "
+              f"· live {len(live)} · verified {len(verified)} · paper {executed} "
+              f"· live-fired {fired} · equity ${st['cash']:.2f}", flush=True)
+    return cur_keys, executed or fired
 
 
 def main():
@@ -573,9 +608,14 @@ def main():
     sub.add_parser("backtest")
     w = sub.add_parser("watch")
     w.add_argument("--duration-minutes", type=float, default=113)
-    w.add_argument("--scan-seconds", type=int, default=25)
+    w.add_argument("--scan-seconds", type=float, default=2,
+                   help="full-universe screen cadence; the fast lane is one "
+                        "bulk call plus CPU, so 2s is sustainable")
     w.add_argument("--publish-minutes", type=float, default=10,
                    help="commit+deploy at least this often")
+    w.add_argument("--execute", action="store_true",
+                   help="fire REAL MEXC orders on verified edges (needs "
+                        "MEXC_API_KEY/SECRET; see arblive.py's checklist)")
     args = ap.parse_args()
 
     st = load_state()
@@ -595,13 +635,12 @@ def main():
         return
     prune_history()
     deadline = time.time() + args.duration_minutes * 60
+    # Never START a scan near the deadline of a real shift: a degraded-
+    # network scan can run long past it and blow the workflow timeout
+    # before the final commit step, losing unpushed paper state.
+    head_start = 240 if args.duration_minutes > 10 else 0
     prev, last_pub, last_replay = None, 0.0, 0.0
-    while time.time() < deadline:
-        if deadline - time.time() < 240:
-            # Never START a scan near the deadline: a degraded-network scan
-            # can run long past it and blow the workflow timeout before the
-            # final commit step, losing unpushed paper state.
-            break
+    while time.time() < deadline - head_start:
         t0 = time.time()
         if time.time() - last_replay > 1800:
             last_replay = time.time()
@@ -610,15 +649,18 @@ def main():
             except Exception as e:  # noqa: BLE001
                 print(f"replay error: {e}", flush=True)
         try:
-            prev, executed = scan_once(st, prev)
+            prev, executed = scan_once(st, prev, execute=args.execute)
         except Exception as e:  # noqa: BLE001 — a bad scan must not kill the shift
             print(f"scan error: {e}", flush=True)
             executed = 0
-        if executed or time.time() - last_pub > args.publish_minutes * 60:
+        # Publish on activity but never more than ~per-90s; heartbeat at
+        # publish-minutes regardless, so the site pill stays honest.
+        since = time.time() - last_pub
+        if (executed and since > 90) or since > args.publish_minutes * 60:
             if pmlib.publish_repo(["data/arb", "dashboard/data", "reports"],
                                   "auto: arb desk scan"):
                 last_pub = time.time()
-        time.sleep(max(1.0, args.scan_seconds - (time.time() - t0)))
+        time.sleep(max(0.2, args.scan_seconds - (time.time() - t0)))
     print("Shift over — exiting cleanly.", flush=True)
 
 
