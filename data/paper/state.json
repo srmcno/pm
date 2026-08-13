@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 11.4555,
+ "cash": 6.7955,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -14,8 +14,8 @@
    "costUsd": 1.6,
    "openedAt": 1786587299,
    "signalScore": 5.3524,
-   "markPrice": 0.885,
-   "valueUsd": 1.5734
+   "markPrice": 0.855,
+   "valueUsd": 1.52
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.475,
-   "valueUsd": 1.4857
+   "markPrice": 0.465,
+   "valueUsd": 1.4544
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -42,8 +42,8 @@
    "costUsd": 1.35,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.795,
-   "valueUsd": 1.3848
+   "markPrice": 0.79,
+   "valueUsd": 1.3761
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -70,8 +70,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.935,
-   "valueUsd": 1.15
+   "markPrice": 0.94,
+   "valueUsd": 1.1561
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -86,6 +86,48 @@
    "signalScore": 3.1826,
    "markPrice": 0.2295,
    "valueUsd": 1.0062
+  },
+  {
+   "conditionId": "0x3a128e0a8ffd4b487c52237eae1fbafde68edaeec9a38d33c2375f7cd6140f69",
+   "outcomeIndex": 1,
+   "tokenId": "76166142632502863111636033986770521770002601481581842235949590565123761079906",
+   "question": "LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
+   "outcome": "Hanwha Life Esports",
+   "shares": 33.2727,
+   "entryPrice": 0.055,
+   "costUsd": 1.83,
+   "openedAt": 1786623720,
+   "signalScore": 4.9278,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0166
+  },
+  {
+   "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
+   "outcomeIndex": 1,
+   "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
+   "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "shares": 1.7111,
+   "entryPrice": 0.9,
+   "costUsd": 1.54,
+   "openedAt": 1786629946,
+   "signalScore": 5.7408,
+   "markPrice": 0.895,
+   "valueUsd": 1.5314
+  },
+  {
+   "conditionId": "0x460bdcf944a67e2d6b7f3c1dae547f09881640ba4cc49f43e32f825600f192ec",
+   "outcomeIndex": 1,
+   "tokenId": "49827100014827410381672664132901854265928799555751305220192827799090755211021",
+   "question": "Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage",
+   "outcome": "Team Falcons",
+   "shares": 6.0,
+   "entryPrice": 0.215,
+   "costUsd": 1.29,
+   "openedAt": 1786630916,
+   "signalScore": 8.8521,
+   "markPrice": 0.0005,
+   "valueUsd": 0.003
   }
  ],
  "closed": [
@@ -304,6 +346,71 @@
    "t": 1786622239,
    "equity": 19.3206,
    "cash": 11.4555
+  },
+  {
+   "t": 1786623176,
+   "equity": 19.3206,
+   "cash": 11.4555
+  },
+  {
+   "t": 1786623720,
+   "equity": 18.9879,
+   "cash": 9.6255
+  },
+  {
+   "t": 1786624506,
+   "equity": 18.9879,
+   "cash": 9.6255
+  },
+  {
+   "t": 1786625412,
+   "equity": 17.5072,
+   "cash": 9.6255
+  },
+  {
+   "t": 1786626318,
+   "equity": 17.5072,
+   "cash": 9.6255
+  },
+  {
+   "t": 1786627225,
+   "equity": 17.4292,
+   "cash": 9.6255
+  },
+  {
+   "t": 1786628134,
+   "equity": 17.4047,
+   "cash": 9.6255
+  },
+  {
+   "t": 1786629040,
+   "equity": 17.4225,
+   "cash": 9.6255
+  },
+  {
+   "t": 1786629946,
+   "equity": 17.3285,
+   "cash": 8.0855
+  },
+  {
+   "t": 1786630916,
+   "equity": 18.0592,
+   "cash": 6.7955
+  },
+  {
+   "t": 1786631462,
+   "equity": 18.0592,
+   "cash": 6.7955
+  },
+  {
+   "t": 1786632372,
+   "equity": 20.1588,
+   "cash": 6.7955
+  },
+  {
+   "t": 1786633281,
+   "equity": 16.1243,
+   "cash": 6.7955
   }
  ],
  "log": [
@@ -384,6 +491,30 @@
    "question": "LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner",
    "price": 0.0,
    "pnl": -1.63
+  },
+  {
+   "t": 1786623720,
+   "action": "BUY",
+   "question": "LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
+   "outcome": "Hanwha Life Esports",
+   "stake": 1.83,
+   "price": 0.055
+  },
+  {
+   "t": 1786629946,
+   "action": "BUY",
+   "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "stake": 1.54,
+   "price": 0.9
+  },
+  {
+   "t": 1786630916,
+   "action": "BUY",
+   "question": "Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage",
+   "outcome": "Team Falcons",
+   "stake": 1.29,
+   "price": 0.215
   }
  ]
 }
