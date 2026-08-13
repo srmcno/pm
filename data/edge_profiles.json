@@ -1,0 +1,5722 @@
+{
+ "generatedAt": 1786571566,
+ "windowDays": 90,
+ "degraded": false,
+ "filters": {
+  "max_both_sides": 0.35,
+  "max_vol_pnl_ratio": 250.0,
+  "wash_trades_per_day": 100.0,
+  "min_win_day_rate": 0.5,
+  "min_pnl": 25000.0
+ },
+ "cohortBaseRates": {
+  "Sports": {
+   "cohortWinRate": 0.51838,
+   "cohortRoi": 0.29799,
+   "cohortTrades": 8843
+  },
+  "Esports": {
+   "cohortWinRate": 0.48986,
+   "cohortRoi": 0.02458,
+   "cohortTrades": 2711
+  },
+  "Politics": {
+   "cohortWinRate": 0.64118,
+   "cohortRoi": 0.11924,
+   "cohortTrades": 510
+  },
+  "Crypto": {
+   "cohortWinRate": 0.45455,
+   "cohortRoi": -0.04263,
+   "cohortTrades": 22
+  },
+  "Culture": {
+   "cohortWinRate": 0.7,
+   "cohortRoi": 0.40919,
+   "cohortTrades": 90
+  },
+  "Other": {
+   "cohortWinRate": 0.63684,
+   "cohortRoi": 0.15346,
+   "cohortTrades": 190
+  },
+  "Economics": {
+   "cohortWinRate": 0.72561,
+   "cohortRoi": 0.25831,
+   "cohortTrades": 164
+  },
+  "Weather": {
+   "cohortWinRate": 0.89133,
+   "cohortRoi": -0.00429,
+   "cohortTrades": 1049
+  },
+  "Mentions": {
+   "cohortWinRate": 0.66667,
+   "cohortRoi": 0.05522,
+   "cohortTrades": 129
+  },
+  "Tech & AI": {
+   "cohortWinRate": 0.75,
+   "cohortRoi": 0.03516,
+   "cohortTrades": 20
+  }
+ },
+ "profiles": {
+  "0x09b428f7c2b469786286214aa5c90dd9015f7320": {
+   "name": "DEEDDIT",
+   "archetype": "Whale",
+   "pnl90": 17455322.5,
+   "volume90": 34949686.67,
+   "sharpe": 9.5264,
+   "pnlDays": 9,
+   "medianTradeUsd": 22.66,
+   "winDayRate": 0.5556,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 17,
+     "wins": 10,
+     "staked": 34982445.94,
+     "pnl": 7433631.55,
+     "roi": 0.2125,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 17
+  },
+  "0x204f72f35326db932158cba6adff0b9a1da95e14": {
+   "name": "swisstony",
+   "archetype": "Market maker / HFT",
+   "pnl90": 15526843,
+   "volume90": 18257131.39,
+   "sharpe": 4.7852,
+   "pnlDays": 91,
+   "medianTradeUsd": 9.13,
+   "winDayRate": 0.7033,
+   "categoryShare": {
+    "Sports": 0.9985,
+    "Culture": 0.0012,
+    "Esports": 0.0003,
+    "Crypto": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x96cfcb0c30942cfcd1cdf76c7d408794d66b1acb": {
+   "name": "mintblade",
+   "archetype": "Whale",
+   "pnl90": 9238344.8,
+   "volume90": 8650317.44,
+   "sharpe": null,
+   "pnlDays": 2,
+   "medianTradeUsd": 30,
+   "winDayRate": 1.0,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 5,
+     "wins": 5,
+     "staked": 8650321.44,
+     "pnl": 9109608.79,
+     "roi": 1.05309,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 5
+  },
+  "0xbc11a64ab34a03a043fbe80598fa065ee87eeec6": {
+   "name": "frostrizz",
+   "archetype": "Whale",
+   "pnl90": 8879746.79,
+   "volume90": 14089996.49,
+   "sharpe": null,
+   "pnlDays": 2,
+   "medianTradeUsd": 22.79,
+   "winDayRate": 1.0,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 6,
+     "wins": 5,
+     "staked": 14292914.67,
+     "pnl": 8951989.77,
+     "roi": 0.62632,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 6
+  },
+  "0x5e4c3b5b81171e2ca4ab776ac0d6bba787f9dba2": {
+   "name": "endlessFate",
+   "archetype": "Whale",
+   "pnl90": 7907901.47,
+   "volume90": 13843426.98,
+   "sharpe": 16.8235,
+   "pnlDays": 5,
+   "medianTradeUsd": 205.55,
+   "winDayRate": 0.8,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 9,
+     "wins": 6,
+     "staked": 13843426.98,
+     "pnl": 7249106.08,
+     "roi": 0.52365,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 9
+  },
+  "0x2c335066fe58fe9237c3d3dc7b275c2a034a0563": {
+   "name": "0x2c335066FE58fe9237c3d3Dc7b275C2a034a0563-1759935795465",
+   "archetype": "Sports specialist",
+   "pnl90": 7311770.7,
+   "volume90": 183655772.82,
+   "sharpe": 3.455,
+   "pnlDays": 90,
+   "medianTradeUsd": 52.31,
+   "winDayRate": 0.5667,
+   "categoryShare": {
+    "Sports": 0.8531,
+    "Esports": 0.1457,
+    "Crypto": 0.0006,
+    "Economics": 0.0004,
+    "Politics": 0.0003,
+    "Tech & AI": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xf0318c32136c2db7fec88b84869aee6a1106c80c": {
+   "name": "BreakTheBank",
+   "archetype": "Sports specialist",
+   "pnl90": 7051633.9,
+   "volume90": 66194919.02,
+   "sharpe": 2.5075,
+   "pnlDays": 87,
+   "medianTradeUsd": 10.08,
+   "winDayRate": 0.5977,
+   "categoryShare": {
+    "Sports": 0.9993,
+    "Other": 0.0007
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xf8831548531d56ad6a4331493243c447a827cd1f": {
+   "name": "Inaccuratestake",
+   "archetype": "Whale",
+   "pnl90": 4477903.55,
+   "volume90": 20884590.67,
+   "sharpe": 7.8223,
+   "pnlDays": 26,
+   "medianTradeUsd": 40.61,
+   "winDayRate": 0.7143,
+   "categoryShare": {
+    "Sports": 1.0,
+    "Politics": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 30,
+     "wins": 22,
+     "staked": 20886692.18,
+     "pnl": 3849625.65,
+     "roi": 0.18431,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 30
+  },
+  "0x664ce9fb97ae1bbd538d7381b2f4e92dab16f49c": {
+   "name": "sparklingwater123",
+   "archetype": "Whale",
+   "pnl90": 4288567,
+   "volume90": 9578391.86,
+   "sharpe": null,
+   "pnlDays": 1,
+   "medianTradeUsd": 31.75,
+   "winDayRate": 1.0,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 4,
+     "wins": 3,
+     "staked": 9578444.11,
+     "pnl": 8349149.5,
+     "roi": 0.87166,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 4
+  },
+  "0xe549581668a5751c1972d3ad2d1991d900bd2d54": {
+   "name": "Allezpapa",
+   "archetype": "Sports specialist",
+   "pnl90": 4280529.13,
+   "volume90": 18646768.05,
+   "sharpe": 5.221,
+   "pnlDays": 41,
+   "medianTradeUsd": 8.51,
+   "winDayRate": 0.6585,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 17,
+     "wins": 10,
+     "staked": 3379010.52,
+     "pnl": 2104599.9,
+     "roi": 0.62285,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 17
+  },
+  "0x2005d16a84ceefa912d4e380cd32e7ff827875ea": {
+   "name": "RN1",
+   "archetype": "Market maker / HFT",
+   "pnl90": 3738730,
+   "volume90": 31715432.23,
+   "sharpe": 9.9682,
+   "pnlDays": 91,
+   "medianTradeUsd": 8.23,
+   "winDayRate": 0.7473,
+   "categoryShare": {
+    "Sports": 0.9732,
+    "Esports": 0.0258,
+    "Culture": 0.0006,
+    "Crypto": 0.0003
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x476e1322d1a412fa0325527b8c3bc5e707b1396d": {
+   "name": "asparagus2012",
+   "archetype": "Sports specialist",
+   "pnl90": 3558864.34,
+   "volume90": 1421586.25,
+   "sharpe": 6.6537,
+   "pnlDays": 21,
+   "medianTradeUsd": 6.62,
+   "winDayRate": 0.7143,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 16,
+     "wins": 11,
+     "staked": 1422661.47,
+     "pnl": 3549153.58,
+     "roi": 2.49473,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 16
+  },
+  "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c": {
+   "name": "0x076daa87",
+   "archetype": "Sports specialist",
+   "pnl90": 3497952.38,
+   "volume90": 36791174.85,
+   "sharpe": 4.685,
+   "pnlDays": 69,
+   "medianTradeUsd": 28.2,
+   "winDayRate": 0.5507,
+   "categoryShare": {
+    "Sports": 0.9707,
+    "Esports": 0.0282,
+    "Crypto": 0.0009,
+    "Politics": 0.0002,
+    "Culture": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 2755,
+     "wins": 1340,
+     "staked": 1537423.08,
+     "pnl": 41972.83,
+     "roi": 0.0273,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Esports": {
+     "settledTrades": 392,
+     "wins": 190,
+     "staked": 161439.12,
+     "pnl": 15443.98,
+     "roi": 0.09566,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Politics": {
+     "settledTrades": 1,
+     "wins": 0,
+     "staked": 2.85,
+     "pnl": -2.85,
+     "roi": -1.0,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Crypto": {
+     "settledTrades": 2,
+     "wins": 1,
+     "staked": 240.62,
+     "pnl": 512.12,
+     "roi": 2.12828,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    },
+    "Culture": {
+     "settledTrades": 7,
+     "wins": 2,
+     "staked": 176.48,
+     "pnl": -58.61,
+     "roi": -0.33213,
+     "cohortWinRate": 0.7,
+     "cohortRoi": 0.40919
+    }
+   },
+   "settledTrades": 3157
+  },
+  "0x5966db1fe50763c9e3c014d756369bad07e1f804": {
+   "name": "0x5966Db1fE50763C9e3C014d756369BAd07E1F804-1777648534241",
+   "archetype": "Sports specialist",
+   "pnl90": 2936248.1,
+   "volume90": 12150948.21,
+   "sharpe": 9.3959,
+   "pnlDays": 35,
+   "medianTradeUsd": 4.43,
+   "winDayRate": 0.7429,
+   "categoryShare": {
+    "Sports": 0.8226,
+    "Esports": 0.1774,
+    "Crypto": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 93,
+     "wins": 52,
+     "staked": 9021271.09,
+     "pnl": 1960642.1,
+     "roi": 0.21734,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Esports": {
+     "settledTrades": 33,
+     "wins": 21,
+     "staked": 1764019.94,
+     "pnl": 1011525.24,
+     "roi": 0.57342,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Crypto": {
+     "settledTrades": 2,
+     "wins": 1,
+     "staked": 781.63,
+     "pnl": 110.42,
+     "roi": 0.14126,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    }
+   },
+   "settledTrades": 128
+  },
+  "0x5268527977f700f9bf9b6d5cd843859e4e70135d": {
+   "name": "HomeRunHazard",
+   "archetype": "Market maker / HFT",
+   "pnl90": 2061455.52,
+   "volume90": 63373375.2,
+   "sharpe": 6.0139,
+   "pnlDays": 91,
+   "medianTradeUsd": 10.42,
+   "winDayRate": 0.6484,
+   "categoryShare": {
+    "Sports": 0.9992,
+    "Crypto": 0.0008
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xfea31bc088000ff909be1dfd8d0e3f2c7ef2d227": {
+   "name": "ndb1",
+   "archetype": "Sports specialist",
+   "pnl90": 1887508.2,
+   "volume90": 47833157.6,
+   "sharpe": 1.6137,
+   "pnlDays": 91,
+   "medianTradeUsd": 24.64,
+   "winDayRate": 0.5714,
+   "categoryShare": {
+    "Sports": 0.8009,
+    "Crypto": 0.191,
+    "Other": 0.0065,
+    "Politics": 0.001,
+    "Culture": 0.0007
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 177,
+     "wins": 132,
+     "staked": 6705769.82,
+     "pnl": 2989332.24,
+     "roi": 0.44579,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Other": {
+     "settledTrades": 30,
+     "wins": 18,
+     "staked": 33130.98,
+     "pnl": 14755.77,
+     "roi": 0.44538,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    }
+   },
+   "settledTrades": 207
+  },
+  "0xfe787d2da716d60e8acff57fb87eb13cd4d10319": {
+   "name": "ferrariChampions2026",
+   "archetype": "Market maker / HFT",
+   "pnl90": 1544301.9,
+   "volume90": 46728318.43,
+   "sharpe": 1.1604,
+   "pnlDays": 91,
+   "medianTradeUsd": 11.91,
+   "winDayRate": 0.6374,
+   "categoryShare": {
+    "Sports": 0.7484,
+    "Esports": 0.251,
+    "Crypto": 0.0005,
+    "Culture": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xbca08c1bc204a34f2fddbe47b438b9bd42ac9705": {
+   "name": "1winstreak1",
+   "archetype": "Market maker / HFT",
+   "pnl90": 1263776.77,
+   "volume90": 4591433.55,
+   "sharpe": 11.9386,
+   "pnlDays": 91,
+   "medianTradeUsd": 22.14,
+   "winDayRate": 0.7473,
+   "categoryShare": {
+    "Sports": 0.9974,
+    "Esports": 0.0026
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7": {
+   "name": "UpTheBlues",
+   "archetype": "Sports specialist",
+   "pnl90": 1140218,
+   "volume90": 34082290.0,
+   "sharpe": 2.3949,
+   "pnlDays": 91,
+   "medianTradeUsd": 39.82,
+   "winDayRate": 0.6154,
+   "categoryShare": {
+    "Sports": 0.9979,
+    "Politics": 0.001,
+    "Esports": 0.0005,
+    "Culture": 0.0005,
+    "Crypto": 0.0002,
+    "Other": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x9cb990f1862568a63d8601efeebe0304225c32f2": {
+   "name": "jtwyslljy",
+   "archetype": "Sports specialist",
+   "pnl90": 1090095.9,
+   "volume90": 9943515.35,
+   "sharpe": 3.258,
+   "pnlDays": 91,
+   "medianTradeUsd": 12.16,
+   "winDayRate": 0.5604,
+   "categoryShare": {
+    "Sports": 0.8548,
+    "Esports": 0.1435,
+    "Other": 0.0015,
+    "Crypto": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 493,
+     "wins": 220,
+     "staked": 4677957.85,
+     "pnl": 535865.29,
+     "roi": 0.11455,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Esports": {
+     "settledTrades": 88,
+     "wins": 34,
+     "staked": 642215.05,
+     "pnl": 105445.43,
+     "roi": 0.16419,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Crypto": {
+     "settledTrades": 1,
+     "wins": 0,
+     "staked": 1333.93,
+     "pnl": -1333.93,
+     "roi": -1.0,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    }
+   },
+   "settledTrades": 582
+  },
+  "0x5a218c7ad04135830a45c41aaed7294df7809318": {
+   "name": "balthazar",
+   "archetype": "Favorite grinder",
+   "pnl90": 1057839.0,
+   "volume90": 6973321.33,
+   "sharpe": 5.7394,
+   "pnlDays": 91,
+   "medianTradeUsd": 5.95,
+   "winDayRate": 0.8462,
+   "categoryShare": {
+    "Sports": 0.6184,
+    "Weather": 0.0968,
+    "Economics": 0.0617,
+    "Politics": 0.0455,
+    "Tech & AI": 0.0434,
+    "Other": 0.0431,
+    "Esports": 0.037,
+    "Crypto": 0.0267,
+    "Culture": 0.0153,
+    "Mentions": 0.0122
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x03805a13a0b3e058f55f6c6af95389d4f431073d": {
+   "name": "donthackme",
+   "archetype": "Favorite grinder",
+   "pnl90": 916884.37,
+   "volume90": 6501174.28,
+   "sharpe": 2.9115,
+   "pnlDays": 76,
+   "medianTradeUsd": 12.47,
+   "winDayRate": 0.8026,
+   "categoryShare": {
+    "Sports": 0.2455,
+    "Politics": 0.1743,
+    "Economics": 0.1724,
+    "Weather": 0.1269,
+    "Other": 0.1026,
+    "Tech & AI": 0.0917,
+    "Esports": 0.0484,
+    "Culture": 0.0335,
+    "Mentions": 0.0045,
+    "Crypto": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 78,
+     "wins": 53,
+     "staked": 8434.49,
+     "pnl": 552.31,
+     "roi": 0.06548,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Economics": {
+     "settledTrades": 30,
+     "wins": 26,
+     "staked": 11264.18,
+     "pnl": -49.22,
+     "roi": -0.00437,
+     "cohortWinRate": 0.7256,
+     "cohortRoi": 0.25831
+    },
+    "Culture": {
+     "settledTrades": 8,
+     "wins": 6,
+     "staked": 709.32,
+     "pnl": 33.96,
+     "roi": 0.04787,
+     "cohortWinRate": 0.7,
+     "cohortRoi": 0.40919
+    },
+    "Politics": {
+     "settledTrades": 32,
+     "wins": 19,
+     "staked": 17277.51,
+     "pnl": 239.13,
+     "roi": 0.01384,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Weather": {
+     "settledTrades": 939,
+     "wins": 845,
+     "staked": 50203.08,
+     "pnl": 193.81,
+     "roi": 0.00386,
+     "cohortWinRate": 0.8913,
+     "cohortRoi": -0.00429
+    },
+    "Other": {
+     "settledTrades": 9,
+     "wins": 6,
+     "staked": 2487.46,
+     "pnl": 30.83,
+     "roi": 0.01239,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    },
+    "Esports": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 22.29,
+     "pnl": 7.44,
+     "roi": 0.33401,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Mentions": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 7.9,
+     "pnl": 2.1,
+     "roi": 0.26582,
+     "cohortWinRate": 0.6667,
+     "cohortRoi": 0.05522
+    }
+   },
+   "settledTrades": 1098
+  },
+  "0x1b20a00709dfe648afd26b326394b5e031f83ab0": {
+   "name": "0x1b20a00709DfE648AFd26b326394b5e031f83ab0-1785189457930",
+   "archetype": "Sports specialist",
+   "pnl90": 872746.58,
+   "volume90": 2481156.85,
+   "sharpe": 7.3843,
+   "pnlDays": 10,
+   "medianTradeUsd": 11.75,
+   "winDayRate": 0.8,
+   "categoryShare": {
+    "Sports": 1.0,
+    "Crypto": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 71,
+     "wins": 37,
+     "staked": 2481361.4,
+     "pnl": 859959.48,
+     "roi": 0.34657,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Crypto": {
+     "settledTrades": 1,
+     "wins": 0,
+     "staked": 3.24,
+     "pnl": -3.24,
+     "roi": -1.0,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    }
+   },
+   "settledTrades": 72
+  },
+  "0xee00ba338c59557141789b127927a55f5cc5cea1": {
+   "name": "S-Works",
+   "archetype": "Generalist",
+   "pnl90": 834671.0,
+   "volume90": 16787533.22,
+   "sharpe": 1.7754,
+   "pnlDays": 80,
+   "medianTradeUsd": 25.35,
+   "winDayRate": 0.6,
+   "categoryShare": {
+    "Sports": 0.6033,
+    "Esports": 0.3938,
+    "Other": 0.0029
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 144,
+     "wins": 94,
+     "staked": 6613827.55,
+     "pnl": 775215.45,
+     "roi": 0.11721,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Other": {
+     "settledTrades": 2,
+     "wins": 2,
+     "staked": 302.55,
+     "pnl": 13.16,
+     "roi": 0.0435,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    },
+    "Sports": {
+     "settledTrades": 182,
+     "wins": 123,
+     "staked": 9002849.49,
+     "pnl": -137774.56,
+     "roi": -0.0153,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 328
+  },
+  "0xc2e7800b5af46e6093872b177b7a5e7f0563be51": {
+   "name": "beachboy4",
+   "archetype": "Whale",
+   "pnl90": 827075.0,
+   "volume90": 8430933.08,
+   "sharpe": 1.155,
+   "pnlDays": 74,
+   "medianTradeUsd": 17.34,
+   "winDayRate": 0.4035,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.4035 below 0.50 floor",
+   "categories": {}
+  },
+  "0xb687f00464e33934f5d591f224e71c3559ecaee5": {
+   "name": "alwayslatetotheparty",
+   "archetype": "Politics & news trader",
+   "pnl90": 800255.39,
+   "volume90": 1537809.27,
+   "sharpe": 0.7427,
+   "pnlDays": 85,
+   "medianTradeUsd": 0.16,
+   "winDayRate": 0.8235,
+   "categoryShare": {
+    "Economics": 0.5705,
+    "Sports": 0.2525,
+    "Politics": 0.0791,
+    "Other": 0.0527,
+    "Tech & AI": 0.0224,
+    "Culture": 0.0098,
+    "Mentions": 0.0079,
+    "Weather": 0.0029,
+    "Esports": 0.002
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {},
+   "settledTrades": 0
+  },
+  "0xfbd8c9c22ca76b3662d0e53a4f79719fdc684027": {
+   "name": "0xfBd8C9C22cA76B3662d0e53A4f79719FDC684027-1779347618060",
+   "archetype": "Favorite grinder",
+   "pnl90": 766079.12,
+   "volume90": 4572657.65,
+   "sharpe": 3.7614,
+   "pnlDays": 83,
+   "medianTradeUsd": 8.01,
+   "winDayRate": 0.7711,
+   "categoryShare": {
+    "Sports": 0.412,
+    "Weather": 0.2501,
+    "Economics": 0.1225,
+    "Politics": 0.0834,
+    "Other": 0.0443,
+    "Tech & AI": 0.0436,
+    "Mentions": 0.0267,
+    "Culture": 0.0123,
+    "Crypto": 0.0033,
+    "Esports": 0.0019
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xd6505aab3c6bef32ae6c96dbd8023d7c4df114fb": {
+   "name": "BAREFLUX",
+   "archetype": "Sports specialist",
+   "pnl90": 728938,
+   "volume90": 18179414.19,
+   "sharpe": 1.5956,
+   "pnlDays": 4,
+   "medianTradeUsd": 16.52,
+   "winDayRate": 0.75,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 9,
+     "wins": 5,
+     "staked": 18242719.8,
+     "pnl": 2626518.38,
+     "roi": 0.14398,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 9
+  },
+  "0xb55fa1296e6ec55d0ce53d93b9237389f11764d4": {
+   "name": "0xb55fa1296E6ec55D0cE53d93B9237389f11764d4-1777575277609",
+   "archetype": "Market maker / HFT",
+   "pnl90": 709461.44,
+   "volume90": 3395032.02,
+   "sharpe": 20.5227,
+   "pnlDays": 91,
+   "medianTradeUsd": 4.2,
+   "winDayRate": 0.8791,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xe734e7bf7cfb9e464681f71822f6c2f6be514f0c": {
+   "name": "boyau",
+   "archetype": "Politics & news trader",
+   "pnl90": 681442.84,
+   "volume90": 5895224.61,
+   "sharpe": 3.6497,
+   "pnlDays": 91,
+   "medianTradeUsd": 9.76,
+   "winDayRate": 0.5385,
+   "categoryShare": {
+    "Economics": 0.6635,
+    "Other": 0.1766,
+    "Sports": 0.0915,
+    "Politics": 0.0427,
+    "Crypto": 0.0257
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 87,
+     "wins": 28,
+     "staked": 286004.07,
+     "pnl": 336.45,
+     "roi": 0.00118,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Economics": {
+     "settledTrades": 66,
+     "wins": 40,
+     "staked": 1543320.94,
+     "pnl": 356920.36,
+     "roi": 0.23127,
+     "cohortWinRate": 0.7256,
+     "cohortRoi": 0.25831
+    },
+    "Crypto": {
+     "settledTrades": 6,
+     "wins": 3,
+     "staked": 60394.68,
+     "pnl": -7161.31,
+     "roi": -0.11858,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    },
+    "Other": {
+     "settledTrades": 21,
+     "wins": 15,
+     "staked": 443737.24,
+     "pnl": 232623.57,
+     "roi": 0.52424,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    }
+   },
+   "settledTrades": 180
+  },
+  "0x511f9c771449162349795d17becf8b37031acbe1": {
+   "name": "Bigggggggg",
+   "archetype": "Favorite grinder",
+   "pnl90": 677278.45,
+   "volume90": 9332771.39,
+   "sharpe": 2.0343,
+   "pnlDays": 88,
+   "medianTradeUsd": 6.47,
+   "winDayRate": 0.8295,
+   "categoryShare": {
+    "Sports": 0.3853,
+    "Politics": 0.2038,
+    "Economics": 0.1327,
+    "Other": 0.0805,
+    "Esports": 0.0613,
+    "Mentions": 0.0476,
+    "Culture": 0.0391,
+    "Tech & AI": 0.0375,
+    "Crypto": 0.0117,
+    "Weather": 0.0005
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 100,
+     "wins": 76,
+     "staked": 65225.05,
+     "pnl": 3381.48,
+     "roi": 0.05184,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Mentions": {
+     "settledTrades": 80,
+     "wins": 68,
+     "staked": 43212.02,
+     "pnl": -942.4,
+     "roi": -0.02181,
+     "cohortWinRate": 0.6667,
+     "cohortRoi": 0.05522
+    },
+    "Economics": {
+     "settledTrades": 42,
+     "wins": 35,
+     "staked": 26805.71,
+     "pnl": -11.18,
+     "roi": -0.00042,
+     "cohortWinRate": 0.7256,
+     "cohortRoi": 0.25831
+    },
+    "Politics": {
+     "settledTrades": 87,
+     "wins": 58,
+     "staked": 33109.6,
+     "pnl": -3525.97,
+     "roi": -0.10649,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Other": {
+     "settledTrades": 38,
+     "wins": 29,
+     "staked": 2522.83,
+     "pnl": 184.26,
+     "roi": 0.07304,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    },
+    "Culture": {
+     "settledTrades": 51,
+     "wins": 38,
+     "staked": 5288.2,
+     "pnl": -492.66,
+     "roi": -0.09316,
+     "cohortWinRate": 0.7,
+     "cohortRoi": 0.40919
+    },
+    "Tech & AI": {
+     "settledTrades": 6,
+     "wins": 6,
+     "staked": 710.93,
+     "pnl": 357.56,
+     "roi": 0.50295,
+     "cohortWinRate": 0.75,
+     "cohortRoi": 0.03516
+    },
+    "Esports": {
+     "settledTrades": 10,
+     "wins": 8,
+     "staked": 7268.88,
+     "pnl": 367.76,
+     "roi": 0.05059,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    }
+   },
+   "settledTrades": 414
+  },
+  "0xc29198ad764bd6adaf7bb971a3757a689ece5d74": {
+   "name": "SnakeBall",
+   "archetype": "Sports specialist",
+   "pnl90": 600153.01,
+   "volume90": 12098216.41,
+   "sharpe": 5.2761,
+   "pnlDays": 91,
+   "medianTradeUsd": 9.05,
+   "winDayRate": 0.6154,
+   "categoryShare": {
+    "Sports": 0.9918,
+    "Esports": 0.0058,
+    "Politics": 0.0018,
+    "Culture": 0.0005,
+    "Other": 0.0001,
+    "Crypto": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e": {
+   "name": "dv-pm",
+   "archetype": "Sports specialist",
+   "pnl90": 596911.73,
+   "volume90": 8426167.68,
+   "sharpe": 1.6427,
+   "pnlDays": 79,
+   "medianTradeUsd": 322.12,
+   "winDayRate": 0.5441,
+   "categoryShare": {
+    "Sports": 0.9992,
+    "Politics": 0.0004,
+    "Esports": 0.0002,
+    "Culture": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 3191,
+     "wins": 1706,
+     "staked": 8396286.26,
+     "pnl": 439576.67,
+     "roi": 0.05235,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Culture": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 1197.22,
+     "pnl": 1708.65,
+     "roi": 1.42718,
+     "cohortWinRate": 0.7,
+     "cohortRoi": 0.40919
+    },
+    "Politics": {
+     "settledTrades": 8,
+     "wins": 8,
+     "staked": 3661.1,
+     "pnl": 1352.8,
+     "roi": 0.3695,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Esports": {
+     "settledTrades": 20,
+     "wins": 12,
+     "staked": 1565.99,
+     "pnl": 1075.21,
+     "roi": 0.6866,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    }
+   },
+   "settledTrades": 3220
+  },
+  "0xeebde7a0e019a63e6b476eb425505b7b3e6eba30": {
+   "name": "Bonereaper",
+   "archetype": "Market maker / HFT",
+   "pnl90": 538750.96,
+   "volume90": 2902003.54,
+   "sharpe": 13.4539,
+   "pnlDays": 90,
+   "medianTradeUsd": 5.68,
+   "winDayRate": 0.8333,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x04d5524a0a5af2eca6e39e03defc261d42fe66d8": {
+   "name": "WTSA",
+   "archetype": "Sports specialist",
+   "pnl90": 529273.36,
+   "volume90": 4218205.05,
+   "sharpe": 4.3826,
+   "pnlDays": 27,
+   "medianTradeUsd": 5.42,
+   "winDayRate": 0.5926,
+   "categoryShare": {
+    "Sports": 0.9964,
+    "Politics": 0.0036
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 54,
+     "wins": 26,
+     "staked": 2122588.95,
+     "pnl": 46557.7,
+     "roi": 0.02193,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 54
+  },
+  "0xa71093cafc0c099b4ccab24c3cb8018d817923c4": {
+   "name": "Talvez10",
+   "archetype": "Sports specialist",
+   "pnl90": 528123.3,
+   "volume90": 12211358.29,
+   "sharpe": 1.2441,
+   "pnlDays": 91,
+   "medianTradeUsd": 10,
+   "winDayRate": 0.4725,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.4725 below 0.50 floor",
+   "categories": {}
+  },
+  "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4": {
+   "name": "coali10",
+   "archetype": "Politics & news trader",
+   "pnl90": 512773.01,
+   "volume90": 8780795.18,
+   "sharpe": 2.9833,
+   "pnlDays": 71,
+   "medianTradeUsd": 0.03,
+   "winDayRate": 0.5211,
+   "categoryShare": {
+    "Politics": 0.446,
+    "Sports": 0.2557,
+    "Economics": 0.1278,
+    "Other": 0.1274,
+    "Crypto": 0.0396,
+    "Esports": 0.0021,
+    "Tech & AI": 0.001,
+    "Culture": 0.0002,
+    "Mentions": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Culture": {
+     "settledTrades": 2,
+     "wins": 2,
+     "staked": 2174.03,
+     "pnl": 792.44,
+     "roi": 0.3645,
+     "cohortWinRate": 0.7,
+     "cohortRoi": 0.40919
+    },
+    "Politics": {
+     "settledTrades": 49,
+     "wins": 17,
+     "staked": 369725.0,
+     "pnl": -26313.29,
+     "roi": -0.07117,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Esports": {
+     "settledTrades": 5,
+     "wins": 2,
+     "staked": 16111.78,
+     "pnl": 3968.5,
+     "roi": 0.24631,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Crypto": {
+     "settledTrades": 3,
+     "wins": 0,
+     "staked": 989.46,
+     "pnl": -989.46,
+     "roi": -1.0,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    },
+    "Economics": {
+     "settledTrades": 10,
+     "wins": 5,
+     "staked": 285042.0,
+     "pnl": 184748.63,
+     "roi": 0.64815,
+     "cohortWinRate": 0.7256,
+     "cohortRoi": 0.25831
+    },
+    "Other": {
+     "settledTrades": 17,
+     "wins": 2,
+     "staked": 117216.41,
+     "pnl": -11442.99,
+     "roi": -0.09762,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    },
+    "Sports": {
+     "settledTrades": 60,
+     "wins": 19,
+     "staked": 1401996.14,
+     "pnl": 12354.23,
+     "roi": 0.00881,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 146
+  },
+  "0x23d81ba9371e576015c1e562db09c689f56b0288": {
+   "name": "flawfence",
+   "archetype": "Sports specialist",
+   "pnl90": 508544.27,
+   "volume90": 4473442.41,
+   "sharpe": 1.9707,
+   "pnlDays": 91,
+   "medianTradeUsd": 15.32,
+   "winDayRate": 0.6154,
+   "categoryShare": {
+    "Sports": 0.7267,
+    "Politics": 0.2017,
+    "Crypto": 0.0451,
+    "Esports": 0.015,
+    "Other": 0.0114,
+    "Economics": 0.0001,
+    "Weather": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Politics": {
+     "settledTrades": 45,
+     "wins": 22,
+     "staked": 224857.77,
+     "pnl": 47787.97,
+     "roi": 0.21253,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Sports": {
+     "settledTrades": 75,
+     "wins": 29,
+     "staked": 2682597.39,
+     "pnl": -264386.6,
+     "roi": -0.09856,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Economics": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 619.44,
+     "pnl": 185.03,
+     "roi": 0.2987,
+     "cohortWinRate": 0.7256,
+     "cohortRoi": 0.25831
+    },
+    "Weather": {
+     "settledTrades": 1,
+     "wins": 0,
+     "staked": 359.45,
+     "pnl": -359.45,
+     "roi": -1.0,
+     "cohortWinRate": 0.8913,
+     "cohortRoi": -0.00429
+    },
+    "Other": {
+     "settledTrades": 5,
+     "wins": 0,
+     "staked": 4415.71,
+     "pnl": -2871.94,
+     "roi": -0.65039,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    },
+    "Crypto": {
+     "settledTrades": 2,
+     "wins": 2,
+     "staked": 36658.28,
+     "pnl": 1641.11,
+     "roi": 0.04477,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    },
+    "Esports": {
+     "settledTrades": 3,
+     "wins": 1,
+     "staked": 47352.16,
+     "pnl": -7552.21,
+     "roi": -0.15949,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    }
+   },
+   "settledTrades": 132
+  },
+  "0xb0c85813a7a4428f1139ff91d3118a92c391fe7f": {
+   "name": "-.lidiquity.farmer.",
+   "archetype": "Favorite grinder",
+   "pnl90": 497685.85,
+   "volume90": 7487271.24,
+   "sharpe": 1.971,
+   "pnlDays": 49,
+   "medianTradeUsd": 9.93,
+   "winDayRate": 0.8163,
+   "categoryShare": {
+    "Sports": 0.382,
+    "Weather": 0.1694,
+    "Other": 0.1319,
+    "Economics": 0.0957,
+    "Esports": 0.0777,
+    "Politics": 0.0763,
+    "Tech & AI": 0.024,
+    "Culture": 0.0207,
+    "Mentions": 0.0189,
+    "Crypto": 0.0035
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xdb27bf2ac5d428a9c63dbc914611036855a6c56e": {
+   "name": "DrPufferfish",
+   "archetype": "Low-frequency sniper",
+   "pnl90": 494401.4,
+   "volume90": 0.0,
+   "sharpe": 4.2905,
+   "pnlDays": 66,
+   "medianTradeUsd": 100.0,
+   "winDayRate": 0.6462,
+   "categoryShare": {},
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {},
+   "settledTrades": 0
+  },
+  "0xce25e214d5cfe4f459cf67f08df581885aae7fdc": {
+   "name": "0xcE25E214D5cfE4f459cf67F08DF581885AAE7Fdc-1777575398144",
+   "archetype": "Market maker / HFT",
+   "pnl90": 461170.19,
+   "volume90": 2155183.41,
+   "sharpe": 28.2857,
+   "pnlDays": 91,
+   "medianTradeUsd": 5.02,
+   "winDayRate": 0.967,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a": {
+   "name": "zb8",
+   "archetype": "Generalist",
+   "pnl90": 454505.01,
+   "volume90": 4884594.38,
+   "sharpe": 4.6318,
+   "pnlDays": 91,
+   "medianTradeUsd": 22.72,
+   "winDayRate": 0.5934,
+   "categoryShare": {
+    "Esports": 0.3887,
+    "Politics": 0.3446,
+    "Sports": 0.0551,
+    "Economics": 0.0471,
+    "Mentions": 0.0462,
+    "Crypto": 0.0452,
+    "Other": 0.033,
+    "Culture": 0.0322,
+    "Tech & AI": 0.0078,
+    "Weather": 0.0002
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 216,
+     "wins": 115,
+     "staked": 1578727.46,
+     "pnl": 195053.42,
+     "roi": 0.12355,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Culture": {
+     "settledTrades": 11,
+     "wins": 7,
+     "staked": 130897.6,
+     "pnl": 38518.84,
+     "roi": 0.29427,
+     "cohortWinRate": 0.7,
+     "cohortRoi": 0.40919
+    },
+    "Politics": {
+     "settledTrades": 59,
+     "wins": 39,
+     "staked": 1119911.98,
+     "pnl": 285675.05,
+     "roi": 0.25509,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Sports": {
+     "settledTrades": 41,
+     "wins": 14,
+     "staked": 180422.23,
+     "pnl": -31628.47,
+     "roi": -0.1753,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Other": {
+     "settledTrades": 21,
+     "wins": 13,
+     "staked": 139667.38,
+     "pnl": -26159.67,
+     "roi": -0.1873,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    },
+    "Economics": {
+     "settledTrades": 3,
+     "wins": 1,
+     "staked": 203625.8,
+     "pnl": -1835.29,
+     "roi": -0.00901,
+     "cohortWinRate": 0.7256,
+     "cohortRoi": 0.25831
+    },
+    "Weather": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 1009.99,
+     "pnl": 1.07,
+     "roi": 0.00106,
+     "cohortWinRate": 0.8913,
+     "cohortRoi": -0.00429
+    },
+    "Tech & AI": {
+     "settledTrades": 7,
+     "wins": 5,
+     "staked": 38086.53,
+     "pnl": 3.65,
+     "roi": 0.0001,
+     "cohortWinRate": 0.75,
+     "cohortRoi": 0.03516
+    },
+    "Mentions": {
+     "settledTrades": 46,
+     "wins": 15,
+     "staked": 209191.74,
+     "pnl": 14881.25,
+     "roi": 0.07114,
+     "cohortWinRate": 0.6667,
+     "cohortRoi": 0.05522
+    },
+    "Crypto": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 219065.07,
+     "pnl": 876.41,
+     "roi": 0.004,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    }
+   },
+   "settledTrades": 406
+  },
+  "0x6d20c35f65d9899b6d6b74f8466e824580f9a165": {
+   "name": "Djdjdjekekek",
+   "archetype": "Generalist",
+   "pnl90": 449396.66,
+   "volume90": 38760636.12,
+   "sharpe": 0.5853,
+   "pnlDays": 46,
+   "medianTradeUsd": 21,
+   "winDayRate": 0.7609,
+   "categoryShare": {
+    "Sports": 0.5851,
+    "Esports": 0.4069,
+    "Crypto": 0.0071,
+    "Other": 0.0009,
+    "Culture": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 109,
+     "wins": 43,
+     "staked": 9053143.91,
+     "pnl": -1826330.34,
+     "roi": -0.20173,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Sports": {
+     "settledTrades": 103,
+     "wins": 56,
+     "staked": 12628252.53,
+     "pnl": 793180.96,
+     "roi": 0.06281,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Crypto": {
+     "settledTrades": 2,
+     "wins": 1,
+     "staked": 7768.32,
+     "pnl": -7715.68,
+     "roi": -0.99322,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    }
+   },
+   "settledTrades": 214
+  },
+  "0xd9e0aaca471f489be338fd0f91a26e8669a805f2": {
+   "name": "0xD9E0AACa471f48F91A26E8669A805f2",
+   "archetype": "Market maker / HFT",
+   "pnl90": 432935.1,
+   "volume90": 14061806.5,
+   "sharpe": 17.2487,
+   "pnlDays": 91,
+   "medianTradeUsd": 13.76,
+   "winDayRate": 0.9341,
+   "categoryShare": {
+    "Sports": 0.9887,
+    "Esports": 0.0106,
+    "Crypto": 0.0007
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xd23f8c8aab13cfb2a35da40b67f8471faf9894a1": {
+   "name": "Corlys",
+   "archetype": "Favorite grinder",
+   "pnl90": 421603.21,
+   "volume90": 3005936.31,
+   "sharpe": 2.6325,
+   "pnlDays": 76,
+   "medianTradeUsd": 6.99,
+   "winDayRate": 0.8026,
+   "categoryShare": {
+    "Weather": 0.5062,
+    "Sports": 0.1556,
+    "Other": 0.0775,
+    "Economics": 0.0754,
+    "Politics": 0.0688,
+    "Mentions": 0.0373,
+    "Tech & AI": 0.0346,
+    "Culture": 0.026,
+    "Esports": 0.016,
+    "Crypto": 0.0026
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x13fa4ce1b8a27dd0b7a72db6205a50ee6ff0954c": {
+   "name": "betterfasterstronger",
+   "archetype": "Longshot hunter",
+   "pnl90": 406588.47,
+   "volume90": 233377.07,
+   "sharpe": 16.3563,
+   "pnlDays": 9,
+   "medianTradeUsd": 1,
+   "winDayRate": 0.8889,
+   "categoryShare": {
+    "Sports": 0.2786,
+    "Economics": 0.2706,
+    "Politics": 0.1341,
+    "Culture": 0.0925,
+    "Other": 0.0634,
+    "Tech & AI": 0.0628,
+    "Mentions": 0.0589,
+    "Weather": 0.0342,
+    "Esports": 0.0049
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {},
+   "settledTrades": 0
+  },
+  "0x74471a007ddcc488f6d57b5e86dfb35a8d48a16d": {
+   "name": "tetrose",
+   "archetype": "Politics & news trader",
+   "pnl90": 403205.48,
+   "volume90": 6413853.88,
+   "sharpe": 1.9354,
+   "pnlDays": 91,
+   "medianTradeUsd": 7.14,
+   "winDayRate": 0.3956,
+   "categoryShare": {
+    "Politics": 0.7002,
+    "Economics": 0.1457,
+    "Other": 0.1436,
+    "Sports": 0.0072,
+    "Tech & AI": 0.0032
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.3956 below 0.50 floor",
+   "categories": {}
+  },
+  "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2": {
+   "name": "Mysaria",
+   "archetype": "Favorite grinder",
+   "pnl90": 397554.37,
+   "volume90": 1471512.61,
+   "sharpe": 15.1891,
+   "pnlDays": 7,
+   "medianTradeUsd": 7.99,
+   "winDayRate": 0.8571,
+   "categoryShare": {
+    "Weather": 0.4844,
+    "Politics": 0.1838,
+    "Other": 0.1553,
+    "Economics": 0.061,
+    "Sports": 0.0402,
+    "Mentions": 0.0311,
+    "Culture": 0.0185,
+    "Tech & AI": 0.0176,
+    "Crypto": 0.0048,
+    "Esports": 0.0034
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Weather": {
+     "settledTrades": 108,
+     "wins": 89,
+     "staked": 6146.54,
+     "pnl": -83.04,
+     "roi": -0.01351,
+     "cohortWinRate": 0.8913,
+     "cohortRoi": -0.00429
+    },
+    "Sports": {
+     "settledTrades": 5,
+     "wins": 4,
+     "staked": 108.56,
+     "pnl": 18.98,
+     "roi": 0.1748,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Politics": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 15.68,
+     "pnl": 0.32,
+     "roi": 0.02038,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Mentions": {
+     "settledTrades": 2,
+     "wins": 2,
+     "staked": 47.04,
+     "pnl": 0.06,
+     "roi": 0.00134,
+     "cohortWinRate": 0.6667,
+     "cohortRoi": 0.05522
+    }
+   },
+   "settledTrades": 116
+  },
+  "0xdb859a551fcf56e49416160911476bea7307152f": {
+   "name": "AV23IUa",
+   "archetype": "Sports specialist",
+   "pnl90": 374115.28,
+   "volume90": 17277421.4,
+   "sharpe": 0.9473,
+   "pnlDays": 86,
+   "medianTradeUsd": 19.41,
+   "winDayRate": 0.5698,
+   "categoryShare": {
+    "Sports": 0.8445,
+    "Esports": 0.1545,
+    "Other": 0.0009,
+    "Politics": 0.0002,
+    "Crypto": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 650,
+     "wins": 289,
+     "staked": 13682549.18,
+     "pnl": 219789.37,
+     "roi": 0.01606,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Esports": {
+     "settledTrades": 139,
+     "wins": 65,
+     "staked": 2424449.59,
+     "pnl": -122699.19,
+     "roi": -0.05061,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Crypto": {
+     "settledTrades": 1,
+     "wins": 0,
+     "staked": 5.25,
+     "pnl": -5.25,
+     "roi": -1.0,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    },
+    "Politics": {
+     "settledTrades": 1,
+     "wins": 0,
+     "staked": 3059.69,
+     "pnl": -3059.69,
+     "roi": -1.0,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    }
+   },
+   "settledTrades": 791
+  },
+  "0xc72d7dcdb23597d143a83536fb97b1d7db7efc21": {
+   "name": "HongYunX",
+   "archetype": "Sports specialist",
+   "pnl90": 373003.83,
+   "volume90": 2775287.63,
+   "sharpe": 3.7675,
+   "pnlDays": 61,
+   "medianTradeUsd": 19.77,
+   "winDayRate": 0.6667,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 169,
+     "wins": 115,
+     "staked": 2783368.07,
+     "pnl": 516635.13,
+     "roi": 0.18562,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 169
+  },
+  "0x6d3c5bd13984b2de47c3a88ddc455309aab3d294": {
+   "name": "VeryLucky888",
+   "archetype": "Sports specialist",
+   "pnl90": 372477.22,
+   "volume90": 15266102.27,
+   "sharpe": 5.1403,
+   "pnlDays": 91,
+   "medianTradeUsd": 9.47,
+   "winDayRate": 0.6044,
+   "categoryShare": {
+    "Sports": 0.9593,
+    "Esports": 0.0398,
+    "Other": 0.0006,
+    "Crypto": 0.0002,
+    "Politics": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xb1ca909e848cc24ec4e220ce1c453bc290c51705": {
+   "name": "abdkxrhxr",
+   "archetype": "Politics & news trader",
+   "pnl90": 372346.41,
+   "volume90": 7876398.85,
+   "sharpe": 0.9053,
+   "pnlDays": 91,
+   "medianTradeUsd": 2.16,
+   "winDayRate": 0.6593,
+   "categoryShare": {
+    "Politics": 0.6582,
+    "Other": 0.2724,
+    "Economics": 0.0215,
+    "Crypto": 0.0187,
+    "Tech & AI": 0.0135,
+    "Culture": 0.0092,
+    "Mentions": 0.0064,
+    "Sports": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Economics": {
+     "settledTrades": 12,
+     "wins": 11,
+     "staked": 110976.08,
+     "pnl": 23582.03,
+     "roi": 0.2125,
+     "cohortWinRate": 0.7256,
+     "cohortRoi": 0.25831
+    },
+    "Politics": {
+     "settledTrades": 227,
+     "wins": 163,
+     "staked": 1575812.88,
+     "pnl": 97005.92,
+     "roi": 0.06156,
+     "cohortWinRate": 0.6412,
+     "cohortRoi": 0.11924
+    },
+    "Tech & AI": {
+     "settledTrades": 7,
+     "wins": 4,
+     "staked": 17319.54,
+     "pnl": 1612.0,
+     "roi": 0.09307,
+     "cohortWinRate": 0.75,
+     "cohortRoi": 0.03516
+    },
+    "Culture": {
+     "settledTrades": 10,
+     "wins": 7,
+     "staked": 2837.95,
+     "pnl": 18126.71,
+     "roi": 6.38725,
+     "cohortWinRate": 0.7,
+     "cohortRoi": 0.40919
+    },
+    "Sports": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 603.02,
+     "pnl": 56.67,
+     "roi": 0.09398,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    },
+    "Other": {
+     "settledTrades": 33,
+     "wins": 27,
+     "staked": 690306.95,
+     "pnl": 12717.75,
+     "roi": 0.01842,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    },
+    "Crypto": {
+     "settledTrades": 1,
+     "wins": 1,
+     "staked": 156.25,
+     "pnl": 113.23,
+     "roi": 0.72472,
+     "cohortWinRate": 0.4545,
+     "cohortRoi": -0.04263
+    }
+   },
+   "settledTrades": 291
+  },
+  "0x7ad71d79a3bb90d0a87a06500fa0fe11663842aa": {
+   "name": "theowalcott",
+   "archetype": "Sports specialist",
+   "pnl90": 369692.2,
+   "volume90": 2021446.98,
+   "sharpe": 4.4528,
+   "pnlDays": 19,
+   "medianTradeUsd": 5.24,
+   "winDayRate": 0.5789,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Sports": {
+     "settledTrades": 59,
+     "wins": 36,
+     "staked": 2239459.39,
+     "pnl": 542208.03,
+     "roi": 0.24212,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 59
+  },
+  "0x21064fd320bfd5a86f8c92a94d3209edf4154dea": {
+   "name": "rainbowlilies",
+   "archetype": "Sports specialist",
+   "pnl90": 369293.85,
+   "volume90": 2112299.41,
+   "sharpe": 5.397,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.78,
+   "winDayRate": 0.8571,
+   "categoryShare": {
+    "Sports": 0.7848,
+    "Politics": 0.1678,
+    "Other": 0.0186,
+    "Economics": 0.018,
+    "Tech & AI": 0.0061,
+    "Culture": 0.0043,
+    "Esports": 0.0004,
+    "Weather": 0.0001,
+    "Crypto": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Other": {
+     "settledTrades": 14,
+     "wins": 9,
+     "staked": 365.54,
+     "pnl": 236.07,
+     "roi": 0.64583,
+     "cohortWinRate": 0.6368,
+     "cohortRoi": 0.15346
+    }
+   },
+   "settledTrades": 14
+  },
+  "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5": {
+   "name": "IMAREALPERSON",
+   "archetype": "Generalist",
+   "pnl90": 367849.7,
+   "volume90": 2096647.77,
+   "sharpe": 2.8345,
+   "pnlDays": 91,
+   "medianTradeUsd": 18.66,
+   "winDayRate": 0.6044,
+   "categoryShare": {
+    "Esports": 0.9848,
+    "Sports": 0.0152
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 527,
+     "wins": 280,
+     "staked": 2766242.46,
+     "pnl": 184223.8,
+     "roi": 0.0666,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Sports": {
+     "settledTrades": 32,
+     "wins": 21,
+     "staked": 186952.94,
+     "pnl": -16890.85,
+     "roi": -0.09035,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 559
+  },
+  "0x5dab5ed9691fab220535891d9c7f5c28eed322e1": {
+   "name": "Weaseloftheweek",
+   "archetype": "Sports specialist",
+   "pnl90": 367400.01,
+   "volume90": 6373097.5,
+   "sharpe": 4.9385,
+   "pnlDays": 15,
+   "medianTradeUsd": 13.2,
+   "winDayRate": 0.6,
+   "categoryShare": {
+    "Sports": 0.8114,
+    "Esports": 0.1857,
+    "Other": 0.0029
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 19,
+     "wins": 9,
+     "staked": 771617.64,
+     "pnl": 1483.71,
+     "roi": 0.00192,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Sports": {
+     "settledTrades": 64,
+     "wins": 33,
+     "staked": 3850550.14,
+     "pnl": 648721.64,
+     "roi": 0.16848,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 83
+  },
+  "0x06dc51826bc524d9a83770e7de9dd7e005b04524": {
+   "name": "0x06dc51826bc524d9a83770e7de9dd7e005b0452",
+   "archetype": "Market maker / HFT",
+   "pnl90": 359062.97,
+   "volume90": 12654345.37,
+   "sharpe": 2.269,
+   "pnlDays": 91,
+   "medianTradeUsd": 14.32,
+   "winDayRate": 0.7143,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xf201a19b43471261a3c1ba9247335d55270e527e": {
+   "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+   "archetype": "Generalist",
+   "pnl90": 357851.65,
+   "volume90": 2093860.6,
+   "sharpe": 2.8685,
+   "pnlDays": 89,
+   "medianTradeUsd": 44.42,
+   "winDayRate": 0.5955,
+   "categoryShare": {
+    "Esports": 0.9907,
+    "Sports": 0.0093
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 408,
+     "wins": 188,
+     "staked": 2107102.26,
+     "pnl": 100664.0,
+     "roi": 0.04777,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Sports": {
+     "settledTrades": 6,
+     "wins": 2,
+     "staked": 18420.92,
+     "pnl": 109.5,
+     "roi": 0.00594,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 414
+  },
+  "0x8a8685a792c184e5c2ee8c7d4d4baba7c2c94998": {
+   "name": "BrotherObama",
+   "archetype": "Generalist",
+   "pnl90": 351094.22,
+   "volume90": 1061363.55,
+   "sharpe": 6.8992,
+   "pnlDays": 30,
+   "medianTradeUsd": 22.32,
+   "winDayRate": 0.5,
+   "categoryShare": {
+    "Esports": 0.8774,
+    "Sports": 0.1226
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 169,
+     "wins": 61,
+     "staked": 872947.5,
+     "pnl": 187014.87,
+     "roi": 0.21423,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Sports": {
+     "settledTrades": 11,
+     "wins": 6,
+     "staked": 124626.77,
+     "pnl": 132093.43,
+     "roi": 1.05991,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 180
+  },
+  "0xe1000ddb5f5025849765e29d051dfff78f5d4d41": {
+   "name": "TeGeeLP",
+   "archetype": "Generalist",
+   "pnl90": 341520.16,
+   "volume90": 1440793.98,
+   "sharpe": 6.8025,
+   "pnlDays": 26,
+   "medianTradeUsd": 31.79,
+   "winDayRate": 0.4615,
+   "categoryShare": {
+    "Esports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.4615 below 0.50 floor",
+   "categories": {}
+  },
+  "0x2663daca3cecf3767ca1c3b126002a8578a8ed1f": {
+   "name": "Q96s3kwozynxpau",
+   "archetype": "Sports specialist",
+   "pnl90": 311698.94,
+   "volume90": 5596140.87,
+   "sharpe": 0.7459,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.82,
+   "winDayRate": 0.6813,
+   "categoryShare": {
+    "Sports": 0.9281,
+    "Politics": 0.0719,
+    "Economics": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {},
+   "settledTrades": 0
+  },
+  "0x79ae097215202b5d01f98e4479fb219102469a4a": {
+   "name": "CORGI8",
+   "archetype": "Generalist",
+   "pnl90": 306580.41,
+   "volume90": 4081575.72,
+   "sharpe": 2.8142,
+   "pnlDays": 57,
+   "medianTradeUsd": 24.89,
+   "winDayRate": 0.5263,
+   "categoryShare": {
+    "Esports": 0.6861,
+    "Sports": 0.3139,
+    "Other": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 267,
+     "wins": 110,
+     "staked": 2556447.72,
+     "pnl": -57787.01,
+     "roi": -0.0226,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Sports": {
+     "settledTrades": 146,
+     "wins": 70,
+     "staked": 1137886.21,
+     "pnl": 283218.42,
+     "roi": 0.2489,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 413
+  },
+  "0xc65ca4755436f82d8eb461e65781584b8cadea39": {
+   "name": "greyoctober",
+   "archetype": "Generalist",
+   "pnl90": 298738.77,
+   "volume90": 1477321.86,
+   "sharpe": 4.049,
+   "pnlDays": 52,
+   "medianTradeUsd": 15,
+   "winDayRate": 0.6154,
+   "categoryShare": {
+    "Esports": 0.6895,
+    "Sports": 0.3105
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {
+    "Esports": {
+     "settledTrades": 161,
+     "wins": 94,
+     "staked": 1019658.16,
+     "pnl": 229274.09,
+     "roi": 0.22485,
+     "cohortWinRate": 0.4899,
+     "cohortRoi": 0.02458
+    },
+    "Sports": {
+     "settledTrades": 27,
+     "wins": 19,
+     "staked": 458960.36,
+     "pnl": 65539.8,
+     "roi": 0.1428,
+     "cohortWinRate": 0.5184,
+     "cohortRoi": 0.29799
+    }
+   },
+   "settledTrades": 188
+  },
+  "0x4f1d5ae26fc31472966e951af3183308736d8de2": {
+   "name": "e46m3",
+   "archetype": "Favorite grinder",
+   "pnl90": 289196.71,
+   "volume90": 9620079.86,
+   "sharpe": 3.0684,
+   "pnlDays": 91,
+   "medianTradeUsd": 13.05,
+   "winDayRate": 0.7033,
+   "categoryShare": {
+    "Sports": 0.4948,
+    "Politics": 0.2,
+    "Economics": 0.0903,
+    "Tech & AI": 0.0677,
+    "Other": 0.0466,
+    "Weather": 0.0355,
+    "Culture": 0.0233,
+    "Esports": 0.0205,
+    "Mentions": 0.0203,
+    "Crypto": 0.0011
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x9d84ce0306f8551e02efef1680475fc0f1dc1344": {
+   "name": "ImJustKen",
+   "archetype": "Market maker / HFT",
+   "pnl90": 287541.4,
+   "volume90": 4842557.45,
+   "sharpe": 2.5972,
+   "pnlDays": 91,
+   "medianTradeUsd": 2.06,
+   "winDayRate": 0.6374,
+   "categoryShare": {
+    "Politics": 0.4473,
+    "Economics": 0.2707,
+    "Other": 0.2077,
+    "Sports": 0.0492,
+    "Culture": 0.025,
+    "Crypto": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xed107a85a4585a381e48c7f7ca4144909e7dd2e5": {
+   "name": "elmcap2",
+   "archetype": "Politics & news trader",
+   "pnl90": 279829.8,
+   "volume90": 12505148.8,
+   "sharpe": 7.6564,
+   "pnlDays": 91,
+   "medianTradeUsd": 32.67,
+   "winDayRate": 0.8022,
+   "categoryShare": {
+    "Economics": 0.539,
+    "Politics": 0.2151,
+    "Other": 0.146,
+    "Sports": 0.0975,
+    "Tech & AI": 0.0012,
+    "Crypto": 0.0011,
+    "Culture": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3": {
+   "name": "fkigedgjdgwbg",
+   "archetype": "Favorite grinder",
+   "pnl90": 273002.6,
+   "volume90": 20678147.83,
+   "sharpe": 4.2358,
+   "pnlDays": 65,
+   "medianTradeUsd": 46.61,
+   "winDayRate": 0.6462,
+   "categoryShare": {
+    "Esports": 0.9994,
+    "Sports": 0.0006
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x251c1a283703beed41590b0875a8dcb8ddd1541f": {
+   "name": "0xAAAAA",
+   "archetype": "Market maker / HFT",
+   "pnl90": 261382.79,
+   "volume90": 9056306.24,
+   "sharpe": 18.956,
+   "pnlDays": 91,
+   "medianTradeUsd": 43.05,
+   "winDayRate": 0.9011,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1": {
+   "name": "aenews2",
+   "archetype": "Politics & news trader",
+   "pnl90": 260630.8,
+   "volume90": 16959806.36,
+   "sharpe": 1.4294,
+   "pnlDays": 91,
+   "medianTradeUsd": 5.95,
+   "winDayRate": 0.5934,
+   "categoryShare": {
+    "Politics": 0.5934,
+    "Other": 0.1194,
+    "Sports": 0.1034,
+    "Crypto": 0.0934,
+    "Economics": 0.0445,
+    "Culture": 0.023,
+    "Mentions": 0.018,
+    "Tech & AI": 0.0042,
+    "Esports": 0.0008
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x8546a601f7c7cc3dae7141f20b0e09e42bbf35b8": {
+   "name": "HVAB",
+   "archetype": "Sports specialist",
+   "pnl90": 246741.47,
+   "volume90": 2714665.83,
+   "sharpe": 8.0619,
+   "pnlDays": 64,
+   "medianTradeUsd": 39.94,
+   "winDayRate": 0.8548,
+   "categoryShare": {
+    "Sports": 0.9998,
+    "Politics": 0.0002,
+    "Esports": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x67273092baf2e83c1ea6292e52981dbbbbb85b6d": {
+   "name": "oneAce",
+   "archetype": "Sports specialist",
+   "pnl90": 241488.93,
+   "volume90": 159536.36,
+   "sharpe": 2.3667,
+   "pnlDays": 91,
+   "medianTradeUsd": 9.71,
+   "winDayRate": 0.4945,
+   "categoryShare": {
+    "Sports": 0.6811,
+    "Culture": 0.2502,
+    "Other": 0.0423,
+    "Politics": 0.0175,
+    "Tech & AI": 0.0089
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.4945 below 0.50 floor",
+   "categories": {}
+  },
+  "0x0cb038487586d1119b165466072e9baf666f3a90": {
+   "name": "0x0cb03848",
+   "archetype": "Crypto scalper",
+   "pnl90": 236601.44,
+   "volume90": 155224.73,
+   "sharpe": 15.0212,
+   "pnlDays": 42,
+   "medianTradeUsd": 7.52,
+   "winDayRate": 0.7857,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xa4b7b1814b0da33f2b61be4939976898aa476008": {
+   "name": "midwicket72",
+   "archetype": "Market maker / HFT",
+   "pnl90": 222222.64,
+   "volume90": 8273523.79,
+   "sharpe": 1.9141,
+   "pnlDays": 90,
+   "medianTradeUsd": 16.1,
+   "winDayRate": 0.6444,
+   "categoryShare": {
+    "Sports": 0.8497,
+    "Esports": 0.0741,
+    "Culture": 0.0723,
+    "Tech & AI": 0.0039
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x2dc13c6bda81b202281e796953a7323de675b33c": {
+   "name": "xifutloong3",
+   "archetype": "Whale",
+   "pnl90": 222076.75,
+   "volume90": 3684527.16,
+   "sharpe": 2.0642,
+   "pnlDays": 65,
+   "medianTradeUsd": 2722.41,
+   "winDayRate": 0.5538,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x2b3d1e9bdf941d435dc91a8b974b86f7064c8db7": {
+   "name": "crckr",
+   "archetype": "Generalist",
+   "pnl90": 219975.68,
+   "volume90": 130505.36,
+   "sharpe": 1.5715,
+   "pnlDays": 91,
+   "medianTradeUsd": 1.0,
+   "winDayRate": 0.7912,
+   "categoryShare": {
+    "Sports": 0.4389,
+    "Other": 0.3805,
+    "Culture": 0.1038,
+    "Esports": 0.0692,
+    "Politics": 0.0073,
+    "Tech & AI": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xf0ca28d5b0141f0a8e7b251dea80fd881cb166ed": {
+   "name": "Hauchn",
+   "archetype": "Politics & news trader",
+   "pnl90": 216875.57,
+   "volume90": 656611.23,
+   "sharpe": 1.5712,
+   "pnlDays": 91,
+   "medianTradeUsd": 2.14,
+   "winDayRate": 0.3846,
+   "categoryShare": {
+    "Economics": 0.9999,
+    "Tech & AI": 0.0001,
+    "Culture": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.3846 below 0.50 floor",
+   "categories": {}
+  },
+  "0xe30e74595517de48f1fb19f4553dd3d9f1e96b87": {
+   "name": "0xE30E74595517de48f1FB19f4553dd3d9F1E96B87-1772612985000",
+   "archetype": "Sports specialist",
+   "pnl90": 208408.15,
+   "volume90": 5658099.06,
+   "sharpe": 1.0062,
+   "pnlDays": 31,
+   "medianTradeUsd": 23.04,
+   "winDayRate": 0.5484,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x10ef48324b3ebc06d9137794c70285e8e37a7d7b": {
+   "name": "Future-Tarot-Trader",
+   "archetype": "Market maker / HFT",
+   "pnl90": 206661.79,
+   "volume90": 3075576.88,
+   "sharpe": 18.4088,
+   "pnlDays": 36,
+   "medianTradeUsd": 56.94,
+   "winDayRate": 0.9722,
+   "categoryShare": {
+    "Esports": 0.9999,
+    "Other": 0.0001,
+    "Crypto": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xf5592765133941c40c77e52bc56bbe7ec167f462": {
+   "name": "0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740",
+   "archetype": "Generalist",
+   "pnl90": 201726.19,
+   "volume90": 3631335.08,
+   "sharpe": 2.0537,
+   "pnlDays": 88,
+   "medianTradeUsd": 90,
+   "winDayRate": 0.625,
+   "categoryShare": {
+    "Sports": 0.626,
+    "Esports": 0.2453,
+    "Politics": 0.0888,
+    "Economics": 0.0274,
+    "Other": 0.0125
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0": {
+   "name": "BajaBlaster",
+   "archetype": "Generalist",
+   "pnl90": 196808.48,
+   "volume90": 5742962.84,
+   "sharpe": 2.66,
+   "pnlDays": 69,
+   "medianTradeUsd": 42.93,
+   "winDayRate": 0.5507,
+   "categoryShare": {
+    "Esports": 0.7263,
+    "Sports": 0.2609,
+    "Politics": 0.0054,
+    "Other": 0.0042,
+    "Economics": 0.0031,
+    "Tech & AI": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xb27bc932bf8110d8f78e55da7d5f0497a18b5b82": {
+   "name": "0xb27bc932",
+   "archetype": "Market maker / HFT",
+   "pnl90": 192554.1,
+   "volume90": 428156.17,
+   "sharpe": 6.6514,
+   "pnlDays": 81,
+   "medianTradeUsd": 2.13,
+   "winDayRate": 0.6049,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xcbba64cddd05171925ffd05d8f8abd38c83fdbff": {
+   "name": "HOG993",
+   "archetype": "Sports specialist",
+   "pnl90": 184343.23,
+   "volume90": 6148400.91,
+   "sharpe": 0.6145,
+   "pnlDays": 91,
+   "medianTradeUsd": 4.85,
+   "winDayRate": 0.7473,
+   "categoryShare": {
+    "Sports": 0.9667,
+    "Other": 0.0174,
+    "Culture": 0.0135,
+    "Politics": 0.0023,
+    "Crypto": 0.0001,
+    "Esports": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xdbbbde184ab04018ce0373c0dbe4e5fd6be805a8": {
+   "name": "Marcoli",
+   "archetype": "Whale",
+   "pnl90": 180524.41,
+   "volume90": 2042623.76,
+   "sharpe": 3.1974,
+   "pnlDays": 54,
+   "medianTradeUsd": 20.6,
+   "winDayRate": 0.6111,
+   "categoryShare": {
+    "Sports": 0.9897,
+    "Other": 0.0103
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x7e5e420a5cde8a322f3b5b93a12a164827f47315": {
+   "name": "StasPanda",
+   "archetype": "Generalist",
+   "pnl90": 178334.81,
+   "volume90": 5041821.96,
+   "sharpe": 1.5403,
+   "pnlDays": 91,
+   "medianTradeUsd": 10.54,
+   "winDayRate": 0.5055,
+   "categoryShare": {
+    "Esports": 0.6482,
+    "Sports": 0.2616,
+    "Politics": 0.0471,
+    "Other": 0.0401,
+    "Crypto": 0.0017,
+    "Economics": 0.0011,
+    "Tech & AI": 0.0001,
+    "Culture": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x91667e40b80c447050904b042f3b85d22fc6b479": {
+   "name": "GreenBerry1337",
+   "archetype": "Generalist",
+   "pnl90": 178310.69,
+   "volume90": 1764767.52,
+   "sharpe": 7.0903,
+   "pnlDays": 56,
+   "medianTradeUsd": 40.86,
+   "winDayRate": 0.8333,
+   "categoryShare": {
+    "Esports": 0.9478,
+    "Sports": 0.0515,
+    "Other": 0.0007,
+    "Politics": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x43cab54b56aba79c29c1ba14b889e7de5532c219": {
+   "name": "Bulls94",
+   "archetype": "Sports specialist",
+   "pnl90": 177680.89,
+   "volume90": 294387.23,
+   "sharpe": 10.5927,
+   "pnlDays": 12,
+   "medianTradeUsd": 10.21,
+   "winDayRate": 0.8333,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xe613b515bd46b1585a8b137a4d291d9b80bd540e": {
+   "name": "Gucky-45",
+   "archetype": "Sports specialist",
+   "pnl90": 173993.42,
+   "volume90": 2994807.79,
+   "sharpe": 0.5927,
+   "pnlDays": 91,
+   "medianTradeUsd": 1.9,
+   "winDayRate": 0.7143,
+   "categoryShare": {
+    "Sports": 0.8306,
+    "Esports": 0.0602,
+    "Politics": 0.0551,
+    "Other": 0.0487,
+    "Culture": 0.0038,
+    "Crypto": 0.001,
+    "Tech & AI": 0.0003,
+    "Economics": 0.0003
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x006cc834cc092684f1b56626e23bedb3835c16ea": {
+   "name": "0x006cc834Cc092684F1B56626E23BEdB3835c16ea-1729683673397",
+   "archetype": "Sports specialist",
+   "pnl90": 161164,
+   "volume90": 1517660.83,
+   "sharpe": 1.0841,
+   "pnlDays": 91,
+   "medianTradeUsd": 23.58,
+   "winDayRate": 0.5824,
+   "categoryShare": {
+    "Sports": 0.8757,
+    "Politics": 0.094,
+    "Other": 0.0303
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x48ac40fc545cf327edd5365435c3a9f385614a7e": {
+   "name": "BoneOhio",
+   "archetype": "Crypto scalper",
+   "pnl90": 159577.49,
+   "volume90": 6099791.44,
+   "sharpe": 8.6715,
+   "pnlDays": 91,
+   "medianTradeUsd": 16.68,
+   "winDayRate": 0.7692,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x1f9e15f39bbd5d163b0eacf0fbef647ced9e4f1a": {
+   "name": "BirobidjanRepublican",
+   "archetype": "Politics & news trader",
+   "pnl90": 148748.69,
+   "volume90": 1138114.03,
+   "sharpe": 2.4221,
+   "pnlDays": 91,
+   "medianTradeUsd": 6.79,
+   "winDayRate": 0.7802,
+   "categoryShare": {
+    "Politics": 0.5466,
+    "Other": 0.2546,
+    "Economics": 0.117,
+    "Sports": 0.0425,
+    "Tech & AI": 0.0214,
+    "Culture": 0.0113,
+    "Mentions": 0.0036,
+    "Crypto": 0.0023,
+    "Esports": 0.0006,
+    "Weather": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x1465b79bff7992bc703e1aafb3683b1089647072": {
+   "name": "JnStTrdrBnusFnd",
+   "archetype": "Crypto scalper",
+   "pnl90": 134598.24,
+   "volume90": 3313774.64,
+   "sharpe": 0.7752,
+   "pnlDays": 91,
+   "medianTradeUsd": 59,
+   "winDayRate": 0.5275,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x0d2d845a6ff64e31e04a70afce8a573940767ff5": {
+   "name": "38791873984189",
+   "archetype": "Market maker / HFT",
+   "pnl90": 131370.15,
+   "volume90": 10945730.67,
+   "sharpe": 2.5653,
+   "pnlDays": 91,
+   "medianTradeUsd": 12.23,
+   "winDayRate": 0.5934,
+   "categoryShare": {
+    "Sports": 0.7939,
+    "Esports": 0.1632,
+    "Crypto": 0.0243,
+    "Other": 0.0181,
+    "Politics": 0.0004
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x6e2c0e9474af7d720e5aba2a5b0bb6f723b7787c": {
+   "name": "ASPEN88888",
+   "archetype": "Market maker / HFT",
+   "pnl90": 130728.04,
+   "volume90": 3561250.58,
+   "sharpe": 14.2064,
+   "pnlDays": 23,
+   "medianTradeUsd": 11.85,
+   "winDayRate": 0.9524,
+   "categoryShare": {
+    "Esports": 1.0,
+    "Politics": 0.0,
+    "Sports": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xd202bf6d89dc6bab1b9f00ead175f75466348973": {
+   "name": "meoooow",
+   "archetype": "Generalist",
+   "pnl90": 129651.81,
+   "volume90": 5977729.17,
+   "sharpe": 0.8589,
+   "pnlDays": 91,
+   "medianTradeUsd": 3.15,
+   "winDayRate": 0.5714,
+   "categoryShare": {
+    "Sports": 0.596,
+    "Esports": 0.404,
+    "Crypto": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x13e0d447520ebe7f8eeaf7817211201b2c585204": {
+   "name": "0x13e0d447",
+   "archetype": "Market maker / HFT",
+   "pnl90": 126751.16,
+   "volume90": 2319183.32,
+   "sharpe": 14.3675,
+   "pnlDays": 74,
+   "medianTradeUsd": 3.37,
+   "winDayRate": 0.8143,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x41816fc1ebdfeb33f6356f2655ab499253b3de86": {
+   "name": "BobInvestments",
+   "archetype": "Politics & news trader",
+   "pnl90": 123814.38,
+   "volume90": 98382.86,
+   "sharpe": 1.9227,
+   "pnlDays": 91,
+   "medianTradeUsd": 3.05,
+   "winDayRate": 0.4556,
+   "categoryShare": {
+    "Economics": 0.7077,
+    "Other": 0.2053,
+    "Crypto": 0.077,
+    "Politics": 0.01
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.4556 below 0.50 floor",
+   "categories": {}
+  },
+  "0x62cf46cd4c3af254dccfc37a7f93de265b4b5826": {
+   "name": "eCash",
+   "archetype": "Politics & news trader",
+   "pnl90": 122461.43,
+   "volume90": 1106429.39,
+   "sharpe": 3.923,
+   "pnlDays": 91,
+   "medianTradeUsd": 28.78,
+   "winDayRate": 0.6593,
+   "categoryShare": {
+    "Politics": 0.7052,
+    "Crypto": 0.1549,
+    "Other": 0.1173,
+    "Sports": 0.0191,
+    "Culture": 0.0035,
+    "Mentions": 0.0,
+    "Economics": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x2d6ac4f70307102ac46e9e6ded67f3838ddf8add": {
+   "name": "GC-P",
+   "archetype": "Market maker / HFT",
+   "pnl90": 120985.36,
+   "volume90": 30859627.94,
+   "sharpe": 4.6674,
+   "pnlDays": 91,
+   "medianTradeUsd": 19.21,
+   "winDayRate": 0.6923,
+   "categoryShare": {
+    "Sports": 0.9999,
+    "Crypto": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xd487f513cfead22d76b6db4567c756b3cf25053e": {
+   "name": "467j6yj",
+   "archetype": "Favorite grinder",
+   "pnl90": 119306.07,
+   "volume90": 24300342.6,
+   "sharpe": 3.8836,
+   "pnlDays": 73,
+   "medianTradeUsd": 54.52,
+   "winDayRate": 0.8028,
+   "categoryShare": {
+    "Esports": 0.975,
+    "Sports": 0.025
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x16602a38e8fb4498ffee0ea81e08d2b421825598": {
+   "name": "BBQChickenisthebesttt",
+   "archetype": "Generalist",
+   "pnl90": 117687.77,
+   "volume90": 448345.02,
+   "sharpe": 124.9386,
+   "pnlDays": 3,
+   "medianTradeUsd": 32.69,
+   "winDayRate": 1.0,
+   "categoryShare": {
+    "Esports": 0.985,
+    "Sports": 0.015
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xcf7379b4b891c06d88807f6f70efa75378120215": {
+   "name": "NM-P",
+   "archetype": "Market maker / HFT",
+   "pnl90": 115486.71,
+   "volume90": 29170651.93,
+   "sharpe": 4.2603,
+   "pnlDays": 91,
+   "medianTradeUsd": 19.0,
+   "winDayRate": 0.7143,
+   "categoryShare": {
+    "Sports": 0.9999,
+    "Crypto": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x2c3928af89565c352afe8e2a1b25deed77a056dc": {
+   "name": "Dragontree",
+   "archetype": "Politics & news trader",
+   "pnl90": 111157.62,
+   "volume90": 2168864.96,
+   "sharpe": 2.0879,
+   "pnlDays": 91,
+   "medianTradeUsd": 17.78,
+   "winDayRate": 0.4286,
+   "categoryShare": {
+    "Politics": 0.7035,
+    "Other": 0.0647,
+    "Crypto": 0.0603,
+    "Sports": 0.0537,
+    "Economics": 0.0453,
+    "Mentions": 0.0381,
+    "Tech & AI": 0.0342,
+    "Culture": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "two-sided-inventory",
+   "exclusionReason": "buys both outcomes in 47% of markets \u2014 hedged inventory, not a stance",
+   "categories": {}
+  },
+  "0x28bf066c6cb952da62d6d182c16ad173ada64a4e": {
+   "name": "plainfolder",
+   "archetype": "Favorite grinder",
+   "pnl90": 110856.07,
+   "volume90": 3764786.38,
+   "sharpe": 1.5776,
+   "pnlDays": 91,
+   "medianTradeUsd": 13.99,
+   "winDayRate": 0.6484,
+   "categoryShare": {
+    "Weather": 0.3869,
+    "Politics": 0.1528,
+    "Sports": 0.1415,
+    "Other": 0.0859,
+    "Economics": 0.0539,
+    "Tech & AI": 0.0528,
+    "Mentions": 0.0448,
+    "Esports": 0.0387,
+    "Culture": 0.0385,
+    "Crypto": 0.0042
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x14964aefa2cd7caff7878b3820a690a03c5aa429": {
+   "name": "gmpm",
+   "archetype": "Sports specialist",
+   "pnl90": 99315.3,
+   "volume90": 265539.88,
+   "sharpe": 2.5397,
+   "pnlDays": 18,
+   "medianTradeUsd": 48.04,
+   "winDayRate": 0.5,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x751a2b86cab503496efd325c8344e10159349ea1": {
+   "name": "Sharky6999",
+   "archetype": "Sports specialist",
+   "pnl90": 92496.36,
+   "volume90": 34549298.66,
+   "sharpe": 1.2547,
+   "pnlDays": 91,
+   "medianTradeUsd": 10.79,
+   "winDayRate": 0.8352,
+   "categoryShare": {
+    "Sports": 0.6863,
+    "Crypto": 0.1665,
+    "Esports": 0.122,
+    "Politics": 0.0152,
+    "Economics": 0.0063,
+    "Other": 0.0023,
+    "Tech & AI": 0.0013,
+    "Culture": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "wash-fingerprint",
+   "exclusionReason": "$34,549,299 volume for $92,496 PnL (374x) at 449 trades/day \u2014 wash/rebate fingerprint",
+   "categories": {}
+  },
+  "0xc69bd5567b40ef4d11922eaa57e1f9be1c642076": {
+   "name": "vtcchampion52",
+   "archetype": "Market maker / HFT",
+   "pnl90": 91013.51,
+   "volume90": 207180.64,
+   "sharpe": 1.8011,
+   "pnlDays": 41,
+   "medianTradeUsd": 0.01,
+   "winDayRate": 0.5854,
+   "categoryShare": {
+    "Culture": 0.6269,
+    "Esports": 0.363,
+    "Sports": 0.0101
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x58f8f1138be2192696378629fc9aa23c7910dc70": {
+   "name": "bloodmaster",
+   "archetype": "Favorite grinder",
+   "pnl90": 90170.42,
+   "volume90": 4453015.5,
+   "sharpe": 1.0043,
+   "pnlDays": 84,
+   "medianTradeUsd": 39.36,
+   "winDayRate": 0.775,
+   "categoryShare": {
+    "Esports": 0.794,
+    "Sports": 0.206
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xa16a1302ca05463f30faebeb5c045767fde233a1": {
+   "name": "asd147",
+   "archetype": "Favorite grinder",
+   "pnl90": 88084.45,
+   "volume90": 33507281.02,
+   "sharpe": 5.0056,
+   "pnlDays": 91,
+   "medianTradeUsd": 58.35,
+   "winDayRate": 0.967,
+   "categoryShare": {
+    "Esports": 0.4851,
+    "Sports": 0.4666,
+    "Crypto": 0.0121,
+    "Politics": 0.0113,
+    "Culture": 0.0097,
+    "Other": 0.0079,
+    "Mentions": 0.0035,
+    "Weather": 0.0015,
+    "Economics": 0.0011,
+    "Tech & AI": 0.0011
+   },
+   "excluded": true,
+   "exclusionCode": "wash-fingerprint",
+   "exclusionReason": "$33,507,281 volume for $88,084 PnL (380x) at 739 trades/day \u2014 wash/rebate fingerprint",
+   "categories": {}
+  },
+  "0x6e131d6c61216b4a5ec571db332ad3226e7fa801": {
+   "name": "wwarden",
+   "archetype": "Low-frequency sniper",
+   "pnl90": 84303.9,
+   "volume90": 205822.97,
+   "sharpe": 2.869,
+   "pnlDays": 86,
+   "medianTradeUsd": 52.85,
+   "winDayRate": 0.6163,
+   "categoryShare": {
+    "Culture": 0.3191,
+    "Crypto": 0.313,
+    "Other": 0.1429,
+    "Sports": 0.1248,
+    "Politics": 0.0997,
+    "Weather": 0.0005
+   },
+   "excluded": true,
+   "exclusionCode": "two-sided-inventory",
+   "exclusionReason": "buys both outcomes in 42% of markets \u2014 hedged inventory, not a stance",
+   "categories": {}
+  },
+  "0x9e8ecc4cb3c4e48f544cba2fbbb252a6a65e8db8": {
+   "name": "DREAMBIG.",
+   "archetype": "Generalist",
+   "pnl90": 78525.45,
+   "volume90": 510566.32,
+   "sharpe": 10.4334,
+   "pnlDays": 91,
+   "medianTradeUsd": 7.25,
+   "winDayRate": 0.7143,
+   "categoryShare": {
+    "Sports": 0.5239,
+    "Mentions": 0.141,
+    "Politics": 0.1088,
+    "Culture": 0.0989,
+    "Tech & AI": 0.034,
+    "Esports": 0.0312,
+    "Other": 0.0303,
+    "Crypto": 0.0181,
+    "Economics": 0.0138,
+    "Weather": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x5ed5a5299060cdf83f009555cc0b8db3451df63a": {
+   "name": "Fallout3",
+   "archetype": "Crypto scalper",
+   "pnl90": 73295.92,
+   "volume90": 406458.95,
+   "sharpe": 8.0654,
+   "pnlDays": 17,
+   "medianTradeUsd": 3.97,
+   "winDayRate": 0.5882,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x1086a06b43fe0d2d01c343ec0087eea94c2c330a": {
+   "name": "zzongzl",
+   "archetype": "Crypto scalper",
+   "pnl90": 71921.62,
+   "volume90": 278950.18,
+   "sharpe": 10.44,
+   "pnlDays": 18,
+   "medianTradeUsd": 3.41,
+   "winDayRate": 0.5556,
+   "categoryShare": {
+    "Crypto": 0.9962,
+    "Economics": 0.0038
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x0c689c8e78588fd3d02e56a6e787e7f9e9b09e76": {
+   "name": "monkeyking42",
+   "archetype": "Politics & news trader",
+   "pnl90": 64723.24,
+   "volume90": 379034.15,
+   "sharpe": 4.7769,
+   "pnlDays": 13,
+   "medianTradeUsd": 16.01,
+   "winDayRate": 0.5385,
+   "categoryShare": {
+    "Economics": 0.8132,
+    "Other": 0.1868
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x6011655c4afb76f36dd1b08a137a1ba73466b31e": {
+   "name": "HighTempTation",
+   "archetype": "Favorite grinder",
+   "pnl90": 64058.81,
+   "volume90": 1355364.37,
+   "sharpe": 23.7863,
+   "pnlDays": 84,
+   "medianTradeUsd": 130.13,
+   "winDayRate": 0.9759,
+   "categoryShare": {
+    "Weather": 1.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xfbfd14dd4bb607373119de95f1d4b21c3b6c0029": {
+   "name": "XAE12Archangel",
+   "archetype": "Politics & news trader",
+   "pnl90": 62545.34,
+   "volume90": 5974257.78,
+   "sharpe": 6.1579,
+   "pnlDays": 91,
+   "medianTradeUsd": 3.98,
+   "winDayRate": 0.6292,
+   "categoryShare": {
+    "Economics": 0.6805,
+    "Other": 0.1591,
+    "Politics": 0.0886,
+    "Sports": 0.0675,
+    "Crypto": 0.0022,
+    "Tech & AI": 0.0019,
+    "Culture": 0.0001,
+    "Esports": 0.0
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x893575c7d99542163c6b6e8a0fe5af0b6d217daa": {
+   "name": "antec",
+   "archetype": "Market maker / HFT",
+   "pnl90": 59488.51,
+   "volume90": 6748408.18,
+   "sharpe": 2.8897,
+   "pnlDays": 91,
+   "medianTradeUsd": 3.8,
+   "winDayRate": 0.6044,
+   "categoryShare": {
+    "Esports": 0.9532,
+    "Sports": 0.0467,
+    "Culture": 0.0,
+    "Politics": 0.0,
+    "Crypto": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xfc25f141ed27bb1787338d2c4e7f51e3a15e1f7f": {
+   "name": "-Malfunction",
+   "archetype": "Favorite grinder",
+   "pnl90": 59459.1,
+   "volume90": 94460407.46,
+   "sharpe": 0.6993,
+   "pnlDays": 91,
+   "medianTradeUsd": 47.56,
+   "winDayRate": 0.7802,
+   "categoryShare": {
+    "Sports": 0.5167,
+    "Esports": 0.4754,
+    "Crypto": 0.0064,
+    "Economics": 0.0009,
+    "Politics": 0.0005,
+    "Other": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "wash-fingerprint",
+   "exclusionReason": "$94,460,407 volume for $59,459 PnL (1589x) at 1019 trades/day \u2014 wash/rebate fingerprint",
+   "categories": {}
+  },
+  "0x6ff2cb14da8be7eb57541d250a0196c5f295f140": {
+   "name": "jjavi",
+   "archetype": "Generalist",
+   "pnl90": 59011.5,
+   "volume90": 417831.12,
+   "sharpe": 13.6858,
+   "pnlDays": 87,
+   "medianTradeUsd": 0.43,
+   "winDayRate": 0.7209,
+   "categoryShare": {
+    "Weather": 0.9902,
+    "Other": 0.0093,
+    "Sports": 0.0005,
+    "Politics": 0.0001
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x4171038d6e472cce0236d8705d75cfb8c68fbdb1": {
+   "name": "stylus4493",
+   "archetype": "Crypto scalper",
+   "pnl90": 56099.44,
+   "volume90": 255401.92,
+   "sharpe": 6.4071,
+   "pnlDays": 17,
+   "medianTradeUsd": 3.03,
+   "winDayRate": 0.6471,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xa0e72d5575095199ae08ce0dce447f21b7249461": {
+   "name": "uninformedfloww",
+   "archetype": "Market maker / HFT",
+   "pnl90": 55369.79,
+   "volume90": 1845064.07,
+   "sharpe": 4.8723,
+   "pnlDays": 48,
+   "medianTradeUsd": 4.08,
+   "winDayRate": 0.6458,
+   "categoryShare": {
+    "Crypto": 0.9997,
+    "Other": 0.0003
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xba1c348079abd183f6c3d8bacffbab205f29e6f0": {
+   "name": "hurrican1",
+   "archetype": "Crypto scalper",
+   "pnl90": 54201.65,
+   "volume90": 360394.5,
+   "sharpe": 8.2584,
+   "pnlDays": 17,
+   "medianTradeUsd": 3.16,
+   "winDayRate": 0.4118,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x16bb9951a36fce71e2ef57890b786145e0ba8492": {
+   "name": "SDTrading",
+   "archetype": "Whale",
+   "pnl90": 50028.81,
+   "volume90": 6653618.78,
+   "sharpe": 0.26,
+   "pnlDays": 91,
+   "medianTradeUsd": 438.12,
+   "winDayRate": 0.4505,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.4505 below 0.50 floor",
+   "categories": {}
+  },
+  "0x969fae0a3a93778adc42178f72c612ed8c4e4d55": {
+   "name": "superstonksbro",
+   "archetype": "Market maker / HFT",
+   "pnl90": 46972.48,
+   "volume90": 3322969.69,
+   "sharpe": 0.5924,
+   "pnlDays": 91,
+   "medianTradeUsd": 17.71,
+   "winDayRate": 0.5889,
+   "categoryShare": {
+    "Other": 0.4981,
+    "Tech & AI": 0.2971,
+    "Economics": 0.1538,
+    "Sports": 0.0504,
+    "Culture": 0.0006
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x99518fa0d201e7542ea2b852809da5a5c8d811bd": {
+   "name": "imnice",
+   "archetype": "Favorite grinder",
+   "pnl90": 46282.39,
+   "volume90": 1006872.49,
+   "sharpe": 2.2443,
+   "pnlDays": 87,
+   "medianTradeUsd": 218.91,
+   "winDayRate": 0.7586,
+   "categoryShare": {
+    "Politics": 0.3893,
+    "Sports": 0.2115,
+    "Crypto": 0.1445,
+    "Other": 0.1137,
+    "Economics": 0.0991,
+    "Culture": 0.0321,
+    "Tech & AI": 0.0089,
+    "Mentions": 0.0009
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x5bffcf561bcae83af680ad600cb99f1184d6ffbe": {
+   "name": "0943",
+   "archetype": "Politics & news trader",
+   "pnl90": 45000,
+   "volume90": 1762196.7,
+   "sharpe": 4.0778,
+   "pnlDays": 25,
+   "medianTradeUsd": 11.99,
+   "winDayRate": 0.6,
+   "categoryShare": {
+    "Politics": 0.7114,
+    "Other": 0.2616,
+    "Sports": 0.0242,
+    "Esports": 0.0029
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x99f0d31fdced5b3a0e5ee2867730a6644a6c9495": {
+   "name": "0x99F0d31fdced5B3A0e5Ee2867730A6644a6C9495-1779037126382",
+   "archetype": "Sports specialist",
+   "pnl90": 44170.39,
+   "volume90": 4124377.42,
+   "sharpe": 0.646,
+   "pnlDays": 87,
+   "medianTradeUsd": 12.9,
+   "winDayRate": 0.5116,
+   "categoryShare": {
+    "Sports": 0.9979,
+    "Crypto": 0.0009,
+    "Esports": 0.0008,
+    "Politics": 0.0003,
+    "Culture": 0.0002
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x82e3817648b6bbc828160725e796bef9eb575b94": {
+   "name": "KAICENATSUPERFAN",
+   "archetype": "Longshot hunter",
+   "pnl90": 43456.9,
+   "volume90": 27392.82,
+   "sharpe": null,
+   "pnlDays": 2,
+   "medianTradeUsd": 1000,
+   "winDayRate": 0.5,
+   "categoryShare": {
+    "Culture": 0.9991,
+    "Crypto": 0.0009
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0xa58d4f278d7953cd38eeb929f7e242bfc7c0b9b8": {
+   "name": "AiBird",
+   "archetype": "Market maker / HFT",
+   "pnl90": 33396.45,
+   "volume90": 1105010.3,
+   "sharpe": 8.7376,
+   "pnlDays": 91,
+   "medianTradeUsd": 1.6,
+   "winDayRate": 0.6374,
+   "categoryShare": {
+    "Other": 0.3256,
+    "Politics": 0.3221,
+    "Economics": 0.1393,
+    "Tech & AI": 0.1013,
+    "Sports": 0.0474,
+    "Culture": 0.0309,
+    "Mentions": 0.0228,
+    "Crypto": 0.0062,
+    "Esports": 0.0027,
+    "Weather": 0.0018
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x7c63520c2ca9b336af0c205b9ccf68217bb393d4": {
+   "name": "opopv.",
+   "archetype": "Generalist",
+   "pnl90": 32794.26,
+   "volume90": 1276036.46,
+   "sharpe": 4.9605,
+   "pnlDays": 91,
+   "medianTradeUsd": 2.16,
+   "winDayRate": 0.6,
+   "categoryShare": {
+    "Weather": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x63850ce907044eac77fba13d59f263ade68093f2": {
+   "name": "Waterfall",
+   "archetype": "Favorite grinder",
+   "pnl90": 30734.98,
+   "volume90": 318429.71,
+   "sharpe": 5.9045,
+   "pnlDays": 91,
+   "medianTradeUsd": 15.2,
+   "winDayRate": 0.6923,
+   "categoryShare": {
+    "Culture": 0.5093,
+    "Tech & AI": 0.1985,
+    "Mentions": 0.1974,
+    "Crypto": 0.0433,
+    "Politics": 0.0315,
+    "Sports": 0.0164,
+    "Other": 0.0035
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x94a428cfa4f84b264e01f70d93d02bc96cb36356": {
+   "name": "GCottrell93",
+   "archetype": "Politics & news trader",
+   "pnl90": 28467.0,
+   "volume90": 100000.0,
+   "sharpe": 2.5985,
+   "pnlDays": 89,
+   "medianTradeUsd": 34071.5,
+   "winDayRate": 0.4831,
+   "categoryShare": {
+    "Politics": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.4831 below 0.50 floor",
+   "categories": {}
+  },
+  "0x3b4c4ff8459237e1c65c981d7a8ee43746e5e850": {
+   "name": "cc9999",
+   "archetype": "Favorite grinder",
+   "pnl90": 27598.95,
+   "volume90": 46525132.23,
+   "sharpe": 3.21,
+   "pnlDays": 90,
+   "medianTradeUsd": 70.1,
+   "winDayRate": 0.9667,
+   "categoryShare": {
+    "Esports": 0.6322,
+    "Sports": 0.3677,
+    "Crypto": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "wash-fingerprint",
+   "exclusionReason": "$46,525,132 volume for $27,599 PnL (1686x) at 567 trades/day \u2014 wash/rebate fingerprint",
+   "categories": {}
+  },
+  "0x118689b24aead1d6e9507b8068d056b2ec4f051b": {
+   "name": "russell110320",
+   "archetype": "Favorite grinder",
+   "pnl90": 26703.92,
+   "volume90": 121804.42,
+   "sharpe": 4.1917,
+   "pnlDays": 91,
+   "medianTradeUsd": 65.02,
+   "winDayRate": 0.6374,
+   "categoryShare": {
+    "Other": 0.431,
+    "Weather": 0.3076,
+    "Sports": 0.2426,
+    "Economics": 0.0189
+   },
+   "excluded": false,
+   "exclusionCode": null,
+   "exclusionReason": null,
+   "categories": {}
+  },
+  "0x044f334595a7fd42c143e11c8ec47f23c8d1d1f1": {
+   "name": "gghff",
+   "archetype": "Generalist",
+   "pnl90": 23841.36,
+   "volume90": 1438074.45,
+   "sharpe": 2.5922,
+   "pnlDays": 91,
+   "medianTradeUsd": 7.62,
+   "winDayRate": 0.5444,
+   "categoryShare": {
+    "Weather": 0.9794,
+    "Politics": 0.0157,
+    "Other": 0.0043,
+    "Tech & AI": 0.0004,
+    "Crypto": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $23,841 below $25,000 floor",
+   "categories": {}
+  },
+  "0x43372356634781eea88d61bbdd7824cdce958882": {
+   "name": "Anjun",
+   "archetype": "Sports specialist",
+   "pnl90": 23244.26,
+   "volume90": 18852483.64,
+   "sharpe": 0.1262,
+   "pnlDays": 91,
+   "medianTradeUsd": 13.72,
+   "winDayRate": 0.4505,
+   "categoryShare": {
+    "Sports": 0.6653,
+    "Esports": 0.2273,
+    "Politics": 0.047,
+    "Other": 0.0258,
+    "Crypto": 0.0221,
+    "Culture": 0.0052,
+    "Tech & AI": 0.0039,
+    "Economics": 0.0021,
+    "Mentions": 0.0014,
+    "Weather": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "wash-fingerprint",
+   "exclusionReason": "$18,852,484 volume for $23,244 PnL (811x) at 524 trades/day \u2014 wash/rebate fingerprint",
+   "categories": {}
+  },
+  "0xfedc381bf3fb5d20433bb4a0216b15dbbc5c6398": {
+   "name": "c0O0OLI0O03",
+   "archetype": "Sports specialist",
+   "pnl90": 23096.0,
+   "volume90": 543951.42,
+   "sharpe": 4.7137,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.06,
+   "winDayRate": 0.7033,
+   "categoryShare": {
+    "Sports": 0.6693,
+    "Politics": 0.3307
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $23,096 below $25,000 floor",
+   "categories": {}
+  },
+  "0x0cb10c40b0776e9ee8cef970af85724654dda76c": {
+   "name": "FilibusterTerminator",
+   "archetype": "Favorite grinder",
+   "pnl90": 22576.36,
+   "volume90": 452168.4,
+   "sharpe": 11.3482,
+   "pnlDays": 91,
+   "medianTradeUsd": 11,
+   "winDayRate": 0.7473,
+   "categoryShare": {
+    "Crypto": 0.4895,
+    "Politics": 0.2404,
+    "Mentions": 0.123,
+    "Sports": 0.1195,
+    "Tech & AI": 0.0142,
+    "Other": 0.0096,
+    "Culture": 0.0031,
+    "Economics": 0.0007,
+    "Esports": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $22,576 below $25,000 floor",
+   "categories": {}
+  },
+  "0xa7a8c1fd4bfff08ea30214efa7efaf75d7c6580c": {
+   "name": "asjabaasj",
+   "archetype": "Sports specialist",
+   "pnl90": 20631.11,
+   "volume90": 3069574.55,
+   "sharpe": 0.8453,
+   "pnlDays": 57,
+   "medianTradeUsd": 0.6,
+   "winDayRate": 0.614,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xe4cb2a8296c45428bbbd699c5dea834b424f4f32": {
+   "name": "telsaspace",
+   "archetype": "Politics & news trader",
+   "pnl90": 15310.81,
+   "volume90": 44343.16,
+   "sharpe": 6.7195,
+   "pnlDays": 10,
+   "medianTradeUsd": 48.98,
+   "winDayRate": 0.75,
+   "categoryShare": {
+    "Economics": 1.0,
+    "Other": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $15,311 below $25,000 floor",
+   "categories": {}
+  },
+  "0xaa1a4f31c010d4a63fc49770d4ca2d69ea370602": {
+   "name": "hdueilqhsdn",
+   "archetype": "Market maker / HFT",
+   "pnl90": 13727.56,
+   "volume90": 1941882.76,
+   "sharpe": 4.9593,
+   "pnlDays": 48,
+   "medianTradeUsd": 3.05,
+   "winDayRate": 0.625,
+   "categoryShare": {
+    "Crypto": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xbddc2a7690bf600e347d5eb4a9c28f9f24e55d4f": {
+   "name": "0xbddc2a7690BF600E347d5eb4A9C28f9F24E55d4f-1774968947489",
+   "archetype": "Generalist",
+   "pnl90": 12286.34,
+   "volume90": 128470.7,
+   "sharpe": 5.0584,
+   "pnlDays": 69,
+   "medianTradeUsd": 49.8,
+   "winDayRate": 0.6567,
+   "categoryShare": {
+    "Weather": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $12,286 below $25,000 floor",
+   "categories": {}
+  },
+  "0xf0637528f0fa1c4634714e370447d7b4638c7893": {
+   "name": "SS123",
+   "archetype": "Generalist",
+   "pnl90": 11648.1,
+   "volume90": 0.0,
+   "sharpe": 3.4106,
+   "pnlDays": 73,
+   "medianTradeUsd": 100.0,
+   "winDayRate": 0.5616,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $11,648 below $25,000 floor",
+   "categories": {}
+  },
+  "0xf903c4cd098184e67a06a04f9b8fdb36e7bbe028": {
+   "name": "Viserys",
+   "archetype": "Politics & news trader",
+   "pnl90": 10128.68,
+   "volume90": 54104.21,
+   "sharpe": 11.1,
+   "pnlDays": 91,
+   "medianTradeUsd": 16,
+   "winDayRate": 0.7444,
+   "categoryShare": {
+    "Mentions": 0.4713,
+    "Other": 0.3742,
+    "Politics": 0.0939,
+    "Tech & AI": 0.0482,
+    "Sports": 0.0124
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $10,129 below $25,000 floor",
+   "categories": {}
+  },
+  "0xf8dc8cd0fd55eccb5409ed99ed90a86bc7f0f31f": {
+   "name": "dingdingdangdang",
+   "archetype": "Generalist",
+   "pnl90": 9267.6,
+   "volume90": 425132.15,
+   "sharpe": 2.1904,
+   "pnlDays": 91,
+   "medianTradeUsd": 2.09,
+   "winDayRate": 0.5824,
+   "categoryShare": {
+    "Weather": 1.0,
+    "Sports": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $9,268 below $25,000 floor",
+   "categories": {}
+  },
+  "0xfbe66593e49c4e7a7180a2582f041158bfb800f8": {
+   "name": "gaven-willwin",
+   "archetype": "Politics & news trader",
+   "pnl90": 8150.09,
+   "volume90": 2339280.59,
+   "sharpe": 0.0705,
+   "pnlDays": 89,
+   "medianTradeUsd": 18.98,
+   "winDayRate": 0.5618,
+   "categoryShare": {
+    "Economics": 0.6213,
+    "Politics": 0.3229,
+    "Sports": 0.0541,
+    "Other": 0.0017
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $8,150 below $25,000 floor",
+   "categories": {}
+  },
+  "0x5415c298dde8c84f4ba726d36b411df6e9a72a6e": {
+   "name": "-Dominus-",
+   "archetype": "Politics & news trader",
+   "pnl90": 7398.84,
+   "volume90": 163381.71,
+   "sharpe": 8.7625,
+   "pnlDays": 90,
+   "medianTradeUsd": 19.4,
+   "winDayRate": 0.7841,
+   "categoryShare": {
+    "Mentions": 0.2954,
+    "Crypto": 0.2718,
+    "Politics": 0.2692,
+    "Sports": 0.1055,
+    "Culture": 0.0334,
+    "Other": 0.0218,
+    "Economics": 0.0015,
+    "Tech & AI": 0.0014
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $7,399 below $25,000 floor",
+   "categories": {}
+  },
+  "0xd87a4012b40aad76a870fed7d1976e9224dfd3b8": {
+   "name": "lymphnatic",
+   "archetype": "Politics & news trader",
+   "pnl90": 6376.08,
+   "volume90": 78262.97,
+   "sharpe": 0.5918,
+   "pnlDays": 30,
+   "medianTradeUsd": 45.58,
+   "winDayRate": 0.3667,
+   "categoryShare": {
+    "Economics": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate 0.3667 below 0.50 floor",
+   "categories": {}
+  },
+  "0xbefa95c276ee8ef6ff3ef43d1c1c454f52bc300d": {
+   "name": "BabyGroot",
+   "archetype": "Longshot hunter",
+   "pnl90": 5366.68,
+   "volume90": 292673.77,
+   "sharpe": 0.9207,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.07,
+   "winDayRate": 0.5165,
+   "categoryShare": {
+    "Politics": 0.4272,
+    "Sports": 0.3437,
+    "Other": 0.0995,
+    "Economics": 0.0361,
+    "Tech & AI": 0.033,
+    "Culture": 0.0323,
+    "Crypto": 0.0174,
+    "Mentions": 0.0072,
+    "Esports": 0.0038
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $5,367 below $25,000 floor",
+   "categories": {}
+  },
+  "0xb4f2f0c858566fef705edf8efc1a5e9fba307862": {
+   "name": "Desy-1725192185234",
+   "archetype": "Generalist",
+   "pnl90": 3512.61,
+   "volume90": 291437.55,
+   "sharpe": 1.7892,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.07,
+   "winDayRate": 0.7416,
+   "categoryShare": {
+    "Sports": 0.3998,
+    "Politics": 0.3279,
+    "Economics": 0.1994,
+    "Other": 0.0729
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $3,513 below $25,000 floor",
+   "categories": {}
+  },
+  "0x7fe25a961f445084e0416a74d645af79bb2287da": {
+   "name": "deathtower",
+   "archetype": "Politics & news trader",
+   "pnl90": 2966.28,
+   "volume90": 9661.93,
+   "sharpe": 10.4985,
+   "pnlDays": 17,
+   "medianTradeUsd": 37.92,
+   "winDayRate": 0.8125,
+   "categoryShare": {
+    "Mentions": 0.999,
+    "Sports": 0.001
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $2,966 below $25,000 floor",
+   "categories": {}
+  },
+  "0x852a61deac7872fff2c6a80ee82c059d6a8d3188": {
+   "name": "BlondBeast",
+   "archetype": "Politics & news trader",
+   "pnl90": 2928.74,
+   "volume90": 26183.86,
+   "sharpe": 4.5835,
+   "pnlDays": 90,
+   "medianTradeUsd": 14,
+   "winDayRate": 0.6316,
+   "categoryShare": {
+    "Mentions": 0.4984,
+    "Crypto": 0.2336,
+    "Politics": 0.213,
+    "Sports": 0.0518,
+    "Other": 0.0032
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $2,929 below $25,000 floor",
+   "categories": {}
+  },
+  "0x07e78f5f58f8fa839f298cfe3fefd258883aa343": {
+   "name": "Spon",
+   "archetype": "Sports specialist",
+   "pnl90": 2533.96,
+   "volume90": 461318.94,
+   "sharpe": 5.868,
+   "pnlDays": 13,
+   "medianTradeUsd": 12877.3,
+   "winDayRate": 0.7778,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $2,534 below $25,000 floor",
+   "categories": {}
+  },
+  "0x701187150980c2421bc3c87a74dbdef31d75c6da": {
+   "name": "Electricy",
+   "archetype": "Sports specialist",
+   "pnl90": 1974.21,
+   "volume90": 937221.53,
+   "sharpe": 0.0815,
+   "pnlDays": 69,
+   "medianTradeUsd": 13.4,
+   "winDayRate": 0.5231,
+   "categoryShare": {
+    "Sports": 0.8164,
+    "Culture": 0.1772,
+    "Economics": 0.0026,
+    "Esports": 0.0014,
+    "Politics": 0.0014,
+    "Other": 0.001,
+    "Crypto": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $1,974 below $25,000 floor",
+   "categories": {}
+  },
+  "0x66b58093676354bc03bf3a9ead97c230635b5bd9": {
+   "name": "1369aa",
+   "archetype": "Politics & news trader",
+   "pnl90": 1626.49,
+   "volume90": 277536.57,
+   "sharpe": 5.5372,
+   "pnlDays": 26,
+   "medianTradeUsd": 10.4,
+   "winDayRate": 0.6364,
+   "categoryShare": {
+    "Politics": 0.6139,
+    "Sports": 0.3861
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $1,626 below $25,000 floor",
+   "categories": {}
+  },
+  "0x86dab59a8a6e7f9947282d2117aab3429b706428": {
+   "name": "bigspending",
+   "archetype": "Sports specialist",
+   "pnl90": 1581.86,
+   "volume90": 251212.07,
+   "sharpe": 0.4847,
+   "pnlDays": 5,
+   "medianTradeUsd": 3.62,
+   "winDayRate": 0.6,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $1,582 below $25,000 floor",
+   "categories": {}
+  },
+  "0xc23d9948f90934d92906c7addedc49bf5216ac77": {
+   "name": "hn4jnv34b",
+   "archetype": "Politics & news trader",
+   "pnl90": 863.25,
+   "volume90": 4109.65,
+   "sharpe": 21.5288,
+   "pnlDays": 3,
+   "medianTradeUsd": 301.44,
+   "winDayRate": 1.0,
+   "categoryShare": {
+    "Mentions": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $863 below $25,000 floor",
+   "categories": {}
+  },
+  "0x2d27e4d20f3b8a2ee3bc861d9b83752f338676d8": {
+   "name": "interstellaar",
+   "archetype": "Longshot hunter",
+   "pnl90": 144.23,
+   "volume90": 5549.83,
+   "sharpe": 0.4176,
+   "pnlDays": 82,
+   "medianTradeUsd": 0.02,
+   "winDayRate": 0.7101,
+   "categoryShare": {
+    "Politics": 0.5463,
+    "Culture": 0.2263,
+    "Sports": 0.2234,
+    "Other": 0.004
+   },
+   "excluded": true,
+   "exclusionCode": "small-pnl",
+   "exclusionReason": "90-day PnL $144 below $25,000 floor",
+   "categories": {}
+  },
+  "0x4133bcbad1d9c41de776646696f41c34d0a65e70": {
+   "name": "EF203F2IPFC2ICP20W-CP3",
+   "archetype": "Generalist",
+   "pnl90": 0.24,
+   "volume90": 0.0,
+   "sharpe": 5.5024,
+   "pnlDays": 5,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "low-win-days",
+   "exclusionReason": "win-day rate None below 0.50 floor",
+   "categories": {}
+  },
+  "0x4ab9b54427ec4b7f3646b1a0ef1bed73bc708ebe": {
+   "name": "RWCS",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xd235973291b2b75ff4070e9c0b01728c520b0f29": {
+   "name": "zxgngl",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x56687bf447db6ffa42ffe2204a05edaa20f55839": {
+   "name": "Theo4",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x033a07b3de5947eab4306676ad74eb546da30d50": {
+   "name": "RandomGenius-190",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xd0c042c08f755ff940249f62745e82d356345565": {
+   "name": "alexmulti",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x3f87d51f27ba6e19ec52aaeebb68559a839c742c": {
+   "name": "GRIMDRIP",
+   "archetype": "Whale",
+   "pnl90": 0,
+   "volume90": 6096723.15,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 20,
+   "winDayRate": null,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x36a3f17401e395ef4cb1b7f42bcdb8ab8e15fafb": {
+   "name": "gfjoigfsjoigsjoi",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xdc876e6873772d38716fda7f2452a78d426d7ab6": {
+   "name": "432614799197",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x94f199fb7789f1aef7fff6b758d6b375100f4c7a": {
+   "name": "KeyTransporter",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x16b29c50f2439faf627209b2ac0c7bbddaa8a881": {
+   "name": "SeriouslySirius",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xed2239a9150c3920000d0094d28fa51c7db03dd0": {
+   "name": "Michie",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x16f91db2592924cfed6e03b7e5cb5bb1e32299e3": {
+   "name": "Jenzigo",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x885783760858e1bd5dd09a3c3f916cfa251ac270": {
+   "name": "BetTom42",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xa8cf2ed8751f4e58ad039e1b68a8b58b4395031f": {
+   "name": "0xa8cf2ed8",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xed64a7bf029040aa331abc87902434d815ef217d": {
+   "name": "fishalive",
+   "archetype": "Sports specialist",
+   "pnl90": 0,
+   "volume90": 4285794.94,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 8.87,
+   "winDayRate": null,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xe90bec87d9ef430f27f9dcfe72c34b76967d5da2": {
+   "name": "gmanas",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xe9ad918c7678cd38b12603a762e638a5d1ee7091": {
+   "name": "walletmobile",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x8119010a6e589062aa03583bb3f39ca632d9f887": {
+   "name": "PrincessCaro",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x863134d00841b2e200492805a01e1e2f5defaa53": {
+   "name": "RepTrump",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x2f44fa076c8d2976ac6bea0ddfd9502bad2b93c2": {
+   "name": "TennisLove",
+   "archetype": "Sports specialist",
+   "pnl90": 0.0,
+   "volume90": 422709.17,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 79214.94,
+   "winDayRate": null,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x019782cab5d844f02bafb71f512758be78579f3c": {
+   "name": "majorexploiter",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xee613b3fc183ee44f9da9c05f53e2da107e3debf": {
+   "name": "sovereign2013",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x23786fdad0073692157c6d7dc81f281843a35fcb": {
+   "name": "mikatrade77",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x9f47f1fcb1701bf9eaf31236ad39875e5d60af93": {
+   "name": "TheGuru-791",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x78b9ac44a6d7d7a076c14e0ad518b301b63c6b76": {
+   "name": "Len9311238",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xefbc5fec8d7b0acdc8911bdd9a98d6964308f9a2": {
+   "name": "reachingthesky",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x6c3aae17140c5e3cde62380daaa323e38575c459": {
+   "name": "AvrahamEisenberg - 10161",
+   "archetype": "Generalist",
+   "pnl90": 0.0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x1f2dd6d473f3e824cd2f8a89d9c69fb96f6ad0cf": {
+   "name": "Fredi9999",
+   "archetype": "Generalist",
+   "pnl90": 0,
+   "volume90": 0.0,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 100.0,
+   "winDayRate": null,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xb41ac4e8907de5460e2dac0a98df8d1530d33a25": {
+   "name": "GMIB",
+   "archetype": "Generalist",
+   "pnl90": -0.01,
+   "volume90": 0.0,
+   "sharpe": -0.0005,
+   "pnlDays": 3,
+   "medianTradeUsd": 100.0,
+   "winDayRate": 0.5,
+   "categoryShare": {},
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x55b4af6a1cff148a307cad8ad098206a028e80ea": {
+   "name": "StarryPath",
+   "archetype": "Sports specialist",
+   "pnl90": -272.01,
+   "volume90": 0.86,
+   "sharpe": -5.4813,
+   "pnlDays": 22,
+   "medianTradeUsd": 0.08,
+   "winDayRate": 0.0,
+   "categoryShare": {
+    "Sports": 0.9535,
+    "Politics": 0.0465
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x9c667a1d1c1337c6dca9d93241d386e4ed346b66": {
+   "name": "InfiniteCrypt0",
+   "archetype": "Sports specialist",
+   "pnl90": -308.45,
+   "volume90": 40784.95,
+   "sharpe": -0.1671,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.06,
+   "winDayRate": 0.8313,
+   "categoryShare": {
+    "Sports": 0.7538,
+    "Culture": 0.1232,
+    "Economics": 0.1219,
+    "Other": 0.0012
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x0dcc9d7b9ccbdf3c37ab947a1689ed3701c05a1f": {
+   "name": "oneappleway",
+   "archetype": "Politics & news trader",
+   "pnl90": -1738.66,
+   "volume90": 100159.45,
+   "sharpe": -0.0887,
+   "pnlDays": 52,
+   "medianTradeUsd": 6.62,
+   "winDayRate": 0.4038,
+   "categoryShare": {
+    "Economics": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x4bac379da2f29d87c01ff737843e396a2cec02b1": {
+   "name": "LuckyNFT444",
+   "archetype": "Sports specialist",
+   "pnl90": -1920.33,
+   "volume90": 1920.4,
+   "sharpe": -7.4823,
+   "pnlDays": 16,
+   "medianTradeUsd": 128.01,
+   "winDayRate": 0.3333,
+   "categoryShare": {
+    "Sports": 0.9998,
+    "Economics": 0.0002,
+    "Culture": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x58b3380f71bd6c706dd398a5e60bde55fa3a653c": {
+   "name": "timetowander",
+   "archetype": "Generalist",
+   "pnl90": -4021.34,
+   "volume90": 3798806.17,
+   "sharpe": -0.0289,
+   "pnlDays": 91,
+   "medianTradeUsd": 3.06,
+   "winDayRate": 0.5934,
+   "categoryShare": {
+    "Economics": 0.4795,
+    "Sports": 0.4706,
+    "Crypto": 0.0355,
+    "Politics": 0.0128,
+    "Other": 0.0016
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x6480542954b70a674a74bd1a6015dec362dc8dc5": {
+   "name": "tripping",
+   "archetype": "Longshot hunter",
+   "pnl90": -7712.91,
+   "volume90": 266144.13,
+   "sharpe": -2.1246,
+   "pnlDays": 84,
+   "medianTradeUsd": 0.05,
+   "winDayRate": 0.642,
+   "categoryShare": {
+    "Crypto": 0.5842,
+    "Sports": 0.2551,
+    "Politics": 0.1302,
+    "Mentions": 0.017,
+    "Other": 0.0103,
+    "Culture": 0.0016,
+    "Economics": 0.0015
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xf1f2b3c6c5bea42a6664fe3a8395addc1ab28c8d": {
+   "name": "cryptolava",
+   "archetype": "Market maker / HFT",
+   "pnl90": -7892.19,
+   "volume90": 5949579.61,
+   "sharpe": -2.4558,
+   "pnlDays": 79,
+   "medianTradeUsd": 7.5,
+   "winDayRate": 0.4051,
+   "categoryShare": {
+    "Sports": 0.703,
+    "Esports": 0.2722,
+    "Economics": 0.0176,
+    "Politics": 0.0062,
+    "Crypto": 0.0008,
+    "Tech & AI": 0.0001,
+    "Culture": 0.0001,
+    "Other": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x482bf5accdecfaffa67c14d4d4fbb59f428a3266": {
+   "name": "Winry",
+   "archetype": "Market maker / HFT",
+   "pnl90": -8131.35,
+   "volume90": 3172059.05,
+   "sharpe": -1.0323,
+   "pnlDays": 91,
+   "medianTradeUsd": 3.75,
+   "winDayRate": 0.5275,
+   "categoryShare": {
+    "Sports": 0.941,
+    "Esports": 0.0193,
+    "Crypto": 0.0182,
+    "Other": 0.0102,
+    "Politics": 0.0096,
+    "Tech & AI": 0.0009,
+    "Economics": 0.0008
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0x88c4919de76e526d55a32c1f8afb439dd1f1129a": {
+   "name": "RenanPresidente.",
+   "archetype": "Politics & news trader",
+   "pnl90": -16040.69,
+   "volume90": 1609807.73,
+   "sharpe": -0.1089,
+   "pnlDays": 91,
+   "medianTradeUsd": 300.0,
+   "winDayRate": 0.4835,
+   "categoryShare": {
+    "Politics": 0.8172,
+    "Other": 0.0991,
+    "Economics": 0.0522,
+    "Sports": 0.0314
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x4aa87d513621c74a091f514e9c14b52377f46531": {
+   "name": "0x4aa87D513621C74A091f514E9c14B52377F46531-1779355201172",
+   "archetype": "Politics & news trader",
+   "pnl90": -19240.71,
+   "volume90": 496225.38,
+   "sharpe": -3.4114,
+   "pnlDays": 36,
+   "medianTradeUsd": 44.5,
+   "winDayRate": 0.697,
+   "categoryShare": {
+    "Politics": 0.7624,
+    "Mentions": 0.1181,
+    "Sports": 0.0534,
+    "Economics": 0.0353,
+    "Other": 0.0306,
+    "Crypto": 0.0001,
+    "Culture": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x2785e7022dc20757108204b13c08cea8613b70ae": {
+   "name": "poorsob",
+   "archetype": "Whale",
+   "pnl90": -54920.58,
+   "volume90": 19889012.32,
+   "sharpe": -2.6598,
+   "pnlDays": 19,
+   "medianTradeUsd": 999,
+   "winDayRate": 0.6842,
+   "categoryShare": {
+    "Politics": 0.5483,
+    "Sports": 0.2762,
+    "Mentions": 0.1554,
+    "Crypto": 0.01,
+    "Other": 0.01
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xc1c7bb8761105f6d33fc8d71dec31b5688a0f0a7": {
+   "name": "five5120",
+   "archetype": "Favorite grinder",
+   "pnl90": -55574.98,
+   "volume90": 7316407.52,
+   "sharpe": -1.3829,
+   "pnlDays": 25,
+   "medianTradeUsd": 88.89,
+   "winDayRate": 0.48,
+   "categoryShare": {
+    "Esports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xa61ef8773ec2e821962306ca87d4b57e39ff0abd": {
+   "name": "risk-manager",
+   "archetype": "Sports specialist",
+   "pnl90": -56914.32,
+   "volume90": 3816172.77,
+   "sharpe": -0.0051,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.22,
+   "winDayRate": 0.5604,
+   "categoryShare": {
+    "Sports": 0.7635,
+    "Politics": 0.0916,
+    "Economics": 0.0811,
+    "Other": 0.0278,
+    "Crypto": 0.0184,
+    "Tech & AI": 0.0135,
+    "Culture": 0.0042
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xb6353a9608eccba83323bdb7ee4ec8b7af68bef0": {
+   "name": "rangnihui",
+   "archetype": "Generalist",
+   "pnl90": -67768.26,
+   "volume90": 1530463.61,
+   "sharpe": -2.5317,
+   "pnlDays": 83,
+   "medianTradeUsd": 18.73,
+   "winDayRate": 0.4578,
+   "categoryShare": {
+    "Esports": 0.9996,
+    "Sports": 0.0004
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x17db3fcd93ba12d38382a0cade24b200185c5f6d": {
+   "name": "fengdubiying",
+   "archetype": "Sports specialist",
+   "pnl90": -98147.0,
+   "volume90": 100208.2,
+   "sharpe": null,
+   "pnlDays": 1,
+   "medianTradeUsd": 425.25,
+   "winDayRate": 0.0,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x4f29e103339919c4baaea2a60195cf1c8bb27a7e": {
+   "name": "0x4f2",
+   "archetype": "Market maker / HFT",
+   "pnl90": -114837.83,
+   "volume90": 19563390.77,
+   "sharpe": -0.3519,
+   "pnlDays": 91,
+   "medianTradeUsd": 8.24,
+   "winDayRate": 0.4835,
+   "categoryShare": {
+    "Sports": 0.9997,
+    "Politics": 0.0003
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xbddf61af533ff524d27154e589d2d7a81510c684": {
+   "name": "Countryside",
+   "archetype": "Sports specialist",
+   "pnl90": -123716.0,
+   "volume90": 26722131.48,
+   "sharpe": -0.0917,
+   "pnlDays": 90,
+   "medianTradeUsd": 0.64,
+   "winDayRate": 0.5111,
+   "categoryShare": {
+    "Sports": 0.9837,
+    "Other": 0.0103,
+    "Culture": 0.004,
+    "Politics": 0.002
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xf95846967c9093e4881506162077ec8f7049db13": {
+   "name": "thecomplicatedguy",
+   "archetype": "Sports specialist",
+   "pnl90": -129488.42,
+   "volume90": 1236793.57,
+   "sharpe": -3.8902,
+   "pnlDays": 36,
+   "medianTradeUsd": 10,
+   "winDayRate": 0.4444,
+   "categoryShare": {
+    "Sports": 0.6903,
+    "Esports": 0.2806,
+    "Economics": 0.0292
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x65c18d740c8246af3353741c0b32e4b6da552988": {
+   "name": "casualbet2020",
+   "archetype": "Generalist",
+   "pnl90": -134735.4,
+   "volume90": 2130657.18,
+   "sharpe": -1.3984,
+   "pnlDays": 73,
+   "medianTradeUsd": 19.5,
+   "winDayRate": 0.4722,
+   "categoryShare": {
+    "Esports": 0.7373,
+    "Sports": 0.2577,
+    "Culture": 0.005,
+    "Other": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e": {
+   "name": "Lakersfan111",
+   "archetype": "Generalist",
+   "pnl90": -137736.95,
+   "volume90": 3769235.87,
+   "sharpe": -0.9135,
+   "pnlDays": 91,
+   "medianTradeUsd": 22.16,
+   "winDayRate": 0.5057,
+   "categoryShare": {
+    "Esports": 0.9792,
+    "Sports": 0.0208
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x2a2c53bd278c04da9962fcf96490e17f3dfb9bc1": {
+   "name": "0x2a2C53bD278c04DA9962Fcf96490E17F3DfB9Bc1-1772479215461",
+   "archetype": "Sports specialist",
+   "pnl90": -144431.5,
+   "volume90": 98231.19,
+   "sharpe": -1.2565,
+   "pnlDays": 81,
+   "medianTradeUsd": 9.7,
+   "winDayRate": 0.4493,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x5d189e816b4149be00977c1a3c8840374aec4972": {
+   "name": "gloriafoster",
+   "archetype": "Politics & news trader",
+   "pnl90": -160231.46,
+   "volume90": 425079.69,
+   "sharpe": -3.4259,
+   "pnlDays": 91,
+   "medianTradeUsd": 0.1,
+   "winDayRate": 0.5055,
+   "categoryShare": {
+    "Politics": 0.7363,
+    "Sports": 0.2637
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xd218e474776403a330142299f7796e8ba32eb5c9": {
+   "name": "cigarettes",
+   "archetype": "Favorite grinder",
+   "pnl90": -193157.5,
+   "volume90": 12601653.51,
+   "sharpe": -0.3391,
+   "pnlDays": 91,
+   "medianTradeUsd": 16,
+   "winDayRate": 0.4835,
+   "categoryShare": {
+    "Sports": 0.6209,
+    "Economics": 0.1234,
+    "Esports": 0.1109,
+    "Other": 0.0646,
+    "Weather": 0.0321,
+    "Politics": 0.0318,
+    "Mentions": 0.0076,
+    "Culture": 0.0051,
+    "Tech & AI": 0.0034,
+    "Crypto": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x4bff30af91642dc7d2b19a8664378fe55c45fc26": {
+   "name": "Sassy-Bucket",
+   "archetype": "Sports specialist",
+   "pnl90": -258743.2,
+   "volume90": 40393262.12,
+   "sharpe": -0.2776,
+   "pnlDays": 87,
+   "medianTradeUsd": 12.66,
+   "winDayRate": 0.4535,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x32b484581fc5606de9c1e43af4636b6be9bc8b21": {
+   "name": "0x32b484581fc5606dE9C1e43AF4636b6Be9BC8B21-1774274303653",
+   "archetype": "Market maker / HFT",
+   "pnl90": -277408.22,
+   "volume90": 36881107.6,
+   "sharpe": -0.9913,
+   "pnlDays": 91,
+   "medianTradeUsd": 4.99,
+   "winDayRate": 0.4505,
+   "categoryShare": {
+    "Sports": 0.9909,
+    "Crypto": 0.0091,
+    "Other": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xe16d3f2a5807999b358affd9445c3a09e45e5e30": {
+   "name": "0xE16D3F2A5807999b358aFfD9445C3a09E45E5e30-1776429210592",
+   "archetype": "Generalist",
+   "pnl90": -408412.14,
+   "volume90": 21327158.1,
+   "sharpe": -0.7582,
+   "pnlDays": 64,
+   "medianTradeUsd": 1014.7,
+   "winDayRate": 0.5238,
+   "categoryShare": {
+    "Esports": 0.9955,
+    "Sports": 0.0045
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x565ca59275f81991bd9877d7fa8404c5ecf6519e": {
+   "name": "IamFKINGbankrupt",
+   "archetype": "Crypto scalper",
+   "pnl90": -434872.51,
+   "volume90": 4669020.86,
+   "sharpe": -1.1843,
+   "pnlDays": 60,
+   "medianTradeUsd": 4.88,
+   "winDayRate": 0.7333,
+   "categoryShare": {
+    "Crypto": 0.9947,
+    "Sports": 0.0052,
+    "Esports": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Crypto scalper \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xdc41c39b95453c943174f369926018f6963bdd7e": {
+   "name": "quavoo",
+   "archetype": "Sports specialist",
+   "pnl90": -462725.02,
+   "volume90": 6995250.08,
+   "sharpe": -2.7529,
+   "pnlDays": 38,
+   "medianTradeUsd": 16.77,
+   "winDayRate": 0.4474,
+   "categoryShare": {
+    "Sports": 0.8473,
+    "Esports": 0.0952,
+    "Economics": 0.0551,
+    "Politics": 0.0013,
+    "Tech & AI": 0.0007,
+    "Weather": 0.0002,
+    "Other": 0.0001,
+    "Culture": 0.0,
+    "Crypto": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xc8075693f48668a264b9fa313b47f52712fcc12b": {
+   "name": "texaskid",
+   "archetype": "Sports specialist",
+   "pnl90": -470086.28,
+   "volume90": 9455699.3,
+   "sharpe": -1.2696,
+   "pnlDays": 90,
+   "medianTradeUsd": 12.28,
+   "winDayRate": 0.5169,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xf070207d315d47fd07870e464d3ded9151f5ac55": {
+   "name": "esportGG",
+   "archetype": "Generalist",
+   "pnl90": -470374.08,
+   "volume90": 19259993.1,
+   "sharpe": -2.271,
+   "pnlDays": 70,
+   "medianTradeUsd": 31,
+   "winDayRate": 0.4571,
+   "categoryShare": {
+    "Esports": 0.8331,
+    "Sports": 0.1669
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xc8ab97a9089a9ff7e6ef0688e6e591a066946418": {
+   "name": "ArmageddonRewardsBilly",
+   "archetype": "Politics & news trader",
+   "pnl90": -564549.23,
+   "volume90": 58893438.09,
+   "sharpe": -2.7996,
+   "pnlDays": 91,
+   "medianTradeUsd": 18.25,
+   "winDayRate": 0.4835,
+   "categoryShare": {
+    "Politics": 0.4598,
+    "Other": 0.2711,
+    "Economics": 0.1582,
+    "Sports": 0.0631,
+    "Tech & AI": 0.0228,
+    "Crypto": 0.0189,
+    "Culture": 0.003,
+    "Mentions": 0.0026,
+    "Weather": 0.0005,
+    "Esports": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x507e52ef684ca2dd91f90a9d26d149dd3288beae": {
+   "name": "GamblingIsAllYouNeed",
+   "archetype": "Sports specialist",
+   "pnl90": -629683.0,
+   "volume90": 10337970.3,
+   "sharpe": -1.5589,
+   "pnlDays": 71,
+   "medianTradeUsd": 15.02,
+   "winDayRate": 0.4688,
+   "categoryShare": {
+    "Sports": 0.6976,
+    "Esports": 0.3012,
+    "Politics": 0.0013
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xb4d250f58c26840e09723a83ce9c8149aa32ce99": {
+   "name": "alpheclabs",
+   "archetype": "Market maker / HFT",
+   "pnl90": -663358.36,
+   "volume90": 35109541.86,
+   "sharpe": -5.8261,
+   "pnlDays": 91,
+   "medianTradeUsd": 27.27,
+   "winDayRate": 0.4286,
+   "categoryShare": {
+    "Sports": 0.735,
+    "Esports": 0.2512,
+    "Other": 0.0057,
+    "Politics": 0.005,
+    "Tech & AI": 0.0019,
+    "Crypto": 0.0005,
+    "Culture": 0.0005,
+    "Economics": 0.0001,
+    "Weather": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x24c8cf69a0e0a17eee21f69d29752bfa32e823e1": {
+   "name": "debased",
+   "archetype": "Favorite grinder",
+   "pnl90": -711108.4,
+   "volume90": 16904535.02,
+   "sharpe": -1.6825,
+   "pnlDays": 91,
+   "medianTradeUsd": 10,
+   "winDayRate": 0.6154,
+   "categoryShare": {
+    "Sports": 0.4344,
+    "Politics": 0.271,
+    "Crypto": 0.0979,
+    "Mentions": 0.0732,
+    "Economics": 0.0618,
+    "Other": 0.0595,
+    "Culture": 0.0023
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xbc43c8bfbc4d77c2fc9011adad38ba43b88996d3": {
+   "name": "0xBc43c8bfBC4d77c2FC9011adaD38Ba43b88996d3-1765231687816",
+   "archetype": "Market maker / HFT",
+   "pnl90": -714395.15,
+   "volume90": 5883512.03,
+   "sharpe": -2.1101,
+   "pnlDays": 57,
+   "medianTradeUsd": 12.43,
+   "winDayRate": 0.5088,
+   "categoryShare": {
+    "Sports": 0.9998,
+    "Other": 0.0002
+   },
+   "excluded": true,
+   "exclusionCode": "noise-archetype",
+   "exclusionReason": "archetype Market maker / HFT \u2014 liquidity provision, not opinion",
+   "categories": {}
+  },
+  "0xe8dd7741ccb12350957ec71e9ee332e0d1e6ec86": {
+   "name": "influenz.eth",
+   "archetype": "Favorite grinder",
+   "pnl90": -853384.7,
+   "volume90": 2524602.11,
+   "sharpe": -4.8142,
+   "pnlDays": 91,
+   "medianTradeUsd": 24.33,
+   "winDayRate": 0.3297,
+   "categoryShare": {
+    "Politics": 0.3156,
+    "Esports": 0.1912,
+    "Sports": 0.1634,
+    "Economics": 0.1326,
+    "Tech & AI": 0.072,
+    "Other": 0.053,
+    "Weather": 0.0354,
+    "Culture": 0.034,
+    "Mentions": 0.0028
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x9e3ed7b661a903fc97afcf49e0f014ebe869f882": {
+   "name": "0x9e3ed7b661a903fc97afcf49e0f014ebe869f882-1783406009396",
+   "archetype": "Generalist",
+   "pnl90": -1168096.65,
+   "volume90": 13637616.64,
+   "sharpe": -8.2095,
+   "pnlDays": 34,
+   "medianTradeUsd": 9.62,
+   "winDayRate": 0.2941,
+   "categoryShare": {
+    "Sports": 0.4712,
+    "Esports": 0.3755,
+    "Crypto": 0.1387,
+    "Economics": 0.0052,
+    "Weather": 0.0047,
+    "Other": 0.0022,
+    "Mentions": 0.0011,
+    "Politics": 0.0011,
+    "Tech & AI": 0.0002,
+    "Culture": 0.0001
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x6a72f61820b26b1fe4d956e17b6dc2a1ea3033ee": {
+   "name": "kch123",
+   "archetype": "Sports specialist",
+   "pnl90": -1222161,
+   "volume90": 2088331.92,
+   "sharpe": -6.4764,
+   "pnlDays": 41,
+   "medianTradeUsd": 12.22,
+   "winDayRate": 0.425,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x5f659bccbc353dbf7bcdffdee73bee60bb482036": {
+   "name": "0x5F659BcCBC353dBf7BcdffDEE73beE60bB482036-1780496231400",
+   "archetype": "Whale",
+   "pnl90": -1259827.51,
+   "volume90": 36117005.65,
+   "sharpe": -3.4714,
+   "pnlDays": 69,
+   "medianTradeUsd": 9170.1,
+   "winDayRate": 0.4638,
+   "categoryShare": {
+    "Sports": 0.9981,
+    "Other": 0.0012,
+    "Crypto": 0.0007
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x5e9458202b5817a72cf81105ec8a30e6f3705ba1": {
+   "name": "pleaseplease123",
+   "archetype": "Sports specialist",
+   "pnl90": -1300143.53,
+   "volume90": 24649709.48,
+   "sharpe": -1.8805,
+   "pnlDays": 56,
+   "medianTradeUsd": 11.63,
+   "winDayRate": 0.5,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x492442eab586f242b53bda933fd5de859c8a3782": {
+   "name": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
+   "archetype": "Whale",
+   "pnl90": -1823520.8,
+   "volume90": 7814737.02,
+   "sharpe": -5.0313,
+   "pnlDays": 35,
+   "medianTradeUsd": 56.4,
+   "winDayRate": 0.4571,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x0346afae2603313d2bbee96b628536c8cbe352a5": {
+   "name": "GoalLineGhost",
+   "archetype": "Market maker / HFT",
+   "pnl90": -2029985.92,
+   "volume90": 14860642.76,
+   "sharpe": -1.1823,
+   "pnlDays": 91,
+   "medianTradeUsd": 5.52,
+   "winDayRate": 0.4505,
+   "categoryShare": {
+    "Sports": 0.998,
+    "Culture": 0.0017,
+    "Esports": 0.0004
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x3dfb153c197d4c19d3b31c1ecd2c7b6860eeabaf": {
+   "name": "0x3DFb153c197D4C19D3B31c1ecD2c7B6860eeabAf-1722957908185",
+   "archetype": "Sports specialist",
+   "pnl90": -2083575.16,
+   "volume90": 83996858.5,
+   "sharpe": -1.6477,
+   "pnlDays": 91,
+   "medianTradeUsd": 13.25,
+   "winDayRate": 0.4505,
+   "categoryShare": {
+    "Sports": 1.0,
+    "Other": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x9f2fe025f84839ca81dd8e0338892605702d2ca8": {
+   "name": "surfandturf",
+   "archetype": "Sports specialist",
+   "pnl90": -2112343.75,
+   "volume90": 62555852.37,
+   "sharpe": -1.4255,
+   "pnlDays": 90,
+   "medianTradeUsd": 7.26,
+   "winDayRate": 0.5556,
+   "categoryShare": {
+    "Sports": 0.9973,
+    "Other": 0.0024,
+    "Economics": 0.0003,
+    "Esports": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0xa5ea13a81d2b7e8e424b182bdc1db08e756bd96a": {
+   "name": "bossoskil1",
+   "archetype": "Generalist",
+   "pnl90": -2184134.7,
+   "volume90": 31404681.83,
+   "sharpe": -2.249,
+   "pnlDays": 44,
+   "medianTradeUsd": 13.3,
+   "winDayRate": 0.4419,
+   "categoryShare": {
+    "Esports": 0.5122,
+    "Sports": 0.4878
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x224a89dbe0db0d6124b335edabd15b3f877da3d5": {
+   "name": "wr0ngw4yb3tt0r",
+   "archetype": "Sports specialist",
+   "pnl90": -3872122.76,
+   "volume90": 100597124.61,
+   "sharpe": -1.5966,
+   "pnlDays": 69,
+   "medianTradeUsd": 21.21,
+   "winDayRate": 0.4638,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0x84cfffc3f16dcc353094de30d4a45226eccd2f63": {
+   "name": "mooseborzoi",
+   "archetype": "Market maker / HFT",
+   "pnl90": -6388742.1,
+   "volume90": 21713481.19,
+   "sharpe": -2.4353,
+   "pnlDays": 91,
+   "medianTradeUsd": 19.48,
+   "winDayRate": 0.5275,
+   "categoryShare": {
+    "Sports": 0.9725,
+    "Esports": 0.0235,
+    "Politics": 0.0021,
+    "Other": 0.0019
+   },
+   "excluded": true,
+   "exclusionCode": "truncated-history",
+   "exclusionReason": "trade history hit the pagination cap \u2014 record is incomplete",
+   "categories": {}
+  },
+  "0xe9076a87c5ed90ef16e6fe6529c943baeca0cff6": {
+   "name": "suntori",
+   "archetype": "Generalist",
+   "pnl90": -6901089.94,
+   "volume90": 425924.3,
+   "sharpe": -6.6287,
+   "pnlDays": 91,
+   "medianTradeUsd": 8.74,
+   "winDayRate": 0.2308,
+   "categoryShare": {
+    "Esports": 0.6371,
+    "Crypto": 0.1955,
+    "Sports": 0.1481,
+    "Economics": 0.0173,
+    "Weather": 0.0015,
+    "Other": 0.0003,
+    "Politics": 0.0001,
+    "Mentions": 0.0001,
+    "Culture": 0.0
+   },
+   "excluded": true,
+   "exclusionCode": "two-sided-inventory",
+   "exclusionReason": "buys both outcomes in 51% of markets \u2014 hedged inventory, not a stance",
+   "categories": {}
+  },
+  "0xf23c5bc7b547867eb6532920144562718aa49f81": {
+   "name": "ActionReaction",
+   "archetype": "Generalist",
+   "pnl90": null,
+   "volume90": 195880.62,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 8.03,
+   "winDayRate": null,
+   "categoryShare": {
+    "Esports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  },
+  "0x4b341d4612437b6e5b5fbcf98e5b675dbacf48a8": {
+   "name": "musholius722",
+   "archetype": "Sports specialist",
+   "pnl90": null,
+   "volume90": 904840.74,
+   "sharpe": null,
+   "pnlDays": 0,
+   "medianTradeUsd": 347147.32,
+   "winDayRate": null,
+   "categoryShare": {
+    "Sports": 1.0
+   },
+   "excluded": true,
+   "exclusionCode": "unprofitable",
+   "exclusionReason": "no positive 90-day PnL",
+   "categories": {}
+  }
+ }
+}

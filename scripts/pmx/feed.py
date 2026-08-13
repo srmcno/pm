@@ -238,6 +238,18 @@ class OnChainFeed:
     fraction of a second matters and `websockets` is installed.
     """
 
+    # Stay this many blocks behind the reported head. Public RPC endpoints
+    # are load-balanced pools whose members index at slightly different
+    # speeds, so a query whose toBlock is the head that one node just
+    # reported is rejected by another with "invalid block range params".
+    # Observed directly: a 2-block window ending at the head failed while a
+    # 3-block window ending one block earlier succeeded, repeatedly.
+    SAFETY_BLOCKS = 2
+    # Never ask for more than this in one request. Polymarket produces
+    # ~70,000 OrderFilled logs per 1,000 blocks, so an unbounded catch-up
+    # after a stall would return tens of megabytes and time out.
+    MAX_RANGE = 200
+
     def __init__(self, rpc_url, watch_set, token_map=None, lookback_blocks=12,
                  session=None):
         self.rpc = rpc_url
@@ -264,18 +276,21 @@ class OnChainFeed:
 
     def poll(self):
         """Fills from tracked wallets since the last poll."""
-        head = self.block_number()
+        head = self.block_number() - self.SAFETY_BLOCKS
         if self.last_block is None:
             self.last_block = max(0, head - self.lookback)
         if head <= self.last_block:
             return []
-        frm, to = self.last_block + 1, head
+        frm = self.last_block + 1
+        to = min(head, frm + self.MAX_RANGE - 1)
         logs = self._rpc("eth_getLogs", [{
             "fromBlock": hex(frm), "toBlock": hex(to),
             "address": [CTF_EXCHANGE, NEG_RISK_EXCHANGE],
             "topics": [ORDER_FILLED_TOPIC],
         }])
-        self.last_block = head
+        # Advance only as far as we actually read, so a capped range is
+        # resumed on the next poll rather than skipped.
+        self.last_block = to
         now = time.time()
         out = []
         for log in logs:
@@ -328,7 +343,11 @@ class DataApiFeed:
         for t in rows:
             ts = t.get("timestamp") or 0
             newest = max(newest, ts)
-            if ts <= since:
+            # Strict < : the boundary second is re-read on every poll, so a
+            # fill indexed late under an already-seen timestamp still comes
+            # through. DualFeed.remember suppresses the resulting repeats;
+            # this class must not be polled without that dedup layer.
+            if ts < since:
                 break                      # rows are newest-first
             token_id = str(t.get("asset") or "")
             meta = self.tokens.get(token_id) if token_id else {}
@@ -351,6 +370,23 @@ class DataApiFeed:
                 event_slug=t.get("eventSlug") or "", detected_at=now))
         self.last_ts[wallet] = newest
         return out
+
+    def prime(self, at=None):
+        """Mark everything up to now as already seen.
+
+        Call this after backfilling history. Without it the first poll
+        replays every fill that landed while the seed was running -- a couple
+        of minutes for 60 wallets -- and reports them as freshly detected,
+        which poisons the measured latency the dashboard publishes.
+
+        The cursor is set one second BEFORE the requested instant. Timestamps
+        are whole seconds and `_one` stops at `ts <= since`, so priming to
+        int(at) would make the boundary second unreachable: a fill stamped in
+        that second but not yet indexed when the seed ran would be excluded
+        from the seed and from every later poll. Stepping back re-reads that
+        second, and the caller's dedup absorbs the overlap.
+        """
+        self.last_ts = {w: int(at or time.time()) - 1 for w in self.watch}
 
     def poll(self):
         from concurrent.futures import ThreadPoolExecutor
@@ -380,7 +416,8 @@ class DualFeed:
         self.stats = {"chain": 0, "rest": 0, "duplicates": 0,
                       "chainLatency": [], "restLatency": []}
 
-    def _remember(self, fill):
+    def remember(self, fill):
+        """Record a fill as already handled. Returns False if it was."""
         if fill.key in self.seen:
             self.stats["duplicates"] += 1
             return False
@@ -388,6 +425,8 @@ class DualFeed:
         while len(self.seen) > self.dedupe_size:
             self.seen.popitem(last=False)
         return True
+
+    _remember = remember
 
     def poll(self):
         out = []

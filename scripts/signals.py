@@ -64,7 +64,7 @@ def recent_trades_live(wallets, since):
                 trades.append({k: t.get(k) for k in (
                     "timestamp", "conditionId", "size", "usdcSize", "price",
                     "side", "outcome", "outcomeIndex", "title", "slug",
-                    "eventSlug", "transactionHash")})
+                    "eventSlug", "transactionHash", "asset")})
             if stop or len(rows) < 500:
                 break
             oldest = rows[-1]["timestamp"]
@@ -229,9 +229,9 @@ def write_report(signals, meta):
         f"window {meta['hours']}h · {meta['watchlistSize']} qualified wallets watched · "
         f"minimum {meta['minBackers']} independent backers per signal.",
         "",
-        "A signal means several historically profitable wallets (market makers excluded) "
-        "independently put meaningful money on the same outcome recently. It is information, "
-        "not a guarantee — treat it as a shortlist for your own judgment.",
+        "Each signal marks an outcome that several qualified wallets have "
+        "independently net-bought within the window. Signals are inputs for "
+        "review, not trade instructions.",
         "",
     ]
     if not signals:

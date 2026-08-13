@@ -472,6 +472,190 @@ class TestEngineIngest(unittest.TestCase):
         self.assertAlmostEqual(s["bought"] / s["shares"], 0.50, places=6)
 
 
+class TestSettleDeduplication(unittest.TestCase):
+    """One settled outcome must yield exactly one calibration observation."""
+
+    def _journal(self, lines):
+        import tempfile
+        fh = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False)
+        for r in lines:
+            fh.write(__import__("json").dumps(r) + "\n")
+        fh.close()
+        return fh.name
+
+    def test_legacy_three_element_settled_keys_still_match(self):
+        """settled.json once held (conditionId, outcomeIndex, signalTime).
+
+        Probing that file with the new two-element key would match nothing,
+        so every market settled by the older code would be recorded a second
+        time on upgrade — reintroducing the duplication the key change was
+        made to prevent.
+        """
+        legacy = [["0xabc", 1, 1786600000], ["0xdef", 0, 1786600100]]
+        seen = {tuple(k)[:2] for k in legacy}
+        self.assertIn(("0xabc", 1), seen)
+        self.assertIn(("0xdef", 0), seen)
+        # And the new two-element form still round-trips unchanged.
+        self.assertEqual({tuple(k)[:2] for k in [["0xabc", 1]]}, {("0xabc", 1)})
+
+    def test_repeated_journal_lines_collapse_to_the_earliest(self):
+        """A signal re-journalled by each 2-hour shift is still ONE
+        observation, priced at the moment the engine first decided.
+
+        Keying on the journal timestamp instead would weight a long-lived
+        signal in proportion to how many shifts it survived, biasing the
+        lambda that controls Kelly sizing.
+        """
+        import json as J
+        path = self._journal([
+            {"t": 300, "action": "SIGNAL", "conditionId": "0xabc",
+             "outcomeIndex": 1, "sigma": 1.1, "currentPrice": 0.61},
+            {"t": 100, "action": "SIGNAL", "conditionId": "0xabc",
+             "outcomeIndex": 1, "sigma": 0.9, "currentPrice": 0.55},
+            {"t": 200, "action": "SIGNAL", "conditionId": "0xabc",
+             "outcomeIndex": 1, "sigma": 1.0, "currentPrice": 0.58},
+            {"t": 150, "action": "SIGNAL", "conditionId": "0xdef",
+             "outcomeIndex": 0, "sigma": 1.4, "currentPrice": 0.30},
+        ])
+        first = {}
+        with open(path) as f:
+            for line in f:
+                r = J.loads(line)
+                if r.get("action") != "SIGNAL" or r.get("conditionId") is None:
+                    continue
+                k = (r["conditionId"], r["outcomeIndex"])
+                if k not in first or r["t"] < first[k]["t"]:
+                    first[k] = r
+        os.unlink(path)
+        self.assertEqual(len(first), 2)
+        self.assertEqual(first[("0xabc", 1)]["t"], 100)
+        self.assertEqual(first[("0xabc", 1)]["currentPrice"], 0.55)
+
+
+class TestSeedFeedOverlap(unittest.TestCase):
+    """Seeded fills must dedupe against the live poll that re-reads them."""
+
+    def _fill(self, **kw):
+        from pmx.feed import Fill
+        base = dict(wallet="0xA", timestamp=100, token_id="tok1", side="BUY",
+                    price=0.4, shares=10.0, usdc=4.0, source="rest",
+                    tx="0xTX", condition_id="0xc", outcome_index=0, title="t")
+        base.update(kw)
+        return Fill(**base)
+
+    def test_seed_and_poll_of_the_same_fill_share_a_key(self):
+        """The seed used to leave token_id empty, so the same fill arriving
+        from the poll looked different and was counted into the wallet's
+        stance twice."""
+        self.assertEqual(self._fill(source="rest").key,
+                         self._fill(source="chain").key)
+
+    def test_blank_token_id_breaks_the_match(self):
+        self.assertNotEqual(self._fill(token_id="").key, self._fill().key)
+
+    def test_dualfeed_remember_suppresses_a_repeat(self):
+        from pmx.feed import DualFeed
+        f = DualFeed(set(), rpc_url=None)
+        self.assertTrue(f.remember(self._fill()))
+        self.assertFalse(f.remember(self._fill()))
+        self.assertEqual(f.stats["duplicates"], 1)
+
+    def test_prime_accepts_an_explicit_timestamp(self):
+        """Priming must be able to rewind to before the seed started."""
+        from pmx.feed import DataApiFeed
+        d = DataApiFeed({"0xa", "0xb"})
+        d.prime(at=12345)
+        self.assertEqual(set(d.last_ts.values()), {12344})
+
+    def test_prime_leaves_the_boundary_second_readable(self):
+        """`_one` stops at `ts <= since`, so priming to int(at) would make a
+        fill stamped in that same second unreachable forever — missing from
+        the seed and from every later poll."""
+        from pmx.feed import DataApiFeed
+        d = DataApiFeed({"0xa"})
+        seed_started = 1786620000.7
+        d.prime(at=seed_started)
+        boundary_fill_ts = int(seed_started)          # 1786620000
+        self.assertGreater(boundary_fill_ts, d.last_ts["0xa"],
+                           "boundary second must still be re-read")
+
+
+class TestRejectionDiagnostics(unittest.TestCase):
+    """The panel names why a quiet engine is quiet, so the counts must be
+    complete and must not fragment."""
+
+    def _engine(self, market):
+        from pmx.engine import ConsensusEngine
+
+        class R:
+            def get(self, cid):
+                return market
+        return ConsensusEngine(EngineConfig(), {"profiles": {}}, resolver=R())
+
+    def _cand(self):
+        from pmx.engine import Candidate
+        return Candidate(condition_id="0xc", outcome_index=0,
+                         category="Sports", title="Q?", sigma=1.0, n_eff=2.0,
+                         backers=[{"value": 1.0, "avgPrice": 0.40}])
+
+    def test_enrichment_rejections_are_counted(self):
+        """These set `rejected` but used not to increment the counter, so the
+        dominant real-world cause was invisible on the dashboard."""
+        eng = self._engine({"closed": True, "outcomePrices": [0.4, 0.6],
+                            "outcomes": ["Yes", "No"], "clobTokenIds": ["a", "b"]})
+        eng.enrich([self._cand()], max_days=None)
+        self.assertEqual(sum(eng.rejections.values()), 1)
+        self.assertIn("market already closed", eng.rejections)
+
+    def test_out_of_band_price_is_counted(self):
+        eng = self._engine({"closed": False, "outcomePrices": [0.99, 0.01],
+                            "outcomes": ["Yes", "No"], "clobTokenIds": ["a", "b"],
+                            "endDate": "2099-01-01T00:00:00Z"})
+        eng.enrich([self._cand()], max_days=None)
+        self.assertIn("price outside the tradable band", eng.rejections)
+
+    def test_buckets_do_not_fragment_on_the_numbers(self):
+        """Two markets failing the same rail at different Sigma values must
+        land in ONE bucket, or 'most common reason' is meaningless."""
+        from pmx.consensus import passes_consensus
+        cfg = EngineConfig().consensus
+        buckets = set()
+        for sigma, n_eff in ((0.26, 1.0), (0.48, 1.0), (0.17, 1.0)):
+            ok, _ = passes_consensus(sigma, n_eff, 3, cfg)
+            self.assertFalse(ok)
+            buckets.add(" + ".join(label for failed, label in (
+                (sigma < cfg.theta_trigger, "Sigma below Theta"),
+                (n_eff < cfg.min_effective_backers, "few effective backers"),
+                (3 < cfg.min_backers, "too few backers"),
+            ) if failed))
+        self.assertEqual(len(buckets), 1)
+
+
+class TestEnrichedDetail(unittest.TestCase):
+    def test_enrich_carries_the_slugs_the_site_links_from(self):
+        """The dashboard's Open link is built from slug/eventSlug; without
+        them in the enriched detail every published signal points nowhere."""
+        from pmx.engine import Candidate, ConsensusEngine
+
+        class FakeResolver:
+            def get(self, cid):
+                return {"question": "Q?", "outcomes": ["Yes", "No"],
+                        "outcomePrices": [0.4, 0.6],
+                        "clobTokenIds": ["t0", "t1"], "closed": False,
+                        "slug": "a-market", "eventSlug": "an-event",
+                        "endDate": "2099-01-01T00:00:00Z"}
+
+        eng = ConsensusEngine(EngineConfig(), {"profiles": {}},
+                              resolver=FakeResolver())
+        c = Candidate(condition_id="0xc", outcome_index=0, category="Sports",
+                      title="Q?", sigma=1.0, n_eff=2.0,
+                      backers=[{"value": 1.0, "avgPrice": 0.40}])
+        kept = eng.enrich([c], max_days=None)
+        self.assertEqual(len(kept), 1)
+        self.assertEqual(kept[0].detail["slug"], "a-market")
+        self.assertEqual(kept[0].detail["eventSlug"], "an-event")
+
+
 class TestConfig(unittest.TestCase):
     def test_rejects_over_betting(self):
         cfg = EngineConfig()

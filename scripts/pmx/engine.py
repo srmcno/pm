@@ -178,12 +178,22 @@ class ConsensusEngine:
             if opposing > 0 and sigma < c.dominance * opposing:
                 cand.rejected = (f"contested: {sigma:.2f} vs {opposing:.2f} on "
                                  f"the other side, under {c.dominance}x")
+                self.rejections["contested — the sharps disagree"] += 1
             else:
                 ok, reasons = passes_consensus(sigma, n_eff, len(votes), c)
                 if not ok:
                     cand.rejected = "; ".join(reasons)
-            if cand.rejected:
-                self.rejections[cand.rejected.split(":")[0].split(" (")[0]] += 1
+                    # Bucket on WHICH rails failed, not on the formatted
+                    # message. The message embeds the actual Sigma, so every
+                    # distinct value became its own bucket and the panel's
+                    # "most common reason" fragmented into dozens of
+                    # near-identical rows instead of naming the real cause.
+                    self.rejections[" + ".join(label for failed, label in (
+                        (sigma < c.theta_trigger, "Sigma below Theta"),
+                        (n_eff < c.min_effective_backers,
+                         "fewer than %.1f effective backers" % c.min_effective_backers),
+                        (len(votes) < c.min_backers, "too few backers"),
+                    ) if failed)] += 1
             out.append(cand)
 
         out.sort(key=lambda x: (x.rejected is not None, -x.sigma))
@@ -195,27 +205,44 @@ class ConsensusEngine:
         now = now or time.time()
         x = self.cfg.execution
         kept = []
+
+        def reject(cand, reason, bucket):
+            """Record the reason AND count it.
+
+            The dashboard names the most common reason a quiet engine is
+            quiet, so a rejection that sets `rejected` without counting is
+            invisible there -- and enrichment is where most candidates
+            actually die (20 of 22 multi-backer markets in a live sample had
+            already closed). Leaving these uncounted let a score-stage
+            reason masquerade as the explanation.
+            """
+            cand.rejected = reason
+            self.rejections[bucket] += 1
+
         for c in candidates:
             if c.rejected:
                 continue
             m = self.resolver.get(c.condition_id)
             if not m or m.get("closed"):
-                c.rejected = "market closed"
+                reject(c, "market closed", "market already closed")
                 continue
             oi = c.outcome_index or 0
             prices = m.get("outcomePrices") or []
             if oi >= len(prices):
-                c.rejected = f"outcome index {oi} outside the market's outcomes"
+                reject(c, f"outcome index {oi} outside the market's outcomes",
+                       "outcome index out of range")
                 continue
             price = prices[oi]
             if not (x.min_price <= price <= x.max_price):
-                c.rejected = (f"price {price:.3f} outside "
-                              f"[{x.min_price:.2f}, {x.max_price:.2f}]")
+                reject(c, f"price {price:.3f} outside "
+                          f"[{x.min_price:.2f}, {x.max_price:.2f}]",
+                       "price outside the tradable band")
                 continue
             end_ts = _end_ts(m.get("endDate"))
             if max_days is not None:
                 if end_ts is None or end_ts - now > max_days * 86400:
-                    c.rejected = "resolves too far out (or no parseable end date)"
+                    reject(c, "resolves too far out (or no parseable end date)",
+                           "resolves too far out")
                     continue
 
             # Weight the backers' entry by their vote, not equally: the
@@ -225,10 +252,9 @@ class ConsensusEngine:
                          if b["avgPrice"]) / wsum) if wsum else None
             ok, drift = drift_check(price, entry, x)
             if not ok:
-                c.rejected = (f"drift {drift['drift']:+.3f} "
-                              f"({drift['driftLogit']:+.3f} logit) past the "
-                              f"backers' entry")
-                self.rejections["price drift (chasing)"] += 1
+                reject(c, f"drift {drift['drift']:+.3f} "
+                          f"({drift['driftLogit']:+.3f} logit) past the "
+                          f"backers' entry", "price drift (chasing)")
                 continue
 
             c.detail.update({
@@ -237,6 +263,11 @@ class ConsensusEngine:
                 "tokenId": (m.get("clobTokenIds") or [None] * (oi + 1))[oi],
                 "currentPrice": price,
                 "backersAvgEntry": round(entry, 4) if entry else None,
+                # The dashboard builds its "Open" link from these; without
+                # them every published signal points nowhere. The resolver
+                # has both, so omitting them was pure loss.
+                "slug": m.get("slug"),
+                "eventSlug": m.get("eventSlug"),
                 "endDate": m.get("endDate"),
                 "daysToResolution": ((end_ts - now) / 86400.0
                                      if end_ts else None),

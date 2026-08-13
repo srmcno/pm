@@ -118,9 +118,62 @@
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent; color: transparent;
   }
+  .topnav {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 10px 22px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav .brand {
+    font-family: var(--display); font-size: 13px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink); text-decoration: none;
+    white-space: nowrap;
+  }
+  .topnav .navlinks { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+  .topnav .navlinks a {
+    color: var(--muted); text-decoration: none; font-size: 12.5px;
+    letter-spacing: 0.04em; padding: 3px 2px; border-bottom: 1px solid transparent;
+  }
+  .topnav .navlinks a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .deskgrid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px; margin: 4px 0 26px;
+  }
+  .deskcard {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 3px; padding: 13px 15px 12px;
+  }
+  .deskcard:hover { border-color: var(--accent); }
+  .desk-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .desk-name {
+    font-family: var(--display); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .desk-big { font-size: 21px; font-weight: 650; margin: 7px 0 2px;
+    font-variant-numeric: tabular-nums; }
+  .desk-big.pos { color: var(--up); } .desk-big.neg { color: var(--down); }
+  .desk-sub { color: var(--muted); font-size: 12px; }
+
   .asof {
     text-align: center; color: var(--muted); font-size: 12.5px; margin: 0 0 14px;
   }
+  h2 .tag {
+    font-family: var(--display); font-size: 10.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; vertical-align: 3px; margin-left: 8px;
+    padding: 2px 8px 1px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted);
+  }
+  /* The engine refuses far more than it accepts, so the panel has to explain
+     a quiet state as clearly as a busy one. */
+  p.note {
+    max-width: 760px; margin: -6px auto 14px; text-align: center;
+    color: var(--muted); font-size: 12.5px; line-height: 1.55;
+  }
+  p.note code { font-size: 12px; }
   .pill {
     display: inline-block; padding: 2px 9px 1px; margin-right: 7px;
     border-radius: 999px; font-family: var(--display); font-size: 10.5px;
@@ -288,6 +341,18 @@
   }
 </style>
 
+<nav class="topnav" aria-label="Site">
+  <a class="brand" href="./">Moffitt Money</a>
+  <div class="navlinks">
+    <a href="#desks">Overview</a>
+    <a href="#signals">Signals</a>
+    <a href="#engine">Engine</a>
+    <a href="#ledger">Ledger</a>
+    <a href="#cohort">Wallets</a>
+    <a href="arb.html">Arb Desk</a>
+    <a href="stocks.html">Stocks</a>
+  </div>
+</nav>
 <div class="wrap">
   <button id="themetoggle" type="button" aria-label="Switch color theme" title="Switch theme">◐</button>
   <header class="masthead">
@@ -296,8 +361,32 @@
     <h1>Moffitt Money</h1>
     <div class="rule" aria-hidden="true"><span class="dia"></span></div>
     <p class="lede" id="lede"></p>
-    <p class="lede" style="margin-top:6px"><a href="arb.html">Arb desk — MEXC micro-cap scanner ↗</a></p>
   </header>
+
+  <section id="desks">
+    <div class="deskgrid">
+      <a class="deskcard" href="#signals">
+        <div class="desk-head"><span class="desk-name">Smart Money</span><span id="desk-sm-pill"></span></div>
+        <div class="desk-big" id="desk-sm-big">—</div>
+        <div class="desk-sub" id="desk-sm-sub">Polymarket copy signals</div>
+      </a>
+      <a class="deskcard" href="#engine">
+        <div class="desk-head"><span class="desk-name">Engine v2</span><span id="desk-en-pill"></span></div>
+        <div class="desk-big" id="desk-en-big">—</div>
+        <div class="desk-sub" id="desk-en-sub">Weighted consensus</div>
+      </a>
+      <a class="deskcard" href="arb.html">
+        <div class="desk-head"><span class="desk-name">Arb Desk</span><span id="desk-ar-pill"></span></div>
+        <div class="desk-big" id="desk-ar-big">—</div>
+        <div class="desk-sub" id="desk-ar-sub">MEXC triangular scanner</div>
+      </a>
+      <a class="deskcard" href="stocks.html">
+        <div class="desk-head"><span class="desk-name">Stocks</span><span id="desk-st-pill"></span></div>
+        <div class="desk-big" id="desk-st-big">—</div>
+        <div class="desk-sub" id="desk-st-sub">Crypto lead-lag equities</div>
+      </a>
+    </div>
+  </section>
 
   <div class="tiles" id="tiles"></div>
 
@@ -312,6 +401,23 @@
           <th>Backers</th><th>Staked</th><th>Score</th><th>Resolves</th><th></th>
         </tr></thead>
         <tbody id="sigbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="engine">
+    <h2>Consensus engine <span class="tag">v2</span></h2>
+    <p class="asof" id="eng-asof"></p>
+    <p class="note" id="eng-note"></p>
+    <div class="tablewrap">
+      <table class="main" id="engtable">
+        <thead><tr>
+          <th class="l">Market</th><th class="l">Buy</th><th>Price</th>
+          <th title="Sum of specialty-weighted votes">&Sigma;</th>
+          <th title="Effective backer count: (&Sigma;v)&sup2;/&Sigma;v&sup2; — how many wallets the consensus really rests on">N<sub>eff</sub></th>
+          <th>Backers</th><th>Stake</th><th class="l">Limited by</th><th></th>
+        </tr></thead>
+        <tbody id="engbody"></tbody>
       </table>
     </div>
   </section>
@@ -386,6 +492,7 @@
 <script id="data" type="application/json">/*__DATA__*/</script>
 <script id="signals-snapshot" type="application/json">/*__SIGNALS__*/</script>
 <script id="paper-snapshot" type="application/json">/*__PAPER__*/</script>
+<script id="engine-snapshot" type="application/json">/*__ENGINE__*/</script>
 <script>
 "use strict";
 /* Theme: black by default; the toggle flips and remembers the choice. */
@@ -484,7 +591,7 @@ function readSnapshot(id) {
   try { return JSON.parse(document.getElementById(id).textContent); }
   catch (e) { return null; }
 }
-const LIVE = { signals: readSnapshot("signals-snapshot"), paper: readSnapshot("paper-snapshot") };
+const LIVE = { signals: readSnapshot("signals-snapshot"), paper: readSnapshot("paper-snapshot"), engine: readSnapshot("engine-snapshot") };
 function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
   return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
@@ -495,8 +602,10 @@ function lastBeatTs() {
   return Math.max((LIVE.paper && LIVE.paper.updatedAt) || 0,
     (LIVE.signals && LIVE.signals.meta && LIVE.signals.meta.generatedAt) || 0);
 }
-function statusPill() {
-  const ts = lastBeatTs();
+function statusPill(atTs) {
+  // Each engine reports its own freshness: one can be publishing happily
+  // while the other's shift has died, and a shared pill would hide that.
+  const ts = atTs != null ? atTs : lastBeatTs();
   const live = ts && (Date.now() / 1000 - ts) / 60 < 40;
   const el = document.createElement("span");
   el.className = "pill " + (live ? "live" : "stale");
@@ -524,7 +633,7 @@ function renderSignals() {
   if (!sigs.length) {
     const tr = document.createElement("tr");
     const td = document.createElement("td"); td.colSpan = 8; td.className = "l";
-    td.textContent = "No consensus among the sharps right now — the bot is waiting.";
+    td.textContent = "No qualifying consensus in the current window.";
     tr.appendChild(td); body.appendChild(tr);
     return;
   }
@@ -629,6 +738,123 @@ function equitySparkline(curve, w, h) {
   return svg;
 }
 
+function renderDesks() {
+  const set = (id, txt, cls) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = txt;
+    el.className = el.className.replace(/ (pos|neg)$/, "") + (cls ? " " + cls : "");
+  };
+  const pill = (id, ts) => {
+    const el = document.getElementById(id);
+    if (el) el.replaceChildren(statusPill(ts));
+  };
+  const money = v => (v >= 0 ? "+" : "") + "$" + Math.abs(v).toFixed(2);
+
+  const sig = LIVE.signals, pap = LIVE.paper;
+  if (pap) {
+    const ret = pap.equity - pap.bankrollStart;
+    set("desk-sm-big", "$" + pap.equity.toFixed(2), ret >= 0 ? "pos" : "neg");
+    set("desk-sm-sub", `${(sig && sig.signals || []).length} active signals · ` +
+      `${pap.closedCount || (pap.closed || []).length} settled`);
+    pill("desk-sm-pill", lastBeatTs());
+  }
+  const en = LIVE.engine;
+  if (en && en.meta) {
+    const dg = en.diagnostics || {};
+    set("desk-en-big", String(dg.fired || 0),
+        (dg.fired || 0) > 0 ? "pos" : "");
+    set("desk-en-sub", en.meta.calibrated
+      ? `λ fitted · ${en.meta.votingRights} voting rights`
+      : `calibrating ${en.meta.observations}/${en.meta.observationsNeeded} · ` +
+        `${en.meta.votingRights} voting rights`);
+    pill("desk-en-pill", en.meta.generatedAt);
+  }
+  const ar = LIVE.arb;
+  if (ar) {
+    const acct = ar.paper || ar.account || {};
+    const eq = acct.equity != null ? acct.equity : acct.balance;
+    if (eq != null) {
+      set("desk-ar-big", "$" + Number(eq).toFixed(2),
+          eq >= (acct.start || acct.bankrollStart || eq) ? "pos" : "neg");
+    }
+    const nOpp = (ar.opportunities || ar.verified || []).length;
+    set("desk-ar-sub", `${nOpp} verified cycles · ${ar.pairCount || "~2,100"} pairs`);
+    pill("desk-ar-pill", (ar.meta && ar.meta.generatedAt) || ar.updatedAt || ar.t);
+  }
+  const stx = LIVE.stocks;
+  if (stx && stx.account) {
+    const a = stx.account;
+    set("desk-st-big", "$" + a.equity.toFixed(2),
+        a.equity >= a.bankrollStart ? "pos" : "neg");
+    const day = a.day || {};
+    set("desk-st-sub", `${stx.meta.market} · today ${money(day.pnl || 0)} ` +
+      `over ${day.trades || 0} trades`);
+    pill("desk-st-pill", stx.meta.generatedAt);
+  }
+}
+
+function renderEngine() {
+  const body = document.getElementById("engbody");
+  const asof = document.getElementById("eng-asof");
+  const note = document.getElementById("eng-note");
+  body.replaceChildren(); asof.replaceChildren(); note.replaceChildren();
+  const p = LIVE.engine;
+  if (!p || !p.meta) {
+    note.textContent = "The v2 engine has not published yet.";
+    return;
+  }
+  const m = p.meta, dg = p.diagnostics || {};
+  asof.append(statusPill(m.generatedAt),
+    `Updated ${ago(m.generatedAt)} · ${m.watchlistSize} wallets watched · ` +
+    `${m.votingRights} specialty voting rights · feed: ${m.feed} · ` +
+    `Σ ≥ ${m.theta} and N_eff ≥ ${m.minEffectiveBackers} to fire`);
+
+  const bits = [];
+  for (const w of m.warnings || []) bits.push(`Configuration: ${w}`);
+  bits.push(m.calibrated
+    ? `Sizing: fractional Kelly (λ = ${m.lambda}).`
+    : `Sizing: minimum stake until calibrated (${m.observations}/${m.observationsNeeded} settled signals).`);
+  if (!(p.signals || []).length) {
+    bits.push(`Scored ${dg.candidates || 0} markets, ${dg.multiBacker || 0} multi-backer; ` +
+      `none met the Σ and N_eff thresholds.`);
+    const top = Object.entries(dg.rejections || {}).sort((a, b) => b[1] - a[1])[0];
+    if (top) bits.push(`Primary constraint: ${top[0]} (${top[1]}).`);
+  }
+  note.textContent = bits.join(" ");
+
+  const sigs = p.signals || [];
+  if (!sigs.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td"); td.colSpan = 9; td.className = "l";
+    td.textContent = "No active signals.";
+    tr.appendChild(td); body.appendChild(tr);
+    return;
+  }
+  for (const s of sigs) {
+    const tr = document.createElement("tr");
+    const mkTd = (cls) => { const td = document.createElement("td"); if (cls) td.className = cls; tr.appendChild(td); return td; };
+    mkTd("l").textContent = s.question || "?";
+    const side = mkTd("l"); side.textContent = s.outcome || "?"; side.style.fontWeight = "600";
+    mkTd().textContent = s.currentPrice != null ? Math.round(s.currentPrice * 100) + "¢" : "—";
+    mkTd().textContent = s.sigma != null ? s.sigma.toFixed(2) : "—";
+    const ne = mkTd(); ne.textContent = s.nEff != null ? s.nEff.toFixed(2) : "—";
+    ne.title = "How many wallets the consensus really rests on";
+    const bk = mkTd(); bk.textContent = s.backerCount;
+    bk.title = (s.backers || []).map(b =>
+      `${b.name || b.wallet.slice(0, 10)}  W=${b.weight}  $${Math.round(b.netUsd).toLocaleString()} @ ${b.avgPrice ?? "—"}`).join("\n");
+    mkTd().textContent = s.stake ? `$${s.stake.toFixed(2)}` : "—";
+    mkTd("l").textContent = s.binding || "—";
+    const act = mkTd();
+    const url = OUTLINK(s.slug, s.eventSlug);
+    if (url) {
+      const a = document.createElement("a"); a.href = url; a.target = "_blank";
+      a.rel = "noopener"; a.textContent = "Open ↗"; act.appendChild(a);
+    }
+    body.appendChild(tr);
+  }
+}
+
 async function refreshLive() {
   const bust = "?t=" + Math.floor(Date.now() / 60000);
   try {
@@ -639,13 +865,29 @@ async function refreshLive() {
     const r = await fetch("data/paper.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.paper = await r.json();
   } catch (e) { /* offline snapshot stays */ }
+  try {
+    const r = await fetch("data/engine.json" + bust, { cache: "no-store" });
+    if (r.ok) LIVE.engine = await r.json();
+  } catch (e) { /* offline snapshot stays */ }
+  try {
+    const r = await fetch("data/arb.json" + bust, { cache: "no-store" });
+    if (r.ok) LIVE.arb = await r.json();
+  } catch (e) { /* card stays in its last state */ }
+  try {
+    const r = await fetch("data/stocks.json" + bust, { cache: "no-store" });
+    if (r.ok) LIVE.stocks = await r.json();
+  } catch (e) { /* card stays in its last state */ }
   // Always re-render: "x min ago" and the live/stale pill must keep ticking
   // even when a fetch fails or nothing changed.
   renderSignals();
+  renderEngine();
   renderLedger();
+  renderDesks();
 }
 renderSignals();
+renderEngine();
 renderLedger();
+renderDesks();
 refreshLive();
 setInterval(refreshLive, 60000);
 

@@ -23,7 +23,8 @@ def main():
     enc = lambda obj: json.dumps(obj, separators=(",", ":")).replace("</", "<\\/")
     out = (tpl.replace("/*__DATA__*/", enc(data))
               .replace("/*__SIGNALS__*/", enc(read_optional("data", "signals", "latest.json")))
-              .replace("/*__PAPER__*/", enc(read_optional("dashboard", "data", "paper.json"))))
+              .replace("/*__PAPER__*/", enc(read_optional("dashboard", "data", "paper.json")))
+              .replace("/*__ENGINE__*/", enc(read_optional("dashboard", "data", "engine.json"))))
     out_path = os.path.join(BASE, "dashboard", "index.html")
     with open(out_path, "w") as f:
         f.write(out)

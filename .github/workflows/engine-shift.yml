@@ -1,0 +1,122 @@
+name: Consensus engine (v2) real-time shift
+
+# The v2 engine's own shift, deliberately separate from watch-shift.yml.
+# Both engines publish to the same site and are meant to run side by side so
+# they can disagree in public; giving them one workflow would mean one
+# crashing takes the other down, and one concurrency group would mean they
+# queue behind each other instead of running together.
+#
+# They never write the same files. This shift owns
+# dashboard/data/engine.json and data/live/engine-*; the original owns
+# data/signals, data/paper and dashboard/data/{signals,paper}.json. That is
+# what lets both push to the branch without fighting over a rebase.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "35 */2 * * *"    # offset from watch-shift's :05 so pushes interleave
+
+concurrency:
+  group: engine-shift
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write   # dispatches the Pages deploy after each data push
+
+jobs:
+  shift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 118
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      # Shifts perpetuate themselves: GitHub's cron is best-effort, so queue
+      # the successor immediately and let the concurrency group hold it until
+      # this one ends. Disabling the workflow in the Actions UI is the off
+      # switch.
+      - name: Queue the next shift
+        run: gh workflow run engine-shift.yml --ref "${GITHUB_REF_NAME}" || true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Verify the engine can run before committing to a shift
+        working-directory: scripts
+        run: python3 -m pmx.cli preflight
+
+      # 105 minutes of watching inside a 118-minute job leaves ~13 for
+      # checkout, dependencies, preflight, and — the part that matters — the
+      # settle and commit steps below. At 115 the job hit its timeout with
+      # the shift's results still unpushed.
+      - name: Watch for one shift
+        working-directory: scripts
+        env:
+          # A Polygon RPC turns on sub-second on-chain detection. Without it
+          # the engine falls back to per-wallet /activity polling, which is
+          # 4-14s behind the chain -- still far better than the global
+          # /trades feed, which is minutes stale.
+          PMX_RPC: ${{ secrets.POLYGON_RPC_URL }}
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$PMX_RPC" ]; then
+            python3 -m pmx.cli watch --minutes 105 --git-push \
+              --heartbeat-minutes 10 --rpc "$PMX_RPC"
+          else
+            echo "No POLYGON_RPC_URL secret — REST-only detection."
+            python3 -m pmx.cli watch --minutes 105 --git-push \
+              --heartbeat-minutes 10
+          fi
+
+      - name: Settle resolved signals into calibration observations
+        working-directory: scripts
+        # A settle failure must not discard the shift's watch data — the
+        # commit step below still runs — but it must be visible, so the step
+        # records the failure instead of masking it with a blanket || true.
+        run: |
+          if ! python3 -m pmx.cli settle; then
+            echo "::warning::settle failed — observations lag until next shift"
+          fi
+
+      - name: Commit engine state back
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          # Only engine-owned paths, so a concurrent watch-shift push cannot
+          # be clobbered by this one. Added one at a time and only when
+          # present: `git add a b missing` aborts on the unmatched pathspec
+          # and stages NOTHING (verified on git 2.43), which the trailing
+          # `|| true` would hide -- the commit below would then find an empty
+          # index and exit 0, silently discarding the final settle's results.
+          for p in dashboard/data/engine.json \
+                   data/live/engine-journal.jsonl \
+                   data/live/observations.jsonl \
+                   data/live/settled.json \
+                   data/live/engine-seen.json \
+                   data/live/engine-state.json \
+                   data/live/engine.json; do
+            [ -e "$p" ] && git add "$p"
+          done
+          git diff --cached --quiet && exit 0
+          git commit -m "auto: engine shift $(date -u +'%Y-%m-%d %H:%M UTC')"
+          # -X theirs during a rebase keeps the commit being replayed — ours.
+          # These files are regenerated every cycle, so the newest local
+          # version is always the right resolution (same convention as
+          # pmlib.publish_repo). A rebase that still fails must be aborted or
+          # a lingering .git/rebase-* state silently no-ops every later push.
+          # A rebase failure on an ephemeral runner loses the commit when
+          # the job ends — that must surface as a red run, not a green one.
+          git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" \
+            || { git rebase --abort || true; echo "::error::rebase failed — shift results not pushed"; exit 1; }
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
+          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" \
+            || echo "::warning::pages dispatch failed — site refreshes on the next push"
