@@ -1,18 +1,18 @@
 # Equities desk — replay backtest
 
-Generated 2026-08-13 12:21 UTC · range 5d · entries filled at the next bar's open plus costs.
+Generated 2026-08-13 12:39 UTC · range 5d · entries filled at the next bar's open plus costs.
 
-## $1000 → $1005.45 (+0.54%)
+## $1000 → $1003.91 (+0.39%)
 
-- Trades: 10 · win rate 70% · avg P&L $0.55
-- Exits: reverted 8, time 1, stop 1
+- Trades: 10 · win rate 70% · avg P&L $0.39
+- Exits: reverted 8, stop 1, time 1
 
 | day | P&L |
 |---|---|
-| 2026-08-06 | +2.41 |
-| 2026-08-07 | +4.82 |
-| 2026-08-10 | -1.48 |
-| 2026-08-11 | -0.30 |
+| 2026-08-06 | +2.34 |
+| 2026-08-07 | +2.80 |
+| 2026-08-10 | -1.00 |
+| 2026-08-11 | -0.23 |
 
 | symbol | beta | n | r² |
 |---|---|---|---|
