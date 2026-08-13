@@ -1,0 +1,6 @@
+# Netlify config: the dashboard is a single self-contained HTML file.
+# Connect this repo (branch claude/polymarket-wallets-analysis-m81p4j) and
+# every push — including automated data refreshes — redeploys the site.
+[build]
+  publish = "dashboard"
+  command = ""
