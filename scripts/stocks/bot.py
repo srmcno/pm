@@ -147,6 +147,10 @@ def cmd_run(args):
         livedesk.assert_armed(args)
         executor = livedesk.Alpaca()
         print(f"executor: {executor.base}")
+        # Closed trades already in state predate this session; only closes
+        # produced by this loop are mirrored, each exactly once.
+        for c in st["closed"]:
+            c.setdefault("mirrored", True)
 
     deadline = time.time() + args.minutes * 60 if args.minutes else None
     last_push = 0.0
@@ -169,9 +173,11 @@ def cmd_run(args):
         for p in st["positions"]:
             if id(p) not in before and executor:
                 _mirror(executor, p, opening=True)
-        for c in st["closed"][-5:]:
-            if c.get("closedAt", 0) >= time.time() - cfg.poll_seconds - 2 and executor:
-                _mirror(executor, c, opening=False)
+        if executor:
+            for c in st["closed"]:
+                if not c.get("mirrored"):
+                    _mirror(executor, c, opening=False)
+                    c["mirrored"] = True
         paperdesk.save(st)
         publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
         if args.git_push and time.time() - last_push > args.push_minutes * 60:

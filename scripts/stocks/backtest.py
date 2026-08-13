@@ -18,6 +18,13 @@ from .paperdesk import fill_price, sell_side_fees
 
 REPORT = "reports/stocks-backtest.md"
 
+# Every parameter that changes what a replay would do; published with each
+# result and stamped into the validation block so stale stress metrics are
+# never presented next to a replay of a different configuration.
+CONFIG_KEYS = ("entry_bps", "exit_bps", "stop_bps", "min_driver_move_bps",
+               "max_hold_minutes", "anchor_minutes", "risk_frac",
+               "max_positions", "slippage_bps")
+
 
 def _sessions(bars):
     """Split minute bars into trading sessions keyed by ET date."""
@@ -127,7 +134,9 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                 mins_left = max(0.0, (last_ts - t) / 60.0)
                 pos = open_pos.get(sym)
                 if pos:
-                    held = (t - pos["openedAt"]) / 60.0
+                    # Exposure is measured to this bar's close (t + step_s),
+                    # the instant actually being evaluated.
+                    held = (t + step_s - pos["openedAt"]) / 60.0
                     why = exit_check(pos, snap.dislocation_bps, held,
                                      mins_left, cfg)
                     if why and i + 1 < len(bars):
@@ -208,17 +217,17 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
              for r in {c["exitReason"] for c in closed}),
             key=lambda kv: -kv[1])),
         "betas": betas,
-        "config": {k: getattr(cfg, k) for k in
-                   ("entry_bps", "exit_bps", "stop_bps", "min_driver_move_bps",
-                    "risk_frac", "max_positions", "slippage_bps")},
+        "config": {k: getattr(cfg, k) for k in CONFIG_KEYS},
         "trades_detail": closed[-60:],
     }
     if write:
         # The stress-validation block is produced by validate(), not by every
-        # replay; carry it forward so refreshing the canonical replay does
-        # not erase it from the dashboard.
+        # replay; carry it forward only while it describes this same
+        # configuration — stale stress metrics next to a fresh replay of a
+        # different config would misrepresent both.
         prev = stocklib.load_state("backtest.json", {})
-        if isinstance(prev, dict) and prev.get("validation"):
+        if isinstance(prev, dict) and isinstance(prev.get("validation"), dict) \
+                and prev["validation"].get("config") == result["config"]:
             result["validation"] = prev["validation"]
         stocklib.save_state("backtest.json", result)
         _write_report(result)
@@ -275,6 +284,7 @@ def validate(cfg=None, range_="1mo", interval="5m", bankroll=1000.0):
                     f"the next bar's open",
         "returnPct": m["returnPct"], "trades": m["trades"],
         "winRate": m["winRate"], "worstDay": round(worst, 2),
+        "config": {k: getattr(cfg, k) for k in CONFIG_KEYS},
     }
     bt = stocklib.load_state("backtest.json", {})
     bt["validation"] = block
