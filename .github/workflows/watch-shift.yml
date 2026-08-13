@@ -36,11 +36,13 @@ jobs:
       - name: Watch for one shift
         working-directory: scripts
         run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
           if [ -n "$PM_PRIVATE_KEY" ]; then
-            python3 watch.py --duration-minutes 110 --paper --execute
+            python3 watch.py --duration-minutes 110 --paper --execute --git-push
           else
             echo "No keys configured — paper trading only."
-            python3 watch.py --duration-minutes 110 --paper
+            python3 watch.py --duration-minutes 110 --paper --git-push
           fi
 
       - name: Commit journal and reports back

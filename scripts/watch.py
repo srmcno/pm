@@ -60,6 +60,25 @@ def run_step(script_args):
                    cwd=os.path.dirname(os.path.abspath(__file__)), check=False)
 
 
+BRANCH = "claude/polymarket-wallets-analysis-m81p4j"
+
+
+def git_publish(message):
+    """Best-effort commit+push of live data so the site updates in minutes."""
+    def git(*argv):
+        return subprocess.run(["git", *argv], cwd=pmlib.BASE, check=False,
+                              capture_output=True, text=True)
+    git("add", "data/live", "data/signals", "data/paper", "reports",
+        "dashboard/data")
+    if git("diff", "--cached", "--quiet").returncode == 0:
+        return
+    git("commit", "-m", message)
+    git("pull", "--rebase", "origin", BRANCH)
+    r = git("push", "origin", f"HEAD:{BRANCH}")
+    print("  site push:", "ok" if r.returncode == 0 else r.stderr.strip()[:200],
+          flush=True)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--poll-seconds", type=int, default=45)
@@ -74,6 +93,10 @@ def main():
                     help="run papertrade trade+mark when new signals land")
     ap.add_argument("--execute", action="store_true",
                     help="run livetrade execute on new signals (real money)")
+    ap.add_argument("--git-push", action="store_true",
+                    help="commit and push site data after each event/heartbeat")
+    ap.add_argument("--heartbeat-minutes", type=float, default=30,
+                    help="re-mark the paper account this often even when quiet")
     args = ap.parse_args()
 
     analyzed = pmlib.load_analyzed()
@@ -95,11 +118,17 @@ def main():
     last_seen_ts = now
     deadline = time.time() + args.duration_minutes * 60 if args.duration_minutes else None
 
+    last_heartbeat = time.time()
     while True:
         if deadline and time.time() > deadline:
             print("Shift over — exiting cleanly.", flush=True)
             break
         time.sleep(args.poll_seconds)
+        if args.paper and time.time() - last_heartbeat > args.heartbeat_minutes * 60:
+            last_heartbeat = time.time()
+            run_step(["papertrade.py", "mark"])
+            if args.git_push:
+                git_publish("auto: heartbeat mark")
         try:
             fresh, last_seen_ts = poll_feed(last_seen_ts, watch_set)
         except Exception as e:  # noqa: BLE001 — a bad poll must not kill the watch
@@ -132,10 +161,7 @@ def main():
                 "watchlistSize": len(watchlist),
                 "minBackers": args.min_backers, "live": True,
                 "source": "watch.py"}
-        os.makedirs(sigmod.SIG_DIR, exist_ok=True)
-        with open(os.path.join(sigmod.SIG_DIR, "latest.json"), "w") as f:
-            json.dump({"meta": meta, "signals": enriched}, f, indent=1)
-        sigmod.write_report(enriched, meta)
+        sigmod.publish_signals({"meta": meta, "signals": enriched})
         for s in enriched:
             seen.add((s["conditionId"], s["outcomeIndex"]))
             print(f"  NEW SIGNAL [{s['score']:.1f}] {s['question']} -> "
@@ -153,6 +179,8 @@ def main():
                       "--i-accept-total-loss"])
         else:
             run_step(["livetrade.py", "plan"])
+        if args.git_push:
+            git_publish("auto: new signal reaction")
 
 
 if __name__ == "__main__":

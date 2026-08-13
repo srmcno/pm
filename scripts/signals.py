@@ -198,6 +198,19 @@ def enrich(signals, top, max_drift=0.15, max_days=None):
     return kept
 
 
+def publish_signals(payload):
+    """Write the signal payload everywhere it is consumed: the engine's
+    latest.json, the live dashboard's data file, and the markdown report."""
+    os.makedirs(SIG_DIR, exist_ok=True)
+    with open(os.path.join(SIG_DIR, "latest.json"), "w") as f:
+        json.dump(payload, f, indent=1)
+    dash_data = os.path.join(pmlib.BASE, "dashboard", "data")
+    os.makedirs(dash_data, exist_ok=True)
+    with open(os.path.join(dash_data, "signals.json"), "w") as f:
+        json.dump(payload, f)
+    write_report(payload["signals"], payload["meta"])
+
+
 def write_report(signals, meta):
     os.makedirs(REP_DIR, exist_ok=True)
     lines = [
@@ -284,16 +297,7 @@ def main():
     meta = {"generatedAt": now, "hours": args.hours,
             "watchlistSize": len(watchlist), "minBackers": args.min_backers,
             "live": args.live}
-    os.makedirs(SIG_DIR, exist_ok=True)
-    payload = {"meta": meta, "signals": signals}
-    with open(os.path.join(SIG_DIR, "latest.json"), "w") as f:
-        json.dump(payload, f, indent=1)
-    # copy for the live dashboard (served by GitHub Pages)
-    dash_data = os.path.join(pmlib.BASE, "dashboard", "data")
-    os.makedirs(dash_data, exist_ok=True)
-    with open(os.path.join(dash_data, "signals.json"), "w") as f:
-        json.dump(payload, f)
-    write_report(signals, meta)
+    publish_signals({"meta": meta, "signals": signals})
     print(f"Wrote data/signals/latest.json and reports/signals-latest.md")
     for s in signals[:8]:
         print(f"  [{s['score']:6.2f}] {s['question'][:60]} -> {s['outcome']}"
