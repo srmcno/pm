@@ -116,6 +116,28 @@ def git_publish(message):
     r = _git("push", "origin", f"HEAD:{branch}")
     print("  site push:", "ok" if r.returncode == 0 else r.stderr.strip()[:200],
           flush=True)
+    if r.returncode == 0:
+        deploy_site(branch)
+
+
+def deploy_site(branch):
+    """Explicitly dispatch the Pages deploy after a data push.
+
+    Pushes made with the workflow's GITHUB_TOKEN never trigger other
+    workflows (GitHub's recursion guard), so the on-push deploy does not
+    fire for the watcher's own commits — without this dispatch the site
+    silently serves stale data forever. No-op outside CI.
+    """
+    if not (os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")):
+        return
+    try:
+        r = subprocess.run(["gh", "workflow", "run", "jekyll-gh-pages.yml",
+                            "--ref", branch], cwd=pmlib.BASE, check=False,
+                           capture_output=True, text=True)
+    except OSError:
+        return
+    print("  site deploy:", "dispatched" if r.returncode == 0
+          else (r.stderr or "").strip()[:120], flush=True)
 
 
 def main():

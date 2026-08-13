@@ -12,6 +12,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write   # the watcher dispatches the Pages deploy after data pushes
 
 jobs:
   shift:
@@ -21,6 +22,7 @@ jobs:
       PM_PRIVATE_KEY: ${{ secrets.PM_PRIVATE_KEY }}
       PM_PROXY_ADDRESS: ${{ secrets.PM_PROXY_ADDRESS }}
       PM_SIGNATURE_TYPE: ${{ secrets.PM_SIGNATURE_TYPE }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       # Run on whichever branch the schedule or dispatch targeted, so a
       # dispatch for another branch can never publish data to this one.
@@ -56,3 +58,5 @@ jobs:
           git commit -m "auto: watcher shift $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin "${GITHUB_REF_NAME}" || true
           git push origin "HEAD:${GITHUB_REF_NAME}"
+          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
+          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" || true

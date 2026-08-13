@@ -94,8 +94,11 @@ strict config to accumulate a real out-of-sample record before any conclusion.
 
 ## The live site
 
-The dashboard deploys to **https://srmcno.github.io/pm/** on every push that
-touches `dashboard/` (GitHub Pages). It stays live end to end:
+The dashboard deploys to **https://srmcno.github.io/pm/** (GitHub Pages).
+Human pushes touching `dashboard/` deploy on push; the watcher's own data
+pushes use the workflow token, which GitHub never lets trigger on-push
+workflows, so the watcher explicitly dispatches the deploy after each
+publish. It stays live end to end:
 
 - A cloud watcher (`watch-shift.yml`) runs back-to-back ~2-hour shifts,
   polling the trade feed every 45 s. It reacts to new consensus within about
