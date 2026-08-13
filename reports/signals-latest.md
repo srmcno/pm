@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-13 12:22 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-13 12:35 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? — **No**
 
-- Score **6.17** · 3 backers · net $1,722 staked
+- Score **6.11** · 3 backers · net $1,722 staked
 - Backers' average entry 0.93 → current price **0.92** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-13
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group — **Hanwha Life Esports**
 
-- Score **4.93** · 3 backers · net $51,017 staked
+- Score **4.88** · 3 backers · net $51,017 staked
 - Backers' average entry 0.40 → current price **0.04** (moved against them -0.35 since entry)
 - Resolves by 2026-08-13
 

@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786623720,
+  "generatedAt": 1786624506,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 655.41,
      "avgPrice": 0.9291,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.3,
-     "score": 2.2344421115654587
+     "lastTradeAgoH": 5.5,
+     "score": 2.2140789427186975
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 392.63,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.3,
-     "score": 2.082093785776904
+     "lastTradeAgoH": 5.5,
+     "score": 2.0631190148060585
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -41,14 +41,14 @@
      "netUsd": 674.27,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.3,
-     "score": 1.8535712970940736
+     "lastTradeAgoH": 5.5,
+     "score": 1.8366791229371013
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1722.31,
-   "score": 6.1701,
+   "score": 6.1139,
    "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
    "outcome": "No",
    "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
@@ -72,8 +72,8 @@
      "netUsd": 19361.62,
      "avgPrice": 0.4026,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.4295048930953644
+     "lastTradeAgoH": 0.3,
+     "score": 2.4073640561964966
     },
     {
      "wallet": "0x8a8685a792c184e5c2ee8c7d4d4baba7c2c94998",
@@ -82,8 +82,8 @@
      "netUsd": 23565.56,
      "avgPrice": 0.3527,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.5199590585946041
+     "lastTradeAgoH": 0.7,
+     "score": 1.5061071969643014
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -92,14 +92,14 @@
      "netUsd": 8090.3,
      "avgPrice": 0.44,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.5,
-     "score": 0.9783730420858725
+     "lastTradeAgoH": 2.7,
+     "score": 0.9694568229777588
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 51017.48,
-   "score": 4.9278,
+   "score": 4.8829,
    "question": "LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
    "outcome": "Hanwha Life Esports",
    "tokenId": "76166142632502863111636033986770521770002601481581842235949590565123761079906",
