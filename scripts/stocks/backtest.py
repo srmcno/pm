@@ -24,7 +24,8 @@ REPORT = "reports/stocks-backtest.md"
 CONFIG_KEYS = ("entry_bps", "exit_bps", "stop_bps", "min_driver_move_bps",
                "max_hold_minutes", "anchor_minutes",
                "flatten_minutes_before_close", "risk_frac", "max_positions",
-               "slippage_bps", "min_beta_r2", "beta_lookback_days")
+               "max_daily_loss_frac", "slippage_bps", "min_beta_r2",
+               "beta_lookback_days")
 
 
 def _sessions(bars):
@@ -98,6 +99,12 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
 
         idx = {s: 0 for s in day_bars}
         last_ts = max(b[-1][0] for b in day_bars.values())
+        # The production desk halts the day past the drawdown limit and
+        # flattens; the replay enforces the same rail so validation never
+        # credits a session the live strategy would have stopped trading.
+        day_start_eq = cash
+        halted = False
+        last_px = {}
         t = open_ts
         while t <= last_ts:
             for sym, bars in day_bars.items():
@@ -109,6 +116,7 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                     continue
                 bar = bars[i]
                 px = bar[4]
+                last_px[sym] = px
                 meta = UNIVERSE[sym]
                 if betas[sym]["r2"] < cfg.min_beta_r2:
                     continue
@@ -138,8 +146,9 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                     # Exposure is measured to this bar's close (t + step_s),
                     # the instant actually being evaluated.
                     held = (t + step_s - pos["openedAt"]) / 60.0
-                    why = exit_check(pos, snap.dislocation_bps, held,
-                                     mins_left, cfg)
+                    why = "halt" if halted else \
+                        exit_check(pos, snap.dislocation_bps, held,
+                                   mins_left, cfg)
                     if why and i + 1 < len(bars):
                         exit_q = bars[i + 1][1]
                         fpx = fill_price(sym, exit_q, pos["side"] == "short", cfg)
@@ -154,7 +163,8 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                                        "closedAt": t, "pnl": round(pnl, 2),
                                        "exitReason": why, "day": day})
                         del open_pos[sym]
-                elif snap.action != "none" and len(open_pos) < cfg.max_positions \
+                elif snap.action != "none" and not halted \
+                        and len(open_pos) < cfg.max_positions \
                         and i + 1 < len(bars) \
                         and mins_left > cfg.flatten_minutes_before_close + 1:
                     entry_q = bars[i + 1][1]
@@ -182,6 +192,15 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                                 "openedAt": bars[i + 1][0],
                                 "entryDislocationBps": snap.dislocation_bps}
                             cash -= cost + open_fee
+            if not halted and open_pos:
+                eq = cash
+                for sym, pos in open_pos.items():
+                    mark = last_px.get(sym, pos["entry"])
+                    eq += (pos["shares"] * mark if pos["side"] == "long"
+                           else pos["shares"] * (2 * pos["entry"] - mark))
+                if (day_start_eq - eq) / max(day_start_eq, 1e-9) \
+                        >= cfg.max_daily_loss_frac:
+                    halted = True
             t += step_s
         # forced flat at session end
         for sym, pos in list(open_pos.items()):

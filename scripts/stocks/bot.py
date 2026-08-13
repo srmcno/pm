@@ -155,7 +155,7 @@ def cmd_run(args):
         for c in st["closed"]:
             if not c.get("liveOpen") and not c.get("liveCid"):
                 c.setdefault("mirrored", True)
-        _reconcile_mirrors(executor, st)
+        _reconcile_mirrors(executor, st, save=paperdesk.save)
 
     deadline = time.time() + args.minutes * 60 if args.minutes else None
     last_push = 0.0
@@ -172,7 +172,7 @@ def cmd_run(args):
             # after the bell fills at the next open, and ending the session
             # before it confirms would leave live exposure with nobody
             # watching it.
-            if executor and _reconcile_mirrors(executor, st):
+            if executor and _reconcile_mirrors(executor, st, save=paperdesk.save):
                 paperdesk.save(st)
                 print("  waiting on pending live orders", flush=True)
                 time.sleep(30)
@@ -182,26 +182,39 @@ def cmd_run(args):
                 break
             time.sleep(60)
             continue
+        if executor:
+            # A close still settling live blocks new paper decisions: a
+            # fresh position in the same symbol could be flattened or
+            # reversed when the old close finally fills.
+            _reconcile_mirrors(executor, st, save=paperdesk.save)
+            if _pending_close(st):
+                paperdesk.save(st)
+                print("  reconciling pending live closes before trading",
+                      flush=True)
+                time.sleep(3)
+                continue
         before = {id(p) for p in st["positions"]}
         snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
         if executor:
             from stocks import livedesk
             for p in st["positions"]:
                 if id(p) not in before and not p.get("liveCid"):
-                    # The CID is persisted BEFORE the network call: if the
-                    # order is accepted but the response is lost, the
-                    # position stays reconcilable instead of becoming
-                    # untracked live exposure. Submission is only step one —
+                    # The CID is assigned and DURABLY SAVED before the
+                    # network call: if the order is accepted but the
+                    # response is lost — or the process dies mid-flight —
+                    # the position stays reconcilable instead of becoming
+                    # untracked live exposure. Submission is only step one;
                     # liveOpen is set when the order confirms filled in the
                     # reconcile pass.
                     p["liveCid"] = livedesk.mirror_cid(p, True)
+                    paperdesk.save(st)
                     try:
                         livedesk.mirror_position(executor, p, opening=True)
                         print(f"  alpaca open submitted {p['symbol']}",
                               flush=True)
                     except Exception as e:                # noqa: BLE001
                         print(f"  alpaca open failed: {e}", flush=True)
-            _reconcile_mirrors(executor, st)
+            _reconcile_mirrors(executor, st, save=paperdesk.save)
         paperdesk.save(st)
         publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
         if args.git_push and time.time() - last_push > args.push_minutes * 60:
@@ -223,7 +236,14 @@ def cmd_run(args):
     return 0
 
 
-def _reconcile_mirrors(executor, st):
+def _pending_close(st):
+    """True while any closed trade still has an unsettled live close."""
+    return any(not c.get("mirrored")
+               and (c.get("liveOpen") or c.get("liveCid"))
+               for c in st["closed"])
+
+
+def _reconcile_mirrors(executor, st, save=None):
     """Advance every pending live order to a confirmed terminal state.
 
     Nothing is recorded complete on submission alone: an accepted order can
@@ -317,10 +337,13 @@ def _reconcile_mirrors(executor, st):
             # status == "not_found": the submission never landed — fall
             # through and resubmit under the SAME attempt id, which stays
             # idempotent if it did land after all.
-        # The CID is persisted BEFORE the network call so an accepted-but-
-        # lost submission remains reconcilable instead of spawning a second
-        # full-size close under a fresh id.
+        # The CID is assigned and durably saved BEFORE the network call so
+        # an accepted-but-lost submission — or a crash mid-flight — remains
+        # reconcilable instead of spawning a second full-size close under a
+        # fresh id.
         c["closeCid"] = livedesk.mirror_cid(c, False, attempt)
+        if save:
+            save(st)
         try:
             livedesk.mirror_position(executor, c, opening=False,
                                      attempt=attempt)
