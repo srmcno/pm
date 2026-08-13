@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-13 17:42 UTC · started with $20.00 (virtual)
+Updated 2026-08-13 17:57 UTC · started with $20.00 (virtual)
 
-**Equity $16.54 (-17.3%)** · cash $5.71 · 8 open · 4 settled
+**Equity $16.39 (-18.1%)** · cash $5.71 · 8 open · 4 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -11,9 +11,9 @@ Updated 2026-08-13 17:42 UTC · started with $20.00 (virtual)
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.83 | $1.45 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.16 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.21 | $0.92 |
-| Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 1.71 | 0.90 | 0.87 | $1.49 |
-| Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B | FaZe | 2.08 | 0.53 | 0.73 | $1.53 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.20 | $0.90 |
+| Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 1.71 | 0.90 | 0.83 | $1.43 |
+| Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B | FaZe | 2.08 | 0.53 | 0.70 | $1.45 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
