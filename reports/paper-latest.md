@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-13 12:12 UTC · started with $20.00 (virtual)
+Updated 2026-08-13 12:22 UTC · started with $20.00 (virtual)
 
-**Equity $19.32 (-3.4%)** · cash $11.46 · 6 open · 2 settled
+**Equity $18.99 (-5.1%)** · cash $9.63 · 7 open · 2 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -12,6 +12,7 @@ Updated 2026-08-13 12:12 UTC · started with $20.00 (virtual)
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.15 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.23 | $1.01 |
+| LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group | Hanwha Life Esports | 33.27 | 0.06 | 0.04 | $1.50 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
