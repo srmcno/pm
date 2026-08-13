@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-13 14:21 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-13 14:31 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage — **Team Falcons**
 
-- Score **8.85** · 5 backers · net $91,554 staked
+- Score **8.80** · 5 backers · net $91,554 staked
 - Backers' average entry 0.46 → current price **0.33** (moved against them -0.13 since entry)
 - Resolves by 2026-08-13
 
@@ -20,7 +20,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? — **No**
 
-- Score **7.00** · 3 backers · net $2,204 staked
+- Score **6.96** · 3 backers · net $2,204 staked
 - Backers' average entry 0.92 → current price **0.89** (moved against them -0.03 since entry)
 - Resolves by 2026-08-13
 
