@@ -88,10 +88,16 @@ FAILED_STATUSES = {"canceled", "expired", "rejected", "stopped", "suspended"}
 def order_state(client, client_order_id):
     """(status, filled_qty) for the order with this client id.
 
-    (None, 0) means the lookup itself failed; callers treat that as still
-    pending and re-check, never as confirmation in either direction."""
+    "not_found" means the venue has no such order — a submission that never
+    landed can be safely retried under the same id. (None, 0) means the
+    lookup itself failed transiently; callers treat that as still pending
+    and re-check, never as confirmation in either direction."""
     try:
         o = client.order_by_client_id(client_order_id)
+    except RuntimeError as e:
+        if "alpaca 404" in str(e):
+            return "not_found", 0.0
+        return None, 0.0
     except Exception:                                     # noqa: BLE001
         return None, 0.0
     return o.get("status"), float(o.get("filled_qty") or 0)
@@ -124,7 +130,10 @@ def mirror_position(client: Alpaca, pos, opening, attempt=0):
     terminal order state via order_state() before recording anything done."""
     side = ("buy" if pos["side"] == "long" else "sell") if opening else \
            ("sell" if pos["side"] == "long" else "buy")
-    qty = max(1, int(pos["shares"]))
+    # A close flattens what is actually held live (liveQty), which can be
+    # less than the paper size when the opening order only partially filled.
+    qty = max(1, int(pos.get("liveQty") or pos["shares"])) if not opening \
+        else max(1, int(pos["shares"]))
     cid = mirror_cid(pos, opening, attempt)
     try:
         return client.submit(pos["symbol"], qty, side, client_order_id=cid)

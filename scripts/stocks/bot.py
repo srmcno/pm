@@ -188,14 +188,15 @@ def cmd_run(args):
             from stocks import livedesk
             for p in st["positions"]:
                 if id(p) not in before and not p.get("liveCid"):
-                    # Submission is only step one: liveOpen is set when the
-                    # order confirms filled in the reconcile pass. A failed
-                    # open submission is not retried — entering late chases
-                    # a decayed edge, and missing an entry is the safe
-                    # failure mode.
+                    # The CID is persisted BEFORE the network call: if the
+                    # order is accepted but the response is lost, the
+                    # position stays reconcilable instead of becoming
+                    # untracked live exposure. Submission is only step one —
+                    # liveOpen is set when the order confirms filled in the
+                    # reconcile pass.
+                    p["liveCid"] = livedesk.mirror_cid(p, True)
                     try:
                         livedesk.mirror_position(executor, p, opening=True)
-                        p["liveCid"] = livedesk.mirror_cid(p, True)
                         print(f"  alpaca open submitted {p['symbol']}",
                               flush=True)
                     except Exception as e:                # noqa: BLE001
@@ -233,65 +234,96 @@ def _reconcile_mirrors(executor, st):
     process alive until live state matches paper state."""
     from stocks import livedesk
     pending = False
+
+    def settle_open(rec):
+        """Resolve what the opening order actually did live. Returns
+        'live' (shares are held, possibly a partial), 'dead' (nothing ever
+        filled), or 'pending' (keep checking)."""
+        status, filled = livedesk.order_state(executor, rec["liveCid"])
+        if status == "filled" or \
+                (status in livedesk.FAILED_STATUSES and filled > 0):
+            # A terminal order with a partial fill still put shares on the
+            # book; they are live exposure and must be closed like any
+            # other, at the actually-filled quantity.
+            rec["liveOpen"] = True
+            rec["liveQty"] = filled
+            if status != "filled":
+                print(f"  alpaca open for {rec['symbol']} ended '{status}' "
+                      f"with {filled:g} of {rec['shares']:g} filled; "
+                      f"tracking the partial", flush=True)
+            return "live"
+        if status in livedesk.FAILED_STATUSES:
+            return "dead"
+        if status == "not_found":
+            # The submission never landed. Probe a few times before
+            # concluding, in case the venue is slow to index the order.
+            rec["liveNotFound"] = rec.get("liveNotFound", 0) + 1
+            if rec["liveNotFound"] >= 3:
+                return "dead"
+        return "pending"
+
     for p in st["positions"]:
         if p.get("liveCid") and not p.get("liveOpen"):
-            status, filled = livedesk.order_state(executor, p["liveCid"])
-            if status == "filled":
-                p["liveOpen"] = True
-                p["liveQty"] = filled
-            elif status in livedesk.FAILED_STATUSES:
+            outcome = settle_open(p)
+            if outcome == "dead":
                 p["liveCid"] = None      # open never happened; stay paper-only
-            else:
-                pending = True           # working, queued, or lookup failed
+            elif outcome == "pending":
+                pending = True
     for c in st["closed"]:
         if c.get("mirrored"):
             continue
         if not c.get("liveOpen"):
             # The open was submitted but unconfirmed when the paper side
             # closed; settle what actually happened live before deciding.
-            cid = c.get("liveCid")
-            if not cid:
+            if not c.get("liveCid"):
                 c["mirrored"] = True     # never touched the live account
                 continue
-            status, filled = livedesk.order_state(executor, cid)
-            if status == "filled":
-                c["liveOpen"] = True
-                c["liveQty"] = filled
-            elif status in livedesk.FAILED_STATUSES:
+            outcome = settle_open(c)
+            if outcome == "dead":
                 c["mirrored"] = True     # open died; nothing live to close
                 continue
-            else:
+            if outcome == "pending":
                 pending = True
                 continue
         cid = c.get("closeCid")
+        attempt = c.get("mirrorAttempts", 0)
         if cid:
             status, filled = livedesk.order_state(executor, cid)
             if status == "filled":
                 c["mirrored"] = True
                 continue
-            if status not in livedesk.FAILED_STATUSES:
-                pending = True           # still working or queued for open
+            if status is None or (status not in livedesk.FAILED_STATUSES
+                                  and status != "not_found"):
+                pending = True           # working, queued, or lookup failed
                 continue
-            if filled > 0:
-                # Terminal with a partial fill: retrying the full quantity
-                # would over-close. Surface it instead of guessing.
-                c["mirrored"] = True
-                print(f"  ALERT: close for {c['symbol']} ended '{status}' "
-                      f"with {filled:g} of {c['shares']:g} filled; reconcile "
-                      f"the live position manually", flush=True)
-                continue
-            c["mirrorAttempts"] = c.get("mirrorAttempts", 0) + 1
-            if c["mirrorAttempts"] >= 5:
-                c["mirrored"] = True
-                print(f"  ALERT: close mirror failed {c['mirrorAttempts']}x "
-                      f"for {c['symbol']}; the live position needs a manual "
-                      f"close", flush=True)
-                continue
-        attempt = c.get("mirrorAttempts", 0)
+            if status in livedesk.FAILED_STATUSES:
+                if filled > 0:
+                    # Terminal with a partial fill: retrying the full
+                    # quantity would over-close. Surface it instead of
+                    # guessing.
+                    c["mirrored"] = True
+                    print(f"  ALERT: close for {c['symbol']} ended "
+                          f"'{status}' with {filled:g} of "
+                          f"{c.get('liveQty') or c['shares']:g} filled; "
+                          f"reconcile the live position manually", flush=True)
+                    continue
+                c["mirrorAttempts"] = attempt = attempt + 1
+                if attempt >= 5:
+                    c["mirrored"] = True
+                    print(f"  ALERT: close mirror failed {attempt}x for "
+                          f"{c['symbol']}; the live position needs a manual "
+                          f"close", flush=True)
+                    continue
+            # status == "not_found": the submission never landed — fall
+            # through and resubmit under the SAME attempt id, which stays
+            # idempotent if it did land after all.
+        # The CID is persisted BEFORE the network call so an accepted-but-
+        # lost submission remains reconcilable instead of spawning a second
+        # full-size close under a fresh id.
+        c["closeCid"] = livedesk.mirror_cid(c, False, attempt)
         try:
             livedesk.mirror_position(executor, c, opening=False,
                                      attempt=attempt)
-            c["closeCid"] = livedesk.mirror_cid(c, False, attempt)
             print(f"  alpaca close submitted {c['symbol']}", flush=True)
         except Exception as e:                            # noqa: BLE001
             print(f"  alpaca close submit failed: {e}", flush=True)

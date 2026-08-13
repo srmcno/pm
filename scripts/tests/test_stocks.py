@@ -161,7 +161,7 @@ class TestQuoteGate(unittest.TestCase):
 class TestMirrorReconciliation(unittest.TestCase):
     """Live mirroring records completion only on confirmed fills."""
 
-    def _run(self, closed, order_states, submitted):
+    def _run(self, closed, order_states, submitted, positions=None):
         from stocks import bot, livedesk
         orig_state = livedesk.order_state
         orig_mirror = livedesk.mirror_position
@@ -173,7 +173,7 @@ class TestMirrorReconciliation(unittest.TestCase):
                                                                 (None, 0.0))
         livedesk.mirror_position = fake_mirror
         try:
-            st = {"positions": [], "closed": closed}
+            st = {"positions": positions or [], "closed": closed}
             return bot._reconcile_mirrors(object(), st)
         finally:
             livedesk.order_state = orig_state
@@ -212,6 +212,39 @@ class TestMirrorReconciliation(unittest.TestCase):
              "liveCid": "pm-o-IBIT-100"}
         pending = self._run([c], {"pm-o-IBIT-100": ("rejected", 0.0)}, [])
         self.assertTrue(c.get("mirrored"))
+        self.assertFalse(pending)
+
+    def test_partially_filled_dead_open_still_gets_closed(self):
+        # a canceled opening order that filled 3 of 5 shares put real live
+        # exposure on the book; those shares must be closed, not forgotten
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100"}
+        submitted = []
+        pending = self._run([c], {"pm-o-IBIT-100": ("canceled", 3.0)},
+                            submitted)
+        self.assertEqual(c.get("liveQty"), 3.0)
+        self.assertEqual(submitted, [("IBIT", False, 0)])
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
+    def test_lost_close_submission_reuses_the_same_attempt_id(self):
+        # the close CID points at an order the venue never received; the
+        # retry must reuse the same id (idempotent if it landed after all),
+        # not burn a new attempt that could double-close
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        submitted = []
+        self._run([c], {"pm-c-IBIT-100": ("not_found", 0.0)}, submitted)
+        self.assertEqual(submitted, [("IBIT", False, 0)])
+        self.assertEqual(c["closeCid"], "pm-c-IBIT-100")
+        self.assertNotIn("mirrorAttempts", c)
+
+    def test_never_landed_open_clears_after_probes(self):
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100", "liveNotFound": 2}
+        pending = self._run([], {"pm-o-IBIT-100": ("not_found", 0.0)}, [],
+                            positions=[p])
+        self.assertIsNone(p["liveCid"])
         self.assertFalse(pending)
 
 
