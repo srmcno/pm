@@ -26,6 +26,24 @@ $20 bankroll, 8% of cash per position.
    completed (12.3M trades vs 867K), that vanished. Treat any single backtest
    number — including config C's — with the same suspicion.
 
+## Robustness runs (strict config, different train/trade splits)
+
+| split | result | win rate | top-3 profit share |
+|---|---|---|---|
+| train 45d / trade 45d | +42.3% | 53% | 51% |
+| train 30d / trade 60d | **+25.8%** | 61% | **37%** |
+| train 60d / trade 30d | +82.8% | 61% | 76% |
+| train 45d / trade 45d, 16% sizing | +64.8% | 53% | 52% |
+
+The strict (≥3 backers, ~1h copy) config is positive in every split tested,
+with 53–61% settled win rates and ~zero measured latency cost. Honest
+caveats: these windows **overlap** (they share the same 90 days of data, so
+the same lucky trades can appear in several rows — this is not four
+independent samples), and every fill is simulated from printed trades +1¢.
+The 30/60 split is the highest-quality evidence: most trades, least
+concentration. Aggressive 16% sizing scaled returns without blowing up in
+this window, but doubles the drawdown risk by construction.
+
 ## Verdict
 
 Do **not** fund this. The only defensible next step is the one that costs
