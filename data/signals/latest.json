@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786640229,
+  "generatedAt": 1786641141,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 321.26,
      "avgPrice": 0.51,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 2.432364627095141
+     "lastTradeAgoH": 1.1,
+     "score": 2.40685255527668
     },
     {
      "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
@@ -31,8 +31,8 @@
      "netUsd": 52249.5,
      "avgPrice": 0.51,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 1.8442285699277574
+     "lastTradeAgoH": 1.1,
+     "score": 1.8248852152343276
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -41,8 +41,8 @@
      "netUsd": 3500.0,
      "avgPrice": 0.5,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 1.2005607259709399
+     "lastTradeAgoH": 1.2,
+     "score": 1.1879685384665637
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -51,20 +51,20 @@
      "netUsd": 10245.0,
      "avgPrice": 0.51,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.9,
-     "score": 1.0054485400790625
+     "lastTradeAgoH": 8.2,
+     "score": 0.994902804016909
     }
    ],
    "backerCount": 4,
    "contested": false,
    "totalNetUsd": 66315.76,
-   "score": 6.4826,
+   "score": 6.4146,
    "question": "Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B",
    "outcome": "FaZe",
    "tokenId": "24393800223473647404325127552224094751546244351715138029940619686078097364351",
-   "currentPrice": 0.515,
+   "currentPrice": 0.635,
    "backersAvgEntry": 0.5075,
-   "driftSinceEntry": 0.0075,
+   "driftSinceEntry": 0.1275,
    "endDate": "2026-08-13T22:50:00Z",
    "slug": "cs2-lgc-faze-2026-08-13",
    "eventSlug": "cs2-lgc-faze-2026-08-13"
@@ -82,8 +82,8 @@
      "netUsd": 1126.27,
      "avgPrice": 0.9095,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.0,
-     "score": 2.561607781263105
+     "lastTradeAgoH": 2.2,
+     "score": 2.5347401311754787
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -92,8 +92,8 @@
      "netUsd": 589.34,
      "avgPrice": 0.9122,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.0,
-     "score": 2.3869527052678925
+     "lastTradeAgoH": 2.2,
+     "score": 2.3619169404135136
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -102,14 +102,14 @@
      "netUsd": 674.27,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.9,
-     "score": 1.5310900761716193
+     "lastTradeAgoH": 10.1,
+     "score": 1.5150311023036793
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 2389.88,
-   "score": 6.4797,
+   "score": 6.4117,
    "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
    "outcome": "No",
    "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
