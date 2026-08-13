@@ -1,13 +1,10 @@
 name: Sharp Money real-time watcher (opt-in)
 
-# Continuous watching in back-to-back 2-hour shifts. This costs ~43,000
-# Actions minutes/month — FREE on public repos, far beyond the private-repo
-# free tier. To turn it on: make the repo public (or budget paid minutes),
-# then uncomment the schedule block below. Until then it only runs manually.
+# Continuous watching in back-to-back 2-hour shifts. Free on public repos.
 on:
   workflow_dispatch: {}
-  # schedule:
-  #   - cron: "5 */2 * * *"
+  schedule:
+    - cron: "5 */2 * * *"
 
 concurrency:
   group: watch-shift

@@ -1,8 +1,8 @@
 name: Sharp Money auto-trader
 
+# Superseded by watch-shift.yml (the real-time watcher). Kept as a manual
+# fallback — running both on schedules would race on data/live state.
 on:
-  schedule:
-    - cron: "17 */2 * * *"   # every 2 hours
   workflow_dispatch: {}       # manual run button
 
 concurrency:
