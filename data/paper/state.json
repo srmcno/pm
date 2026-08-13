@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 10.19,
+ "cash": 8.56,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.47,
-   "valueUsd": 1.47
+   "markPrice": 0.475,
+   "valueUsd": 1.4857
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -100,6 +100,20 @@
    "signalScore": 6.085,
    "markPrice": 0.9995,
    "valueUsd": 2.8941
+  },
+  {
+   "conditionId": "0x363b640ec7055c71883b4c9e449688d778167efb2cf283ecabb6227987911f25",
+   "outcomeIndex": 1,
+   "tokenId": "71903355120521813515091157289073497216518779070898086718709166911466436141686",
+   "question": "LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner",
+   "outcome": "Ninjas in Pyjamas",
+   "shares": 2.4148,
+   "entryPrice": 0.675,
+   "costUsd": 1.63,
+   "openedAt": 1786609917,
+   "signalScore": 5.8101,
+   "markPrice": 0.635,
+   "valueUsd": 1.5334
   }
  ],
  "closed": [],
@@ -213,6 +227,11 @@
    "t": 1786609216,
    "equity": 20.9161,
    "cash": 10.19
+  },
+  {
+   "t": 1786609918,
+   "equity": 20.8352,
+   "cash": 8.56
   }
  ],
  "log": [
@@ -271,6 +290,14 @@
    "outcome": "Team Liquid",
    "stake": 1.94,
    "price": 0.67
+  },
+  {
+   "t": 1786609917,
+   "action": "BUY",
+   "question": "LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner",
+   "outcome": "Ninjas in Pyjamas",
+   "stake": 1.63,
+   "price": 0.675
   }
  ]
 }
