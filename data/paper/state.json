@@ -84,8 +84,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.2205,
-   "valueUsd": 0.9667
+   "markPrice": 0.21,
+   "valueUsd": 0.9207
   },
   {
    "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
@@ -100,20 +100,6 @@
    "signalScore": 5.7408,
    "markPrice": 0.875,
    "valueUsd": 1.4972
-  },
-  {
-   "conditionId": "0x460bdcf944a67e2d6b7f3c1dae547f09881640ba4cc49f43e32f825600f192ec",
-   "outcomeIndex": 1,
-   "tokenId": "49827100014827410381672664132901854265928799555751305220192827799090755211021",
-   "question": "Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage",
-   "outcome": "Team Falcons",
-   "shares": 6.0,
-   "entryPrice": 0.215,
-   "costUsd": 1.29,
-   "openedAt": 1786630916,
-   "signalScore": 8.8521,
-   "markPrice": 0.0005,
-   "valueUsd": 0.003
   },
   {
    "conditionId": "0x7a78a3a1dfc9d3b26d7da8b30aaf12127451d1a067fe54ddca22fc5cbe862802",
@@ -181,6 +167,23 @@
    "settledAt": 1786636040,
    "settlePrice": 0.0,
    "pnl": -1.83
+  },
+  {
+   "conditionId": "0x460bdcf944a67e2d6b7f3c1dae547f09881640ba4cc49f43e32f825600f192ec",
+   "outcomeIndex": 1,
+   "tokenId": "49827100014827410381672664132901854265928799555751305220192827799090755211021",
+   "question": "Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage",
+   "outcome": "Team Falcons",
+   "shares": 6.0,
+   "entryPrice": 0.215,
+   "costUsd": 1.29,
+   "openedAt": 1786630916,
+   "signalScore": 8.8521,
+   "markPrice": 0.0005,
+   "valueUsd": 0.003,
+   "settledAt": 1786640230,
+   "settlePrice": 0.0,
+   "pnl": -1.29
   }
  ],
  "equityCurve": [
@@ -463,6 +466,11 @@
    "t": 1786639322,
    "equity": 16.1407,
    "cash": 5.7055
+  },
+  {
+   "t": 1786640230,
+   "equity": 16.0917,
+   "cash": 5.7055
   }
  ],
  "log": [
@@ -582,6 +590,13 @@
    "outcome": "FaZe",
    "stake": 1.09,
    "price": 0.525
+  },
+  {
+   "t": 1786640230,
+   "action": "SETTLE",
+   "question": "Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage",
+   "price": 0.0,
+   "pnl": -1.29
   }
  ]
 }
