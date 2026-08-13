@@ -56,12 +56,12 @@ class TestSignal(unittest.TestCase):
         self.cfg = StrategyConfig()
 
     def test_lagging_an_up_move_signals_long(self):
-        # driver +2%, beta 2 implies +4%; stock only +2% -> 200bps behind
+        # driver +2%, beta 2 implies +4%; stock only +2% -> ~200bps behind
         s = evaluate("MSTR", price=102.0, anchor_price=100.0,
                      driver_price=102.0, driver_anchor_price=100.0,
                      beta=2.0, cfg=self.cfg, spread_bps=4)
         self.assertEqual(s.action, "long")
-        self.assertLess(s.dislocation_bps, -100)
+        self.assertLess(s.dislocation_bps, -self.cfg.entry_bps)
 
     def test_lagging_a_down_move_signals_short(self):
         s = evaluate("MSTR", price=99.0, anchor_price=100.0,
@@ -84,11 +84,12 @@ class TestSignal(unittest.TestCase):
         self.assertIn("driver move", s.reason)
 
     def test_entry_threshold_scales_with_costs(self):
-        # ~70bps dislocation: enough for a tight-spread instrument, not for
-        # one whose round trip costs ~99bps
-        kw = dict(price=100.3, anchor_price=100.0, driver_price=100.5,
+        # ~180bps dislocation clears the 90bps entry on a tight-spread
+        # instrument but not the cost-scaled threshold of one whose round
+        # trip alone costs ~200bps
+        kw = dict(price=99.2, anchor_price=100.0, driver_price=100.5,
                   driver_anchor_price=100.0, beta=2.0, cfg=self.cfg)
-        self.assertEqual(evaluate("X", spread_bps=60, **kw).action, "none")
+        self.assertEqual(evaluate("X", spread_bps=200, **kw).action, "none")
         self.assertEqual(evaluate("X", spread_bps=4, **kw).action, "long")
 
     def test_bad_inputs_return_none(self):

@@ -142,7 +142,8 @@
   <p class="foot">Fills are simulated at quote ± half-spread ± slippage.
     Betas are fitted daily from 60 days of closes and instruments whose
     driver explains under 25% of daily variance are excluded. The desk halts
-    itself for the day past a 10% drawdown and holds nothing overnight.
+    itself for the day past a 4% drawdown, requires quotes fresher than 20
+    seconds to enter, and holds nothing overnight.
     Live execution requires an Alpaca account, explicit arming flags, and is
     subject to the pattern day trader rule below $25,000 account equity.</p>
 </div>
@@ -241,11 +242,18 @@ function render(d) {
   const bt = $("backtest");
   if (d.backtest && !d.backtest.error) {
     const b = d.backtest;
-    bt.textContent =
+    let txt =
       `${b.range} replay: $${b.bankroll} → $${b.finalEquity} ` +
       `(${b.returnPct >= 0 ? "+" : ""}${b.returnPct}%) over ${b.trades} trades, ` +
       `win rate ${b.winRate != null ? Math.round(b.winRate * 100) : "—"}%. ` +
       `Entries fill at the next bar's open plus spread and slippage.`;
+    if (b.validation) {
+      const v = b.validation;
+      txt += ` Stress validation on ${v.range}/${v.interval} bars ` +
+        `(${v.fillNote}): ${v.returnPct >= 0 ? "+" : ""}${v.returnPct}% over ` +
+        `${v.trades} trades, worst day $${Math.abs(v.worstDay).toFixed(2)}.`;
+    }
+    bt.textContent = txt;
   } else {
     bt.textContent = "Not yet generated. Run: python3 -m stocks.bot backtest";
   }

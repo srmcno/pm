@@ -86,21 +86,26 @@ def crypto_klines(symbol, interval="1m", start_ms=None, end_ms=None, limit=1000)
 
 
 def crypto_minutes(symbol, start_ts, end_ts):
-    """1m closes covering [start_ts, end_ts]: {minute_ts: close}."""
+    """1m closes covering [start_ts, end_ts]: {minute_ts: close}.
+
+    Each page requests a bounded window: MEXC answers a windowed query at
+    least 29 days back, but returns an empty list when the requested span is
+    too wide, so paginating with an open-ended end silently yields nothing
+    for long ranges."""
     out = {}
     cur = int(start_ts) * 1000
     end_ms = int(end_ts) * 1000
     while cur < end_ms:
-        rows = crypto_klines(symbol, "1m", start_ms=cur, end_ms=end_ms)
+        page_end = min(end_ms, cur + 1000 * 60_000)
+        rows = crypto_klines(symbol, "1m", start_ms=cur, end_ms=page_end)
         if not rows:
-            break
+            cur = page_end + 60_000       # hole in history; skip forward
+            continue
         for r in rows:
             out[int(r[0]) // 1000] = float(r[4])
         last = int(rows[-1][0])
-        if last <= cur:
-            break
-        cur = last + 60_000
-        time.sleep(0.15)
+        cur = max(last + 60_000, cur + 60_000)
+        time.sleep(0.12)
     return out
 
 
@@ -155,9 +160,12 @@ def quote(symbol):
     }
 
 
-def minute_bars(symbol, range_="5d"):
-    """Regular-session 1m bars: sorted [(ts, open, high, low, close, volume)]."""
-    r = chart(symbol, "1m", range_, cache_ttl=300)
+def minute_bars(symbol, range_="5d", interval="1m"):
+    """Regular-session bars: sorted [(ts, open, high, low, close, volume)].
+
+    Yahoo serves 1m bars for about a week and 5m bars for about two months,
+    so longer-horizon validation uses interval="5m"."""
+    r = chart(symbol, interval, range_, cache_ttl=300)
     if not r:
         return []
     ts = r.get("timestamp") or []
@@ -240,3 +248,66 @@ def save_state(name, obj):
     with open(tmp, "w") as f:
         json.dump(obj, f, indent=1)
     os.replace(tmp, os.path.join(DATA_DIR, name))
+
+
+# ------------------------------------------------- low-latency quote path
+
+ALPACA_DATA = "https://data.alpaca.markets"
+
+
+def _alpaca_headers():
+    key = os.environ.get("APCA_API_KEY_ID")
+    secret = os.environ.get("APCA_API_SECRET_KEY")
+    if not (key and secret):
+        return None
+    return {"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": secret}
+
+
+def alpaca_quotes(symbols):
+    """Latest NBBO quotes for many symbols in one request (IEX feed).
+
+    Returns {symbol: {price, bid, ask, ts}} or None when keys are absent or
+    the call fails. One batched call at a free-tier limit of 200/min supports
+    a poll cadence Yahoo cannot, with real bid/ask instead of estimates.
+    """
+    headers = _alpaca_headers()
+    if not headers:
+        return None
+    try:
+        r = _session.get(f"{ALPACA_DATA}/v2/stocks/quotes/latest",
+                         params={"symbols": ",".join(symbols)},
+                         headers=headers, timeout=10)
+        if r.status_code != 200:
+            return None
+        out = {}
+        for sym, q in (r.json().get("quotes") or {}).items():
+            bid, ask = q.get("bp"), q.get("ap")
+            if not bid or not ask or ask <= 0:
+                continue
+            ts = q.get("t") or ""
+            try:
+                age_ref = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+                epoch = age_ref.timestamp()
+            except ValueError:
+                epoch = time.time()
+            out[sym] = {"price": (bid + ask) / 2.0, "bid": bid, "ask": ask,
+                        "ts": epoch}
+        return out or None
+    except requests.RequestException:
+        return None
+
+
+def live_quotes(symbols):
+    """Best available quotes: Alpaca NBBO when keys are present, otherwise
+    Yahoo last prices. Every row carries the venue timestamp so staleness is
+    measured rather than assumed."""
+    quotes = alpaca_quotes(symbols)
+    if quotes is not None:
+        return quotes, "alpaca"
+    out = {}
+    for sym in symbols:
+        q = quote(sym)
+        if q and q.get("price"):
+            out[sym] = {"price": q["price"], "bid": None, "ask": None,
+                        "ts": q.get("marketTime") or time.time()}
+    return out, "yahoo"

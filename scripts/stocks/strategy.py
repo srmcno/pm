@@ -40,24 +40,32 @@ UNIVERSE = {
 
 @dataclass
 class StrategyConfig:
-    # Defaults chosen by a 5-day minute-bar replay: 45/25 traded 66 times for
-    # -0.05% while 60/35 traded 33 times for +0.75% at a 54% win rate. The
-    # sample is one week; treat these as a starting point, not a result.
-    entry_bps: float = 60.0          # |d| to open
+    # Defaults selected by a 216-config grid on 5 days of 1-minute bars
+    # (train on the first 3 sessions, score on the last 2) and validated on
+    # 22 sessions of 5-minute bars. The month test fills at the NEXT 5m bar,
+    # a worst case of ~300s of latency, and every config was negative there
+    # (best -0.97%, deployed -5.53%); at <=60s fills the same configs were
+    # flat to positive. The edge decays within minutes, which is why entries
+    # are gated on quote freshness and holds are short. This configuration
+    # was the most robust across both fill regimes, not the best anywhere.
+    entry_bps: float = 90.0          # |d| to open
     exit_bps: float = 12.0           # |d| to close on reversion
-    stop_bps: float = 55.0           # adverse widening beyond entry level
-    min_driver_move_bps: float = 35.0  # required |beta * crypto move|
-    # Dislocation is measured against a rolling anchor this many minutes
-    # back, not the session open. From an open anchor, idiosyncratic drift
-    # accumulates all day and "dislocation" stops reverting: a 5-day replay
-    # anchored at the open stopped out on 260 of 288 trades.
-    anchor_minutes: float = 30.0
-    max_hold_minutes: float = 45.0
+    stop_bps: float = 70.0           # adverse widening beyond entry level
+    min_driver_move_bps: float = 25.0  # required |beta * crypto move|
+    # Rolling anchor: dislocation is measured over this trailing window.
+    # Anchoring at the session open let idiosyncratic drift accumulate all
+    # day and stopped out 260 of 288 replay trades.
+    anchor_minutes: float = 20.0
+    max_hold_minutes: float = 20.0
     flatten_minutes_before_close: float = 5.0
     slippage_bps: float = 3.0        # paid on top of half the spread
-    risk_frac: float = 0.30          # of equity per position
+    # Entries require a quote at most this old. The replay evidence puts the
+    # whole edge inside the first couple of minutes, so trading on a stale
+    # quote is donating the spread.
+    max_quote_age_s: float = 20.0
+    risk_frac: float = 0.20          # of equity per position
     max_positions: int = 3
-    max_daily_loss_frac: float = 0.10  # halt for the day past this drawdown
+    max_daily_loss_frac: float = 0.04  # halt for the day past this drawdown
     poll_seconds: float = 12.0
     beta_lookback_days: int = 60
     # Minimum daily-return R^2 against the driver. Fitted values on live

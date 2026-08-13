@@ -28,23 +28,41 @@ def _sessions(bars):
     return out
 
 
-def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True):
-    cfg = cfg or StrategyConfig.load()
-    betas = fit_all_betas(cfg)
+_DATA_CACHE = {}
 
+
+def load_data(range_="5d", interval="1m"):
+    """Bars and driver minutes for a window, cached in-process so a parameter
+    sweep fetches once and replays many times."""
+    key = (range_, interval)
+    if key in _DATA_CACHE:
+        return _DATA_CACHE[key]
     stock_bars, spans = {}, []
     for sym in UNIVERSE:
-        bars = stocklib.minute_bars(sym, range_)
+        bars = stocklib.minute_bars(sym, range_, interval)
         if bars:
             stock_bars[sym] = bars
             spans.append((bars[0][0], bars[-1][0]))
     if not stock_bars:
-        return {"error": "no equity bars available"}
+        return None
     start = min(s for s, _ in spans) - 3600
     end = max(e for _, e in spans) + 60
-
     drivers = {m["driver"] for m in UNIVERSE.values()}
     drv_minutes = {d: stocklib.crypto_minutes(d, start, end) for d in drivers}
+    _DATA_CACHE[key] = (stock_bars, drv_minutes)
+    return _DATA_CACHE[key]
+
+
+def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
+        write=True):
+    cfg = cfg or StrategyConfig.load()
+    betas = fit_all_betas(cfg)
+    step_s = 300 if interval == "5m" else 60
+
+    data = load_data(range_, interval)
+    if data is None:
+        return {"error": "no equity bars available"}
+    stock_bars, drv_minutes = data
 
     cash = bankroll
     open_pos = {}                     # symbol -> position dict
@@ -134,7 +152,7 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True):
                             "cost": stake, "openedAt": t,
                             "entryDislocationBps": snap.dislocation_bps}
                         cash -= stake
-            t += 60
+            t += step_s
         # forced flat at session end
         for sym, pos in list(open_pos.items()):
             bars = day_bars.get(sym)
@@ -156,7 +174,7 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True):
         by_day[c["day"]] += c["pnl"]
     result = {
         "generatedAt": int(time.time()),
-        "range": range_, "bankroll": bankroll,
+        "range": range_, "interval": interval, "bankroll": bankroll,
         "finalEquity": round(cash, 2), "returnPct": round(ret, 2),
         "trades": len(closed), "wins": len(wins),
         "winRate": round(len(wins) / len(closed), 3) if closed else None,
@@ -172,10 +190,11 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True):
                     "risk_frac", "max_positions", "slippage_bps")},
         "trades_detail": closed[-60:],
     }
-    stocklib.save_state("backtest.json", result)
-    _write_report(result)
+    if write:
+        stocklib.save_state("backtest.json", result)
+        _write_report(result)
     if verbose:
-        print(f"{range_} replay: ${bankroll:.0f} -> ${cash:.2f} ({ret:+.2f}%) "
+        print(f"{range_}/{interval} replay: ${bankroll:.0f} -> ${cash:.2f} ({ret:+.2f}%) "
               f"over {len(closed)} trades, win rate "
               f"{(len(wins) / len(closed) * 100) if closed else 0:.0f}%")
     return result
@@ -207,3 +226,46 @@ def _write_report(r):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         f.write("\n".join(lines) + "\n")
+
+
+def sweep(grid=None, range_="5d", interval="1m", train_frac=0.6,
+          bankroll=1000.0, verbose=True):
+    """Grid search with selection on early sessions and honest scoring on the
+    held-out later ones. Positions never span sessions, so per-day P&L splits
+    cleanly. Returns rows sorted by train-day P&L; the test columns exist to
+    be read, not selected on.
+    """
+    from itertools import product
+    grid = grid or {
+        "entry_bps": [45, 60, 75, 90],
+        "stop_bps": [40, 55, 70],
+        "min_driver_move_bps": [25, 35, 50],
+        "max_hold_minutes": [20, 45],
+        "anchor_minutes": [20, 30, 45],
+    }
+    keys = list(grid)
+    rows = []
+    combos = list(product(*(grid[k] for k in keys)))
+    for i, combo in enumerate(combos):
+        cfg = StrategyConfig()
+        for k, v in zip(keys, combo):
+            setattr(cfg, k, v)
+        r = run(bankroll=bankroll, range_=range_, cfg=cfg, verbose=False,
+                interval=interval, write=False)
+        if "error" in r:
+            return [{"error": r["error"]}]
+        days = sorted(r["byDay"])
+        cut = max(1, int(len(days) * train_frac))
+        train_days, test_days = days[:cut], days[cut:]
+        train = sum(r["byDay"][d] for d in train_days)
+        test = sum(r["byDay"][d] for d in test_days)
+        n_train = sum(1 for c in r["trades_detail"] if c["day"] in train_days)
+        rows.append({**dict(zip(keys, combo)),
+                     "trainPnl": round(train, 2), "testPnl": round(test, 2),
+                     "trainDays": len(train_days), "testDays": len(test_days),
+                     "trades": r["trades"], "winRate": r["winRate"],
+                     "returnPct": r["returnPct"]})
+        if verbose and (i + 1) % 40 == 0:
+            print(f"  {i + 1}/{len(combos)} configs", flush=True)
+    rows.sort(key=lambda x: -x["trainPnl"])
+    return rows

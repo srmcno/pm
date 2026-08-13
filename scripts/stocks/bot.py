@@ -28,11 +28,13 @@ from stocks.strategy import (UNIVERSE, StrategyConfig,   # noqa: E402
 DASH_DATA = os.path.join(stocklib.BASE, "dashboard", "data", "stocks.json")
 
 
-def publish(st, cfg, snaps, quotes, eq, betas, market):
+def publish(st, cfg, snaps, quotes, eq, betas, market, telemetry=None):
     payload = {
         "meta": {
             "generatedAt": int(time.time()),
             "market": market,
+            "dataFeed": (telemetry or {}).get("feed", "yahoo"),
+            "quoteAgeS": (telemetry or {}).get("quoteAgeS"),
             "universe": list(UNIVERSE),
             "riskFrac": cfg.risk_frac,
             "maxPositions": cfg.max_positions,
@@ -86,16 +88,17 @@ def cmd_scan(args):
     betas = fit_all_betas(cfg)
     tape = paperdesk.seed_tape(cfg)
     st = paperdesk.load()
-    snaps, quotes, eq = paperdesk.step(
-        st, cfg, betas, tape) if args.trade else _scan_only(
-        cfg, betas, tape, st)
+    if args.trade:
+        snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
+    else:
+        snaps, quotes, eq, telemetry = _scan_only(cfg, betas, tape, st)
     market = stocklib.market_state()
-    print(f"market {market} · equity ${eq:.2f} · "
+    print(f"market {market} · equity ${eq:.2f} · feed {telemetry['feed']} · "
           f"{len(st['positions'])} open positions")
     for s in snaps:
         print(f"  {s.symbol:<6} {s.price:>9.2f}  d={s.dislocation_bps:>+7.1f}bps "
               f"drv={s.driver_move_bps:>+7.1f}bps  {s.action:<6} {s.reason}")
-    publish(st, cfg, snaps, quotes, eq, betas, market)
+    publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
     if args.trade:
         paperdesk.save(st)
     return 0
@@ -107,12 +110,15 @@ def _scan_only(cfg, betas, tape, st):
     now = _t.time()
     anchor_ts = now - cfg.anchor_minutes * 60
     drv_prices = stocklib.crypto_mids(tuple({m["driver"] for m in UNIVERSE.values()}))
-    snaps, quotes = [], {}
+    raw, feed = stocklib.live_quotes(list(UNIVERSE))
+    snaps, quotes, ages = [], {}, []
     for sym, meta in UNIVERSE.items():
-        q = stocklib.quote(sym)
+        q = raw.get(sym)
         if not q or not q.get("price"):
             continue
         quotes[sym] = q["price"]
+        if q.get("ts"):
+            ages.append(max(0.0, now - q["ts"]))
         drv = meta["driver"]
         anchor = tape.at(sym, anchor_ts)
         drv_anchor = tape.at(drv, anchor_ts)
@@ -123,7 +129,10 @@ def _scan_only(cfg, betas, tape, st):
             if s:
                 s.driver = drv
                 snaps.append(s)
-    return snaps, quotes, paperdesk.equity(st, quotes)
+    ages.sort()
+    return snaps, quotes, paperdesk.equity(st, quotes), {
+        "feed": feed,
+        "quoteAgeS": round(ages[len(ages) // 2], 1) if ages else None}
 
 
 def cmd_run(args):
@@ -148,15 +157,15 @@ def cmd_run(args):
     while not deadline or time.time() < deadline:
         market = stocklib.market_state()
         if market != "open":
-            snaps, quotes, eq = _scan_only(cfg, betas, tape, st)
-            publish(st, cfg, snaps, quotes, eq, betas, market)
+            snaps, quotes, eq, telemetry = _scan_only(cfg, betas, tape, st)
+            publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
             if market in ("closed", "afterhours") and not st["positions"]:
                 print(f"market {market} — session over", flush=True)
                 break
             time.sleep(60)
             continue
         before = {id(p) for p in st["positions"]}
-        snaps, quotes, eq = paperdesk.step(st, cfg, betas, tape)
+        snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
         for p in st["positions"]:
             if id(p) not in before and executor:
                 _mirror(executor, p, opening=True)
@@ -164,11 +173,17 @@ def cmd_run(args):
             if c.get("closedAt", 0) >= time.time() - cfg.poll_seconds - 2 and executor:
                 _mirror(executor, c, opening=False)
         paperdesk.save(st)
-        publish(st, cfg, snaps, quotes, eq, betas, market)
+        publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
         if args.git_push and time.time() - last_push > args.push_minutes * 60:
             last_push = time.time()
             _git_push()
-        time.sleep(cfg.poll_seconds)
+        # The batched Alpaca quote endpoint tolerates a far faster cadence
+        # than per-symbol Yahoo calls; poll at a third of the configured
+        # interval when that feed is active.
+        sleep_s = cfg.poll_seconds
+        if telemetry.get("feed") == "alpaca":
+            sleep_s = max(3.0, cfg.poll_seconds / 3.0)
+        time.sleep(sleep_s)
     paperdesk.save(st)
     if args.git_push:
         _git_push()
@@ -193,6 +208,21 @@ def _git_push():
     import pmlib
     pmlib.publish_repo(["dashboard/data/stocks.json", "data/stocks", "reports"],
                        "auto: stocks desk update")
+
+
+def cmd_sweep(args):
+    from stocks.backtest import sweep
+    rows = sweep(range_=args.range, interval=args.interval,
+                 train_frac=args.train_frac)
+    if rows and "error" in rows[0]:
+        print(rows[0]["error"])
+        return 1
+    hdr = ["entry_bps", "stop_bps", "min_driver_move_bps", "max_hold_minutes",
+           "anchor_minutes", "trainPnl", "testPnl", "trades", "winRate"]
+    print("  ".join(f"{h[:9]:>9}" for h in hdr))
+    for r in rows[:args.top]:
+        print("  ".join(f"{str(r[h])[:9]:>9}" for h in hdr))
+    return 0
 
 
 def cmd_backtest(args):
@@ -259,6 +289,13 @@ def main():
     p.add_argument("--live", action="store_true")
     p.add_argument("--i-accept-total-loss", action="store_true")
     p.set_defaults(fn=cmd_run)
+
+    p = sub.add_parser("sweep")
+    p.add_argument("--range", default="5d")
+    p.add_argument("--interval", default="1m")
+    p.add_argument("--train-frac", type=float, default=0.6)
+    p.add_argument("--top", type=int, default=15)
+    p.set_defaults(fn=cmd_sweep)
 
     p = sub.add_parser("backtest")
     p.add_argument("--bankroll", type=float, default=1000.0)
