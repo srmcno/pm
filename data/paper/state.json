@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 8.56,
+ "cash": 11.4555,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -88,20 +88,6 @@
    "valueUsd": 1.0062
   },
   {
-   "conditionId": "0x56270a01cc2b77707caafe33e13370fef8510d588f932546f93aeddd42b5a044",
-   "outcomeIndex": 0,
-   "tokenId": "2842276822365184660788300168309564867681014111251933436598845034848736946032",
-   "question": "Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner",
-   "outcome": "Team Liquid",
-   "shares": 2.8955,
-   "entryPrice": 0.67,
-   "costUsd": 1.94,
-   "openedAt": 1786603004,
-   "signalScore": 6.085,
-   "markPrice": 0.9995,
-   "valueUsd": 2.8941
-  },
-  {
    "conditionId": "0x363b640ec7055c71883b4c9e449688d778167efb2cf283ecabb6227987911f25",
    "outcomeIndex": 1,
    "tokenId": "71903355120521813515091157289073497216518779070898086718709166911466436141686",
@@ -116,7 +102,25 @@
    "valueUsd": 0.0012
   }
  ],
- "closed": [],
+ "closed": [
+  {
+   "conditionId": "0x56270a01cc2b77707caafe33e13370fef8510d588f932546f93aeddd42b5a044",
+   "outcomeIndex": 0,
+   "tokenId": "2842276822365184660788300168309564867681014111251933436598845034848736946032",
+   "question": "Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner",
+   "outcome": "Team Liquid",
+   "shares": 2.8955,
+   "entryPrice": 0.67,
+   "costUsd": 1.94,
+   "openedAt": 1786603004,
+   "signalScore": 6.085,
+   "markPrice": 0.9995,
+   "valueUsd": 2.8941,
+   "settledAt": 1786613403,
+   "settlePrice": 1.0,
+   "pnl": 0.9555
+  }
+ ],
  "equityCurve": [
   {
    "t": 1786587301,
@@ -247,6 +251,11 @@
    "t": 1786612463,
    "equity": 19.2674,
    "cash": 8.56
+  },
+  {
+   "t": 1786613403,
+   "equity": 19.2688,
+   "cash": 11.4555
   }
  ],
  "log": [
@@ -313,6 +322,13 @@
    "outcome": "Ninjas in Pyjamas",
    "stake": 1.63,
    "price": 0.675
+  },
+  {
+   "t": 1786613403,
+   "action": "SETTLE",
+   "question": "Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner",
+   "price": 1.0,
+   "pnl": 0.9555
   }
  ]
 }
