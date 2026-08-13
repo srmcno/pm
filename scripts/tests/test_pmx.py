@@ -550,7 +550,19 @@ class TestSeedFeedOverlap(unittest.TestCase):
         from pmx.feed import DataApiFeed
         d = DataApiFeed({"0xa", "0xb"})
         d.prime(at=12345)
-        self.assertEqual(set(d.last_ts.values()), {12345})
+        self.assertEqual(set(d.last_ts.values()), {12344})
+
+    def test_prime_leaves_the_boundary_second_readable(self):
+        """`_one` stops at `ts <= since`, so priming to int(at) would make a
+        fill stamped in that same second unreachable forever — missing from
+        the seed and from every later poll."""
+        from pmx.feed import DataApiFeed
+        d = DataApiFeed({"0xa"})
+        seed_started = 1786620000.7
+        d.prime(at=seed_started)
+        boundary_fill_ts = int(seed_started)          # 1786620000
+        self.assertGreater(boundary_fill_ts, d.last_ts["0xa"],
+                           "boundary second must still be re-read")
 
 
 class TestEnrichedDetail(unittest.TestCase):

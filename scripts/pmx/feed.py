@@ -374,9 +374,15 @@ class DataApiFeed:
         replays every fill that landed while the seed was running -- a couple
         of minutes for 60 wallets -- and reports them as freshly detected,
         which poisons the measured latency the dashboard publishes.
+
+        The cursor is set one second BEFORE the requested instant. Timestamps
+        are whole seconds and `_one` stops at `ts <= since`, so priming to
+        int(at) would make the boundary second unreachable: a fill stamped in
+        that second but not yet indexed when the seed ran would be excluded
+        from the seed and from every later poll. Stepping back re-reads that
+        second, and the caller's dedup absorbs the overlap.
         """
-        now = int(at or time.time())
-        self.last_ts = {w: now for w in self.watch}
+        self.last_ts = {w: int(at or time.time()) - 1 for w in self.watch}
 
     def poll(self):
         from concurrent.futures import ThreadPoolExecutor

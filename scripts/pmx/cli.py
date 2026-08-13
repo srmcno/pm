@@ -295,19 +295,21 @@ def cmd_watch(args):
                         conditionId=c.condition_id,
                         outcomeIndex=c.outcome_index, category=c.category, **d)
 
+        # Settle BEFORE building the payload. build_payload reads the
+        # observation count off disk, so settling afterwards publishes a
+        # count that is one heartbeat stale and the calibration progress on
+        # the page trails the data it is describing.
+        if beat_due:
+            last_beat = time.time()
+            try:
+                cmd_settle(args)
+            except SystemExit:
+                pass
         publish(build_payload(cfg, profiles, eng, rows, source="pmx.cli watch",
                               feed="chain+rest" if feed.chain else "rest",
                               candidates=len(cands), multi_backer=multi,
                               watchlist_size=len(watch),
                               warnings=eng.preflight()))
-        if beat_due:
-            last_beat = time.time()
-            # Settle resolved signals into observations before publishing, so
-            # the calibration counter on the page moves in step with the data.
-            try:
-                cmd_settle(args)
-            except SystemExit:
-                pass
         if fresh:
             _save_seen(seen)
         if args.git_push and (fresh or beat_due):
