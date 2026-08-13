@@ -18,6 +18,7 @@ Everything runs on Polymarket's public APIs. No keys, no accounts, no real money
 | Signal engine | `scripts/signals.py` | Finds outcomes that several historically profitable wallets are independently net-buying right now. Writes `data/signals/latest.json` + `reports/signals-latest.md`. |
 | Paper trader | `scripts/papertrade.py` | Simulates the copy strategy with a virtual bankroll — live loop and out-of-sample backtest. Writes `reports/paper-latest.md` / `reports/backtest-latest.md`. |
 | Live executor | `scripts/livetrade.py` | The only tool that can touch real money — ships disarmed. `plan` is a keyless dry run; `execute` needs your keys, two explicit flags, and enforces hard caps + a STOP file. See the arming checklist in its docstring. |
+| Consensus engine | `scripts/pmx/` | A second-generation pipeline that runs alongside the above: specialty-weighted voting instead of a flat backer count, fractional-Kelly sizing instead of fixed stakes, sub-second on-chain detection instead of polling, and active exits instead of holding to resolution. Architecture and the measurements behind it: **[`docs/ENGINE.md`](docs/ENGINE.md)**. |
 
 ## Quick start
 
