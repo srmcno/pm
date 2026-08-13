@@ -230,6 +230,11 @@ def cmd_backtest(args):
     if "error" in r:
         print(r["error"])
         return 1
+    if args.validate:
+        v = backtest_mod.validate(bankroll=args.bankroll)
+        if "error" in v:
+            print(v["error"])
+            return 1
     print(f"details: reports/stocks-backtest.md")
     return 0
 
@@ -300,6 +305,8 @@ def main():
     p = sub.add_parser("backtest")
     p.add_argument("--bankroll", type=float, default=1000.0)
     p.add_argument("--range", default="5d")
+    p.add_argument("--validate", action="store_true",
+                   help="also refresh the coarse-bar stress validation")
     p.set_defaults(fn=cmd_backtest)
 
     sub.add_parser("status").set_defaults(fn=cmd_status)

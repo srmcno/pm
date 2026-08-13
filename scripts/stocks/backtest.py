@@ -104,7 +104,13 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                 meta = UNIVERSE[sym]
                 if betas[sym]["r2"] < cfg.min_beta_r2:
                     continue
-                drv_px = drv_at(meta["driver"], t)
+                # A bar stamped t closes at t + step_s; align the driver to
+                # the same observation instant (the 1m kline whose close is
+                # t + step_s opens at t + step_s - 60). At 1m intervals this
+                # is t itself; at 5m, reading the driver at t would compare
+                # prices observed ~4 minutes apart and manufacture
+                # dislocations that never existed.
+                drv_px = drv_at(meta["driver"], t + step_s - 60)
                 if drv_px is None:
                     continue
                 tape.record(sym, t, px)
@@ -161,7 +167,9 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                                 "symbol": sym, "side": snap.action,
                                 "shares": shares, "entry": round(fpx, 4),
                                 "cost": cost, "openFee": round(open_fee, 4),
-                                "openedAt": t,
+                                # The hold clock starts when the fill happens
+                                # (the next bar), not when the signal printed.
+                                "openedAt": bars[i + 1][0],
                                 "entryDislocationBps": snap.dislocation_bps}
                             cash -= cost + open_fee
             t += step_s
@@ -206,6 +214,12 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
         "trades_detail": closed[-60:],
     }
     if write:
+        # The stress-validation block is produced by validate(), not by every
+        # replay; carry it forward so refreshing the canonical replay does
+        # not erase it from the dashboard.
+        prev = stocklib.load_state("backtest.json", {})
+        if isinstance(prev, dict) and prev.get("validation"):
+            result["validation"] = prev["validation"]
         stocklib.save_state("backtest.json", result)
         _write_report(result)
     if verbose:
@@ -241,6 +255,31 @@ def _write_report(r):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         f.write("\n".join(lines) + "\n")
+
+
+def validate(cfg=None, range_="1mo", interval="5m", bankroll=1000.0):
+    """Coarse-bar stress replay; attaches its summary to backtest.json.
+
+    The 5m cadence means dislocations are detected up to ~300 seconds late,
+    a deliberate worst case against the live desk's seconds-scale polling."""
+    cfg = cfg or StrategyConfig.load()
+    m = run(bankroll=bankroll, range_=range_, cfg=cfg, verbose=True,
+            interval=interval, write=False)
+    if "error" in m:
+        return m
+    worst = min(m["byDay"].values()) if m.get("byDay") else 0.0
+    block = {
+        "range": range_, "interval": interval,
+        "fillNote": f"{interval} bars: dislocations detected up to "
+                    f"~{300 if interval == '5m' else 60}s late, filled at "
+                    f"the next bar's open",
+        "returnPct": m["returnPct"], "trades": m["trades"],
+        "winRate": m["winRate"], "worstDay": round(worst, 2),
+    }
+    bt = stocklib.load_state("backtest.json", {})
+    bt["validation"] = block
+    stocklib.save_state("backtest.json", bt)
+    return block
 
 
 def sweep(grid=None, range_="5d", interval="1m", train_frac=0.6,
