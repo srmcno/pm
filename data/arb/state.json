@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 20.0187,
+ "cash": 20.0409,
  "createdAt": 1786597058,
  "trades": [
   {
@@ -9,6 +9,13 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0187,
    "bps": 37.5
+  },
+  {
+   "t": 1786602031,
+   "path": "USDT\u2192USD1\u2192PLUMBER\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0222,
+   "bps": 44.4
   }
  ],
  "equityCurve": [
@@ -787,14 +794,36 @@
   {
    "t": 1786601906,
    "equity": 20.0187
+  },
+  {
+   "t": 1786601931,
+   "equity": 20.0187
+  },
+  {
+   "t": 1786601956,
+   "equity": 20.0187
+  },
+  {
+   "t": 1786601981,
+   "equity": 20.0187
+  },
+  {
+   "t": 1786602006,
+   "equity": 20.0187
+  },
+  {
+   "t": 1786602031,
+   "equity": 20.0409
   }
  ],
  "decay": {
   "checked": 5,
   "survived": 4
  },
- "cooldown": {},
- "tradeCountAll": 1,
+ "cooldown": {
+  "USDT\u2192USD1\u2192PLUMBER\u2192USDT|USD1USDT|PLUMBERUSD1|PLUMBERUSDT": 1786602031
+ },
+ "tradeCountAll": 2,
  "replay": {
   "edges": 5,
   "refillable": 5,
