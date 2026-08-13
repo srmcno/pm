@@ -192,6 +192,14 @@
   }
   h2::before, h2::after { content: ""; flex: 1; height: 1px; background: var(--gold-line); }
   .sectionnote { color: var(--ink-2); font-size: 14px; margin: 0 auto 18px; max-width: 78ch; text-align: center; }
+  details.fold > summary { list-style: none; cursor: pointer; text-align: center; }
+  details.fold > summary::-webkit-details-marker { display: none; }
+  details.fold > summary h2 { display: inline-block; }
+  details.fold > summary:hover h2 { color: var(--accent); }
+  .foldarrow::after { content: "▸"; color: var(--accent); font-size: 15px; vertical-align: 2px; }
+  details.fold[open] .foldarrow::after { content: "▾"; }
+  .foldhint { display: block; color: var(--muted); font-size: 12px; margin: -2px 0 10px; }
+  details.fold[open] .foldhint { display: none; }
 
   .card {
     background: var(--surface); border: 1px solid var(--border);
@@ -288,6 +296,7 @@
     <h1>Moffitt Money</h1>
     <div class="rule" aria-hidden="true"><span class="dia"></span></div>
     <p class="lede" id="lede"></p>
+    <p class="lede" style="margin-top:6px"><a href="arb.html">Arb desk — MEXC micro-cap scanner ↗</a></p>
   </header>
 
   <div class="tiles" id="tiles"></div>
@@ -324,7 +333,11 @@
   </section>
 
   <section id="cohort">
-    <h2>The sharps</h2>
+    <details class="fold" id="cohortfold">
+    <summary>
+      <h2>The sharps <span class="foldarrow" aria-hidden="true"></span></h2>
+      <span class="foldhint">237 ranked wallets — click to expand</span>
+    </summary>
     <div class="filters" id="filters">
       <input type="search" id="q" placeholder="Search trader or address" aria-label="Search trader">
       <select id="archsel" aria-label="Filter by archetype"><option value="">All archetypes</option></select>
@@ -337,6 +350,7 @@
         <tbody id="tbody"></tbody>
       </table>
     </div>
+    </details>
   </section>
 
   <section id="aggsec">
@@ -378,6 +392,13 @@
 (function () {
   const root = document.documentElement;
   let saved = null;
+  try {
+    const fold = document.getElementById("cohortfold");
+    if (localStorage.getItem("mm-fold-cohort") === "open") fold.open = true;
+    fold.addEventListener("toggle", () => {
+      try { localStorage.setItem("mm-fold-cohort", fold.open ? "open" : "closed"); } catch (e) { /* ok */ }
+    });
+  } catch (e) { /* ok */ }
   try { saved = localStorage.getItem("mm-theme"); } catch (e) { /* private mode */ }
   if (!root.dataset.theme) root.dataset.theme = saved || "dark";
   addEventListener("DOMContentLoaded", () => {

@@ -7,6 +7,7 @@ data/cache/ and are safe to delete.
 """
 import json
 import os
+import subprocess
 import time
 
 import requests
@@ -127,7 +128,9 @@ def price_history(token_id, start_ts, end_ts, fidelity=60):
     data = get_json(f"{CLOB_API}/prices-history", {
         "market": token_id, "startTs": start_ts, "endTs": end_ts,
         "fidelity": fidelity})
-    hist = (data or {}).get("history") or []
+    if data is None:
+        return []  # fetch failed — never cache it, or the window is lost forever
+    hist = data.get("history") or []
     with open(path, "w") as f:
         json.dump(hist, f)
     return hist
@@ -163,6 +166,54 @@ def book_price(token_id, side):
         return float(d["price"])
     except (TypeError, KeyError, ValueError):
         return None
+
+
+# ---------------------------------------------------------------- publishing
+
+LIVE_BRANCH = "claude/polymarket-wallets-analysis-m81p4j"
+
+
+def publish_repo(paths, message):
+    """Commit the given paths, push to the checked-out branch, and dispatch
+    the Pages deploy. Best-effort: returns True when the push landed.
+
+    The explicit deploy dispatch matters — pushes made with the workflow's
+    GITHUB_TOKEN never trigger on-push workflows (GitHub's recursion
+    guard), so without it the site silently serves stale data.
+    """
+    def git(*argv):
+        return subprocess.run(["git", *argv], cwd=BASE, check=False,
+                              capture_output=True, text=True)
+    b = (git("rev-parse", "--abbrev-ref", "HEAD").stdout or "").strip()
+    branch = b if b and b != "HEAD" else LIVE_BRANCH
+    git("add", *paths)
+    if git("diff", "--cached", "--quiet").returncode == 0:
+        return False
+    if git("commit", "-m", message).returncode != 0:
+        return False
+    # Rebase with -X theirs: our data files are regenerated every scan, so
+    # on conflict the newest local version is always the right resolution.
+    # A rebase that still fails must be aborted — a lingering .git/rebase-*
+    # state would make every later publish in the shift silently no-op.
+    if git("pull", "--rebase", "-X", "theirs", "origin", branch).returncode != 0:
+        git("rebase", "--abort")
+        print("  site push: rebase failed — aborted, will retry next publish",
+              flush=True)
+        return False
+    r = git("push", "origin", f"HEAD:{branch}")
+    ok = r.returncode == 0
+    print("  site push:", "ok" if ok else (r.stderr or "").strip()[:200],
+          flush=True)
+    if ok and (os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")):
+        try:
+            d = subprocess.run(["gh", "workflow", "run", "jekyll-gh-pages.yml",
+                                "--ref", branch], cwd=BASE, check=False,
+                               capture_output=True, text=True)
+            print("  site deploy:", "dispatched" if d.returncode == 0
+                  else (d.stderr or "").strip()[:120], flush=True)
+        except OSError:
+            pass
+    return ok
 
 
 # ---------------------------------------------------------------- watchlist

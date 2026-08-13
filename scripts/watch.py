@@ -90,54 +90,10 @@ def run_step(script_args):
                    cwd=os.path.dirname(os.path.abspath(__file__)), check=False)
 
 
-BRANCH = "claude/polymarket-wallets-analysis-m81p4j"
-
-
-def _git(*argv):
-    return subprocess.run(["git", *argv], cwd=pmlib.BASE, check=False,
-                          capture_output=True, text=True)
-
-
-def publish_branch():
-    """Push to whatever branch is checked out; fall back to the live branch."""
-    b = (_git("rev-parse", "--abbrev-ref", "HEAD").stdout or "").strip()
-    return b if b and b != "HEAD" else BRANCH
-
-
 def git_publish(message):
     """Best-effort commit+push of live data so the site updates in minutes."""
-    branch = publish_branch()
-    _git("add", "data/live", "data/signals", "data/paper", "reports",
-         "dashboard/data")
-    if _git("diff", "--cached", "--quiet").returncode == 0:
-        return
-    _git("commit", "-m", message)
-    _git("pull", "--rebase", "origin", branch)
-    r = _git("push", "origin", f"HEAD:{branch}")
-    print("  site push:", "ok" if r.returncode == 0 else r.stderr.strip()[:200],
-          flush=True)
-    if r.returncode == 0:
-        deploy_site(branch)
-
-
-def deploy_site(branch):
-    """Explicitly dispatch the Pages deploy after a data push.
-
-    Pushes made with the workflow's GITHUB_TOKEN never trigger other
-    workflows (GitHub's recursion guard), so the on-push deploy does not
-    fire for the watcher's own commits — without this dispatch the site
-    silently serves stale data forever. No-op outside CI.
-    """
-    if not (os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")):
-        return
-    try:
-        r = subprocess.run(["gh", "workflow", "run", "jekyll-gh-pages.yml",
-                            "--ref", branch], cwd=pmlib.BASE, check=False,
-                           capture_output=True, text=True)
-    except OSError:
-        return
-    print("  site deploy:", "dispatched" if r.returncode == 0
-          else (r.stderr or "").strip()[:120], flush=True)
+    pmlib.publish_repo(["data/live", "data/signals", "data/paper", "reports",
+                        "dashboard/data"], message)
 
 
 def main():
