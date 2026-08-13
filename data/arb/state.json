@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 28.5929,
+ "cash": 28.6711,
  "createdAt": 1786597058,
  "trades": [
   {
@@ -1080,13 +1080,16 @@
    "sizeUsd": 10.0,
    "profitUsd": 0.185,
    "bps": 185.0
+  },
+  {
+   "t": 1786635550,
+   "path": "USDT\u2192USD1\u2192UTILITY\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0782,
+   "bps": 78.2
   }
  ],
  "equityCurve": [
-  {
-   "t": 1786634367,
-   "equity": 24.7875
-  },
   {
    "t": 1786634369,
    "equity": 24.7875
@@ -3082,6 +3085,10 @@
   {
    "t": 1786635532,
    "equity": 28.5929
+  },
+  {
+   "t": 1786635550,
+   "equity": 28.6711
   }
  ],
  "decay": {
@@ -3089,20 +3096,20 @@
   "survived": 883
  },
  "cooldown": {
-  "USDT\u2192USD1\u2192UTILITY\u2192USDT|USD1USDT|UTILITYUSD1|UTILITYUSDT": 1786635348,
+  "USDT\u2192USD1\u2192UTILITY\u2192USDT|USD1USDT|UTILITYUSD1|UTILITYUSDT": 1786635550,
   "USDT\u2192UTILITY\u2192USD1\u2192USDT|UTILITYUSDT|UTILITYUSD1|USD1USDT": 1786635468,
   "USDT\u2192USD1\u2192FEFER\u2192USDT|USD1USDT|FEFERUSD1|FEFERUSDT": 1786634001,
   "USDT\u2192HMM\u2192USD1\u2192USDT|HMMUSDT|HMMUSD1|USD1USDT": 1786635434,
   "USDT\u2192VANRY\u2192USDC\u2192USDT|VANRYUSDT|VANRYUSDC|USDCUSDT": 1786635246,
   "USDT\u2192TOAD\u2192USD1\u2192USDT|TOADUSDT|TOADUSD1|USD1USDT": 1786635343
  },
- "tradeCountAll": 154,
+ "tradeCountAll": 155,
  "replay": {
-  "edges": 831,
-  "refillable": 831,
-  "atomicUsd": 20.206,
-  "delayedUsd": 45.3046,
-  "captureRatio": 2.242,
-  "scansReplayed": 2812
+  "edges": 1015,
+  "refillable": 1015,
+  "atomicUsd": 32.4058,
+  "delayedUsd": 50.2832,
+  "captureRatio": 1.552,
+  "scansReplayed": 3020
  }
 }
