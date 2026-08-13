@@ -44,7 +44,9 @@ REPORT = os.path.join(pmlib.BASE, "reports", "arb-latest.md")
 
 BRIDGES = ("USDC", "USD1", "BTC", "ETH")
 GATE_TAKER = 0.002          # Gate.io spot default taker
-SIZES = (5.0, 20.0, 50.0)   # candidate start sizes in USDT (paper caps at 50)
+SIZES = (5.0, 10.0, 20.0)   # candidate start sizes in USDT
+HIST_DIR = os.path.join(ARB_DIR, "history")
+HIST_KEEP_DAYS = 7
 
 
 # ---------------------------------------------------------------- universe
@@ -92,10 +94,13 @@ def book_tickers():
 # ---------------------------------------------------------------- triangles
 
 def build_triangles(info):
-    """All USDT -> A -> bridge -> USDT cycles the listed pairs allow.
+    """All 3-cycles through USDT the listed pairs allow, in BOTH directions.
 
     A leg is (symbol, action): action 'buy' crosses the ask (quote -> base),
-    'sell' crosses the bid (base -> quote).
+    'sell' crosses the bid (base -> quote). Crossing the book makes at most
+    one direction of a cycle profitable at a time, so the mirror
+    (USDT -> bridge -> A -> USDT) must be enumerated too — without it,
+    half of all capturable edges are structurally invisible.
     """
     pair = {}
     for sym, s in info.items():
@@ -109,10 +114,14 @@ def build_triangles(info):
             leg3 = pair.get((b, "USDT"))
             if not leg3:
                 continue
-            if (a, b) in pair:      # sell A into B
-                tris.append(((sym, "buy"), (pair[(a, b)], "sell"), (leg3, "sell"), a, b))
-            elif (b, a) in pair:    # buy B with A
-                tris.append(((sym, "buy"), (pair[(b, a)], "buy"), (leg3, "sell"), a, b))
+            if (a, b) in pair:      # cross pair is A/B
+                cross = pair[(a, b)]
+                tris.append(((sym, "buy"), (cross, "sell"), (leg3, "sell"), a, b))
+                tris.append(((leg3, "buy"), (cross, "buy"), (sym, "sell"), b, a))
+            elif (b, a) in pair:    # cross pair is B/A
+                cross = pair[(b, a)]
+                tris.append(((sym, "buy"), (cross, "buy"), (leg3, "sell"), a, b))
+                tris.append(((leg3, "buy"), (cross, "sell"), (sym, "sell"), b, a))
     return tris
 
 
@@ -315,9 +324,11 @@ def load_state():
     except (OSError, ValueError):
         pass
     if not st:
-        st = {"bankrollStart": 100.0, "cash": 100.0, "createdAt": int(time.time()),
+        # Same virtual stake as the Polymarket paper bot, for a fair race.
+        st = {"bankrollStart": 20.0, "cash": 20.0, "createdAt": int(time.time()),
               "trades": [], "equityCurve": [], "decay": {"checked": 0, "survived": 0},
               "cooldown": {}}
+    st.setdefault("tradeCountAll", len(st.get("trades") or []))
     return st
 
 
@@ -336,19 +347,129 @@ def paper_execute(st, opps, now):
         key = o["path"] + "|" + "|".join(s for s, _ in map(tuple, o["legs"]))
         if now - st["cooldown"].get(key, 0) < 120:
             continue
-        size = min(o["sizeUsd"], st["cash"] * 0.5, 50.0)
+        size = min(o["sizeUsd"], st["cash"] * 0.5)
         if size < o["sizeUsd"]:      # depth was walked at sizeUsd; stay honest
             continue                 # and skip rather than assume linear fills
         st["cooldown"][key] = now
         st["cash"] = round(st["cash"] + o["profitUsd"], 4)
         st["trades"].append({"t": now, "path": o["path"], "sizeUsd": o["sizeUsd"],
                              "profitUsd": o["profitUsd"], "bps": o["verifiedBps"]})
+        st["tradeCountAll"] = st.get("tradeCountAll", 0) + 1
         done += 1
     st["cooldown"] = {k: v for k, v in st["cooldown"].items() if now - v < 3600}
     st["equityCurve"].append({"t": now, "equity": st["cash"]})
     st["equityCurve"] = st["equityCurve"][-500:]
     st["trades"] = st["trades"][-200:]
     return done
+
+
+# ------------------------------------------------------------- tick history
+
+_prev_leg_syms = set()
+
+
+def record_history(now, verified, watching, book):
+    """Append this scan's edges and the leg quotes to a daily JSONL file.
+
+    Public APIs archive candles, not books — and triangle edges live in the
+    book. So the desk records its own tick history and earns a backtest the
+    honest way: by accumulating one. Files rotate daily, kept ~a week.
+    The previous scan's verified legs are always included in `tops`, so the
+    replay can price a dead edge's next-scan fill instead of losing it.
+    """
+    global _prev_leg_syms
+    os.makedirs(HIST_DIR, exist_ok=True)
+    syms = set(_prev_leg_syms)
+    for o in verified + watching:
+        for sym, _ in o["legs"]:
+            syms.add(sym)
+    _prev_leg_syms = {sym for o in verified for sym, _ in o["legs"]}
+    line = {
+        "t": now,
+        "verified": [{k: o[k] for k in
+                      ("path", "legs", "screenBps", "verifiedBps", "sizeUsd",
+                       "profitUsd") if k in o} for o in verified],
+        "watch": [{"path": o["path"], "legs": o["legs"],
+                   "screenBps": o["screenBps"]} for o in watching[:5]],
+        "tops": {s: [book[s][0], book[s][2]] for s in syms if s in book},
+    }
+    day = time.strftime("%Y%m%d", time.gmtime(now))
+    with open(os.path.join(HIST_DIR, f"{day}.jsonl"), "a") as f:
+        f.write(json.dumps(line) + "\n")
+
+
+def prune_history():
+    try:
+        names = sorted(os.listdir(HIST_DIR))
+    except OSError:
+        return
+    for n in names[:-HIST_KEEP_DAYS]:
+        try:
+            os.remove(os.path.join(HIST_DIR, n))
+        except OSError:
+            pass
+
+
+def replay_backtest(info):
+    """Replay recorded history with one scan of latency.
+
+    The paper ledger assumes the bot fires the instant it verifies an edge.
+    This replay asks the harder question: had it acted one scan (~25 s)
+    later, at the NEXT scan's recorded top-of-book, what survives? The gap
+    between atomic and delayed PnL is the measured cost of latency — the
+    same lesson the Polymarket backtest taught, earned from our own ticks.
+    Top-of-book only (depth is not recorded), so the delayed figure is
+    itself optimistic at size; the CAPTURE RATIO is the honest headline.
+    """
+    lines = []
+    try:
+        for name in sorted(os.listdir(HIST_DIR)):
+            with open(os.path.join(HIST_DIR, name)) as f:
+                for row in f:
+                    try:
+                        lines.append(json.loads(row))
+                    except ValueError:
+                        continue
+    except OSError:
+        pass
+    if len(lines) < 2:
+        return None
+    atomic = delayed = 0.0
+    edges = filled = 0
+    for cur, nxt in zip(lines, lines[1:]):
+        if not (0 < nxt["t"] - cur["t"] <= 180):
+            continue  # shift boundary or gap — not a fair next-scan fill
+        for o in cur.get("verified", []):
+            if "profitUsd" not in o:
+                continue
+            edges += 1
+            atomic += o["profitUsd"]
+            amt = o.get("sizeUsd", 0)
+            start = amt
+            ok = True
+            for sym, act in o["legs"]:
+                top = nxt.get("tops", {}).get(sym)
+                fee = (info.get(sym) or {}).get("taker", 0.0005)
+                if not top:
+                    ok = False
+                    break
+                bid, ask = top
+                if act == "buy":
+                    if ask <= 0:
+                        ok = False
+                        break
+                    amt = amt / ask * (1 - fee)
+                else:
+                    amt = amt * bid * (1 - fee)
+            if ok:
+                filled += 1
+                delayed += amt - start
+    if not edges:
+        return None
+    return {"edges": edges, "refillable": filled,
+            "atomicUsd": round(atomic, 4), "delayedUsd": round(delayed, 4),
+            "captureRatio": round(delayed / atomic, 3) if atomic > 0 else None,
+            "scansReplayed": len(lines)}
 
 
 # ---------------------------------------------------------------- publishing
@@ -360,13 +481,16 @@ def publish(st, meta, opps, watching, micro, gaps, now):
         "micro": micro, "gaps": gaps,
         "paper": {"bankrollStart": st["bankrollStart"], "equity": st["cash"],
                   "trades": st["trades"][-25:][::-1],
-                  "tradeCount": len(st["trades"]),
+                  "tradeCount": st.get("tradeCountAll", len(st["trades"])),
                   "equityCurve": st["equityCurve"][-300:]},
         "decay": st["decay"],
+        "replay": st.get("replay"),
         "notes": ("Paper only — no keys, no orders. Triangles are filled "
                   "atomically at snapshot depth net of real taker fees; live "
-                  "legs race the book, so treat results as an upper bound. "
-                  "Cross-venue gaps need funded accounts on both exchanges."),
+                  "legs race the book, so treat results as an upper bound — "
+                  "the latency replay measures how much survives one scan of "
+                  "delay on the desk's own recorded ticks. Cross-venue gaps "
+                  "need funded accounts on both exchanges."),
     }
     os.makedirs(os.path.dirname(DASH), exist_ok=True)
     with open(DASH, "w") as f:
@@ -380,6 +504,13 @@ def publish(st, meta, opps, watching, micro, gaps, now):
     for o in opps:
         lines.append(f"| {o['path']} | {o['screenBps']} | {o.get('verifiedBps','—')} "
                      f"| ${o.get('sizeUsd','—')} | ${o.get('profitUsd','—')} |")
+    r = st.get("replay")
+    if r:
+        lines += ["", "## Latency replay (own recorded ticks)", "",
+                  f"- Edges replayed: {r['edges']} across {r['scansReplayed']} scans",
+                  f"- Atomic PnL ${r['atomicUsd']} → one-scan-delay PnL "
+                  f"${r['delayedUsd']} (capture ratio "
+                  f"{r['captureRatio'] if r['captureRatio'] is not None else '—'})"]
     with open(REPORT, "w") as f:
         f.write("\n".join(lines) + "\n")
 
@@ -388,6 +519,15 @@ def scan_once(st, prev_keys):
     now = int(time.time())
     info = exchange_info()
     book = book_tickers()
+    if len(info) < 500 or len(book) < 500:
+        # A transient outage must not masquerade as a real empty universe:
+        # publishing it would show a zero-pair scan on the site and record
+        # every previous edge as decayed. Skip the cycle instead.
+        raise RuntimeError(f"incomplete snapshot (info {len(info)}, book {len(book)})")
+    # Gate is fetched here, seconds after the MEXC snapshot, so cross-venue
+    # gaps compare near-simultaneous books instead of straddling the whole
+    # depth-verification phase and publishing phantom dislocations.
+    gaps = cross_venue_gaps(book, info)
     tris = build_triangles(info)
     # A wide screen (anything above -15 bps) keeps a "watching" list of
     # near-misses so the page shows the engine breathing between real edges.
@@ -407,8 +547,8 @@ def scan_once(st, prev_keys):
     executed = paper_execute(st, verified, now)
     micro_syms = [o["legs"][0][0] for o in verified]
     micro_syms += [o["legs"][0][0] for o in watching[:4]]
-    gaps = cross_venue_gaps(book, info)
     micro_syms += [g["symbol"] for g in gaps[:3]]
+    record_history(now, verified, watching, book)
     seen, micro = set(), []
     for sym in micro_syms:
         if sym in seen or len(micro) >= 8:
@@ -430,6 +570,7 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("scan")
+    sub.add_parser("backtest")
     w = sub.add_parser("watch")
     w.add_argument("--duration-minutes", type=float, default=113)
     w.add_argument("--scan-seconds", type=int, default=25)
@@ -441,10 +582,33 @@ def main():
     if args.cmd == "scan":
         scan_once(st, None)
         return
+    if args.cmd == "backtest":
+        r = replay_backtest(exchange_info())
+        if not r:
+            print("Not enough recorded history yet — run some watch shifts first.")
+            return
+        st["replay"] = r
+        save_state(st)
+        print(f"Replayed {r['edges']} edges over {r['scansReplayed']} scans: "
+              f"atomic ${r['atomicUsd']} -> delayed ${r['delayedUsd']} "
+              f"(capture {r['captureRatio']})")
+        return
+    prune_history()
     deadline = time.time() + args.duration_minutes * 60
-    prev, last_pub = None, 0.0
+    prev, last_pub, last_replay = None, 0.0, 0.0
     while time.time() < deadline:
+        if deadline - time.time() < 240:
+            # Never START a scan near the deadline: a degraded-network scan
+            # can run long past it and blow the workflow timeout before the
+            # final commit step, losing unpushed paper state.
+            break
         t0 = time.time()
+        if time.time() - last_replay > 1800:
+            last_replay = time.time()
+            try:
+                st["replay"] = replay_backtest(exchange_info()) or st.get("replay")
+            except Exception as e:  # noqa: BLE001
+                print(f"replay error: {e}", flush=True)
         try:
             prev, executed = scan_once(st, prev)
         except Exception as e:  # noqa: BLE001 — a bad scan must not kill the shift

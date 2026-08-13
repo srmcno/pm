@@ -201,8 +201,10 @@
 
 <section>
   <h2>Paper ledger</h2>
-  <p class="sectionnote">A virtual $100 executes every verified edge at walked-depth prices. Atomic
-    fills are assumed — live legs race the book, so this is an upper bound, not a promise.</p>
+  <p class="sectionnote">A virtual $20 — same stake as the Polymarket bot — executes every verified
+    edge at walked-depth prices. Atomic fills are assumed — live legs race the book, so this is an
+    upper bound; the latency-capture tile shows how much survives one scan of delay on the desk's
+    own recorded ticks.</p>
   <div class="card" id="ledger"></div>
 </section>
 
@@ -298,6 +300,12 @@ function render() {
     ["Edge survival", surv, "still alive one scan later", false],
     ["Round trips", String(p.tradeCount ?? 0), "paper executions", false],
   ];
+  const rp = d.replay;
+  if (rp && rp.edges) {
+    defs.push(["Latency capture",
+      rp.captureRatio != null ? Math.round(rp.captureRatio * 100) + "%" : "—",
+      `$${rp.atomicUsd} atomic → $${rp.delayedUsd} one scan late`, false]);
+  }
   for (const [label, value, sub, hero] of defs) {
     const t = el("div", "tile" + (hero ? " hero" : ""));
     t.appendChild(el("div", "label", label));
@@ -328,8 +336,10 @@ function render() {
     micro.map(m => [[m.symbol, "l"],
       [(m.spreadBps ?? "—") + " bps", ""],
       ["$" + (m.depthUsd1pct ?? 0).toLocaleString(), ""],
-      [m.bidShare != null ? Math.round(m.bidShare * 100) + "%" : "—", m.bidShare > 0.6 ? "pos" : m.bidShare < 0.4 ? "neg" : ""],
-      [m.takerBuyShare != null ? Math.round(m.takerBuyShare * 100) + "%" : "—", m.takerBuyShare > 0.6 ? "pos" : m.takerBuyShare < 0.4 ? "neg" : ""],
+      [m.bidShare != null ? Math.round(m.bidShare * 100) + "%" : "—",
+        m.bidShare == null ? "" : m.bidShare > 0.6 ? "pos" : m.bidShare < 0.4 ? "neg" : ""],
+      [m.takerBuyShare != null ? Math.round(m.takerBuyShare * 100) + "%" : "—",
+        m.takerBuyShare == null ? "" : m.takerBuyShare > 0.6 ? "pos" : m.takerBuyShare < 0.4 ? "neg" : ""],
       [String(m.printsPerMin ?? "—"), ""],
       ["$" + (m.maxPrintUsd ?? 0).toLocaleString(), ""]])) : null,
     "No focus symbols this scan.");

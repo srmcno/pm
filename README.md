@@ -126,10 +126,16 @@ public market-data API and ~2,100 listed pairs), rescanning every ~25 s:
 - **Cross-venue gaps vs Gate.io**, guarded against the same-ticker-
   different-token trap (price-ratio and volume filters), published as intel
   only — capturing one needs funded accounts on both venues.
-- A **$100 paper account** executes verified cycles at walked-depth prices,
-  assuming atomic fills — an upper bound, clearly labeled. No keys, no real
-  orders. `arb-watch.yml` runs the scanner in self-chaining ~2-hour shifts
-  like the Polymarket watcher.
+- A **$20 paper account** (same stake as the Polymarket bot) executes
+  verified cycles at walked-depth prices, assuming atomic fills — an upper
+  bound, clearly labeled. No keys, no real orders.
+- **Historical testing, the honest way**: books aren't archived anywhere
+  public and candles can't see spreads, so the desk records its own tick
+  history every scan (`data/arb/history/`) and continuously replays it with
+  one scan of latency (`arb.py backtest`) — the capture ratio between
+  atomic and delayed PnL is the measured cost of being ~25 s slow.
+  `arb-watch.yml` runs everything in self-chaining ~2-hour shifts like the
+  Polymarket watcher.
 
 ## Data sources
 
