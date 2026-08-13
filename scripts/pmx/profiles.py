@@ -153,6 +153,8 @@ def round_trips(trades, resolver):
     realized PnL. Positions in markets that have not resolved are skipped --
     an open position is not evidence.
     """
+    from .feed import resolve_outcome_index
+
     pos = defaultdict(lambda: {"buyUsd": 0.0, "buyShares": 0.0,
                                "sellUsd": 0.0, "sellShares": 0.0,
                                "cat": None, "last": 0})
@@ -160,7 +162,13 @@ def round_trips(trades, resolver):
         cid = t.get("conditionId")
         if not cid:
             continue
-        oi = t.get("outcomeIndex") or 0
+        # Repair the outcomeIndex sentinel here too. Left as-is, a 999 is
+        # carried into the key, fails `oi < len(prices)` at settlement, and
+        # drops that trade from the wallet's category record — silently
+        # changing the win rate and ROI that decide whether it may vote.
+        oi = resolve_outcome_index(t, ((resolver.get(cid) or {}).get("outcomes")))
+        if oi is None:
+            continue
         p = pos[(cid, oi)]
         usd = t.get("usdcSize") or 0.0
         sz = t.get("size") or 0.0
@@ -380,7 +388,9 @@ def build(analyzed, use_raw=True, filters=None, verbose=True, trades_by_wallet=N
     return {
         "generatedAt": analyzed.get("generatedAt"),
         "windowDays": analyzed.get("windowDays"),
-        "degraded": not use_raw,
+        # Degraded means "no category evidence was gathered at all" — a
+        # --fetch build has evidence even though it never touched data/raw.
+        "degraded": not (use_raw or trades_by_wallet),
         "filters": filters,
         "cohortBaseRates": {c: {k: round(v, 5) if isinstance(v, float) else v
                                 for k, v in b.items()} for c, b in base.items()},

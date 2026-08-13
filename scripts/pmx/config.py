@@ -65,8 +65,18 @@ class ConsensusConfig:
     """Turning weighted votes into a tradable signal."""
 
     # Sum of vote weights required. With robust weights each W_i is in
-    # [0,1], so 1.35 reads as "the equivalent of 1.35 flawless specialists".
-    theta_trigger: float = 1.35
+    # [0,1], so this reads as "the equivalent of N flawless specialists".
+    #
+    # Calibrated against a 24-hour live sample: 28,680 fills from 45 active
+    # wallets produced 341 markets with any weighted backing, Sigma peaking
+    # at 1.71 (p90 = 1.04, median = 0.27). At the original 1.35 the engine
+    # fired once a day; at 0.80 it fires roughly three times, which is the
+    # rate that reaches the ~600 settled observations Kelly calibration needs
+    # inside a year rather than a decade. Below 0.80 nothing changes, because
+    # min_effective_backers becomes the binding rail — only 3 of 341 markets
+    # reached N_eff >= 2 at all. Re-check this on your own sample; it is one
+    # 24-hour window, not a law.
+    theta_trigger: float = 0.80
     # Inverse-Herfindahl effective backer count. This is what makes
     # "consensus" mean consensus: without it one wallet with a huge weight
     # clears any sum threshold by itself.

@@ -88,6 +88,8 @@ class Fill:
     condition_id: str = ""
     outcome_index: int = None
     title: str = ""
+    slug: str = ""
+    event_slug: str = ""
     detected_at: float = 0.0
 
     @property
@@ -290,7 +292,8 @@ class OnChainFeed:
                 usdc=d["usdc"], source="chain", tx=d["tx"],
                 condition_id=meta.get("conditionId") or "",
                 outcome_index=meta.get("outcomeIndex"),
-                title=meta.get("question") or "", detected_at=now))
+                title=meta.get("question") or "",
+                slug=meta.get("slug") or "", detected_at=now))
         if out:
             self.tokens.save()
         return out
@@ -343,7 +346,9 @@ class DataApiFeed:
                 usdc=(t.get("usdcSize") or size * price), source="rest",
                 tx=t.get("transactionHash") or "",
                 condition_id=t.get("conditionId") or meta.get("conditionId") or "",
-                outcome_index=oi, title=t.get("title") or "", detected_at=now))
+                outcome_index=oi, title=t.get("title") or "",
+                slug=t.get("slug") or meta.get("slug") or "",
+                event_slug=t.get("eventSlug") or "", detected_at=now))
         self.last_ts[wallet] = newest
         return out
 

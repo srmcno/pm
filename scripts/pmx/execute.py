@@ -75,6 +75,9 @@ class ExecutionClient:
                            f"{x.max_signal_age_s:.0f}s) — the fill it was "
                            f"sized against no longer exists")
 
+        if book is None:
+            raise Rejected("no order book snapshot — cannot bound slippage, "
+                           "so the order is refused rather than sent blind")
         if book.is_crossed():
             raise Rejected("book is crossed or locked — stale snapshot")
         ask = book.best_ask

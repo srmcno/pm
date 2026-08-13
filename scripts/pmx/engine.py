@@ -55,7 +55,7 @@ class ConsensusEngine:
         self.resolver = resolver or pmlib.MarketResolver()
         # wallet -> (conditionId, outcomeIndex) -> stance
         self.window = defaultdict(lambda: defaultdict(
-            lambda: {"net": 0.0, "bought": 0.0, "pxNum": 0.0, "last": 0,
+            lambda: {"net": 0.0, "bought": 0.0, "shares": 0.0, "last": 0,
                      "category": None, "title": ""}))
         self.rejections = defaultdict(int)
 
@@ -73,13 +73,17 @@ class ConsensusEngine:
             if f.side == "BUY":
                 s["net"] += f.usdc
                 s["bought"] += f.usdc
-                s["pxNum"] += f.usdc * f.price
+                s["shares"] += f.shares
             else:
                 s["net"] -= f.usdc
             s["last"] = max(s["last"], f.timestamp)
             if s["category"] is None:
-                s["category"] = classify({"title": f.title, "slug": "",
-                                          "eventSlug": ""})
+                # classify() matches against "slug eventSlug title" — the
+                # slug carries the league and fixture tokens most of the
+                # Sports rules key on, so a title-only call misroutes a large
+                # share of flow into "Other" and silences the specialty gate.
+                s["category"] = classify({"title": f.title, "slug": f.slug,
+                                          "eventSlug": f.event_slug})
                 s["title"] = f.title
             n += 1
         return n
@@ -138,7 +142,15 @@ class ConsensusEngine:
                     "wallet": wallet, "name": prof.get("name"),
                     "weight": round(W, 5), "value": round(v, 5),
                     "netUsd": round(net, 2),
-                    "avgPrice": round(s["pxNum"] / s["bought"], 4) if s["bought"] else None,
+                    # Average entry is dollars over SHARES. Weighting each
+                    # price by the dollars spent at it biases toward the
+                    # expensive fills: ten shares at 20c and ten at 80c is a
+                    # 50c average, but dollar-weighting reports 68c. The
+                    # drift guard subtracts this number, so an overstated
+                    # entry makes a chased price look flat and lets the order
+                    # through -- the exact failure the guard exists to stop.
+                    "avgPrice": (round(s["bought"] / s["shares"], 4)
+                                 if s["shares"] > 0 else None),
                     "conviction": round(min(conviction, c.conviction_cap), 2),
                     "ageH": round(age_h, 2),
                 })

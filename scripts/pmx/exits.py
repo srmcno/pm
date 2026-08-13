@@ -179,9 +179,13 @@ def exit_order(decision: ExitDecision, mark, best_bid, cfg: ExitConfig,
                 "fraction": decision.fraction, "style": "cross",
                 "note": f"crossing to the bid, conceding {concession:.3f}"}
     if concession <= cfg.max_exit_concession:
-        return {"limit": _round_tick(max(best_bid, mark - tick), tick, down=True),
+        # Strictly ABOVE the best bid. A sell resting at the bid is
+        # marketable, and patient exits are sent post_only, so the venue
+        # rejects it outright -- the order simply never exists, and the
+        # position quietly stays on when the operator believes it is leaving.
+        return {"limit": _round_tick(max(best_bid + tick, mark), tick, down=False),
                 "fraction": decision.fraction, "style": "join",
-                "note": "posting at the top of the book"}
+                "note": "resting one tick above the bid to stay a maker"}
     return {"limit": _round_tick(mark - cfg.max_exit_concession, tick, down=True),
             "fraction": min(decision.fraction, 0.5), "style": "ladder",
             "note": f"bid is {concession:.3f} below the mark — laddering out "

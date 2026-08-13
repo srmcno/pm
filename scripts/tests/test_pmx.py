@@ -326,6 +326,29 @@ class TestSizing(unittest.TestCase):
         d = size_position(0.80, 0.20, 0.20, pf, cfg, calibrated=False)
         self.assertLessEqual(d.stake, cfg.min_stake_usd + 0.01)
 
+    def test_uncalibrated_still_stakes_when_a_fee_makes_kelly_negative(self):
+        """The bootstrap path must not be pre-empted by the no-edge return.
+
+        Uncalibrated means w == price, so any fee drives f* below zero. If
+        that short-circuits first, nothing ever trades, no signal ever
+        settles, lambda is never fitted, and the engine cannot leave its
+        initial state — a deadlock, not caution.
+        """
+        cfg = self.cfg
+        pf = Portfolio(cash=1000.0, positions=[])
+        d = size_position(0.50, 0.50, 0.50, pf, cfg, entry_fee=0.0125,
+                          calibrated=False)
+        self.assertGreater(d.stake, 0)
+        self.assertIn("bootstrap", d.binding)
+
+    def test_calibrated_no_edge_is_still_refused(self):
+        cfg = self.cfg
+        pf = Portfolio(cash=1000.0, positions=[])
+        d = size_position(0.50, 0.50, 0.50, pf, cfg, entry_fee=0.0125,
+                          calibrated=True)
+        self.assertEqual(d.stake, 0)
+        self.assertIn("no edge", d.binding)
+
     def test_names_the_binding_rail(self):
         pf = Portfolio(cash=1000.0, positions=[])
         d = size_position(0.90, 0.20, 0.20, pf, self.cfg)
@@ -409,6 +432,44 @@ class TestExits(unittest.TestCase):
         d = ExitDecision("sell", "test", urgent=True)
         o = exit_order(d, mark=0.40, best_bid=0.39, cfg=self.cfg)
         self.assertEqual(o["style"], "cross")
+
+    def test_patient_exit_rests_strictly_above_the_bid(self):
+        """A patient sell is sent post_only; resting AT the bid is marketable
+        and the venue rejects it, so the position silently never leaves."""
+        d = ExitDecision("sell", "test", urgent=False)
+        o = exit_order(d, mark=0.40, best_bid=0.39, cfg=self.cfg, tick=0.01)
+        self.assertEqual(o["style"], "join")
+        self.assertGreater(o["limit"], 0.39)
+
+
+class TestEngineIngest(unittest.TestCase):
+    """The average-entry price the drift guard subtracts."""
+
+    def _engine(self):
+        from pmx.engine import ConsensusEngine
+        prof = {"profiles": {"0xa": {"name": "A", "excluded": False,
+                                     "medianTradeUsd": 100.0}}}
+        return ConsensusEngine(EngineConfig(), prof, resolver=object())
+
+    def test_average_entry_is_dollars_over_shares(self):
+        """10 shares at 20c and 10 at 80c average 50c, not 68c.
+
+        Dollar-weighting each price biases toward the expensive fills, which
+        overstates the backers' entry, understates drift, and lets a chased
+        price through the guard.
+        """
+        from pmx.feed import Fill
+        eng = self._engine()
+        eng.ingest([
+            Fill(wallet="0xa", timestamp=1, token_id="t", side="BUY",
+                 price=0.20, shares=10, usdc=2.0, source="rest",
+                 condition_id="c", outcome_index=0, title="x"),
+            Fill(wallet="0xa", timestamp=2, token_id="t", side="BUY",
+                 price=0.80, shares=10, usdc=8.0, source="rest",
+                 condition_id="c", outcome_index=0, title="x"),
+        ])
+        s = eng.window["0xa"][("c", 0)]
+        self.assertAlmostEqual(s["bought"] / s["shares"], 0.50, places=6)
 
 
 class TestConfig(unittest.TestCase):

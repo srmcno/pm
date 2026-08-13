@@ -349,6 +349,90 @@ markets and none of the evidence. `prefetch_markets()` does both passes.
 
 ---
 
+## 3a. What the engine actually does on live data
+
+Built against 40 of the 75 eligible wallets — **13,728 settled round trips**
+across 10 categories — then run over a 24-hour live window (28,690 fills,
+45 active wallets, 340 markets with weighted backing).
+
+### Win rate is not skill, measured
+
+The cohort's own settled record, which is why the skill term is ROI-weighted:
+
+| category | settled | win rate | ROI |
+|---|---|---|---|
+| Weather | 1,049 | **89.1%** | **−0.4%** |
+| Economics | 164 | 72.6% | +25.8% |
+| Politics | 510 | 64.1% | +11.9% |
+| Sports | 8,843 | **51.8%** | **+29.8%** |
+| Esports | 2,711 | 49.0% | +2.5% |
+
+Weather specialists won 89% of a thousand settled bets and still lost money;
+Sports specialists won a coin flip and made 30%. A win-rate-only weight ranks
+these in exactly the wrong order. (The ROI levels are inflated by
+survivorship — this cohort is leaderboard-seeded and then filtered to
+profitable wallets — so they are a reference for *lift within the pool*, not
+a market-wide base rate.)
+
+The resulting weights are well-spread and bounded: 31 (wallet, category)
+voting rights, `W_i` from 0.123 to 0.903, median 0.623. `Mysaria` in Weather
+receives the lowest weight in the cohort. `dv-pm` holds a 0.68 skill score in
+Esports and gets **no vote there** — 0.02% of its volume, below the specialty
+gate.
+
+### Θ was calibrated against that sample, not guessed
+
+Σ peaked at 1.71 over the window (p90 = 1.04, median = 0.27). At the initial
+Θ = 1.35 the engine fired **once** in 24 h; at Θ = 0.80 it fires about three
+times, which is the rate that reaches ~600 settled observations inside a year
+rather than a decade. Below 0.80 nothing changes — `min_effective_backers`
+becomes the binding rail, and only **3 of 341** markets reached N_eff ≥ 2.
+
+### The finding that matters most for how you run it
+
+Of the 22 markets that drew two or more specialist backers in the window,
+**20 had already closed.** The sharps' consensus concentrates in same-day
+tennis and football matches that resolve within hours of the flow that
+signals them.
+
+Shortening the vote window does not fix this — measured across window
+lengths, the count of *still-open* multi-backer markets never exceeded 2:
+
+| max vote age | half-life | candidates | multi-backer | still open |
+|---|---|---|---|---|
+| 48 h | 6 h | 338 | 22 | 2 |
+| 12 h | 4 h | 219 | 6 | 1 |
+| 6 h | 3 h | 131 | 1 | 1 |
+| 2 h | 1.5 h | 78 | 0 | 0 |
+
+The conclusion is not that the consensus rule is too strict. It is that **a
+backward-looking scan is the wrong instrument**: it looks back at markets
+that are already resolved. In `watch` mode the signal fires the moment the
+second backer's fill lands, while the match is still running. That is the
+entire argument for sub-second detection, and §3.1 is why the old polling
+path could not deliver it.
+
+Use `scan` to inspect and tune. Use `watch` to trade.
+
+### Widening the voter pool
+
+Only 31 voting rights exist today, which is why overlap is rare. The gates
+trade off against evidence quality:
+
+| `min_category_trades` | `specialty_min_share` | voting rights | wallets |
+|---|---|---|---|
+| 10 | 0.35 (default) | 31 | 29 |
+| 10 | 0.10 | 51 | 30 |
+| 5 | 0.20 | 43 | 34 |
+| 3 | 0.10 | 57 | 35 |
+
+The right lever is **not** loosening these — it is profiling more wallets.
+Profiles here cover 40 of 75 eligible; running
+`python3 -m pmx.profiles --fetch --max-wallets 75` adds voters without
+lowering the evidentiary bar.
+
+---
+
 ## 4. A constraint conflict in the requested rails
 
 The specified rails are individually reasonable and jointly unsatisfiable at
@@ -395,7 +479,12 @@ python3 -m pmx.cli watch --minutes 60 --rpc https://polygon-bor-rpc.publicnode.c
 # 5. Why does this wallet's vote weigh what it does?
 python3 -m pmx.cli explain 0x03805a13a0b3e058f55f6c6af95389d4f431073d
 
-# 6. Once ~600 signals have settled
+# 6. Close the calibration loop: turn resolved signals into observations.
+#    Run this on a schedule. Without it observations never accumulate, lambda
+#    is never fitted, and the engine stays on bootstrap stakes forever.
+python3 -m pmx.cli settle
+
+# 7. Once ~600 signals have settled
 python3 -m pmx.calibrate
 
 # Tests
@@ -417,7 +506,15 @@ everywhere.
   fees remains exactly as unproven as before, and §2.3 is the machinery for
   answering that question rather than assuming it.
 - **λ = 0 until fitted.** The engine ships unable to size on conviction, by
-  design. Expect the flat minimum stake until several hundred signals settle.
+  design. Until then it stakes the *smallest legal position* — enough to
+  generate the settled observations calibration needs, capped at
+  `min_stake_usd` or the 5-share exchange minimum, whichever binds. Sizing
+  Kelly off an unfitted λ would be worse; refusing to trade at all would
+  deadlock the loop that produces the data.
+- **Signal rate is low and that is the honest finding.** Three signals in a
+  24-hour window cleared every rail, and only one had a still-open market.
+  Reaching the ~600 settled observations Kelly needs is a matter of months,
+  not days. Anyone impatient with that is choosing to size on noise.
 - **The wash filter changes nothing today.** It flags 5 wallets
   (`cc9999` at a 1,686× volume-to-PnL ratio, `-Malfunction`, `Sharky6999`,
   `asd147`, `Anjun`), but all 5 already fall below the $100k PnL floor, so

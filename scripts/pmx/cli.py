@@ -26,7 +26,7 @@ from .config import CONFIG_PATH, EngineConfig            # noqa: E402
 from .consensus import vote_weight                       # noqa: E402
 from .engine import ConsensusEngine                      # noqa: E402
 from .execute import ExecutionClient, Rejected           # noqa: E402
-from .feed import DataApiFeed, DualFeed, TokenMap        # noqa: E402
+from .feed import DualFeed                               # noqa: E402
 from .sizing import Portfolio                            # noqa: E402
 
 JOURNAL = os.path.join(pmlib.BASE, "data", "live", "engine-journal.jsonl")
@@ -83,14 +83,13 @@ def cmd_preflight(args):
 def _seed_window(eng, watch, hours):
     """Backfill the rolling window from REST history so a fresh process has
     context instead of waiting `hours` for the live feed to rebuild it."""
-    feed = DataApiFeed(set(watch), eng.resolver and TokenMap())
-    since = int(time.time()) - hours * 3600
-    total = 0
     import signals as sigmod
-    raw = sigmod.recent_trades_live(list(watch), since)
+
     from .feed import Fill, resolve_outcome_index
+    since = int(time.time()) - hours * 3600
+    raw = sigmod.recent_trades_live(list(watch), since)
     now = time.time()
-    fills = []
+    fills, total = [], 0
     for wallet, trades in raw.items():
         for t in trades:
             m = eng.resolver.get(t.get("conditionId")) if t.get("conditionId") else None
@@ -104,7 +103,8 @@ def _seed_window(eng, watch, hours):
                 usdc=t.get("usdcSize") or 0.0, source="rest",
                 tx=t.get("transactionHash") or "",
                 condition_id=t.get("conditionId") or "", outcome_index=oi,
-                title=t.get("title") or "", detected_at=now))
+                title=t.get("title") or "", slug=t.get("slug") or "",
+                event_slug=t.get("eventSlug") or "", detected_at=now))
             total += 1
     eng.ingest(fills)
     return total
@@ -135,8 +135,10 @@ def cmd_scan(args):
     signals = eng.enrich(fired, max_days=args.max_days)
     print(f"\n{len(signals)} survive enrichment (open, in band, not chased)")
 
-    portfolio = Portfolio(cash=cfg.sizing.bankroll * (1 - cfg.sizing.cash_reserve_frac),
-                          positions=[])
+    # Full bankroll: size_position() subtracts the cash reserve itself, so
+    # pre-deducting it here would apply the floor twice and shrink the 5%
+    # position cap below what preflight reports as tradable.
+    portfolio = Portfolio(cash=cfg.sizing.bankroll, positions=[])
     ex = ExecutionClient(cfg, dry_run=True, journal=journal)
     for c in signals[:args.top]:
         d = c.detail
@@ -150,6 +152,12 @@ def cmd_scan(args):
             except Exception:                              # noqa: BLE001
                 book = None
         decision, econ = eng.size(c, portfolio, book)
+        # Journal every fired signal, traded or not: `settle` reads these to
+        # build the calibration set, and a signal we declined still carries a
+        # valid (price, Sigma, outcome) observation.
+        journal(action="SIGNAL", sigma=c.sigma, nEff=c.n_eff,
+                conditionId=c.condition_id, outcomeIndex=c.outcome_index,
+                category=c.category, **d)
         print(f"\n  {d.get('question','?')[:66]}")
         print(f"    -> {d.get('outcome')} @ {d['currentPrice']:.3f} "
               f"| Sigma {c.sigma:.2f} N_eff {c.n_eff:.2f} "
@@ -209,9 +217,71 @@ def cmd_watch(args):
                       f"{d.get('question','?')[:52]} -> {d.get('outcome')} "
                       f"@ {d['currentPrice']:.3f}", flush=True)
                 journal(action="SIGNAL", sigma=c.sigma, nEff=c.n_eff,
-                        conditionId=c.condition_id, **d)
+                        conditionId=c.condition_id,
+                        outcomeIndex=c.outcome_index, category=c.category, **d)
         time.sleep(cfg.feed.data_api_poll_s)
     print(json.dumps(feed.summary(), indent=1))
+    return 0
+
+
+def cmd_settle(args):
+    """Turn resolved signals into calibration observations.
+
+    This is the step that closes the loop. Signals are journaled when they
+    fire; nothing else revisits them, so without this pass observations.jsonl
+    stays empty, lambda stays 0, and the engine can never graduate from flat
+    bootstrap stakes to Kelly no matter how long it runs.
+
+    Idempotent: each (market, outcome, signal time) is recorded once.
+    """
+    from . import calibrate as calmod
+    resolver = pmlib.MarketResolver()
+    seen_path = os.path.join(pmlib.BASE, "data", "live", "settled.json")
+    seen = set(tuple(k) for k in (json.load(open(seen_path))
+                                  if os.path.exists(seen_path) else []))
+    fired, added, pending = [], 0, 0
+    try:
+        with open(JOURNAL) as f:
+            for line in f:
+                try:
+                    r = json.loads(line)
+                except ValueError:
+                    continue
+                if r.get("action") == "SIGNAL":
+                    fired.append(r)
+    except OSError:
+        raise SystemExit(f"no journal at {JOURNAL} — run scan or watch first")
+
+    for r in fired:
+        key = (r.get("conditionId"), r.get("outcomeIndex"), r.get("t"))
+        if key in seen or key[0] is None:
+            continue
+        m = resolver.get(r["conditionId"])
+        oi = r.get("outcomeIndex") or 0
+        prices = (m or {}).get("outcomePrices") or []
+        if not m or not m.get("closed") or oi >= len(prices):
+            pending += 1
+            continue
+        final = prices[oi]
+        if not (m.get("resolved") or final >= 0.99 or final <= 0.01):
+            pending += 1
+            continue                       # closed but still in dispute
+        calmod.record_observation(price=r.get("currentPrice"),
+                                  sigma=r.get("sigma"), won=final >= 0.5,
+                                  t=r.get("t"))
+        seen.add(key)
+        added += 1
+    resolver.save()
+    os.makedirs(os.path.dirname(seen_path), exist_ok=True)
+    with open(seen_path, "w") as f:
+        json.dump([list(k) for k in seen], f)
+
+    total = len(calmod.load_observations())
+    need = EngineConfig.load().probability.min_calibration_samples
+    print(f"{len(fired)} signals journaled · {added} newly settled · "
+          f"{pending} still open")
+    print(f"observations: {total}/{need} needed before lambda can be fitted"
+          + ("  — run `python3 -m pmx.calibrate`" if total >= need else ""))
     return 0
 
 
@@ -263,6 +333,8 @@ def main():
     p.add_argument("--max-days", type=float, default=7.0)
     p.add_argument("--rpc", default=None, help="Polygon RPC for the chain feed")
     p.set_defaults(fn=cmd_watch)
+
+    sub.add_parser("settle").set_defaults(fn=cmd_settle)
 
     p = sub.add_parser("explain")
     p.add_argument("wallet")

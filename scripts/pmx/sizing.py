@@ -135,6 +135,43 @@ def size_position(w, price, fill_price, portfolio: Portfolio, cfg: SizingConfig,
     f_star = kelly_fraction(w, cost, exit_fee)
     detail["kellyFull"] = round(f_star, 5)
 
+    if not calibrated:
+        # Bootstrap. With no fitted lambda there is no w, so Kelly is
+        # undefined rather than zero -- and w == price makes f* negative the
+        # moment a fee is charged, which would refuse every trade forever.
+        # That is a deadlock: no trades, no settled observations, no
+        # calibration, no trades. Size the flat minimum instead and let the
+        # observations accumulate. This is the only path that stakes money
+        # without a demonstrated edge, and it is capped at min_stake_usd.
+        binding = "uncalibrated: flat bootstrap stake"
+        if len(portfolio.positions) >= cfg.max_open_positions:
+            return SizingDecision(0, 0, 0, fill_price, "max open positions",
+                                  detail)
+        # The smallest LEGAL position, not a fixed dollar amount: a $1 stake
+        # buys 2 shares at 50c and the exchange rejects anything under 5, so
+        # a flat minimum silently makes bootstrapping impossible above 20c.
+        floor_usd = max(cfg.min_stake_usd, cfg.min_shares * fill_price)
+        ceilings = [("per-trade dollar cap", cfg.max_stake_usd),
+                    ("max position cap", cfg.max_position_frac * B),
+                    ("cash reserve floor",
+                     portfolio.cash - cfg.cash_reserve_frac * B),
+                    ("daily deployment cap",
+                     cfg.max_daily_deploy_frac * B - portfolio.spent_today)]
+        if depth_notional is not None:
+            ceilings.append(("book depth participation",
+                             cfg.max_depth_participation * depth_notional))
+        cap_name, cap = min(ceilings, key=lambda kv: kv[1])
+        detail["bootstrapFloor"] = round(floor_usd, 4)
+        detail["caps"] = {k: round(v, 4) for k, v in ceilings}
+        if floor_usd > cap + 1e-9:
+            return SizingDecision(
+                0, 0, 0, fill_price,
+                f"{cap_name} (${cap:.2f}) is below the ${floor_usd:.2f} "
+                f"minimum legal position at {fill_price:.3f}", detail)
+        shares = math.ceil((floor_usd / max(fill_price, 1e-9)) * 100) / 100
+        return SizingDecision(round(shares * fill_price, 2), shares, 0.0,
+                              fill_price, binding, detail)
+
     if f_star <= 0:
         return SizingDecision(0, 0, 0, fill_price, "no edge after costs", detail)
 
@@ -166,10 +203,6 @@ def size_position(w, price, fill_price, portfolio: Portfolio, cfg: SizingConfig,
 
     if len(portfolio.positions) >= cfg.max_open_positions:
         caps.append(("max open positions", 0.0))
-    if not calibrated:
-        # Without a fitted consensus->probability map there is no trustworthy
-        # w, so Kelly is meaningless. Trade the floor size or nothing at all.
-        caps.append(("uncalibrated: flat minimum stake", cfg.min_stake_usd))
 
     binding, stake = min(caps, key=lambda kv: kv[1])
     detail["caps"] = {k: round(v, 4) for k, v in caps}
