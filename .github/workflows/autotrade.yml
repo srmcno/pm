@@ -1,0 +1,67 @@
+name: Sharp Money auto-trader
+
+on:
+  schedule:
+    - cron: "17 */2 * * *"   # every 2 hours
+  workflow_dispatch: {}       # manual run button
+
+concurrency:
+  group: autotrade
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PM_PRIVATE_KEY: ${{ secrets.PM_PRIVATE_KEY }}
+      PM_PROXY_ADDRESS: ${{ secrets.PM_PROXY_ADDRESS }}
+      PM_SIGNATURE_TYPE: ${{ secrets.PM_SIGNATURE_TYPE }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/polymarket-wallets-analysis-m81p4j
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests py-clob-client
+
+      - name: Scan the sharps and build signals
+        working-directory: scripts
+        run: python3 signals.py --live --hours 48 --min-backers 3 --max-days 3
+
+      - name: Plan orders (always journaled)
+        working-directory: scripts
+        run: python3 livetrade.py plan
+
+      - name: Execute real orders (only when secrets are configured)
+        working-directory: scripts
+        run: |
+          if [ -z "$PM_PRIVATE_KEY" ]; then
+            echo "Secrets not set — plan-only mode. Add PM_PRIVATE_KEY /"
+            echo "PM_PROXY_ADDRESS / PM_SIGNATURE_TYPE in Settings > Secrets"
+            echo "and variables > Actions to arm real trading."
+            exit 0
+          fi
+          python3 livetrade.py execute --live --i-accept-total-loss
+
+      - name: Account status
+        working-directory: scripts
+        run: |
+          if [ -n "$PM_PROXY_ADDRESS" ]; then python3 livetrade.py status; fi
+
+      - name: Commit journal and reports back
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/live data/signals reports || true
+          git diff --cached --quiet && exit 0
+          git commit -m "auto: trading cycle $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin claude/polymarket-wallets-analysis-m81p4j || true
+          git push origin HEAD:claude/polymarket-wallets-analysis-m81p4j
