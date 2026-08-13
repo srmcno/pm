@@ -22,8 +22,9 @@ REPORT = "reports/stocks-backtest.md"
 # result and stamped into the validation block so stale stress metrics are
 # never presented next to a replay of a different configuration.
 CONFIG_KEYS = ("entry_bps", "exit_bps", "stop_bps", "min_driver_move_bps",
-               "max_hold_minutes", "anchor_minutes", "risk_frac",
-               "max_positions", "slippage_bps")
+               "max_hold_minutes", "anchor_minutes",
+               "flatten_minutes_before_close", "risk_frac", "max_positions",
+               "slippage_bps", "min_beta_r2", "beta_lookback_days")
 
 
 def _sessions(bars):

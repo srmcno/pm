@@ -45,9 +45,9 @@ class StrategyConfig:
     # confirmed on 22 sessions of 5-minute bars with the driver aligned to
     # each bar's close and fills at the next bar's open (dislocations seen
     # up to ~300s late). This configuration is positive in all three views
-    # — train +$6.02 and held-out +$1.02 per $1000 on the 1m window, +1.01%
-    # over 50 trades in the month stress — with a worst stress day of
-    # -$4.54. The tighter 90bps/20-minute variant scored +1.13% in the
+    # — train +$6.07 and held-out +$1.02 per $1000 on the 1m window, +0.94%
+    # over 49 trades in the month stress — with a worst stress day of
+    # -$4.14. The tighter 90bps/20-minute variant scored comparably in the
     # stress but lost money on the held-out sessions. The edge decays
     # within minutes, which is why entries are gated on quote freshness.
     entry_bps: float = 75.0          # |d| to open

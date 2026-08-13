@@ -172,12 +172,30 @@ def cmd_run(args):
         snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
         for p in st["positions"]:
             if id(p) not in before and executor:
-                _mirror(executor, p, opening=True)
+                # A failed open mirror is not retried: entering late chases a
+                # decayed edge, and a position that never opened live must
+                # never have its close mirrored (the sell would open a
+                # reverse live position instead of flattening one).
+                if _mirror(executor, p, opening=True):
+                    p["liveOpen"] = True
         if executor:
             for c in st["closed"]:
-                if not c.get("mirrored"):
-                    _mirror(executor, c, opening=False)
+                if c.get("mirrored"):
+                    continue
+                if not c.get("liveOpen"):
+                    c["mirrored"] = True     # never held live; nothing to close
+                    continue
+                # A close that fails to mirror leaves a live position open;
+                # retry on following iterations, escalate if it keeps failing.
+                if _mirror(executor, c, opening=False):
                     c["mirrored"] = True
+                    continue
+                c["mirrorAttempts"] = c.get("mirrorAttempts", 0) + 1
+                if c["mirrorAttempts"] >= 5:
+                    c["mirrored"] = True
+                    print(f"  ALERT: close mirror failed "
+                          f"{c['mirrorAttempts']}x for {c['symbol']}; the "
+                          f"live position may need a manual close", flush=True)
         paperdesk.save(st)
         publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
         if args.git_push and time.time() - last_push > args.push_minutes * 60:
@@ -200,13 +218,16 @@ def cmd_run(args):
 
 
 def _mirror(executor, pos, opening):
+    """Submit one mirrored order; True only on confirmed submission."""
     from stocks import livedesk
     try:
         r = livedesk.mirror_position(executor, pos, opening)
         print(f"  alpaca {'open' if opening else 'close'} {pos['symbol']} "
               f"-> {r.get('id', '?')[:8]}", flush=True)
+        return True
     except Exception as e:                                # noqa: BLE001
         print(f"  alpaca order failed: {e}", flush=True)
+        return False
 
 
 def _git_push():
