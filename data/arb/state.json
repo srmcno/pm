@@ -814,6 +814,10 @@
   {
    "t": 1786602031,
    "equity": 20.0409
+  },
+  {
+   "t": 1786602634,
+   "equity": 20.0409
   }
  ],
  "decay": {
@@ -830,6 +834,6 @@
   "atomicUsd": 0.0935,
   "delayedUsd": 0.3406,
   "captureRatio": 3.643,
-  "scansReplayed": 145
+  "scansReplayed": 199
  }
 }
