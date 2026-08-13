@@ -5,16 +5,16 @@
   "delay_hours": 1.0,
   "step_hours": 6.0,
   "hours": 72,
-  "min_backers": 2,
+  "min_backers": 3,
   "min_pnl": 50000,
-  "max_wallets": 30,
-  "top_per_day": 3,
+  "max_wallets": 60,
+  "top_per_day": 5,
   "max_positions": 10,
   "risk_frac": 0.08,
   "slippage": 0.01,
-  "fn": "<function cmd_backtest at 0x7f7cb03ef9c0>"
+  "fn": "<function cmd_backtest at 0x7f86e070ba60>"
  },
- "finalEquity": 96.3512,
+ "finalEquity": 28.4633,
  "equityCurve": [
   {
    "t": 1782683566,
@@ -42,703 +42,703 @@
   },
   {
    "t": 1782813166,
-   "equity": 18.6909
+   "equity": 18.528
   },
   {
    "t": 1782834766,
-   "equity": 22.0883
+   "equity": 18.528
   },
   {
    "t": 1782856366,
-   "equity": 22.0883
+   "equity": 18.528
   },
   {
    "t": 1782877966,
-   "equity": 22.0883
+   "equity": 18.528
   },
   {
    "t": 1782899566,
-   "equity": 22.0883
+   "equity": 17.1738
   },
   {
    "t": 1782921166,
-   "equity": 22.0883
+   "equity": 17.1738
   },
   {
    "t": 1782942766,
-   "equity": 22.0883
+   "equity": 17.1738
   },
   {
    "t": 1782964366,
-   "equity": 20.3212
+   "equity": 17.1738
   },
   {
    "t": 1782985966,
-   "equity": 20.3212
+   "equity": 18.1647
   },
   {
    "t": 1783007566,
-   "equity": 20.3212
+   "equity": 17.0185
   },
   {
    "t": 1783029166,
-   "equity": 20.3212
+   "equity": 16.3161
   },
   {
    "t": 1783050766,
-   "equity": 20.3212
+   "equity": 16.3751
   },
   {
    "t": 1783072366,
-   "equity": 20.3212
+   "equity": 16.3751
   },
   {
    "t": 1783093966,
-   "equity": 20.3212
+   "equity": 16.3751
   },
   {
    "t": 1783115566,
-   "equity": 18.6955
+   "equity": 16.3751
   },
   {
    "t": 1783137166,
-   "equity": 18.6955
+   "equity": 17.2745
   },
   {
    "t": 1783158766,
-   "equity": 18.6955
+   "equity": 16.2486
   },
   {
    "t": 1783180366,
-   "equity": 18.6955
+   "equity": 15.3103
   },
   {
    "t": 1783201966,
-   "equity": 26.8489
+   "equity": 20.8704
   },
   {
    "t": 1783223566,
-   "equity": 26.8489
+   "equity": 21.7337
   },
   {
    "t": 1783245166,
-   "equity": 26.8489
+   "equity": 21.7337
   },
   {
    "t": 1783266766,
-   "equity": 26.8489
+   "equity": 21.7337
   },
   {
    "t": 1783288366,
-   "equity": 26.8489
+   "equity": 20.7875
   },
   {
    "t": 1783309966,
-   "equity": 26.8489
+   "equity": 19.917
   },
   {
    "t": 1783331566,
-   "equity": 29.3856
+   "equity": 19.917
   },
   {
    "t": 1783353166,
-   "equity": 36.8872
+   "equity": 19.917
   },
   {
    "t": 1783374766,
-   "equity": 36.8872
+   "equity": 21.603
   },
   {
    "t": 1783396366,
-   "equity": 36.8872
+   "equity": 21.603
   },
   {
    "t": 1783417966,
-   "equity": 36.8872
+   "equity": 21.7764
   },
   {
    "t": 1783439566,
-   "equity": 35.2146
+   "equity": 21.7764
   },
   {
    "t": 1783461166,
-   "equity": 35.2146
+   "equity": 21.7764
   },
   {
    "t": 1783482766,
-   "equity": 35.4003
+   "equity": 21.7764
   },
   {
    "t": 1783504366,
-   "equity": 35.4003
+   "equity": 20.284
   },
   {
    "t": 1783525966,
-   "equity": 35.4003
+   "equity": 21.5263
   },
   {
    "t": 1783547566,
-   "equity": 37.4524
+   "equity": 20.1414
   },
   {
    "t": 1783569166,
-   "equity": 37.4524
+   "equity": 20.1414
   },
   {
    "t": 1783590766,
-   "equity": 37.4524
+   "equity": 18.8673
   },
   {
    "t": 1783612366,
-   "equity": 37.4524
+   "equity": 18.8673
   },
   {
    "t": 1783633966,
-   "equity": 39.1472
+   "equity": 18.8673
   },
   {
    "t": 1783655566,
-   "equity": 39.1472
+   "equity": 18.8673
   },
   {
    "t": 1783677166,
-   "equity": 39.1472
+   "equity": 18.8673
   },
   {
    "t": 1783698766,
-   "equity": 49.7206
+   "equity": 19.3864
   },
   {
    "t": 1783720366,
-   "equity": 49.7206
+   "equity": 19.3864
   },
   {
    "t": 1783741966,
-   "equity": 49.7206
+   "equity": 19.3864
   },
   {
    "t": 1783763566,
-   "equity": 49.7206
+   "equity": 19.3864
   },
   {
    "t": 1783785166,
-   "equity": 49.7206
+   "equity": 19.3864
   },
   {
    "t": 1783806766,
-   "equity": 49.7206
+   "equity": 19.3864
   },
   {
    "t": 1783828366,
-   "equity": 49.7206
+   "equity": 19.3864
   },
   {
    "t": 1783849966,
-   "equity": 49.7206
+   "equity": 19.7369
   },
   {
    "t": 1783871566,
-   "equity": 49.7206
+   "equity": 21.0149
   },
   {
    "t": 1783893166,
-   "equity": 57.9583
+   "equity": 23.7043
   },
   {
    "t": 1783914766,
-   "equity": 60.3831
+   "equity": 22.0435
   },
   {
    "t": 1783936366,
-   "equity": 60.3831
+   "equity": 22.0435
   },
   {
    "t": 1783957966,
-   "equity": 60.3831
+   "equity": 22.0435
   },
   {
    "t": 1783979566,
-   "equity": 60.3831
+   "equity": 21.2453
   },
   {
    "t": 1784001166,
-   "equity": 60.3831
+   "equity": 21.2453
   },
   {
    "t": 1784022766,
-   "equity": 60.3831
+   "equity": 21.2453
   },
   {
    "t": 1784044366,
-   "equity": 60.3831
+   "equity": 21.2453
   },
   {
    "t": 1784065966,
-   "equity": 60.3831
+   "equity": 21.2453
   },
   {
    "t": 1784087566,
-   "equity": 67.0216
+   "equity": 25.7796
   },
   {
    "t": 1784109166,
-   "equity": 67.0216
+   "equity": 25.7796
   },
   {
    "t": 1784130766,
-   "equity": 69.8506
+   "equity": 25.7796
   },
   {
    "t": 1784152366,
-   "equity": 65.885
+   "equity": 25.7476
   },
   {
    "t": 1784173966,
-   "equity": 65.885
+   "equity": 25.7476
   },
   {
    "t": 1784195566,
-   "equity": 65.885
+   "equity": 25.7476
   },
   {
    "t": 1784217166,
-   "equity": 65.885
+   "equity": 25.7476
   },
   {
    "t": 1784238766,
-   "equity": 65.885
+   "equity": 25.7476
   },
   {
    "t": 1784260366,
-   "equity": 69.4689
+   "equity": 26.7803
   },
   {
    "t": 1784281966,
-   "equity": 69.4689
+   "equity": 26.7803
   },
   {
    "t": 1784303566,
-   "equity": 69.4689
+   "equity": 26.7803
   },
   {
    "t": 1784325166,
-   "equity": 93.3311
+   "equity": 26.7803
   },
   {
    "t": 1784346766,
-   "equity": 93.3311
+   "equity": 26.7803
   },
   {
    "t": 1784368366,
-   "equity": 103.8599
+   "equity": 26.7803
   },
   {
    "t": 1784389966,
-   "equity": 103.8599
+   "equity": 26.7803
   },
   {
    "t": 1784411566,
-   "equity": 103.8599
+   "equity": 26.7803
   },
   {
    "t": 1784433166,
-   "equity": 103.8599
+   "equity": 29.4516
   },
   {
    "t": 1784454766,
-   "equity": 103.8599
+   "equity": 29.4516
   },
   {
    "t": 1784476366,
-   "equity": 103.8599
+   "equity": 29.4516
   },
   {
    "t": 1784497966,
-   "equity": 95.6966
+   "equity": 28.1572
   },
   {
    "t": 1784519566,
-   "equity": 95.6966
+   "equity": 28.1572
   },
   {
    "t": 1784541166,
-   "equity": 101.6819
+   "equity": 28.1572
   },
   {
    "t": 1784562766,
-   "equity": 101.6819
+   "equity": 28.1572
   },
   {
    "t": 1784584366,
-   "equity": 108.5331
+   "equity": 28.1572
   },
   {
    "t": 1784605966,
-   "equity": 108.5331
+   "equity": 28.1572
   },
   {
    "t": 1784627566,
-   "equity": 108.5331
+   "equity": 28.1572
   },
   {
    "t": 1784649166,
-   "equity": 108.5331
+   "equity": 28.1572
   },
   {
    "t": 1784670766,
-   "equity": 108.5331
+   "equity": 28.1572
   },
   {
    "t": 1784692366,
-   "equity": 108.5331
+   "equity": 28.1572
   },
   {
    "t": 1784713966,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784735566,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784757166,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784778766,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784800366,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784821966,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784843566,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784865166,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784886766,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784908366,
-   "equity": 108.5331
+   "equity": 28.4633
   },
   {
    "t": 1784929966,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1784951566,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1784973166,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1784994766,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785016366,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785037966,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785059566,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785081166,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785102766,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785124366,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785145966,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785167566,
-   "equity": 99.9959
+   "equity": 28.4633
   },
   {
    "t": 1785189166,
-   "equity": 105.5677
+   "equity": 28.4633
   },
   {
    "t": 1785210766,
-   "equity": 105.5677
+   "equity": 28.4633
   },
   {
    "t": 1785232366,
-   "equity": 105.5677
+   "equity": 28.4633
   },
   {
    "t": 1785253966,
-   "equity": 105.5677
+   "equity": 28.4633
   },
   {
    "t": 1785275566,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785297166,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785318766,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785340366,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785361966,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785383566,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785405166,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785426766,
-   "equity": 98.3418
+   "equity": 28.4633
   },
   {
    "t": 1785448366,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785469966,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785491566,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785513166,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785534766,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785556366,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785577966,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785599566,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785621166,
-   "equity": 100.8408
+   "equity": 28.4633
   },
   {
    "t": 1785642766,
-   "equity": 100.4079
+   "equity": 28.4633
   },
   {
    "t": 1785664366,
-   "equity": 100.4079
+   "equity": 28.4633
   },
   {
    "t": 1785685966,
-   "equity": 100.4079
+   "equity": 28.4633
   },
   {
    "t": 1785707566,
-   "equity": 92.4861
+   "equity": 28.4633
   },
   {
    "t": 1785729166,
-   "equity": 78.9259
+   "equity": 28.4633
   },
   {
    "t": 1785750766,
-   "equity": 78.9259
+   "equity": 28.4633
   },
   {
    "t": 1785772366,
-   "equity": 78.9259
+   "equity": 28.4633
   },
   {
    "t": 1785793966,
-   "equity": 78.9259
+   "equity": 28.4633
   },
   {
    "t": 1785815566,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785837166,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785858766,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785880366,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785901966,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785923566,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785945166,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785966766,
-   "equity": 79.5735
+   "equity": 28.4633
   },
   {
    "t": 1785988366,
-   "equity": 87.6528
+   "equity": 28.4633
   },
   {
    "t": 1786009966,
-   "equity": 87.6528
+   "equity": 28.4633
   },
   {
    "t": 1786031566,
-   "equity": 87.6528
+   "equity": 28.4633
   },
   {
    "t": 1786053166,
-   "equity": 96.4181
+   "equity": 28.4633
   },
   {
    "t": 1786074766,
-   "equity": 96.4181
+   "equity": 28.4633
   },
   {
    "t": 1786096366,
-   "equity": 96.4181
+   "equity": 28.4633
   },
   {
    "t": 1786117966,
-   "equity": 96.4181
+   "equity": 28.4633
   },
   {
    "t": 1786139566,
-   "equity": 98.8491
+   "equity": 28.4633
   },
   {
    "t": 1786161166,
-   "equity": 98.8491
+   "equity": 28.4633
   },
   {
    "t": 1786182766,
-   "equity": 98.8491
+   "equity": 28.4633
   },
   {
    "t": 1786204366,
-   "equity": 98.8491
+   "equity": 28.4633
   },
   {
    "t": 1786225966,
-   "equity": 98.8491
+   "equity": 28.4633
   },
   {
    "t": 1786247566,
-   "equity": 104.5078
+   "equity": 28.4633
   },
   {
    "t": 1786269166,
-   "equity": 104.5078
+   "equity": 28.4633
   },
   {
    "t": 1786290766,
-   "equity": 104.5078
+   "equity": 28.4633
   },
   {
    "t": 1786312366,
-   "equity": 104.5078
+   "equity": 28.4633
   },
   {
    "t": 1786333966,
-   "equity": 105.596
+   "equity": 28.4633
   },
   {
    "t": 1786355566,
-   "equity": 105.596
+   "equity": 28.4633
   },
   {
    "t": 1786377166,
-   "equity": 105.596
+   "equity": 28.4633
   },
   {
    "t": 1786398766,
-   "equity": 98.4545
+   "equity": 28.4633
   },
   {
    "t": 1786420366,
-   "equity": 98.4545
+   "equity": 28.4633
   },
   {
    "t": 1786441966,
-   "equity": 98.4545
+   "equity": 28.4633
   },
   {
    "t": 1786463566,
-   "equity": 98.4545
+   "equity": 28.4633
   },
   {
    "t": 1786485166,
-   "equity": 98.4545
+   "equity": 28.4633
   },
   {
    "t": 1786506766,
-   "equity": 96.3512
+   "equity": 28.4633
   },
   {
    "t": 1786528366,
-   "equity": 96.3512
+   "equity": 28.4633
   },
   {
    "t": 1786549966,
-   "equity": 96.3512
+   "equity": 28.4633
   },
   {
    "t": 1786571566,
-   "equity": 96.3512
+   "equity": 28.4633
   }
  ],
  "closed": [
@@ -750,42 +750,12 @@
    "token": "9822096886162353463283370713306283175246929342391362637574593482058866295778",
    "question": "Will Brazil win on 2026-06-29?",
    "outcome": "No",
-   "shares": 3.6781609195402303,
+   "shares": 3.3839080459770114,
    "entry": 0.435,
-   "cost": 1.6,
+   "cost": 1.472,
    "openedAt": 1782709203,
    "settle": 0.0,
-   "pnl": -1.6
-  },
-  {
-   "key": [
-    "0x085e6d64dbcc4a308e7477c3bda16b8c3c62ec37f7df7a06dcafb6ab08396401",
-    1
-   ],
-   "token": "13947647582525676347222741371597195922857551865907155864676257411288593802238",
-   "question": "Will Japan win on 2026-06-29?",
-   "outcome": "No",
-   "shares": 1.762874251497006,
-   "entry": 0.835,
-   "cost": 1.472,
-   "openedAt": 1782709205,
-   "settle": 1.0,
-   "pnl": 0.29087425149700596
-  },
-  {
-   "key": [
-    "0xdac6e67bfc09e630711ceb1be0be8f19c472344ca4353b608cc3b9282e61ec95",
-    1
-   ],
-   "token": "51735326862567847289125781793702459528262106476147156937538535457199760764770",
-   "question": "Will Germany win on 2026-06-29?",
-   "outcome": "No",
-   "shares": 4.7515789473684205,
-   "entry": 0.28500000000000003,
-   "cost": 1.3542,
-   "openedAt": 1782730825,
-   "settle": 1.0,
-   "pnl": 3.3973789473684204
+   "pnl": -1.472
   },
   {
    "key": [
@@ -795,282 +765,42 @@
    "token": "67614118299712719244400167745909935240133263886550154700443310074824676975678",
    "question": "Will Mexico win on 2026-06-30?",
    "outcome": "No",
-   "shares": 3.0732173913043477,
+   "shares": 2.355130434782609,
    "entry": 0.575,
-   "cost": 1.7671,
-   "openedAt": 1782860404,
+   "cost": 1.3542,
+   "openedAt": 1782795605,
    "settle": 0.0,
-   "pnl": -1.7671
+   "pnl": -1.3542
   },
   {
    "key": [
-    "0xdbf69c69fe1e6b0bbbea06b89a59a6e7dbb1ec356087d36744b683e8aa1498c3",
-    0
-   ],
-   "token": "43607060753312271794309345134245009638549894950142395933804837659919997063244",
-   "question": "Wimbledon ATP: James Duckworth vs Flavio Cobolli",
-   "outcome": "James Duckworth",
-   "shares": 10.488387096774193,
-   "entry": 0.155,
-   "cost": 1.6257,
-   "openedAt": 1783011604,
-   "settle": 0.0,
-   "pnl": -1.6257
-  },
-  {
-   "key": [
-    "0xb81d9a63be774f9c3db1b96af4d0e869128643a29c6eb922c0d8a20137880120",
+    "0xaf12bd1a9ec448b428e5879f180b9b05d17cdf6a6af3c20d8a4b7327ca6bfd37",
     1
    ],
-   "token": "47254411859814230823241329698941341210081957128105405938574965184636004790922",
-   "question": "Will Argentina win on 2026-07-03?",
+   "token": "85418243160365189973163574658090696894227655236478183199339782372790668936005",
+   "question": "Will LeBron James play for the Golden State Warriors in 2026-27?",
    "outcome": "No",
-   "shares": 9.649032258064516,
-   "entry": 0.155,
-   "cost": 1.4956,
-   "openedAt": 1783098004,
+   "shares": 2.236804308797127,
+   "entry": 0.557,
+   "cost": 1.2459,
+   "openedAt": 1782882004,
    "settle": 1.0,
-   "pnl": 8.153432258064516
+   "pnl": 0.9909043087971272
   },
   {
    "key": [
-    "0xa4402219045f0fe392ea08a92d6f50b89419976d484aba5592d19bb65ea7b5c6",
+    "0xfa021d817ad33e0fa28e04051b4fea25b0a090e94bb1b2a38b377bce9778eb8e",
     1
    ],
-   "token": "94538197507034131724155137195976069393412480261383985946027902742107809025962",
-   "question": "Will LeBron James play for the Cleveland Cavaliers in 2026-27?",
+   "token": "49886028487112281574279422474095181525913123582177075375309734310587117931078",
+   "question": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
    "outcome": "No",
-   "shares": 4.684623773173391,
-   "entry": 0.4585,
-   "cost": 2.1479,
-   "openedAt": 1783227608,
-   "settle": 1.0,
-   "pnl": 2.5367237731733914
-  },
-  {
-   "key": [
-    "0x6d7f6ac31de9060baca8e0d18f1f702f44abb1379b4f9a82714486387279e20b",
-    0
-   ],
-   "token": "21968301685298850527667905532276691228649575632833215990996431468045627588895",
-   "question": "Milan: Facundo Acosta vs Marco Cecchinato",
-   "outcome": "Facundo Acosta",
-   "shares": 9.477697841726618,
-   "entry": 0.20850000000000002,
-   "cost": 1.9761,
-   "openedAt": 1783249205,
-   "settle": 1.0,
-   "pnl": 7.5015978417266185
-  },
-  {
-   "key": [
-    "0xb8c4eb2bc36fb256ac730f0d1d05cf5ff6649a7d8d5ed779544dfa068da1cd18",
-    1
-   ],
-   "token": "79592630328753735040826665597439927038579441056728344347022160219240688706280",
-   "question": "Will Spain win on 2026-07-06?",
-   "outcome": "No",
-   "shares": 3.378989898989899,
-   "entry": 0.495,
-   "cost": 1.6726,
-   "openedAt": 1783335605,
-   "settle": 0.0,
-   "pnl": -1.6726
-  },
-  {
-   "key": [
-    "0xa2fbf26da58b976e1eb5afbbf1b1b73d4643ec03e7dacb467404d9ff5869b0b5",
-    1
-   ],
-   "token": "11745025487860354192477619864860033897693166596776539464949586482060440785986",
-   "question": "Wimbledon ATP: Jiri Lehecka vs Alexander Zverev",
-   "outcome": "Alexander Zverev",
-   "shares": 2.857433155080214,
-   "entry": 0.935,
-   "cost": 2.6717,
-   "openedAt": 1783378806,
-   "settle": 1.0,
-   "pnl": 0.18573315508021393
-  },
-  {
-   "key": [
-    "0x4df0608dd27fe2a79cf6ad387b9f0e4ba1df864d8abf275c01273c297ea94942",
-    0
-   ],
-   "token": "49645643568859209005550615578161566180824253634508268711233231092277520948449",
-   "question": "Argentina vs. Egypt: O/U 2.5",
-   "outcome": "Over",
-   "shares": 4.510091743119266,
-   "entry": 0.545,
-   "cost": 2.458,
-   "openedAt": 1783443607,
-   "settle": 1.0,
-   "pnl": 2.0520917431192656
-  },
-  {
-   "key": [
-    "0xa271ed1b4042ecd7501a9da104caa3498d8d00365454bc715ebe6564fe590821",
-    1
-   ],
-   "token": "91899930441852673565010718344905649636997776565049890875719219930896576015540",
-   "question": "Iasi: Pedro Martinez vs Maks Kasnikowski",
-   "outcome": "Maks Kasnikowski",
-   "shares": 4.184705882352941,
+   "shares": 1.926386554621849,
    "entry": 0.595,
-   "cost": 2.4899,
-   "openedAt": 1783530005,
-   "settle": 1.0,
-   "pnl": 1.694805882352941
-  },
-  {
-   "key": [
-    "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
-    0
-   ],
-   "token": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
-   "question": "Will Spain win the 2026 FIFA World Cup?",
-   "outcome": "Yes",
-   "shares": 13.22493765586035,
-   "entry": 0.2005,
-   "cost": 2.6516,
-   "openedAt": 1783594812,
-   "settle": 1.0,
-   "pnl": 10.57333765586035
-  },
-  {
-   "key": [
-    "0xb86425238a6bb2abbea65a4730da96a877bb8f1c18e5579271f5bd08fcd7fdff",
-    1
-   ],
-   "token": "6877591429295187381204977907984243539104174752734709721435561210590152772541",
-   "question": "Wimbledon WTA: Karolina Muchova vs Linda Noskova",
-   "outcome": "Linda Noskova",
-   "shares": 12.06992125984252,
-   "entry": 0.3175,
-   "cost": 3.8322,
-   "openedAt": 1783789211,
-   "settle": 1.0,
-   "pnl": 8.23772125984252
-  },
-  {
-   "key": [
-    "0xccc07a8317079457585bc88e387b58d2bb94576ee2c9cea63b2f2adb7ed1a836",
-    1
-   ],
-   "token": "50489327015344012699222620659068944307834324237590238863966676298308808973282",
-   "question": "Norway vs. England: Team to Advance",
-   "outcome": "England",
-   "shares": 5.950379746835442,
-   "entry": 0.5925,
-   "cost": 3.5256,
-   "openedAt": 1783810803,
-   "settle": 1.0,
-   "pnl": 2.4247797468354424
-  },
-  {
-   "key": [
-    "0xecba7b1db1c698ab73b3572abfcde327a02b5112676144e049edcc1e1e0f5b0b",
-    1
-   ],
-   "token": "46421815574359643620514688756609814860051932583278915389775335554413697029363",
-   "question": "France vs. Spain: Team to Advance",
-   "outcome": "Spain",
-   "shares": 11.323746223564955,
-   "entry": 0.41375,
-   "cost": 4.6852,
-   "openedAt": 1783983605,
-   "settle": 1.0,
-   "pnl": 6.638546223564955
-  },
-  {
-   "key": [
-    "0x20fac1c925b7a2fed6b3b2736f47a800b4d0d4001b9deaeb7b918868eb63d081",
-    1
-   ],
-   "token": "114008288197553961583518307739897802587067075299935011621746237390478872496575",
-   "question": "Will France win on 2026-07-14?",
-   "outcome": "No",
-   "shares": 7.139378881987577,
-   "entry": 0.60375,
-   "cost": 4.3104,
-   "openedAt": 1784026806,
-   "settle": 1.0,
-   "pnl": 2.8289788819875774
-  },
-  {
-   "key": [
-    "0x4917c1901bf8b7cd6c917c1a37b6e7090982d267a0823d02ff5971babb3f723a",
-    1
-   ],
-   "token": "103588629757836193828943958421030068317776875822101862988175194628065548205661",
-   "question": "France vs. Spain: O/U 0.5",
-   "outcome": "Under",
-   "shares": 44.68281690140845,
-   "entry": 0.08875,
-   "cost": 3.9656,
-   "openedAt": 1784048436,
+   "cost": 1.1462,
+   "openedAt": 1782903605,
    "settle": 0.0,
-   "pnl": -3.9656
-  },
-  {
-   "key": [
-    "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f",
-    1
-   ],
-   "token": "115428153746996892211798999366308897078723117634059783423375188043903703749062",
-   "question": "Will Argentina win the 2026 FIFA World Cup?",
-   "outcome": "No",
-   "shares": 8.709260832625318,
-   "entry": 0.5885,
-   "cost": 5.1254,
-   "openedAt": 1784156407,
-   "settle": 1.0,
-   "pnl": 3.5838608326253185
-  },
-  {
-   "key": [
-    "0x1d88092b2e151927cc5fc6a02ae3f84fb0551d2b44c6c5c961bd530d53638f9a",
-    1
-   ],
-   "token": "35885015946485107869071143454647501097376382224315875817089125394600314148428",
-   "question": "Iasi Open: Alevtina Ibragimova vs Paula Badosa",
-   "outcome": "Paula Badosa",
-   "shares": 28.577575757575758,
-   "entry": 0.165,
-   "cost": 4.7153,
-   "openedAt": 1784221208,
-   "settle": 1.0,
-   "pnl": 23.86227575757576
-  },
-  {
-   "key": [
-    "0xc0335c9816ab0bf9b4d493f9fb9f2c31c625181a0d33a3fcd66f329b6952c731",
-    1
-   ],
-   "token": "60720273604265590885190453789040135043315079647070407060399333689423511344314",
-   "question": "Swiss Open: Alexander Bublik vs Quentin Halys",
-   "outcome": "Quentin Halys",
-   "shares": 15.563523956723337,
-   "entry": 0.3235,
-   "cost": 5.0348,
-   "openedAt": 1784278811,
-   "settle": 1.0,
-   "pnl": 10.528723956723336
-  },
-  {
-   "key": [
-    "0x0db7232eafb1882507f163f73655f262c6b84413f7567b0c0d105628cace065d",
-    0
-   ],
-   "token": "72647976524458478760728418460201045597745257311169910402242397495012701290673",
-   "question": "LoL: Gen.G vs Dplus KIA (BO3) - Esports World Cup Playoffs",
-   "outcome": "Gen.G",
-   "shares": 34.73744680851063,
-   "entry": 0.23500000000000001,
-   "cost": 8.1633,
-   "openedAt": 1784394004,
-   "settle": 0.0,
-   "pnl": -8.1633
+   "pnl": -1.1462
   },
   {
    "key": [
@@ -1080,42 +810,57 @@
    "token": "89875746697207293701645144951802475381650054489316986030574927315911706093686",
    "question": "Will LeBron James play for the Miami Heat in 2026-27?",
    "outcome": "No",
-   "shares": 13.495597484276729,
-   "entry": 0.5565,
-   "cost": 7.5103,
-   "openedAt": 1784437209,
+   "shares": 1.322257053291536,
+   "entry": 0.7975,
+   "cost": 1.0545,
+   "openedAt": 1782925206,
    "settle": 1.0,
-   "pnl": 5.985297484276729
+   "pnl": 0.2677570532915361
   },
   {
    "key": [
-    "0x0c9ea0b1503b95b499975674aefdbd6c235f68885f2a812e97ca96016b207e43",
+    "0x0b94b4e361a4797c94c4802dec1080f7d60005c04885a8930e931e62b12ea879",
     1
    ],
-   "token": "40285215796521673925483410143614666389701053711161542152061618519144468632440",
-   "question": "Will Argentina win on 2026-07-19?",
+   "token": "90354624888059903890549769514045384263901594229955196575181559338218133986181",
+   "question": "Will Victor Marx win the 2026 Colorado Governor Republican primary election?",
    "outcome": "No",
-   "shares": 9.228046744574291,
-   "entry": 0.74875,
-   "cost": 6.9095,
-   "openedAt": 1784480422,
-   "settle": 1.0,
-   "pnl": 2.3185467445742907
+   "shares": 3.0037151702786375,
+   "entry": 0.323,
+   "cost": 0.9702,
+   "openedAt": 1782925207,
+   "settle": 0.0,
+   "pnl": -0.9702
   },
   {
    "key": [
-    "0xdfbaae9f7587b11691c676d942f22b4ea9a9e3a68f7ca1d5d6bd4a1c967db23b",
+    "0xb9caf777115e4f38eb4e2de7fab3e88052b92a78f161f91db232be31a93d1e3e",
     1
    ],
-   "token": "26950933687061136665045692928866901705470041092212665620581588770356803034388",
-   "question": "Will Spain win on 2026-07-19?",
+   "token": "79813026047219556089086866254442022710149639219968664847450227889530897495282",
+   "question": "Will Harry Kane be the top goalscorer at the 2026 FIFA World Cup?",
    "outcome": "No",
-   "shares": 10.889421841541756,
-   "entry": 0.58375,
-   "cost": 6.3567,
-   "openedAt": 1784480413,
+   "shares": 0.951599147121535,
+   "entry": 0.9380000000000001,
+   "cost": 0.8926,
+   "openedAt": 1782946805,
    "settle": 1.0,
-   "pnl": 4.532721841541756
+   "pnl": 0.05899914712153509
+  },
+  {
+   "key": [
+    "0xa4402219045f0fe392ea08a92d6f50b89419976d484aba5592d19bb65ea7b5c6",
+    1
+   ],
+   "token": "94538197507034131724155137195976069393412480261383985946027902742107809025962",
+   "question": "Will LeBron James play for the Cleveland Cavaliers in 2026-27?",
+   "outcome": "No",
+   "shares": 1.8995251661918329,
+   "entry": 0.5265,
+   "cost": 1.0001,
+   "openedAt": 1783033206,
+   "settle": 1.0,
+   "pnl": 0.8994251661918329
   },
   {
    "key": [
@@ -1125,192 +870,387 @@
    "token": "36015050921127306245266044699797268780268172446856063291868548314968920497494",
    "question": "Will there be no change in Fed interest rates after the July 2026 meeting?",
    "outcome": "No",
-   "shares": 31.560813308687614,
-   "entry": 0.2705,
-   "cost": 8.5372,
-   "openedAt": 1784826017,
+   "shares": 9.770476190476192,
+   "entry": 0.105,
+   "cost": 1.0259,
+   "openedAt": 1783054804,
    "settle": 0.0,
-   "pnl": -8.5372
+   "pnl": -1.0259
   },
   {
    "key": [
-    "0x6d4885d1cd0e2deaf7c77746806ffe22b49731efebe6cee621f7615ba73da0d6",
+    "0xd2a472c051e1ab231a4feb40322ccdafccff5fe9e4a006381224e10aff0e83ce",
     1
    ],
-   "token": "98487292420245422581144154349813053745293019116220147623888212796688064126172",
-   "question": "Cleveland Guardians vs. Tampa Bay Rays",
-   "outcome": "Tampa Bay Rays",
-   "shares": 13.425982905982906,
-   "entry": 0.585,
-   "cost": 7.8542,
-   "openedAt": 1785085243,
-   "settle": 1.0,
-   "pnl": 5.571782905982906
-  },
-  {
-   "key": [
-    "0x1abc167dd90219786c517035349bd2747b47782887377432804ba715904e884a",
-    1
-   ],
-   "token": "76109140559619826317745623423137123909990958033848879644829921551146861436961",
-   "question": "Will AC Goianiense win on 2026-07-27?",
+   "token": "58556096477996720298820021459303315761119601564911227476383906767248630286145",
+   "question": "Will Anthropic have the best AI model at the end of July 2026?",
    "outcome": "No",
-   "shares": 13.019639639639639,
-   "entry": 0.555,
-   "cost": 7.2259,
-   "openedAt": 1785171604,
+   "shares": 8.15913043478261,
+   "entry": 0.11499999999999999,
+   "cost": 0.9383,
+   "openedAt": 1783076405,
    "settle": 0.0,
-   "pnl": -7.2259
+   "pnl": -0.9383
   },
   {
    "key": [
-    "0xb5c0abeecb5502e6e8d83155c27819174d8317af3c425c3afc5a8c45257a3793",
+    "0xb81d9a63be774f9c3db1b96af4d0e869128643a29c6eb922c0d8a20137880120",
     1
    ],
-   "token": "102979714187432523726496609637889951679226430871494531752837414533106422105296",
-   "question": "Will the Fed increase interest rates by 25 bps after the July 2026 meeting?",
+   "token": "47254411859814230823241329698941341210081957128105405938574965184636004790922",
+   "question": "Will Argentina win on 2026-07-03?",
    "outcome": "No",
-   "shares": 10.220913302448709,
-   "entry": 0.7555000000000001,
-   "cost": 7.7219,
-   "openedAt": 1785344445,
+   "shares": 6.58,
+   "entry": 0.155,
+   "cost": 1.0199,
+   "openedAt": 1783098004,
    "settle": 1.0,
-   "pnl": 2.4990133024487093
+   "pnl": 5.5601
   },
   {
    "key": [
-    "0x590c650c44d537b23bf5fc1a266738a02c9c81c3e1da76c7c7866a66fbf28107",
+    "0xd2a8caba5559bc21e14f6b2aa504cb14a1782751658b71409e25b82e432c0a97",
+    1
+   ],
+   "token": "36586667785814641857008731622413716797407337292495614620493145114086484487337",
+   "question": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+   "outcome": "No",
+   "shares": 1.7266,
+   "entry": 0.5,
+   "cost": 0.8633,
+   "openedAt": 1783119605,
+   "settle": 1.0,
+   "pnl": 0.8633
+  },
+  {
+   "key": [
+    "0xad3441638abca4aa830cb997b7caea5f3c8b84be06b99173781cb9a47c5cbc5a",
+    1
+   ],
+   "token": "21768823063425705834344898922772041926865204761442619231134822499901743767561",
+   "question": "Will France win on 2026-07-04?",
+   "outcome": "No",
+   "shares": 5.406857142857143,
+   "entry": 0.17500000000000002,
+   "cost": 0.9462,
+   "openedAt": 1783184406,
+   "settle": 0.0,
+   "pnl": -0.9462
+  },
+  {
+   "key": [
+    "0x17b566faa4c085b49020ab355d4b81f01037634c6b17b15f455861f3cfb0ab55",
     0
    ],
-   "token": "65175157276506019086965881102065234749854902553345248016212872927032694574542",
-   "question": "Canadian Open, Qualification: Marco Trungelliti vs Nicolas Mejia",
-   "outcome": "Marco Trungelliti",
-   "shares": 14.02088495575221,
-   "entry": 0.5650000000000001,
-   "cost": 7.9218,
-   "openedAt": 1785603612,
+   "token": "47523359566599688529868130218766383548069667599339805725973075967987878581565",
+   "question": "Spread: France (-1.5)",
+   "outcome": "France",
+   "shares": 6.696153846153846,
+   "entry": 0.13,
+   "cost": 0.8705,
+   "openedAt": 1783206018,
    "settle": 0.0,
-   "pnl": -7.9218
+   "pnl": -0.8705
   },
   {
    "key": [
-    "0x52169a1131831fa193dd6d79b0e3c9a0347e474d3a9edf4a8490bbf73d32b1b2",
+    "0x2a0e8ce7c309ec8015c4c721dec574ff100b0512ef412a54bb733dc5bef740dc",
     1
    ],
-   "token": "112301401284019640027270193572336619471924332960472936593254754986265776351269",
-   "question": "Spread: Detroit Tigers (-1.5)",
-   "outcome": "Athletics",
-   "shares": 14.431881188118812,
-   "entry": 0.505,
-   "cost": 7.2881,
-   "openedAt": 1785603613,
-   "settle": 0.0,
-   "pnl": -7.2881
+   "token": "97578927367345092917379017120327913782324310138001079612040744689219958733188",
+   "question": "Will Brazil win on 2026-07-05?",
+   "outcome": "No",
+   "shares": 3.1513978494623656,
+   "entry": 0.465,
+   "cost": 1.4654,
+   "openedAt": 1783270804,
+   "settle": 1.0,
+   "pnl": 1.6859978494623655
   },
   {
    "key": [
-    "0x8614c03a1ecbabd33aa5bba249808a38a53e99ad7f3402af01c3716d22ea6197",
+    "0xb4431b4a10c926381c72d581ba9bec629f430feea5e72fbaff3a9e2ac87a3001",
+    1
+   ],
+   "token": "37459691885280571389083350894291361093570876624819527228743420655749611231692",
+   "question": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+   "outcome": "No",
+   "shares": 1.5215575620767494,
+   "entry": 0.886,
+   "cost": 1.3481,
+   "openedAt": 1783314005,
+   "settle": 1.0,
+   "pnl": 0.17345756207674934
+  },
+  {
+   "key": [
+    "0x86f5b0f1934bb39421651ad2ba0f04494700ba9e95663a5c141a8674c4978c15",
+    1
+   ],
+   "token": "109392421932188039945545044017437190536265072491394447153785057292645948915384",
+   "question": "Will Ronaldo Cry at the World Cup?",
+   "outcome": "No",
+   "shares": 1.9011464968152865,
+   "entry": 0.785,
+   "cost": 1.4924,
+   "openedAt": 1783400403,
+   "settle": 0.0,
+   "pnl": -1.4924
+  },
+  {
+   "key": [
+    "0x53e5f8089864d5ada17dcdae1a38a081c3a631eb1eff4899268fd2d1a8f0a8bd",
+    1
+   ],
+   "token": "60217214052108489827131502863207741822171451983254594032407188368949366945146",
+   "question": "BetBoom Team to win 2-0?",
+   "outcome": "No",
+   "shares": 2.615238095238095,
+   "entry": 0.525,
+   "cost": 1.373,
+   "openedAt": 1783422004,
+   "settle": 1.0,
+   "pnl": 1.242238095238095
+  },
+  {
+   "key": [
+    "0xa7b5b123f9fd38f83fbe19773a5d04e38208b370ca66be27b9688155e7b5c60a",
+    1
+   ],
+   "token": "108484238848648074372041518363480249254156420448181302544958828959135013838825",
+   "question": "Will Argentina win on 2026-07-07?",
+   "outcome": "No",
+   "shares": 2.251869918699187,
+   "entry": 0.615,
+   "cost": 1.3849,
+   "openedAt": 1783443608,
+   "settle": 0.0,
+   "pnl": -1.3849
+  },
+  {
+   "key": [
+    "0xc09537a0976d0927901432859fbb6dfe5d23d1d69bb4e8355253e7b142a44e83",
+    1
+   ],
+   "token": "99734002136879712458367805809639462021504366615107881225459634150546665075009",
+   "question": "Will France win on 2026-07-09?",
+   "outcome": "No",
+   "shares": 3.3093506493506495,
+   "entry": 0.385,
+   "cost": 1.2741,
+   "openedAt": 1783486804,
+   "settle": 0.0,
+   "pnl": -1.2741
+  },
+  {
+   "key": [
+    "0x487187034dadebc71441bd70c34351eb189c12a05c99220eb43be41b919e9261",
     0
    ],
-   "token": "108210949417965280219500656858098271470960277880443541454303040305231437064870",
-   "question": "Miami Marlins vs. New York Mets: O/U 8.5",
-   "outcome": "Over",
-   "shares": 13.019417475728154,
+   "token": "54865409545970127818483222224309761077922946344974606824700577010363479992269",
+   "question": "LoL: Bilibili Gaming vs Hanwha Life Esports (BO5) - Mid-Season Invitational Playoffs",
+   "outcome": "Bilibili Gaming",
+   "shares": 1.79,
+   "entry": 0.71,
+   "cost": 1.2709,
+   "openedAt": 1783594814,
+   "settle": 1.0,
+   "pnl": 0.5191000000000001
+  },
+  {
+   "key": [
+    "0xbe6526cea1f4310d1d673a1c288e1b19e4c8a84224c4b839f92e3f1b8a02b4af",
+    1
+   ],
+   "token": "36236584672216579681034174806300437894393709159513925674206617823704040820837",
+   "question": "Will Shenna Bellows be the Maine Senate Democratic nominee on July 27?",
+   "outcome": "No",
+   "shares": 1.5579354838709678,
+   "entry": 0.775,
+   "cost": 1.2074,
+   "openedAt": 1783746007,
+   "settle": 1.0,
+   "pnl": 0.3505354838709678
+  },
+  {
+   "key": [
+    "0xbb5243e8e12a186025c0f27597a8c4808a206379f1f9762d4072718644dc9fa3",
+    0
+   ],
+   "token": "106618579082857173205099187418291680068349149870923665139597643374871754972322",
+   "question": "LoL: Hanwha Life Esports vs LYON (BO5) - Mid-Season Invitational Playoffs",
+   "outcome": "Hanwha Life Esports",
+   "shares": 2.388817204301075,
+   "entry": 0.465,
+   "cost": 1.1108,
+   "openedAt": 1783767606,
+   "settle": 1.0,
+   "pnl": 1.2780172043010751
+  },
+  {
+   "key": [
+    "0xb86425238a6bb2abbea65a4730da96a877bb8f1c18e5579271f5bd08fcd7fdff",
+    1
+   ],
+   "token": "6877591429295187381204977907984243539104174752734709721435561210590152772541",
+   "question": "Wimbledon WTA: Karolina Muchova vs Linda Noskova",
+   "outcome": "Linda Noskova",
+   "shares": 3.218897637795276,
+   "entry": 0.3175,
+   "cost": 1.022,
+   "openedAt": 1783789211,
+   "settle": 1.0,
+   "pnl": 2.196897637795276
+  },
+  {
+   "key": [
+    "0xccc07a8317079457585bc88e387b58d2bb94576ee2c9cea63b2f2adb7ed1a836",
+    1
+   ],
+   "token": "50489327015344012699222620659068944307834324237590238863966676298308808973282",
+   "question": "Norway vs. England: Team to Advance",
+   "outcome": "England",
+   "shares": 1.4326857142857143,
+   "entry": 0.65625,
+   "cost": 0.9402,
+   "openedAt": 1783789203,
+   "settle": 1.0,
+   "pnl": 0.4924857142857143
+  },
+  {
+   "key": [
+    "0x0891e4792a016a079765dd25029639cd731f7dc0bde3d65d6002b2b19dae2777",
+    1
+   ],
+   "token": "92257806716939740851168826657694343452956250642547792490307491291679457928887",
+   "question": "Argentina vs. Switzerland: Team to Advance",
+   "outcome": "Switzerland",
+   "shares": 3.342995169082126,
+   "entry": 0.25875,
+   "cost": 0.865,
+   "openedAt": 1783810804,
+   "settle": 0.0,
+   "pnl": -0.865
+  },
+  {
+   "key": [
+    "0xccc07a8317079457585bc88e387b58d2bb94576ee2c9cea63b2f2adb7ed1a836",
+    0
+   ],
+   "token": "5248636361245905070296995648418847837867415261685374894522766385951464601031",
+   "question": "Norway vs. England: Team to Advance",
+   "outcome": "Norway",
+   "shares": 1.8669794721407622,
+   "entry": 0.42625,
+   "cost": 0.7958,
+   "openedAt": 1783810804,
+   "settle": 0.0,
+   "pnl": -0.7958
+  },
+  {
+   "key": [
+    "0xb96585ac41b808bac0bcfa00f39a92990c64dc413804368c7191ad4e1cd299a5",
+    1
+   ],
+   "token": "11136519494712022976764044225367902156688884544497870522015602622698913523968",
+   "question": "Wimbledon ATP: Jannik Sinner vs Alexander Zverev",
+   "outcome": "Alexander Zverev",
+   "shares": 1.9233734939759035,
+   "entry": 0.41500000000000004,
+   "cost": 0.7982,
+   "openedAt": 1783875606,
+   "settle": 0.0,
+   "pnl": -0.7982
+  },
+  {
+   "key": [
+    "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+    0
+   ],
+   "token": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+   "question": "Will Spain win the 2026 FIFA World Cup?",
+   "outcome": "Yes",
+   "shares": 5.831910112359551,
+   "entry": 0.2225,
+   "cost": 1.2976,
+   "openedAt": 1783983606,
+   "settle": 1.0,
+   "pnl": 4.534310112359551
+  },
+  {
+   "key": [
+    "0x0fbf11375faff96f8c645931a2abf8a3f196f7ef3ec9b384324bc26085ee2dac",
+    1
+   ],
+   "token": "28893747825103874962587184711153510614806252999492691235410767946508363057798",
+   "question": "Dota 2: Vici Gaming vs PlayTime (BO3) - Esports World Cup Survival",
+   "outcome": "PlayTime",
+   "shares": 2.1324271844660196,
    "entry": 0.515,
-   "cost": 6.705,
-   "openedAt": 1785625210,
-   "settle": 0.0,
-   "pnl": -6.705
+   "cost": 1.0982,
+   "openedAt": 1784048414,
+   "settle": 0.5,
+   "pnl": -0.031986407766990244
   },
   {
    "key": [
-    "0x7732f9ae6a3cd12fbb2e293257a34bc99e5bd23f37a6e53f19619b2668f4742e",
+    "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f",
     1
    ],
-   "token": "17431533868171349774214640435328699198539297331056687547223463401461653337177",
-   "question": "San Francisco Giants vs. San Diego Padres",
-   "outcome": "San Diego Padres",
-   "shares": 6.816132596685082,
-   "entry": 0.905,
-   "cost": 6.1686,
-   "openedAt": 1785711609,
+   "token": "115428153746996892211798999366308897078723117634059783423375188043903703749062",
+   "question": "Will Argentina win the 2026 FIFA World Cup?",
+   "outcome": "No",
+   "shares": 2.5096006796941377,
+   "entry": 0.5885,
+   "cost": 1.4769,
+   "openedAt": 1784156407,
    "settle": 1.0,
-   "pnl": 0.6475325966850827
+   "pnl": 1.0327006796941376
   },
   {
    "key": [
-    "0xdf4aaa4d15ba71baed89b18edc53f8b05d2611320f674ea0ed5a1e34753592b3",
+    "0xaeec5397b4ee2ce20555c0099f0dcf4de4648a2f080c2d10b65ceaff9c26d7a8",
+    1
+   ],
+   "token": "19937769871419809473954673695368929587069246301853660575164489787400178851999",
+   "question": "France vs. England: Team to Win",
+   "outcome": "England",
+   "shares": 4.078260869565217,
+   "entry": 0.34500000000000003,
+   "cost": 1.407,
+   "openedAt": 1784329208,
+   "settle": 1.0,
+   "pnl": 2.6712608695652174
+  },
+  {
+   "key": [
+    "0xc41f543ccb7a1a35a200c28096cc2e5c2351c54546087f4f6cf5c4ef3e0c1aa5",
     0
    ],
-   "token": "45527867941029412132729211576672829428007557196828392779057625459515182183142",
-   "question": "National Bank Open: Juncheng Shang vs Andrey Rublev",
-   "outcome": "Juncheng Shang",
-   "shares": 14.299770114942529,
-   "entry": 0.435,
-   "cost": 6.2204,
-   "openedAt": 1785884413,
-   "settle": 1.0,
-   "pnl": 8.07937011494253
-  },
-  {
-   "key": [
-    "0x8829c327e1a8115ae11f32d17a2041a4fa9983264e389a4c1cd0c6b92149888a",
-    1
-   ],
-   "token": "64054130466418200250166856483569626999067190339567416985931396074387593932468",
-   "question": "National Bank Open: Valentin Vacherot vs Mariano Navone",
-   "outcome": "Mariano Navone",
-   "shares": 14.488101265822785,
-   "entry": 0.395,
-   "cost": 5.7228,
-   "openedAt": 1785949212,
-   "settle": 1.0,
-   "pnl": 8.765301265822785
-  },
-  {
-   "key": [
-    "0xc53908c9725eda4fd2d249fd5ae0cdca01a4929273da3a70fa4621e1614fa055",
-    1
-   ],
-   "token": "84542538128982421371863486180893792024474824980287095212355246904611156082394",
-   "question": "National Bank Open: Talia Gibson vs Ekaterina Alexandrova",
-   "outcome": "Ekaterina Alexandrova",
-   "shares": 8.84,
-   "entry": 0.725,
-   "cost": 6.409,
-   "openedAt": 1786035615,
-   "settle": 1.0,
-   "pnl": 2.431
-  },
-  {
-   "key": [
-    "0x311f32416a52f8ceab4b8766abc1500f68abf30d4ae3b409ecbd60588220a0c3",
-    1
-   ],
-   "token": "100085181349103904329572702860922550029453141432604219431165638400188337480524",
-   "question": "National Bank Open: Arthur Rinderknech vs Brandon Nakashima",
-   "outcome": "Brandon Nakashima",
-   "shares": 14.509345794392523,
+   "token": "27017352779469567119021515174282416893555366624071034758236558815968401338728",
+   "question": "Will France win on 2026-07-18?",
+   "outcome": "Yes",
+   "shares": 2.4194392523364483,
    "entry": 0.535,
-   "cost": 7.7625,
-   "openedAt": 1786230013,
-   "settle": 1.0,
-   "pnl": 6.746845794392523
+   "cost": 1.2944,
+   "openedAt": 1784394004,
+   "settle": 0.0,
+   "pnl": -1.2944
   },
   {
    "key": [
-    "0xf0975ccf6f3daf39a1f182079225342402b2b31030387dc21b49292bd070115c",
+    "0x0bde18e0a0220d1f97173850504a1ed4fa90ef2c6a7bc0932952790053ca0c0e",
     1
    ],
-   "token": "7056741733984712548275308766196026154238550273911087630814743613084210450623",
-   "question": "Plovdiv 2: Gabriele Piraino vs Petr Nesterov",
-   "outcome": "Petr Nesterov",
-   "shares": 19.565753424657533,
-   "entry": 0.365,
-   "cost": 7.1415,
-   "openedAt": 1786294809,
-   "settle": 0.0,
-   "pnl": -7.1415
+   "token": "105325602140854796101190465907542426130401271786879982796716189175875071392057",
+   "question": "Will Haley Stevens win the 2026 Michigan Democratic Primary?",
+   "outcome": "No",
+   "shares": 1.5902167182662539,
+   "entry": 0.8075,
+   "cost": 1.2841,
+   "openedAt": 1784610008,
+   "settle": 1.0,
+   "pnl": 0.30611671826625386
   }
  ]
 }

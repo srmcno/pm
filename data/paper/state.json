@@ -1,7 +1,7 @@
 {
  "bankrollStart": 20.0,
  "cash": 12.13,
- "createdAt": 1786575287,
+ "createdAt": 1786581744,
  "positions": [
   {
    "conditionId": "0xea83e5554bfb997ea9d6569133e45165e8613dcc8fe6d0ae2a1c6cc1ae7c3a7f",
@@ -9,13 +9,13 @@
    "tokenId": "108575195641642223372823895926575400070857162378893231389202602385992685880359",
    "question": "Will Sergio Massa win the 2027 Argentina presidential election?",
    "outcome": "No",
-   "shares": 1.703,
-   "entryPrice": 0.9395,
+   "shares": 1.7204,
+   "entryPrice": 0.93,
    "costUsd": 1.6,
-   "openedAt": 1786575287,
-   "signalScore": 6.619,
-   "markPrice": 0.9255,
-   "valueUsd": 1.5761
+   "openedAt": 1786581744,
+   "signalScore": 6.1408,
+   "markPrice": 0.921,
+   "valueUsd": 1.5845
   },
   {
    "conditionId": "0xa3b36b2d6104d34af4e6c6215fc818e43352e78a748fbfb0b85e3a35f71dec9a",
@@ -26,8 +26,8 @@
    "shares": 4.2609,
    "entryPrice": 0.34500000000000003,
    "costUsd": 1.47,
-   "openedAt": 1786575287,
-   "signalScore": 6.6166,
+   "openedAt": 1786581744,
+   "signalScore": 6.1385,
    "markPrice": 0.335,
    "valueUsd": 1.4274
   },
@@ -40,8 +40,8 @@
    "shares": 1.9708,
    "entryPrice": 0.685,
    "costUsd": 1.35,
-   "openedAt": 1786575287,
-   "signalScore": 6.1639,
+   "openedAt": 1786581744,
+   "signalScore": 5.7186,
    "markPrice": 0.675,
    "valueUsd": 1.3303
   },
@@ -51,13 +51,13 @@
    "tokenId": "104921559757967622795634820444980902727988756064112315776695453325703597702109",
    "question": "Will Team Falcons Win The International 2026?",
    "outcome": "No",
-   "shares": 1.3966,
-   "entryPrice": 0.895,
+   "shares": 1.3889,
+   "entryPrice": 0.9,
    "costUsd": 1.25,
-   "openedAt": 1786575287,
-   "signalScore": 6.1185,
-   "markPrice": 0.885,
-   "valueUsd": 1.236
+   "openedAt": 1786581744,
+   "signalScore": 5.6764,
+   "markPrice": 0.89,
+   "valueUsd": 1.2361
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -68,8 +68,8 @@
    "shares": 2.4211,
    "entryPrice": 0.47500000000000003,
    "costUsd": 1.15,
-   "openedAt": 1786575287,
-   "signalScore": 5.781,
+   "openedAt": 1786581744,
+   "signalScore": 5.3633,
    "markPrice": 0.465,
    "valueUsd": 1.1258
   },
@@ -79,34 +79,34 @@
    "tokenId": "69962024849840853998461872215176721695006892813256543475794817418366358101285",
    "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
-   "shares": 1.3462,
-   "entryPrice": 0.78,
+   "shares": 1.3548,
+   "entryPrice": 0.775,
    "costUsd": 1.05,
-   "openedAt": 1786575287,
-   "signalScore": 5.781,
-   "markPrice": 0.77,
-   "valueUsd": 1.0366
+   "openedAt": 1786581744,
+   "signalScore": 5.3633,
+   "markPrice": 0.765,
+   "valueUsd": 1.0364
   }
  ],
  "closed": [],
  "equityCurve": [
   {
-   "t": 1786575288,
-   "equity": 19.8622,
+   "t": 1786581746,
+   "equity": 19.8705,
    "cash": 12.13
   }
  ],
  "log": [
   {
-   "t": 1786575287,
+   "t": 1786581744,
    "action": "BUY",
    "question": "Will Sergio Massa win the 2027 Argentina presidential election?",
    "outcome": "No",
    "stake": 1.6,
-   "price": 0.9395
+   "price": 0.93
   },
   {
-   "t": 1786575287,
+   "t": 1786581744,
    "action": "BUY",
    "question": "Will there be no change in Fed interest rates after the September 2026 meeting?",
    "outcome": "No",
@@ -114,7 +114,7 @@
    "price": 0.34500000000000003
   },
   {
-   "t": 1786575287,
+   "t": 1786581744,
    "action": "BUY",
    "question": "Will the Fed increase interest rates by 25 bps after the September 2026 meeting?",
    "outcome": "No",
@@ -122,15 +122,15 @@
    "price": 0.685
   },
   {
-   "t": 1786575287,
+   "t": 1786581744,
    "action": "BUY",
    "question": "Will Team Falcons Win The International 2026?",
    "outcome": "No",
    "stake": 1.25,
-   "price": 0.895
+   "price": 0.9
   },
   {
-   "t": 1786575287,
+   "t": 1786581744,
    "action": "BUY",
    "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
@@ -138,12 +138,12 @@
    "price": 0.47500000000000003
   },
   {
-   "t": 1786575287,
+   "t": 1786581744,
    "action": "BUY",
    "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "stake": 1.05,
-   "price": 0.78
+   "price": 0.775
   }
  ]
 }

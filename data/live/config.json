@@ -1,0 +1,10 @@
+{
+ "bankroll_cap": 20.0,
+ "max_stake_per_trade": 2.0,
+ "max_daily_stake": 8.0,
+ "max_open": 8,
+ "min_score": 3.0,
+ "price_buffer": 0.02,
+ "max_price": 0.9,
+ "min_price": 0.05
+}

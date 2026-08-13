@@ -17,6 +17,7 @@ Everything runs on Polymarket's public APIs. No keys, no accounts, no real money
 | Dashboard | `dashboard/index.html` (built by `scripts/build_dashboard.py`) | Self-contained explorer: ranked cohort table with expandable per-wallet profiles, plus aggregate views. No external dependencies. |
 | Signal engine | `scripts/signals.py` | Finds outcomes that several historically profitable wallets are independently net-buying right now. Writes `data/signals/latest.json` + `reports/signals-latest.md`. |
 | Paper trader | `scripts/papertrade.py` | Simulates the copy strategy with a virtual bankroll — live loop and out-of-sample backtest. Writes `reports/paper-latest.md` / `reports/backtest-latest.md`. |
+| Live executor | `scripts/livetrade.py` | The only tool that can touch real money — ships disarmed. `plan` is a keyless dry run; `execute` needs your keys, two explicit flags, and enforces hard caps + a STOP file. See the arming checklist in its docstring. |
 
 ## Quick start
 
@@ -75,6 +76,17 @@ conviction is the net stake relative to that wallet's own median trade.
 
 Run it before believing anything about copy-trading. The verdict line in
 `reports/backtest-latest.md` is generated from the numbers, not from hope.
+
+### Results on the full dataset (Jun 28 – Aug 12 window)
+
+| config | result | note |
+|---|---|---|
+| ≥2 backers, 1 h delay | −1.9% | coin flip (49% win rate) |
+| ≥2 backers, 3 h delay | −26.2% | latency is fatal |
+| ≥3 backers, 1 h delay | +42.3% | promising but concentrated — one window, not proof |
+
+Full breakdown: `reports/backtest-summary.md`. The live paper account runs the
+strict config to accumulate a real out-of-sample record before any conclusion.
 
 ## Data sources
 

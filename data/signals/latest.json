@@ -1,9 +1,9 @@
 {
  "meta": {
-  "generatedAt": 1786575252,
+  "generatedAt": 1786581731,
   "hours": 48,
   "watchlistSize": 60,
-  "minBackers": 2,
+  "minBackers": 3,
   "live": true
  },
  "signals": [
@@ -19,8 +19,8 @@
      "netUsd": 984.1,
      "avgPrice": 0.92,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.6,
-     "score": 2.397012244923076
+     "lastTradeAgoH": 5.4,
+     "score": 2.223838235596682
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -29,8 +29,8 @@
      "netUsd": 586.3,
      "avgPrice": 0.922,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.6,
-     "score": 2.2335795918601384
+     "lastTradeAgoH": 5.4,
+     "score": 2.072212901351453
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -39,20 +39,20 @@
      "netUsd": 335.74,
      "avgPrice": 0.9368,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.6,
-     "score": 1.9884306122657336
+     "lastTradeAgoH": 5.4,
+     "score": 1.844774899983611
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1906.14,
-   "score": 6.619,
+   "score": 6.1408,
    "question": "Will Sergio Massa win the 2027 Argentina presidential election?",
    "outcome": "No",
    "tokenId": "108575195641642223372823895926575400070857162378893231389202602385992685880359",
-   "currentPrice": 0.9255,
+   "currentPrice": 0.921,
    "backersAvgEntry": 0.9263,
-   "driftSinceEntry": -0.0008,
+   "driftSinceEntry": -0.0053,
    "endDate": "2027-10-24T00:00:00Z"
   },
   {
@@ -67,18 +67,18 @@
      "netUsd": 3212.6,
      "avgPrice": 0.3768,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.8,
-     "score": 1.8483698387583283
+     "lastTradeAgoH": 11.6,
+     "score": 1.7148329257226451
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.73,
-     "netUsd": 1203.03,
-     "avgPrice": 0.3561,
+     "netUsd": 598.22,
+     "avgPrice": 0.3219,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.2,
-     "score": 1.708548708464521
+     "lastTradeAgoH": 9.0,
+     "score": 1.5851132814653868
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -87,8 +87,8 @@
      "netUsd": 9409.75,
      "avgPrice": 0.3469,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.4,
-     "score": 1.6817456789008678
+     "lastTradeAgoH": 12.2,
+     "score": 1.5602466575673541
     },
     {
      "wallet": "0x21064fd320bfd5a86f8c92a94d3209edf4154dea",
@@ -97,20 +97,20 @@
      "netUsd": 603.0,
      "avgPrice": 0.4012,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.7,
-     "score": 1.3779000278650975
+     "lastTradeAgoH": 12.5,
+     "score": 1.278352571325506
     }
    ],
    "backerCount": 4,
    "contested": true,
-   "totalNetUsd": 14428.38,
-   "score": 6.6166,
+   "totalNetUsd": 13823.57,
+   "score": 6.1385,
    "question": "Will there be no change in Fed interest rates after the September 2026 meeting?",
    "outcome": "No",
    "tokenId": "97050921740416192996389806693742575608111328819185493163189880975611314813724",
    "currentPrice": 0.335,
-   "backersAvgEntry": 0.3703,
-   "driftSinceEntry": -0.0353,
+   "backersAvgEntry": 0.3617,
+   "driftSinceEntry": -0.0267,
    "endDate": "2026-09-16T00:00:00Z"
   },
   {
@@ -122,21 +122,21 @@
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
      "name": "donthackme",
      "quality": 0.88,
-     "netUsd": 5118.84,
+     "netUsd": 5138.59,
      "avgPrice": 0.6246,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.8,
-     "score": 1.8483484457127008
+     "lastTradeAgoH": 11.6,
+     "score": 1.7148130782341966
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.73,
-     "netUsd": 2187.08,
-     "avgPrice": 0.6515,
+     "netUsd": 1269.09,
+     "avgPrice": 0.6815,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.2,
-     "score": 1.708548708464521
+     "lastTradeAgoH": 9.0,
+     "score": 1.5851132814653868
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -145,8 +145,8 @@
      "netUsd": 12909.68,
      "avgPrice": 0.6522,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.4,
-     "score": 1.6817456789008678
+     "lastTradeAgoH": 12.2,
+     "score": 1.5602466575673541
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -155,20 +155,20 @@
      "netUsd": 15176.06,
      "avgPrice": 0.6,
      "conviction": 10.0,
-     "lastTradeAgoH": 19.2,
-     "score": 0.9252606773078049
+     "lastTradeAgoH": 21.0,
+     "score": 0.8584145018237955
     }
    ],
    "backerCount": 4,
    "contested": false,
-   "totalNetUsd": 35391.66,
-   "score": 6.1639,
+   "totalNetUsd": 34493.42,
+   "score": 5.7186,
    "question": "Will the Fed increase interest rates by 25 bps after the September 2026 meeting?",
    "outcome": "No",
    "tokenId": "2881957189963819690709899387312951271986076905757701114514025622922000576600",
    "currentPrice": 0.675,
-   "backersAvgEntry": 0.6321,
-   "driftSinceEntry": 0.0429,
+   "backersAvgEntry": 0.6396,
+   "driftSinceEntry": 0.0354,
    "endDate": "2026-09-16T00:00:00Z"
   },
   {
@@ -180,11 +180,11 @@
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.73,
-     "netUsd": 329.75,
-     "avgPrice": 0.8943,
+     "netUsd": 270.5,
+     "avgPrice": 0.893,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 2.247561139984431
+     "lastTradeAgoH": 2.4,
+     "score": 2.085184341684097
     },
     {
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
@@ -193,8 +193,8 @@
      "netUsd": 1163.43,
      "avgPrice": 0.9022,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.1,
-     "score": 1.9865030699023012
+     "lastTradeAgoH": 9.9,
+     "score": 1.8429866144136844
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -203,20 +203,20 @@
      "netUsd": 44499.97,
      "avgPrice": 0.89,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.8,
-     "score": 1.8843885393716464
+     "lastTradeAgoH": 7.6,
+     "score": 1.7482494273654963
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 45993.15,
-   "score": 6.1185,
+   "totalNetUsd": 45933.9,
+   "score": 5.6764,
    "question": "Will Team Falcons Win The International 2026?",
    "outcome": "No",
    "tokenId": "104921559757967622795634820444980902727988756064112315776695453325703597702109",
-   "currentPrice": 0.885,
-   "backersAvgEntry": 0.8955,
-   "driftSinceEntry": -0.0105,
+   "currentPrice": 0.89,
+   "backersAvgEntry": 0.8951,
+   "driftSinceEntry": -0.0051,
    "endDate": null
   },
   {
@@ -231,8 +231,8 @@
      "netUsd": 313.57,
      "avgPrice": 0.4958,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.9,
-     "score": 2.091207357914208
+     "lastTradeAgoH": 8.7,
+     "score": 1.9401264599046608
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -241,8 +241,8 @@
      "netUsd": 262.45,
      "avgPrice": 0.4961,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.8,
-     "score": 1.9520110059941935
+     "lastTradeAgoH": 8.6,
+     "score": 1.8109864564228542
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -251,14 +251,14 @@
      "netUsd": 234.05,
      "avgPrice": 0.4964,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.8,
-     "score": 1.7377658955801971
+     "lastTradeAgoH": 8.6,
+     "score": 1.6122196502301023
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 810.07,
-   "score": 5.781,
+   "score": 5.3633,
    "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "26418124513273531493042185776538890382070385858747044148067615795770766670254",
@@ -279,8 +279,8 @@
      "netUsd": 855.47,
      "avgPrice": 0.7629,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.9,
-     "score": 2.091183154265411
+     "lastTradeAgoH": 8.7,
+     "score": 1.9401040048672493
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -289,8 +289,8 @@
      "netUsd": 377.59,
      "avgPrice": 0.7318,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.8,
-     "score": 1.9520110059941935
+     "lastTradeAgoH": 8.6,
+     "score": 1.8109864564228542
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -299,20 +299,20 @@
      "netUsd": 349.12,
      "avgPrice": 0.7593,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.8,
-     "score": 1.7377658955801971
+     "lastTradeAgoH": 8.6,
+     "score": 1.6122196502301023
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1582.18,
-   "score": 5.781,
+   "score": 5.3633,
    "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "69962024849840853998461872215176721695006892813256543475794817418366358101285",
-   "currentPrice": 0.77,
+   "currentPrice": 0.765,
    "backersAvgEntry": 0.7513,
-   "driftSinceEntry": 0.0187,
+   "driftSinceEntry": 0.0137,
    "endDate": "2026-08-15T16:00:00Z"
   },
   {
@@ -327,8 +327,8 @@
      "netUsd": 495.02,
      "avgPrice": 0.6977,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.6000807658163105
+     "lastTradeAgoH": 3.4,
+     "score": 2.4122359136498166
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -337,8 +337,8 @@
      "netUsd": 434.31,
      "avgPrice": 0.7055,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.4226623273604115
+     "lastTradeAgoH": 3.4,
+     "score": 2.2476352079280373
     },
     {
      "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
@@ -347,59 +347,117 @@
      "netUsd": 594.09,
      "avgPrice": 0.61,
      "conviction": 10.0,
-     "lastTradeAgoH": 17.5,
-     "score": 0.7258775216247928
+     "lastTradeAgoH": 19.3,
+     "score": 0.6734359369120265
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1523.42,
-   "score": 5.7486,
+   "score": 5.3333,
    "question": "Will the total domestic gross for Spider-Man: Brand New Day be between 800m and 900m by August 31?",
    "outcome": "No",
    "tokenId": "70173106851316599378452717299161284730871676083661428980562753042668650152747",
-   "currentPrice": 0.73,
+   "currentPrice": 0.735,
    "backersAvgEntry": 0.6711,
-   "driftSinceEntry": 0.0589,
+   "driftSinceEntry": 0.0639,
    "endDate": "2026-08-31T23:59:00Z"
   },
   {
-   "conditionId": "0x83477c8757f0a33df79a31f93a65162807991c0037389f360b01ce7645bcab47",
+   "conditionId": "0x4b43d9360a5e0d08b483bdf27cf0e1fefb6242a749a6fe698c7a62e14699bafc",
    "outcomeIndex": 1,
-   "title": "Will CF Monterrey win on 2026-08-12?",
+   "title": "National Bank Open: Learner Tien vs Ben Shelton",
    "backers": [
+    {
+     "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
+     "name": "AV23IUa",
+     "quality": 0.6049,
+     "netUsd": 217035.06,
+     "avgPrice": 0.6947,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.903211176100486
+    },
+    {
+     "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
+     "name": "dv-pm",
+     "quality": 0.6821,
+     "netUsd": 2448.61,
+     "avgPrice": 0.66,
+     "conviction": 7.6,
+     "lastTradeAgoH": 5.2,
+     "score": 1.5119709490688933
+    },
+    {
+     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
+     "name": "BajaBlaster",
+     "quality": 0.3953,
+     "netUsd": 2699.87,
+     "avgPrice": 0.6865,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 1.2412826011186482
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 222183.54,
+   "score": 4.6565,
+   "question": "National Bank Open: Learner Tien vs Ben Shelton",
+   "outcome": "Ben Shelton",
+   "tokenId": "5402498371513710110827165594834333092125236793392748594633925873160979790099",
+   "currentPrice": 0.685,
+   "backersAvgEntry": 0.6804,
+   "driftSinceEntry": 0.0046,
+   "endDate": "2026-08-19T23:30:00Z"
+  },
+  {
+   "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
+   "outcomeIndex": 1,
+   "title": "Will MOUZ Win the CS2 EWC 2026?",
+   "backers": [
+    {
+     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
+     "name": "donthackme",
+     "quality": 0.88,
+     "netUsd": 1065.93,
+     "avgPrice": 0.9316,
+     "conviction": 10.0,
+     "lastTradeAgoH": 5.8,
+     "score": 2.1876890296297202
+    },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
      "name": "Bigggggggg",
      "quality": 0.82,
-     "netUsd": 3022.52,
-     "avgPrice": 0.5471,
+     "netUsd": 6247.13,
+     "avgPrice": 0.9301,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.5753909040583083
+     "lastTradeAgoH": 5.8,
+     "score": 2.038552008188554
     },
     {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.7954,
-     "netUsd": 1234.28,
-     "avgPrice": 0.5254,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 2.5136459078572386
+     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
+     "name": "BajaBlaster",
+     "quality": 0.3953,
+     "netUsd": 269.75,
+     "avgPrice": 0.91,
+     "conviction": 6.28,
+     "lastTradeAgoH": 23.1,
+     "score": 0.3782984258002332
     }
    ],
-   "backerCount": 2,
-   "contested": true,
-   "totalNetUsd": 4256.8,
-   "score": 5.089,
-   "question": "Will CF Monterrey win on 2026-08-12?",
+   "backerCount": 3,
+   "contested": false,
+   "totalNetUsd": 7582.81,
+   "score": 4.6045,
+   "question": "Will MOUZ Win the CS2 EWC 2026?",
    "outcome": "No",
-   "tokenId": "67722886717099342227359509907716522699529324515354907441047120097180302350218",
-   "currentPrice": 0.515,
-   "backersAvgEntry": 0.5363,
-   "driftSinceEntry": -0.0212,
-   "endDate": "2026-08-13T00:00:00Z"
+   "tokenId": "103472155852646459336073262128013226669985729546752651199738548722369775801914",
+   "currentPrice": 0.93,
+   "backersAvgEntry": 0.9239,
+   "driftSinceEntry": 0.0061,
+   "endDate": null
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -413,8 +471,8 @@
      "netUsd": 925.84,
      "avgPrice": 0.8053,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 2.3580753321020547
+     "lastTradeAgoH": 5.8,
+     "score": 2.1877143502511314
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -423,8 +481,8 @@
      "netUsd": 5370.96,
      "avgPrice": 0.7946,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 2.197297468549641
+     "lastTradeAgoH": 5.8,
+     "score": 2.038552008188554
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -433,14 +491,14 @@
      "netUsd": 1868.5,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 28.7,
-     "score": 0.37778193832827484
+     "lastTradeAgoH": 30.5,
+     "score": 0.35048878909636366
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 8165.3,
-   "score": 4.9332,
+   "score": 4.5768,
    "question": "Will Team Spirit Win the CS2 EWC 2026?",
    "outcome": "No",
    "tokenId": "58272724633332095197168705267006575600942802701828320183221249647889946434963",
@@ -450,232 +508,100 @@
    "endDate": null
   },
   {
-   "conditionId": "0x2c6311ad00cb5064f4c0af6359160f3d3a7d2a7d2fdd8fb6185f5b7eee9b7688",
-   "outcomeIndex": 1,
-   "title": "Will the highest temperature in Munich be 32\u00b0C on August 13?",
+   "conditionId": "0x93f78d7248d9fa1f114768c77bd0ddba7a9a5c9e341c3ccdefc71e4de52284f7",
+   "outcomeIndex": 0,
+   "title": "Cincinnati Open, Qualification: Alexander Shevchenko vs Christopher O'Connell",
    "backers": [
     {
-     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
-     "name": "donthackme",
-     "quality": 0.88,
-     "netUsd": 216.0,
-     "avgPrice": 0.8912,
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7954,
+     "netUsd": 771.76,
+     "avgPrice": 0.5092,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 2.627610598949682
+     "lastTradeAgoH": 13.2,
+     "score": 1.4501132539398012
     },
     {
-     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
-     "name": "Mysaria",
-     "quality": 0.73,
-     "netUsd": 224.9,
-     "avgPrice": 0.8794,
+     "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
+     "name": "AV23IUa",
+     "quality": 0.6049,
+     "netUsd": 15907.11,
+     "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.2874779006729633
+     "lastTradeAgoH": 9.3,
+     "score": 1.3001475232373936
+    },
+    {
+     "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
+     "name": "dv-pm",
+     "quality": 0.6821,
+     "netUsd": 2197.09,
+     "avgPrice": 0.51,
+     "conviction": 6.82,
+     "lastTradeAgoH": 13.1,
+     "score": 1.0333530131129345
     }
    ],
-   "backerCount": 2,
+   "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 440.9,
-   "score": 4.9151,
-   "question": "Will the highest temperature in Munich be 32\u00b0C on August 13?",
-   "outcome": "No",
-   "tokenId": "18418147997704480000086528673151554192164662942943419979086943561188381419493",
-   "currentPrice": 0.865,
-   "backersAvgEntry": 0.8853,
-   "driftSinceEntry": -0.0203,
-   "endDate": "2026-08-13T12:00:00Z"
+   "totalNetUsd": 18875.96,
+   "score": 3.7836,
+   "question": "Cincinnati Open, Qualification: Alexander Shevchenko vs Christopher O'Connell",
+   "outcome": "Alexander Shevchenko",
+   "tokenId": "101861913976264599228604073420231022192034106116634497515865538212254137307098",
+   "currentPrice": 0.545,
+   "backersAvgEntry": 0.5197,
+   "driftSinceEntry": 0.0253,
+   "endDate": "2026-08-19T14:00:00Z"
   },
   {
-   "conditionId": "0xc9615bb82d6535d630ff98e8094060bc767d8b9446516e98f84d2001a35e50e7",
+   "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
    "outcomeIndex": 1,
-   "title": "Will New People (NL) gain the most seats in the next Russian parliamentary election?",
+   "title": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
    "backers": [
     {
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
      "name": "donthackme",
      "quality": 0.88,
-     "netUsd": 3247.06,
-     "avgPrice": 0.7395,
+     "netUsd": 631.92,
+     "avgPrice": 0.2755,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.0,
-     "score": 2.5593555058885173
+     "lastTradeAgoH": 7.6,
+     "score": 2.029896157795754
     },
     {
-     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
-     "name": "Mysaria",
-     "quality": 0.73,
-     "netUsd": 288.9,
-     "avgPrice": 0.7464,
+     "wallet": "0xb1ca909e848cc24ec4e220ce1c453bc290c51705",
+     "name": "abdkxrhxr",
+     "quality": 0.6297,
+     "netUsd": 6335.99,
+     "avgPrice": 0.2756,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.1615334767993324
+     "lastTradeAgoH": 14.0,
+     "score": 1.1116064774080412
+    },
+    {
+     "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
+     "name": "aenews2",
+     "quality": 0.4767,
+     "netUsd": 13532.35,
+     "avgPrice": 0.5673,
+     "conviction": 10.0,
+     "lastTradeAgoH": 44.7,
+     "score": 0.2337644929021185
     }
    ],
-   "backerCount": 2,
+   "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 3535.96,
-   "score": 4.7209,
-   "question": "Will New People (NL) gain the most seats in the next Russian parliamentary election?",
+   "totalNetUsd": 20500.26,
+   "score": 3.3753,
+   "question": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
    "outcome": "No",
-   "tokenId": "94909497204791422218953326989433848804063787259853889845128791095089809741999",
-   "currentPrice": 0.7425,
-   "backersAvgEntry": 0.7429,
-   "driftSinceEntry": -0.0004,
-   "endDate": "2026-09-30T00:00:00Z"
-  },
-  {
-   "conditionId": "0x338f6f3e5ff30f189a7228290a66b9a4213722032da364c8635b496589ddfd3b",
-   "outcomeIndex": 1,
-   "title": "Will Javier Milei win the 2027 Argentina presidential election?",
-   "backers": [
-    {
-     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
-     "name": "donthackme",
-     "quality": 0.88,
-     "netUsd": 298.56,
-     "avgPrice": 0.4702,
-     "conviction": 10.0,
-     "lastTradeAgoH": 3.6,
-     "score": 2.397039988280907
-    },
-    {
-     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
-     "name": "Bigggggggg",
-     "quality": 0.82,
-     "netUsd": 218.38,
-     "avgPrice": 0.47,
-     "conviction": 10.0,
-     "lastTradeAgoH": 3.6,
-     "score": 2.233527889227258
-    }
-   ],
-   "backerCount": 2,
-   "contested": false,
-   "totalNetUsd": 516.94,
-   "score": 4.6306,
-   "question": "Will Javier Milei win the 2027 Argentina presidential election?",
-   "outcome": "No",
-   "tokenId": "10448767077824322812450706422672966941639938701843052831790629042257312389174",
-   "currentPrice": 0.46,
-   "backersAvgEntry": 0.4701,
-   "driftSinceEntry": -0.0101,
-   "endDate": "2027-10-24T00:00:00Z"
-  },
-  {
-   "conditionId": "0x8a42bb4cb9b9f157b539611f6a8c122388f652570cfc3c07d538e7df2bb78894",
-   "outcomeIndex": 1,
-   "title": "Will Ulf Kristersson be the next Prime Minister of Sweden?",
-   "backers": [
-    {
-     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
-     "name": "donthackme",
-     "quality": 0.88,
-     "netUsd": 625.96,
-     "avgPrice": 0.8919,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.5,
-     "score": 2.5082413750178016
-    },
-    {
-     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
-     "name": "Mysaria",
-     "quality": 0.73,
-     "netUsd": 297.91,
-     "avgPrice": 0.8931,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.5,
-     "score": 2.080700231548858
-    }
-   ],
-   "backerCount": 2,
-   "contested": false,
-   "totalNetUsd": 923.87,
-   "score": 4.5889,
-   "question": "Will Ulf Kristersson be the next Prime Minister of Sweden?",
-   "outcome": "No",
-   "tokenId": "35202785175624473743133325350336939697145393245733500300951742752216521350176",
-   "currentPrice": 0.885,
-   "backersAvgEntry": 0.8925,
-   "driftSinceEntry": -0.0075,
-   "endDate": "2026-09-13T00:00:00Z"
-  },
-  {
-   "conditionId": "0x9ecd6a8401de3087b841d0defb0c9eda4b84569fd4af75c33fb7f6599995e8f1",
-   "outcomeIndex": 1,
-   "title": "Will Orlando City SC win on 2026-08-12?",
-   "backers": [
-    {
-     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
-     "name": "donthackme",
-     "quality": 0.88,
-     "netUsd": 215.0,
-     "avgPrice": 0.43,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.7582736870209517
-    },
-    {
-     "wallet": "0x7ad71d79a3bb90d0a87a06500fa0fe11663842aa",
-     "name": "theowalcott",
-     "quality": 0.5795,
-     "netUsd": 13882.18,
-     "avgPrice": 0.4584,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.8093568466931875
-    }
-   ],
-   "backerCount": 2,
-   "contested": true,
-   "totalNetUsd": 14097.18,
-   "score": 4.5676,
-   "question": "Will Orlando City SC win on 2026-08-12?",
-   "outcome": "No",
-   "tokenId": "37776215957408292100413625253930920945027396471481882047937461401770416630868",
-   "currentPrice": 0.425,
-   "backersAvgEntry": 0.4442,
-   "driftSinceEntry": -0.0192,
-   "endDate": "2026-08-12T23:30:00Z"
-  },
-  {
-   "conditionId": "0x8cb6397eb801be6c6aa2e176e3bf32fdfed2aeaaac16061cb6e85d10cacca393",
-   "outcomeIndex": 1,
-   "title": "Will Team Falcons Win the CS2 EWC 2026?",
-   "backers": [
-    {
-     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
-     "name": "donthackme",
-     "quality": 0.88,
-     "netUsd": 840.32,
-     "avgPrice": 0.8429,
-     "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 2.3581299178109636
-    },
-    {
-     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
-     "name": "Bigggggggg",
-     "quality": 0.82,
-     "netUsd": 5772.38,
-     "avgPrice": 0.8565,
-     "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 2.197272037013151
-    }
-   ],
-   "backerCount": 2,
-   "contested": false,
-   "totalNetUsd": 6612.7,
-   "score": 4.5554,
-   "question": "Will Team Falcons Win the CS2 EWC 2026?",
-   "outcome": "No",
-   "tokenId": "110097179352162484053191542572212531712527950310229236878952488440922672380808",
-   "currentPrice": 0.815,
-   "backersAvgEntry": 0.8497,
-   "driftSinceEntry": -0.0347,
-   "endDate": null
+   "tokenId": "39652532623602170846456682951463932352134896182641898905432425437612057868317",
+   "currentPrice": 0.228,
+   "backersAvgEntry": 0.3728,
+   "driftSinceEntry": -0.1448,
+   "endDate": "2026-08-11T00:00:00Z"
   }
  ]
 }
