@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-13 15:01 UTC · started with $20.00 (virtual)
+Updated 2026-08-13 15:17 UTC · started with $20.00 (virtual)
 
-**Equity $16.12 (-19.4%)** · cash $6.80 · 9 open · 2 settled
+**Equity $16.15 (-19.3%)** · cash $6.80 · 9 open · 2 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -13,7 +13,7 @@ Updated 2026-08-13 15:01 UTC · started with $20.00 (virtual)
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.16 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.23 | $1.01 |
 | LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group | Hanwha Life Esports | 33.27 | 0.06 | 0.00 | $0.02 |
-| Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 1.71 | 0.90 | 0.90 | $1.53 |
+| Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 1.71 | 0.90 | 0.91 | $1.56 |
 | Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage | Team Falcons | 6.00 | 0.21 | 0.00 | $0.00 |
 
 | settled market | side | entry | settle | PnL |
