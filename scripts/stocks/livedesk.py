@@ -79,6 +79,31 @@ class Alpaca:
                          params={"client_order_id": client_order_id})
 
 
+# Order statuses that will never fill. Everything else — new, accepted,
+# pending_new, partially_filled — is still working (or queued for the next
+# session) and must be re-checked, not assumed done.
+FAILED_STATUSES = {"canceled", "expired", "rejected", "stopped", "suspended"}
+
+
+def order_state(client, client_order_id):
+    """(status, filled_qty) for the order with this client id.
+
+    (None, 0) means the lookup itself failed; callers treat that as still
+    pending and re-check, never as confirmation in either direction."""
+    try:
+        o = client.order_by_client_id(client_order_id)
+    except Exception:                                     # noqa: BLE001
+        return None, 0.0
+    return o.get("status"), float(o.get("filled_qty") or 0)
+
+
+def mirror_cid(pos, opening, attempt=0):
+    """Deterministic client order id per position, leg, and retry attempt."""
+    leg = "o" if opening else "c"
+    suffix = f"-a{attempt}" if attempt else ""
+    return f"pm-{leg}-{pos['symbol']}-{int(pos['openedAt'])}{suffix}"
+
+
 def assert_armed(args):
     if os.path.exists(STOP):
         raise NotArmed("data/stocks/STOP exists — trading halted")
@@ -88,17 +113,19 @@ def assert_armed(args):
                        "--i-accept-total-loss")
 
 
-def mirror_position(client: Alpaca, pos, opening):
-    """Mirror one paper decision onto the Alpaca account.
+def mirror_position(client: Alpaca, pos, opening, attempt=0):
+    """Submit one mirrored order onto the Alpaca account.
 
-    The client order id is deterministic per position and leg, so retrying an
-    ambiguous submission — the order was accepted but the response was lost —
-    reconciles to the already-accepted order instead of firing a second one
-    (a duplicated close would reverse the position, not flatten it)."""
+    The client order id is deterministic per position, leg, and attempt, so
+    retrying an ambiguous submission — the order was accepted but the
+    response was lost — reconciles to the already-accepted order instead of
+    firing a second one (a duplicated close would reverse the position, not
+    flatten it). Submission acceptance is NOT completion: callers confirm the
+    terminal order state via order_state() before recording anything done."""
     side = ("buy" if pos["side"] == "long" else "sell") if opening else \
            ("sell" if pos["side"] == "long" else "buy")
     qty = max(1, int(pos["shares"]))
-    cid = f"pm-{'o' if opening else 'c'}-{pos['symbol']}-{int(pos['openedAt'])}"
+    cid = mirror_cid(pos, opening, attempt)
     try:
         return client.submit(pos["symbol"], qty, side, client_order_id=cid)
     except Exception as submit_err:

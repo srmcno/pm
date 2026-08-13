@@ -147,13 +147,15 @@ def cmd_run(args):
         livedesk.assert_armed(args)
         executor = livedesk.Alpaca()
         print(f"executor: {executor.base}")
-        # Closed trades that never held a live position have nothing to
-        # mirror. A close still pending from an interrupted session — saved
-        # with liveOpen but not yet flagged mirrored — keeps its retry state
-        # and is picked up by the loop below.
+        # Closed trades with no trace of a live order have nothing to mirror.
+        # Anything pending from an interrupted session — an unconfirmed open
+        # (liveCid) or an unfinished close (liveOpen without mirrored) —
+        # keeps its state and is reconciled immediately, before any new
+        # trading.
         for c in st["closed"]:
-            if not c.get("liveOpen"):
+            if not c.get("liveOpen") and not c.get("liveCid"):
                 c.setdefault("mirrored", True)
+        _reconcile_mirrors(executor, st)
 
     deadline = time.time() + args.minutes * 60 if args.minutes else None
     last_push = 0.0
@@ -166,6 +168,15 @@ def cmd_run(args):
         if market != "open":
             snaps, quotes, eq, telemetry = _scan_only(cfg, betas, tape, st)
             publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
+            # Pending live orders are worked even off-hours: a close queued
+            # after the bell fills at the next open, and ending the session
+            # before it confirms would leave live exposure with nobody
+            # watching it.
+            if executor and _reconcile_mirrors(executor, st):
+                paperdesk.save(st)
+                print("  waiting on pending live orders", flush=True)
+                time.sleep(30)
+                continue
             if market in ("closed", "afterhours") and not st["positions"]:
                 print(f"market {market} — session over", flush=True)
                 break
@@ -173,32 +184,23 @@ def cmd_run(args):
             continue
         before = {id(p) for p in st["positions"]}
         snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
-        for p in st["positions"]:
-            if id(p) not in before and executor:
-                # A failed open mirror is not retried: entering late chases a
-                # decayed edge, and a position that never opened live must
-                # never have its close mirrored (the sell would open a
-                # reverse live position instead of flattening one).
-                if _mirror(executor, p, opening=True):
-                    p["liveOpen"] = True
         if executor:
-            for c in st["closed"]:
-                if c.get("mirrored"):
-                    continue
-                if not c.get("liveOpen"):
-                    c["mirrored"] = True     # never held live; nothing to close
-                    continue
-                # A close that fails to mirror leaves a live position open;
-                # retry on following iterations, escalate if it keeps failing.
-                if _mirror(executor, c, opening=False):
-                    c["mirrored"] = True
-                    continue
-                c["mirrorAttempts"] = c.get("mirrorAttempts", 0) + 1
-                if c["mirrorAttempts"] >= 5:
-                    c["mirrored"] = True
-                    print(f"  ALERT: close mirror failed "
-                          f"{c['mirrorAttempts']}x for {c['symbol']}; the "
-                          f"live position may need a manual close", flush=True)
+            from stocks import livedesk
+            for p in st["positions"]:
+                if id(p) not in before and not p.get("liveCid"):
+                    # Submission is only step one: liveOpen is set when the
+                    # order confirms filled in the reconcile pass. A failed
+                    # open submission is not retried — entering late chases
+                    # a decayed edge, and missing an entry is the safe
+                    # failure mode.
+                    try:
+                        livedesk.mirror_position(executor, p, opening=True)
+                        p["liveCid"] = livedesk.mirror_cid(p, True)
+                        print(f"  alpaca open submitted {p['symbol']}",
+                              flush=True)
+                    except Exception as e:                # noqa: BLE001
+                        print(f"  alpaca open failed: {e}", flush=True)
+            _reconcile_mirrors(executor, st)
         paperdesk.save(st)
         publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
         if args.git_push and time.time() - last_push > args.push_minutes * 60:
@@ -220,17 +222,81 @@ def cmd_run(args):
     return 0
 
 
-def _mirror(executor, pos, opening):
-    """Submit one mirrored order; True only on confirmed submission."""
+def _reconcile_mirrors(executor, st):
+    """Advance every pending live order to a confirmed terminal state.
+
+    Nothing is recorded complete on submission alone: an accepted order can
+    still be rejected, canceled, or partially filled. Opens gain liveOpen
+    only once their order reports filled; closes are flagged mirrored only
+    once theirs does, retrying failed submissions with attempt-scoped order
+    ids. Returns True while anything is still pending so callers keep the
+    process alive until live state matches paper state."""
     from stocks import livedesk
-    try:
-        r = livedesk.mirror_position(executor, pos, opening)
-        print(f"  alpaca {'open' if opening else 'close'} {pos['symbol']} "
-              f"-> {r.get('id', '?')[:8]}", flush=True)
-        return True
-    except Exception as e:                                # noqa: BLE001
-        print(f"  alpaca order failed: {e}", flush=True)
-        return False
+    pending = False
+    for p in st["positions"]:
+        if p.get("liveCid") and not p.get("liveOpen"):
+            status, filled = livedesk.order_state(executor, p["liveCid"])
+            if status == "filled":
+                p["liveOpen"] = True
+                p["liveQty"] = filled
+            elif status in livedesk.FAILED_STATUSES:
+                p["liveCid"] = None      # open never happened; stay paper-only
+            else:
+                pending = True           # working, queued, or lookup failed
+    for c in st["closed"]:
+        if c.get("mirrored"):
+            continue
+        if not c.get("liveOpen"):
+            # The open was submitted but unconfirmed when the paper side
+            # closed; settle what actually happened live before deciding.
+            cid = c.get("liveCid")
+            if not cid:
+                c["mirrored"] = True     # never touched the live account
+                continue
+            status, filled = livedesk.order_state(executor, cid)
+            if status == "filled":
+                c["liveOpen"] = True
+                c["liveQty"] = filled
+            elif status in livedesk.FAILED_STATUSES:
+                c["mirrored"] = True     # open died; nothing live to close
+                continue
+            else:
+                pending = True
+                continue
+        cid = c.get("closeCid")
+        if cid:
+            status, filled = livedesk.order_state(executor, cid)
+            if status == "filled":
+                c["mirrored"] = True
+                continue
+            if status not in livedesk.FAILED_STATUSES:
+                pending = True           # still working or queued for open
+                continue
+            if filled > 0:
+                # Terminal with a partial fill: retrying the full quantity
+                # would over-close. Surface it instead of guessing.
+                c["mirrored"] = True
+                print(f"  ALERT: close for {c['symbol']} ended '{status}' "
+                      f"with {filled:g} of {c['shares']:g} filled; reconcile "
+                      f"the live position manually", flush=True)
+                continue
+            c["mirrorAttempts"] = c.get("mirrorAttempts", 0) + 1
+            if c["mirrorAttempts"] >= 5:
+                c["mirrored"] = True
+                print(f"  ALERT: close mirror failed {c['mirrorAttempts']}x "
+                      f"for {c['symbol']}; the live position needs a manual "
+                      f"close", flush=True)
+                continue
+        attempt = c.get("mirrorAttempts", 0)
+        try:
+            livedesk.mirror_position(executor, c, opening=False,
+                                     attempt=attempt)
+            c["closeCid"] = livedesk.mirror_cid(c, False, attempt)
+            print(f"  alpaca close submitted {c['symbol']}", flush=True)
+        except Exception as e:                            # noqa: BLE001
+            print(f"  alpaca close submit failed: {e}", flush=True)
+        pending = True                   # confirm on a later pass either way
+    return pending
 
 
 def _git_push():

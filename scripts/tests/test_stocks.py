@@ -158,6 +158,63 @@ class TestQuoteGate(unittest.TestCase):
         self.assertFalse(quote_is_fresh({}, now=1000.0, max_age_s=20.0))
 
 
+class TestMirrorReconciliation(unittest.TestCase):
+    """Live mirroring records completion only on confirmed fills."""
+
+    def _run(self, closed, order_states, submitted):
+        from stocks import bot, livedesk
+        orig_state = livedesk.order_state
+        orig_mirror = livedesk.mirror_position
+
+        def fake_mirror(ex, pos, opening, attempt=0):
+            submitted.append((pos["symbol"], opening, attempt))
+            return {}
+        livedesk.order_state = lambda ex, cid: order_states.get(cid,
+                                                                (None, 0.0))
+        livedesk.mirror_position = fake_mirror
+        try:
+            st = {"positions": [], "closed": closed}
+            return bot._reconcile_mirrors(object(), st)
+        finally:
+            livedesk.order_state = orig_state
+            livedesk.mirror_position = orig_mirror
+
+    def test_close_completes_only_on_fill(self):
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        pending = self._run([c], {"pm-c-IBIT-100": ("filled", 5.0)}, [])
+        self.assertTrue(c.get("mirrored"))
+        self.assertFalse(pending)
+
+    def test_working_close_stays_pending(self):
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        pending = self._run([c], {"pm-c-IBIT-100": ("accepted", 0.0)}, [])
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
+    def test_rejected_close_retries_with_attempt_scoped_id(self):
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        submitted = []
+        pending = self._run([c], {"pm-c-IBIT-100": ("rejected", 0.0)},
+                            submitted)
+        self.assertEqual(submitted, [("IBIT", False, 1)])
+        self.assertEqual(c["closeCid"], "pm-c-IBIT-100-a1")
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
+    def test_dead_open_needs_no_close(self):
+        # open was submitted but rejected, then the paper side closed:
+        # nothing is live, so nothing must be closed (a close would open a
+        # reverse position)
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100"}
+        pending = self._run([c], {"pm-o-IBIT-100": ("rejected", 0.0)}, [])
+        self.assertTrue(c.get("mirrored"))
+        self.assertFalse(pending)
+
+
 class TestAccounting(unittest.TestCase):
     def test_short_pnl_is_entry_minus_exit(self):
         from stocks.paperdesk import default_state, close_position
