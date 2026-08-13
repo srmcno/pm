@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786609917,
+  "generatedAt": 1786610645,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 655.41,
      "avgPrice": 0.9291,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 2.6216262285387613
+     "lastTradeAgoH": 1.6,
+     "score": 2.5993586214616102
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 392.63,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 2.442878985683845
+     "lastTradeAgoH": 1.6,
+     "score": 2.4221296245437727
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -41,14 +41,14 @@
      "netUsd": 721.84,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 2.1747581214014726
+     "lastTradeAgoH": 1.6,
+     "score": 2.1562861291670177
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1769.88,
-   "score": 7.2393,
+   "score": 7.1778,
    "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
    "outcome": "No",
    "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
@@ -72,8 +72,8 @@
      "netUsd": 468.52,
      "avgPrice": 0.5348,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.4924685476857182
+     "lastTradeAgoH": 0.4,
+     "score": 2.4712979820010137
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -82,8 +82,8 @@
      "netUsd": 5956.12,
      "avgPrice": 0.6421,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.0710989819027046
+     "lastTradeAgoH": 0.3,
+     "score": 2.053507451178432
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -92,14 +92,14 @@
      "netUsd": 3132.85,
      "avgPrice": 0.6175,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.2465086827602105
+     "lastTradeAgoH": 0.3,
+     "score": 1.2359210691393958
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 9557.49,
-   "score": 5.8101,
+   "score": 5.7607,
    "question": "LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner",
    "outcome": "Ninjas in Pyjamas",
    "tokenId": "71903355120521813515091157289073497216518779070898086718709166911466436141686",
@@ -123,8 +123,8 @@
      "netUsd": 867.04,
      "avgPrice": 0.7633,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 2.672049414786486
+     "lastTradeAgoH": 1.2,
+     "score": 2.6493535225149314
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -133,8 +133,8 @@
      "netUsd": 377.59,
      "avgPrice": 0.7318,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.4,
-     "score": 1.3070341845256832
+     "lastTradeAgoH": 16.6,
+     "score": 1.2959324785156523
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -143,14 +143,14 @@
      "netUsd": 349.12,
      "avgPrice": 0.7593,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.4,
-     "score": 1.1635792130533522
+     "lastTradeAgoH": 16.6,
+     "score": 1.1536959869712518
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1593.75,
-   "score": 5.1427,
+   "score": 5.099,
    "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "69962024849840853998461872215176721695006892813256543475794817418366358101285",
@@ -174,8 +174,8 @@
      "netUsd": 313.57,
      "avgPrice": 0.4958,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.5,
-     "score": 1.4002377524164613
+     "lastTradeAgoH": 16.7,
+     "score": 1.3883443925827892
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -184,8 +184,8 @@
      "netUsd": 262.45,
      "avgPrice": 0.4961,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.4,
-     "score": 1.3070341845256832
+     "lastTradeAgoH": 16.6,
+     "score": 1.2959324785156523
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -194,14 +194,14 @@
      "netUsd": 234.05,
      "avgPrice": 0.4964,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.4,
-     "score": 1.1635792130533522
+     "lastTradeAgoH": 16.6,
+     "score": 1.1536959869712518
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 810.07,
-   "score": 3.8709,
+   "score": 3.838,
    "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "26418124513273531493042185776538890382070385858747044148067615795770766670254",

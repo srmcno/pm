@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-13 08:31 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-13 08:44 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 A signal means several historically profitable wallets (market makers excluded) independently put meaningful money on the same outcome recently. It is information, not a guarantee — treat it as a shortlist for your own judgment.
 
 ## 1. Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? — **No**
 
-- Score **7.24** · 3 backers · net $1,770 staked
+- Score **7.18** · 3 backers · net $1,770 staked
 - Backers' average entry 0.93 → current price **0.91** (moved against them -0.02 since entry)
 - Resolves by 2026-08-13
 
@@ -18,7 +18,7 @@ A signal means several historically profitable wallets (market makers excluded) 
 
 ## 2. LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner — **Ninjas in Pyjamas**
 
-- Score **5.81** · 3 backers · net $9,557 staked
+- Score **5.76** · 3 backers · net $9,557 staked
 - Backers' average entry 0.60 → current price **0.64** (already moved +0.04 since entry)
 - Resolves by 2026-08-13
 
@@ -30,7 +30,7 @@ A signal means several historically profitable wallets (market makers excluded) 
 
 ## 3. Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? — **No**
 
-- Score **5.14** · 3 backers · net $1,594 staked
+- Score **5.10** · 3 backers · net $1,594 staked
 - Backers' average entry 0.75 → current price **0.79** (already moved +0.03 since entry)
 - Resolves by 2026-08-15
 
@@ -42,7 +42,7 @@ A signal means several historically profitable wallets (market makers excluded) 
 
 ## 4. Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? — **No**
 
-- Score **3.87** · 3 backers · net $810 staked
+- Score **3.84** · 3 backers · net $810 staked
 - Backers' average entry 0.50 → current price **0.47** (moved against them -0.02 since entry)
 - Resolves by 2026-08-15
 
