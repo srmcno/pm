@@ -13,6 +13,7 @@ Usage:
 Output: data/signals/latest.json and reports/signals-latest.md
 """
 import argparse
+import calendar
 import glob
 import json
 import math
@@ -166,13 +167,18 @@ def enrich(signals, top, max_drift=0.15, max_days=None):
         m = res.get(s["conditionId"])
         if not m or m["closed"]:
             continue
-        if max_days is not None and m.get("endDate"):
-            try:
-                end_ts = time.mktime(time.strptime(m["endDate"][:10], "%Y-%m-%d"))
-                if end_ts - time.time() > max_days * 86400:
-                    continue  # resolves too far out — capital would sit locked
-            except ValueError:
-                pass
+        if max_days is not None:
+            end_ts = None
+            if m.get("endDate"):
+                try:
+                    end_ts = calendar.timegm(time.strptime(m["endDate"][:10], "%Y-%m-%d"))
+                except ValueError:
+                    end_ts = None
+            if end_ts is None or end_ts - time.time() > max_days * 86400:
+                # No parseable end date counts as "too far out": an unknown
+                # horizon can lock capital for weeks, which is exactly what
+                # the max-days rail exists to prevent.
+                continue
         oi = s["outcomeIndex"] if s["outcomeIndex"] is not None else 0
         prices = m["outcomePrices"]
         cur = prices[oi] if oi < len(prices) else None

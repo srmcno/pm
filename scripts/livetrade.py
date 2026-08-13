@@ -21,12 +21,17 @@ Arming checklist (nothing here works until YOU do these):
   3. Run: python3 livetrade.py execute --live --i-accept-total-loss
 
 Hard rails (data/live/config.json, edit deliberately):
-  bankroll_cap        never deploy more than this in total   (default $20)
+  bankroll_cap        max capital deployed in open positions (default $20)
   max_stake_per_trade per-order ceiling                      (default $2)
   max_daily_stake     per-24h ceiling                        (default $8)
   max_open            max simultaneous positions             (default 8)
   min_score           minimum signal score                   (default 3.0)
+  max_spread          skip books wider than this bid/ask gap (default 8¢)
   A file at data/live/STOP halts all trading until you delete it.
+
+Each execute run starts by cancelling any resting unfilled orders from the
+previous cycle and reconciling recorded positions against the exchange, so
+the rails always measure real exposure — not orders we merely posted.
 
 Winnings must be redeemed on polymarket.com (positions marked redeemable).
 Nothing in this file is financial advice. Expect to lose the bankroll.
@@ -54,6 +59,7 @@ DEFAULT_CONFIG = {
     "price_buffer": 0.02,
     "max_price": 0.90,
     "min_price": 0.05,
+    "max_spread": 0.08,
 }
 
 
@@ -88,7 +94,7 @@ def o_desc(s):
     return f"{(s.get('question') or '?')[:48]} -> {s.get('outcome')}"
 
 
-def plan_orders(cfg):
+def plan_orders(cfg, state=None):
     """Turn the latest signals into concrete orders under the hard rails."""
     payload = load_json(os.path.join(pmlib.BASE, "data", "signals", "latest.json"), None)
     if not payload:
@@ -97,7 +103,8 @@ def plan_orders(cfg):
     if age_h > 12:
         raise SystemExit(f"signals are {age_h:.0f}h old — run signals.py --live first")
 
-    state = load_json(POSITIONS, {"open": [], "dailySpend": [], "totalDeployed": 0.0})
+    if state is None:
+        state = load_json(POSITIONS, {"open": [], "dailySpend": [], "totalDeployed": 0.0})
     day_ago = time.time() - 86400
     spent_today = sum(s["usd"] for s in state["dailySpend"] if s["t"] >= day_ago)
     held = {(p["conditionId"], p["outcomeIndex"]) for p in state["open"]}
@@ -112,7 +119,17 @@ def plan_orders(cfg):
         if len(state["open"]) + len(orders) >= cfg["max_open"]:
             break
         px = pmlib.midpoint(s["tokenId"]) or s["currentPrice"]
-        limit = round(min(px + cfg["price_buffer"], 0.99), 3)
+        bid = pmlib.best_price(s["tokenId"], "sell")
+        ask = pmlib.best_price(s["tokenId"], "buy")
+        if ask is None:
+            print(f"  skip (no ask in the book): {o_desc(s)}")
+            continue
+        if bid is not None and ask - bid > cfg.get("max_spread", 0.08):
+            # A wide book makes the midpoint fiction; a "2¢ buffer" on a
+            # 40¢ spread is how a $4 order overpays by dimes.
+            print(f"  skip (spread {ask - bid:.2f} too wide): {o_desc(s)}")
+            continue
+        limit = round(min(px + cfg["price_buffer"], ask + 0.005, 0.99), 3)
         if not (cfg["min_price"] <= limit <= cfg["max_price"]):
             continue
         stake = round(min(cfg["max_stake_per_trade"], budget_day, budget_total), 2)
@@ -164,6 +181,38 @@ def make_client():
     return client
 
 
+def reconcile_state(state):
+    """Replace the recorded open set with what the exchange actually holds.
+
+    A posted GTC order is not a fill: without this step an unfilled order
+    counts as deployed capital forever, phantom positions clog max_open,
+    and resolved winners never release their slice of the bankroll cap.
+    """
+    funder = os.environ.get("PM_PROXY_ADDRESS")
+    if not funder:
+        return state
+    pos = pmlib.get_json(f"{pmlib.DATA_API}/positions",
+                         {"user": funder, "limit": 100,
+                          "sortBy": "CURRENT", "sortDirection": "DESC"})
+    if pos is None:
+        return state  # API hiccup — keep the local view rather than zeroing it
+    open_now = []
+    for p in pos:
+        if (p.get("size") or 0) <= 0 or p.get("redeemable"):
+            continue
+        open_now.append({
+            "conditionId": p.get("conditionId"),
+            "outcomeIndex": p.get("outcomeIndex"),
+            "question": p.get("title"), "outcome": p.get("outcome"),
+            "cost": round(p.get("initialValue") or 0, 2),
+            "currentValue": round(p.get("currentValue") or 0, 2)})
+    state["open"] = open_now
+    state["totalDeployed"] = round(sum(o["cost"] for o in open_now), 2)
+    journal({"action": "RECONCILE", "openPositions": len(open_now),
+             "totalDeployed": state["totalDeployed"]})
+    return state
+
+
 def cmd_execute(args, cfg):
     if os.path.exists(STOP):
         raise SystemExit("STOP file present (data/live/STOP) — trading halted. "
@@ -175,7 +224,14 @@ def cmd_execute(args, cfg):
     from py_clob_client.order_builder.constants import BUY
 
     client = make_client()
-    orders, state = plan_orders(cfg)
+    try:
+        client.cancel_all()  # stale resting orders die before we re-plan
+    except Exception as e:  # noqa: BLE001
+        journal({"action": "CANCEL_ALL_ERROR", "error": str(e)})
+    state = reconcile_state(load_json(
+        POSITIONS, {"open": [], "dailySpend": [], "totalDeployed": 0.0}))
+    save_json(POSITIONS, state)
+    orders, state = plan_orders(cfg, state)
     if not orders:
         print("Nothing to do — no qualifying signals inside the rails.")
         return
@@ -189,7 +245,15 @@ def cmd_execute(args, cfg):
             journal({"action": "ERROR", "question": o["question"], "error": str(e)})
             print(f"FAILED {o['question'][:52]}: {e}")
             continue
+        if isinstance(resp, dict):
+            if not resp.get("success", True):
+                journal({"action": "REJECTED", **o, "response": str(resp)[:400]})
+                print(f"REJECTED {o['question'][:52]}: {resp.get('errorMsg')}")
+                continue
+            o["orderId"] = resp.get("orderID")
         journal({"action": "ORDER", **o, "response": str(resp)[:400]})
+        # Count the order as deployed now (conservative); the next cycle's
+        # reconcile trues this up against actual fills on the exchange.
         state["open"].append(o)
         state["dailySpend"].append({"t": int(time.time()), "usd": o["cost"]})
         state["totalDeployed"] = round(state["totalDeployed"] + o["cost"], 2)
