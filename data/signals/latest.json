@@ -1,10 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1786582844,
+  "generatedAt": 1786585015,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
-  "live": true
+  "live": true,
+  "source": "watch.py"
  },
  "signals": [
   {
@@ -19,8 +20,8 @@
      "netUsd": 211.26,
      "avgPrice": 0.8911,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.8,
-     "score": 2.0584953847411707
+     "lastTradeAgoH": 3.4,
+     "score": 2.007508300665386
     },
     {
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
@@ -29,8 +30,8 @@
      "netUsd": 1163.43,
      "avgPrice": 0.9022,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.2,
-     "score": 1.8193976254618733
+     "lastTradeAgoH": 10.8,
+     "score": 1.7743327783971945
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -39,14 +40,14 @@
      "netUsd": 44499.97,
      "avgPrice": 0.89,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.9,
-     "score": 1.725873010681507
+     "lastTradeAgoH": 8.5,
+     "score": 1.6831246844272751
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 45874.66,
-   "score": 5.6038,
+   "score": 5.465,
    "question": "Will Team Falcons Win The International 2026?",
    "outcome": "No",
    "tokenId": "104921559757967622795634820444980902727988756064112315776695453325703597702109",
@@ -67,8 +68,8 @@
      "netUsd": 313.57,
      "avgPrice": 0.4958,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.0,
-     "score": 1.9152941462731436
+     "lastTradeAgoH": 9.6,
+     "score": 1.8678540284133869
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -77,8 +78,8 @@
      "netUsd": 262.45,
      "avgPrice": 0.4961,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.9,
-     "score": 1.7878070479679373
+     "lastTradeAgoH": 9.5,
+     "score": 1.7435246711689807
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -87,14 +88,14 @@
      "netUsd": 234.05,
      "avgPrice": 0.4964,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.9,
-     "score": 1.5915843231909688
+     "lastTradeAgoH": 9.5,
+     "score": 1.5521622072601904
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 810.07,
-   "score": 5.2947,
+   "score": 5.1635,
    "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "26418124513273531493042185776538890382070385858747044148067615795770766670254",
@@ -115,8 +116,8 @@
      "netUsd": 855.47,
      "avgPrice": 0.7629,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.0,
-     "score": 1.9152719786451062
+     "lastTradeAgoH": 9.6,
+     "score": 1.86783240985761
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -125,8 +126,8 @@
      "netUsd": 377.59,
      "avgPrice": 0.7318,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.9,
-     "score": 1.7878070479679373
+     "lastTradeAgoH": 9.5,
+     "score": 1.7435246711689807
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -135,14 +136,14 @@
      "netUsd": 349.12,
      "avgPrice": 0.7593,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.9,
-     "score": 1.5915843231909688
+     "lastTradeAgoH": 9.5,
+     "score": 1.5521622072601904
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1582.18,
-   "score": 5.2947,
+   "score": 5.1635,
    "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "69962024849840853998461872215176721695006892813256543475794817418366358101285",
@@ -150,102 +151,6 @@
    "backersAvgEntry": 0.7513,
    "driftSinceEntry": 0.0137,
    "endDate": "2026-08-15T16:00:00Z"
-  },
-  {
-   "conditionId": "0x93f78d7248d9fa1f114768c77bd0ddba7a9a5c9e341c3ccdefc71e4de52284f7",
-   "outcomeIndex": 0,
-   "title": "Cincinnati Open, Qualification: Alexander Shevchenko vs Christopher O'Connell",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.7954,
-     "netUsd": 1029.06,
-     "avgPrice": 0.4651,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.5077469363384495
-    },
-    {
-     "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
-     "name": "AV23IUa",
-     "quality": 0.6049,
-     "netUsd": 15907.11,
-     "avgPrice": 0.54,
-     "conviction": 10.0,
-     "lastTradeAgoH": 9.6,
-     "score": 1.2835065095037541
-    },
-    {
-     "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
-     "name": "dv-pm",
-     "quality": 0.6821,
-     "netUsd": 2197.09,
-     "avgPrice": 0.51,
-     "conviction": 6.82,
-     "lastTradeAgoH": 13.4,
-     "score": 1.0201267896455453
-    }
-   ],
-   "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 19133.26,
-   "score": 4.8114,
-   "question": "Cincinnati Open, Qualification: Alexander Shevchenko vs Christopher O'Connell",
-   "outcome": "Alexander Shevchenko",
-   "tokenId": "101861913976264599228604073420231022192034106116634497515865538212254137307098",
-   "currentPrice": 0.305,
-   "backersAvgEntry": 0.505,
-   "driftSinceEntry": -0.2,
-   "endDate": "2026-08-19T14:00:00Z"
-  },
-  {
-   "conditionId": "0x4b43d9360a5e0d08b483bdf27cf0e1fefb6242a749a6fe698c7a62e14699bafc",
-   "outcomeIndex": 1,
-   "title": "National Bank Open: Learner Tien vs Ben Shelton",
-   "backers": [
-    {
-     "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
-     "name": "AV23IUa",
-     "quality": 0.6049,
-     "netUsd": 217035.06,
-     "avgPrice": 0.6947,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.8788513532700413
-    },
-    {
-     "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
-     "name": "dv-pm",
-     "quality": 0.6821,
-     "netUsd": 2448.61,
-     "avgPrice": 0.66,
-     "conviction": 7.6,
-     "lastTradeAgoH": 5.5,
-     "score": 1.492618737970826
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.3953,
-     "netUsd": 2699.87,
-     "avgPrice": 0.6865,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.2253950187917528
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 222183.54,
-   "score": 4.5969,
-   "question": "National Bank Open: Learner Tien vs Ben Shelton",
-   "outcome": "Ben Shelton",
-   "tokenId": "5402498371513710110827165594834333092125236793392748594633925873160979790099",
-   "currentPrice": 0.665,
-   "backersAvgEntry": 0.6804,
-   "driftSinceEntry": -0.0154,
-   "endDate": "2026-08-19T23:30:00Z"
   },
   {
    "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
@@ -256,11 +161,11 @@
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
      "name": "donthackme",
      "quality": 0.88,
-     "netUsd": 1065.93,
-     "avgPrice": 0.9316,
+     "netUsd": 1149.93,
+     "avgPrice": 0.9315,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.1,
-     "score": 2.1596880816324115
+     "lastTradeAgoH": 6.7,
+     "score": 2.1061945452310615
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -269,8 +174,8 @@
      "netUsd": 6247.13,
      "avgPrice": 0.9301,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.1,
-     "score": 2.0124599137464294
+     "lastTradeAgoH": 6.7,
+     "score": 1.9626130869903726
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -279,20 +184,20 @@
      "netUsd": 269.75,
      "avgPrice": 0.91,
      "conviction": 6.28,
-     "lastTradeAgoH": 23.4,
-     "score": 0.37345646041811986
+     "lastTradeAgoH": 24.0,
+     "score": 0.3642062789082994
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 7582.81,
-   "score": 4.5456,
+   "totalNetUsd": 7666.81,
+   "score": 4.433,
    "question": "Will MOUZ Win the CS2 EWC 2026?",
    "outcome": "No",
    "tokenId": "103472155852646459336073262128013226669985729546752651199738548722369775801914",
-   "currentPrice": 0.93,
+   "currentPrice": 0.925,
    "backersAvgEntry": 0.9239,
-   "driftSinceEntry": 0.0061,
+   "driftSinceEntry": 0.0011,
    "endDate": null
   },
   {
@@ -307,8 +212,8 @@
      "netUsd": 925.84,
      "avgPrice": 0.8053,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.1,
-     "score": 2.1597130781669005
+     "lastTradeAgoH": 6.7,
+     "score": 2.106218922623815
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -317,8 +222,8 @@
      "netUsd": 5370.96,
      "avgPrice": 0.7946,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.1,
-     "score": 2.0124599137464294
+     "lastTradeAgoH": 6.7,
+     "score": 1.9626130869903726
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -327,14 +232,14 @@
      "netUsd": 1868.5,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 30.8,
-     "score": 0.34600276835748917
+     "lastTradeAgoH": 31.4,
+     "score": 0.337432590172263
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 8165.3,
-   "score": 4.5182,
+   "score": 4.4063,
    "question": "Will Team Spirit Win the CS2 EWC 2026?",
    "outcome": "No",
    "tokenId": "58272724633332095197168705267006575600942802701828320183221249647889946434963",
@@ -355,8 +260,8 @@
      "netUsd": 631.92,
      "avgPrice": 0.2755,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.9,
-     "score": 2.0039148524161696
+     "lastTradeAgoH": 8.5,
+     "score": 1.9542796791637878
     },
     {
      "wallet": "0xb1ca909e848cc24ec4e220ce1c453bc290c51705",
@@ -365,8 +270,8 @@
      "netUsd": 6335.99,
      "avgPrice": 0.2756,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.3,
-     "score": 1.0973786622360453
+     "lastTradeAgoH": 14.9,
+     "score": 1.0701975771924972
     },
     {
      "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
@@ -375,14 +280,14 @@
      "netUsd": 13532.35,
      "avgPrice": 0.5673,
      "conviction": 10.0,
-     "lastTradeAgoH": 45.0,
-     "score": 0.23077246463817574
+     "lastTradeAgoH": 45.6,
+     "score": 0.22505643770699943
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 20500.26,
-   "score": 3.3321,
+   "score": 3.2495,
    "question": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "39652532623602170846456682951463932352134896182641898905432425437612057868317",
