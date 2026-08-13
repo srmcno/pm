@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 12.13,
+ "cash": 10.19,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -14,8 +14,8 @@
    "costUsd": 1.6,
    "openedAt": 1786587299,
    "signalScore": 5.3524,
-   "markPrice": 0.895,
-   "valueUsd": 1.5911
+   "markPrice": 0.875,
+   "valueUsd": 1.5556
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -56,8 +56,8 @@
    "costUsd": 1.25,
    "openedAt": 1786587299,
    "signalScore": 5.0186,
-   "markPrice": 0.83,
-   "valueUsd": 1.2425
+   "markPrice": 0.835,
+   "valueUsd": 1.25
   },
   {
    "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
@@ -70,8 +70,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.91,
-   "valueUsd": 1.1192
+   "markPrice": 0.92,
+   "valueUsd": 1.1315
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -86,6 +86,20 @@
    "signalScore": 3.1826,
    "markPrice": 0.2295,
    "valueUsd": 1.0062
+  },
+  {
+   "conditionId": "0x56270a01cc2b77707caafe33e13370fef8510d588f932546f93aeddd42b5a044",
+   "outcomeIndex": 0,
+   "tokenId": "2842276822365184660788300168309564867681014111251933436598845034848736946032",
+   "question": "Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner",
+   "outcome": "Team Liquid",
+   "shares": 2.8955,
+   "entryPrice": 0.67,
+   "costUsd": 1.94,
+   "openedAt": 1786603004,
+   "signalScore": 6.085,
+   "markPrice": 0.575,
+   "valueUsd": 1.6649
   }
  ],
  "closed": [],
@@ -159,6 +173,11 @@
    "t": 1786602254,
    "equity": 19.8777,
    "cash": 12.13
+  },
+  {
+   "t": 1786603005,
+   "equity": 19.5869,
+   "cash": 10.19
   }
  ],
  "log": [
@@ -209,6 +228,14 @@
    "outcome": "No",
    "stake": 1.05,
    "price": 0.23950000000000002
+  },
+  {
+   "t": 1786603004,
+   "action": "BUY",
+   "question": "Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner",
+   "outcome": "Team Liquid",
+   "stake": 1.94,
+   "price": 0.67
   }
  ]
 }
