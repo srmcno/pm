@@ -254,18 +254,44 @@ def cmd_run(args):
         # reconciliation settles their records from persisted state.
         cancel_after = time.time() + 1800
         exit_after = cancel_after + 300
-        while _reconcile_mirrors(executor, st, save=paperdesk.save):
+        while True:
+            pending = _reconcile_mirrors(executor, st, save=paperdesk.save)
+            # A position holding CONFIRMED live exposure is flattened at
+            # shutdown — including one whose open filled during this very
+            # loop: no process remains to manage exits afterwards, so the
+            # desk never exits supervision while holding live shares.
+            live_held = [p for p in st["positions"] if p.get("liveOpen")]
+            if live_held:
+                raw, _feed = stocklib.live_quotes(
+                    [p["symbol"] for p in live_held])
+                for p in live_held:
+                    q = raw.get(p["symbol"])
+                    if q:
+                        paperdesk.close_position(st, p, q, "shutdown", cfg,
+                                                 time.time())
+                        print(f"  flattening live-held {p['symbol']} at "
+                              f"shutdown", flush=True)
+                        pending = True
             paperdesk.save(st)
+            if not pending:
+                break
             now_ts = time.time()
-            pending_opens = [p for p in st["positions"]
-                             if p.get("liveCid") and not p.get("liveOpen")]
+            # Unconfirmed opens live on positions AND on closed records —
+            # a paper position that closed before its open confirmed keeps
+            # the CID on the closed record, and that order can still fill.
+            pending_opens = (
+                [p for p in st["positions"]
+                 if p.get("liveCid") and not p.get("liveOpen")]
+                + [c for c in st["closed"]
+                   if not c.get("mirrored") and c.get("liveCid")
+                   and not c.get("liveOpen")])
             if now_ts > cancel_after:
                 # Cancellation is retried on EVERY pass until each pending
                 # open confirms terminal — a transient lookup or DELETE
                 # failure must not leave a working open to fill after exit.
-                for p in pending_opens:
-                    if livedesk.cancel_by_client_id(executor, p["liveCid"]):
-                        print(f"  cancelled pending open {p['symbol']} "
+                for rec in pending_opens:
+                    if livedesk.cancel_by_client_id(executor, rec["liveCid"]):
+                        print(f"  cancelled pending open {rec['symbol']} "
                               f"at shutdown", flush=True)
             if now_ts > exit_after:
                 if pending_opens:
