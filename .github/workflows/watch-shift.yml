@@ -37,17 +37,17 @@ jobs:
         working-directory: scripts
         run: |
           if [ -n "$PM_PRIVATE_KEY" ]; then
-            python3 watch.py --duration-minutes 110 --execute
+            python3 watch.py --duration-minutes 110 --paper --execute
           else
-            echo "No keys configured — watching in plan-only mode."
-            python3 watch.py --duration-minutes 110
+            echo "No keys configured — paper trading only."
+            python3 watch.py --duration-minutes 110 --paper
           fi
 
       - name: Commit journal and reports back
         run: |
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/live data/signals reports dashboard/data || true
+          git add data/live data/signals data/paper reports dashboard/data || true
           git diff --cached --quiet && exit 0
           git commit -m "auto: watcher shift $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin claude/polymarket-wallets-analysis-m81p4j || true
