@@ -41,13 +41,16 @@ UNIVERSE = {
 @dataclass
 class StrategyConfig:
     # Defaults selected by a 216-config grid on 5 days of 1-minute bars
-    # (train on the first 3 sessions, score on the last 2) and validated on
-    # 22 sessions of 5-minute bars. The month test fills at the NEXT 5m bar,
-    # a worst case of ~300s of latency, and every config was negative there
-    # (best -0.97%, deployed -5.53%); at <=60s fills the same configs were
-    # flat to positive. The edge decays within minutes, which is why entries
-    # are gated on quote freshness and holds are short. This configuration
-    # was the most robust across both fill regimes, not the best anywhere.
+    # (train on the first 3 sessions, score on the held-out last 2) and
+    # stress-validated on 22 sessions of 5-minute bars filling at the NEXT
+    # 5m bar — a worst case of ~300s of latency. Every stressed config lost
+    # money at 300s fills; the configs that scored best on the 1m window
+    # degraded the most (-1.4% to -3.3%, worst days to -$10 per $1000),
+    # while this one degraded least (-0.50%, worst day -$4.24). At <=60s
+    # fills it is positive. The edge decays within minutes, which is why
+    # entries are gated on quote freshness and holds are short. This
+    # configuration is the most robust across fill regimes, not the best
+    # anywhere.
     entry_bps: float = 90.0          # |d| to open
     exit_bps: float = 12.0           # |d| to close on reversion
     stop_bps: float = 70.0           # adverse widening beyond entry level
