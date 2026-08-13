@@ -28,11 +28,13 @@ from stocks.strategy import (UNIVERSE, StrategyConfig,   # noqa: E402
 DASH_DATA = os.path.join(stocklib.BASE, "dashboard", "data", "stocks.json")
 
 
-def publish(st, cfg, snaps, quotes, eq, betas, market):
+def publish(st, cfg, snaps, quotes, eq, betas, market, telemetry=None):
     payload = {
         "meta": {
             "generatedAt": int(time.time()),
             "market": market,
+            "dataFeed": (telemetry or {}).get("feed", "yahoo"),
+            "quoteAgeS": (telemetry or {}).get("quoteAgeS"),
             "universe": list(UNIVERSE),
             "riskFrac": cfg.risk_frac,
             "maxPositions": cfg.max_positions,
@@ -86,16 +88,17 @@ def cmd_scan(args):
     betas = fit_all_betas(cfg)
     tape = paperdesk.seed_tape(cfg)
     st = paperdesk.load()
-    snaps, quotes, eq = paperdesk.step(
-        st, cfg, betas, tape) if args.trade else _scan_only(
-        cfg, betas, tape, st)
+    if args.trade:
+        snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
+    else:
+        snaps, quotes, eq, telemetry = _scan_only(cfg, betas, tape, st)
     market = stocklib.market_state()
-    print(f"market {market} · equity ${eq:.2f} · "
+    print(f"market {market} · equity ${eq:.2f} · feed {telemetry['feed']} · "
           f"{len(st['positions'])} open positions")
     for s in snaps:
         print(f"  {s.symbol:<6} {s.price:>9.2f}  d={s.dislocation_bps:>+7.1f}bps "
               f"drv={s.driver_move_bps:>+7.1f}bps  {s.action:<6} {s.reason}")
-    publish(st, cfg, snaps, quotes, eq, betas, market)
+    publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
     if args.trade:
         paperdesk.save(st)
     return 0
@@ -107,12 +110,15 @@ def _scan_only(cfg, betas, tape, st):
     now = _t.time()
     anchor_ts = now - cfg.anchor_minutes * 60
     drv_prices = stocklib.crypto_mids(tuple({m["driver"] for m in UNIVERSE.values()}))
-    snaps, quotes = [], {}
+    raw, feed = stocklib.live_quotes(list(UNIVERSE))
+    snaps, quotes, ages = [], {}, []
     for sym, meta in UNIVERSE.items():
-        q = stocklib.quote(sym)
+        q = raw.get(sym)
         if not q or not q.get("price"):
             continue
         quotes[sym] = q["price"]
+        if q.get("ts"):
+            ages.append(max(0.0, now - q["ts"]))
         drv = meta["driver"]
         anchor = tape.at(sym, anchor_ts)
         drv_anchor = tape.at(drv, anchor_ts)
@@ -123,7 +129,10 @@ def _scan_only(cfg, betas, tape, st):
             if s:
                 s.driver = drv
                 snaps.append(s)
-    return snaps, quotes, paperdesk.equity(st, quotes)
+    ages.sort()
+    return snaps, quotes, paperdesk.equity(st, quotes), {
+        "feed": feed,
+        "quoteAgeS": round(ages[len(ages) // 2], 1) if ages else None}
 
 
 def cmd_run(args):
@@ -138,6 +147,20 @@ def cmd_run(args):
         livedesk.assert_armed(args)
         executor = livedesk.Alpaca()
         print(f"executor: {executor.base}")
+        # Closed trades with no trace of a live order have nothing to mirror.
+        # Anything pending from an interrupted session — an unconfirmed open
+        # (liveCid) or an unfinished close (liveOpen without mirrored) —
+        # keeps its state and is reconciled immediately, before any new
+        # trading. Open positions that predate execution are marked
+        # paper-only: submitting them now would chase a signal from before
+        # this session started.
+        for c in st["closed"]:
+            if not c.get("liveOpen") and not c.get("liveCid"):
+                c.setdefault("mirrored", True)
+        for p in st["positions"]:
+            if not p.get("liveCid"):
+                p["liveDead"] = True
+        _reconcile_mirrors(executor, st, save=paperdesk.save)
 
     deadline = time.time() + args.minutes * 60 if args.minutes else None
     last_push = 0.0
@@ -148,27 +171,149 @@ def cmd_run(args):
     while not deadline or time.time() < deadline:
         market = stocklib.market_state()
         if market != "open":
-            snaps, quotes, eq = _scan_only(cfg, betas, tape, st)
-            publish(st, cfg, snaps, quotes, eq, betas, market)
+            snaps, quotes, eq, telemetry = _scan_only(cfg, betas, tape, st)
+            publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
+            # Pending live orders are worked even off-hours: a close queued
+            # after the bell fills at the next open, and ending the session
+            # before it confirms would leave live exposure with nobody
+            # watching it.
+            if executor and _reconcile_mirrors(executor, st, save=paperdesk.save):
+                paperdesk.save(st)
+                print("  waiting on pending live orders", flush=True)
+                time.sleep(30)
+                continue
             if market in ("closed", "afterhours") and not st["positions"]:
                 print(f"market {market} — session over", flush=True)
                 break
             time.sleep(60)
             continue
-        before = {id(p) for p in st["positions"]}
-        snaps, quotes, eq = paperdesk.step(st, cfg, betas, tape)
-        for p in st["positions"]:
-            if id(p) not in before and executor:
-                _mirror(executor, p, opening=True)
-        for c in st["closed"][-5:]:
-            if c.get("closedAt", 0) >= time.time() - cfg.poll_seconds - 2 and executor:
-                _mirror(executor, c, opening=False)
+        if executor:
+            # A close still settling live blocks new paper decisions: a
+            # fresh position in the same symbol could be flattened or
+            # reversed when the old close finally fills.
+            _reconcile_mirrors(executor, st, save=paperdesk.save)
+            if _pending_close(st):
+                paperdesk.save(st)
+                print("  reconciling pending live closes before trading",
+                      flush=True)
+                time.sleep(3)
+                continue
+        snaps, quotes, eq, telemetry = paperdesk.step(st, cfg, betas, tape)
+        if executor:
+            from stocks import livedesk
+            # Closes created by this step are submitted before any new
+            # opens; the paper desk additionally never re-enters a symbol
+            # in the cycle that closed it, so an old close and its
+            # replacement's open can never race at the broker. A new open
+            # is a position with neither a liveCid nor the explicit
+            # paper-only marker (liveDead) — never object identity, since
+            # id() values can be reused within one step, and never bare
+            # CID absence, which would resubmit dead or pre-execution
+            # positions on a stale signal.
+            _reconcile_mirrors(executor, st, save=paperdesk.save)
+            for p in st["positions"]:
+                if not p.get("liveCid") and not p.get("liveDead"):
+                    # The CID is assigned and DURABLY SAVED before the
+                    # network call: if the order is accepted but the
+                    # response is lost — or the process dies mid-flight —
+                    # the position stays reconcilable instead of becoming
+                    # untracked live exposure. Submission is only step one;
+                    # liveOpen is set when the order confirms filled in the
+                    # reconcile pass.
+                    p["liveCid"] = livedesk.mirror_cid(p, True)
+                    paperdesk.save(st)
+                    try:
+                        livedesk.mirror_position(executor, p, opening=True)
+                        print(f"  alpaca open submitted {p['symbol']}",
+                              flush=True)
+                    except Exception as e:                # noqa: BLE001
+                        print(f"  alpaca open failed: {e}", flush=True)
+            _reconcile_mirrors(executor, st, save=paperdesk.save)
         paperdesk.save(st)
-        publish(st, cfg, snaps, quotes, eq, betas, market)
+        publish(st, cfg, snaps, quotes, eq, betas, market, telemetry)
         if args.git_push and time.time() - last_push > args.push_minutes * 60:
             last_push = time.time()
             _git_push()
-        time.sleep(cfg.poll_seconds)
+        # The batched Alpaca quote endpoint tolerates a far faster cadence
+        # than per-symbol Yahoo calls; poll at a third of the configured
+        # interval when that feed is active.
+        sleep_s = cfg.poll_seconds
+        if telemetry.get("feed") == "alpaca":
+            sleep_s = max(3.0, cfg.poll_seconds / 3.0)
+        time.sleep(sleep_s)
+    if executor:
+        from stocks import livedesk
+        # The paper-session deadline never abandons live orders: a DAY
+        # order can fill after the process stops, so pending mirrors keep
+        # being reconciled past the deadline until settled. If the grace
+        # period expires, every unconfirmed OPEN order is cancelled — an
+        # open filling after exit would be unmanaged new exposure — and
+        # reconciliation continues briefly so cancellations confirm and
+        # any partial fills get their closes submitted. Closes are left
+        # working: they can only flatten, and the next session's startup
+        # reconciliation settles their records from persisted state.
+        cancel_after = time.time() + 1800
+        exit_after = cancel_after + 300
+        while True:
+            pending = _reconcile_mirrors(executor, st, save=paperdesk.save)
+            # A position holding CONFIRMED live exposure is flattened at
+            # shutdown — including one whose open filled during this very
+            # loop: no process remains to manage exits afterwards, so the
+            # desk never exits supervision while holding live shares.
+            live_held = [p for p in st["positions"] if p.get("liveOpen")]
+            if live_held:
+                # Holding live shares ALWAYS blocks exit, even when a quote
+                # is momentarily unavailable — the flatten simply retries on
+                # the next pass.
+                pending = True
+                raw, _feed = stocklib.live_quotes(
+                    [p["symbol"] for p in live_held])
+                for p in live_held:
+                    q = raw.get(p["symbol"])
+                    if q:
+                        paperdesk.close_position(st, p, q, "shutdown", cfg,
+                                                 time.time())
+                        print(f"  flattening live-held {p['symbol']} at "
+                              f"shutdown", flush=True)
+                    else:
+                        print(f"  no quote for live-held {p['symbol']}; "
+                              f"retrying flatten", flush=True)
+            paperdesk.save(st)
+            if not pending:
+                break
+            now_ts = time.time()
+            # Unconfirmed opens live on positions AND on closed records —
+            # a paper position that closed before its open confirmed keeps
+            # the CID on the closed record, and that order can still fill.
+            pending_opens = (
+                [p for p in st["positions"]
+                 if p.get("liveCid") and not p.get("liveOpenFinal")]
+                + [c for c in st["closed"]
+                   if not c.get("mirrored") and c.get("liveCid")
+                   and not c.get("liveOpenFinal")])
+            if now_ts > cancel_after:
+                # Cancellation is retried on EVERY pass until each pending
+                # open confirms terminal — a transient lookup or DELETE
+                # failure must not leave a working open to fill after exit.
+                for rec in pending_opens:
+                    if livedesk.cancel_by_client_id(executor, rec["liveCid"]):
+                        print(f"  cancelled pending open {rec['symbol']} "
+                              f"at shutdown", flush=True)
+            if now_ts > exit_after:
+                if pending_opens:
+                    # Never exit while an open could still fill; keep
+                    # cancelling and reconciling.
+                    print("  ALERT: pending open orders still unconfirmed; "
+                          "continuing cancellation", flush=True)
+                    exit_after = now_ts + 300
+                else:
+                    print("  ALERT: live close orders still working at "
+                          "shutdown; they only reduce exposure and the next "
+                          "session resumes reconciliation", flush=True)
+                    break
+            print("  settling pending live orders before shutdown",
+                  flush=True)
+            time.sleep(15)
     paperdesk.save(st)
     if args.git_push:
         _git_push()
@@ -178,14 +323,160 @@ def cmd_run(args):
     return 0
 
 
-def _mirror(executor, pos, opening):
+def _pending_close(st):
+    """True while any closed trade still has an unsettled live close."""
+    return any(not c.get("mirrored")
+               and (c.get("liveOpen") or c.get("liveCid"))
+               for c in st["closed"])
+
+
+def _reconcile_mirrors(executor, st, save=None):
+    """Advance every pending live order to a confirmed terminal state.
+
+    Nothing is recorded complete on submission alone: an accepted order can
+    still be rejected, canceled, or partially filled. Opens gain liveOpen
+    only once their order reports filled; closes are flagged mirrored only
+    once theirs does, retrying failed submissions with attempt-scoped order
+    ids. Returns True while anything is still pending so callers keep the
+    process alive until live state matches paper state."""
     from stocks import livedesk
-    try:
-        r = livedesk.mirror_position(executor, pos, opening)
-        print(f"  alpaca {'open' if opening else 'close'} {pos['symbol']} "
-              f"-> {r.get('id', '?')[:8]}", flush=True)
-    except Exception as e:                                # noqa: BLE001
-        print(f"  alpaca order failed: {e}", flush=True)
+    pending = False
+
+    def settle_open(rec):
+        """Resolve what the opening order actually did live. Returns
+        'live' (the order is terminal and shares are held, possibly a
+        partial), 'dead' (terminal with nothing filled), or 'pending'
+        (keep checking). ANY positive filled quantity is recorded as live
+        exposure immediately — a working partially-filled order already
+        holds shares — while liveOpenFinal marks terminal settlement."""
+        status, filled = livedesk.order_state(executor, rec["liveCid"])
+        if filled > 0:
+            rec["liveOpen"] = True
+            rec["liveQty"] = filled
+        if status == "filled":
+            rec["liveOpenFinal"] = True
+            return "live"
+        if status in livedesk.FAILED_STATUSES:
+            if rec.get("liveOpen"):
+                rec["liveOpenFinal"] = True
+                print(f"  alpaca open for {rec['symbol']} ended '{status}' "
+                      f"with {filled:g} of {rec['shares']:g} filled; "
+                      f"tracking the partial", flush=True)
+                return "live"
+            return "dead"
+        if status == "not_found":
+            # "Never landed" is only concluded after SUSTAINED 404s — at
+            # least three probes spanning two minutes of wall clock — and
+            # the streak resets on any other response, so a slowly indexed
+            # or intermittently unavailable accepted order is never
+            # converted into a dead one within a poll cycle.
+            rec["liveNotFound"] = rec.get("liveNotFound", 0) + 1
+            rec.setdefault("liveNotFoundSince", time.time())
+            if rec["liveNotFound"] >= 3 and \
+                    time.time() - rec["liveNotFoundSince"] >= 120:
+                return "dead"
+            return "pending"
+        rec.pop("liveNotFound", None)
+        rec.pop("liveNotFoundSince", None)
+        return "pending"
+
+    for p in st["positions"]:
+        if p.get("liveCid") and not p.get("liveOpenFinal"):
+            outcome = settle_open(p)
+            if outcome == "dead":
+                # The open never happened; the position stays paper-only
+                # PERMANENTLY (liveDead) — resubmitting later would chase
+                # the stale signal that priced the original entry.
+                p["liveCid"] = None
+                p["liveDead"] = True
+            elif outcome == "pending":
+                pending = True
+    for c in st["closed"]:
+        if c.get("mirrored"):
+            continue
+        if not c.get("liveOpen"):
+            # The open was submitted but nothing has filled yet when the
+            # paper side closed; settle what actually happened live first.
+            if not c.get("liveCid"):
+                c["mirrored"] = True     # never touched the live account
+                continue
+            outcome = settle_open(c)
+            if outcome == "dead":
+                c["mirrored"] = True     # open died; nothing live to close
+                continue
+            if outcome == "pending":
+                # The paper side is closed, so any FURTHER fill is
+                # unwanted: cancel the working remainder and keep watching
+                # until the order settles terminally.
+                livedesk.cancel_by_client_id(executor, c["liveCid"])
+                pending = True
+                continue
+        elif c.get("liveCid") and not c.get("liveOpenFinal"):
+            # Exposure is recorded but the opening order may still be
+            # working; cancel the remainder and wait for terminal
+            # settlement so the close flattens the FINAL quantity.
+            if settle_open(c) == "pending":
+                livedesk.cancel_by_client_id(executor, c["liveCid"])
+                pending = True
+                continue
+        cid = c.get("closeCid")
+        attempt = c.get("mirrorAttempts", 0)
+        if cid:
+            status, filled = livedesk.order_state(executor, cid)
+            if status == "filled":
+                c["mirrored"] = True
+                continue
+            if status is None or (status not in livedesk.FAILED_STATUSES
+                                  and status != "not_found"):
+                pending = True           # working, queued, or lookup failed
+                continue
+            if status in livedesk.FAILED_STATUSES:
+                if filled > 0:
+                    # Terminal with a partial fill: shares remain live, so
+                    # the record STAYS pending — new paper decisions remain
+                    # blocked — and the residual resubmits at the reduced
+                    # quantity under the next attempt id.
+                    remaining = round((c.get("liveQty") or c["shares"])
+                                      - filled, 4)
+                    c["liveQty"] = remaining
+                    print(f"  alpaca close for {c['symbol']} ended "
+                          f"'{status}' with {filled:g} filled; resubmitting "
+                          f"the remaining {remaining:g}", flush=True)
+                    if remaining <= 0:
+                        c["mirrored"] = True
+                        continue
+                c["mirrorAttempts"] = attempt = attempt + 1
+                if attempt >= 5:
+                    # Never mark a live position done just because retries
+                    # ran out: the record stays pending, which keeps new
+                    # trading blocked — the safe state for real money — and
+                    # stops resubmitting so a hard-rejecting broker is not
+                    # spammed. Clearing it requires closing the live
+                    # position and resetting the record.
+                    print(f"  ALERT: close mirror failed {attempt}x for "
+                          f"{c['symbol']}; trading stays blocked until the "
+                          f"live position is closed (manually if needed)",
+                          flush=True)
+                    pending = True
+                    continue
+            # status == "not_found": the submission never landed — fall
+            # through and resubmit under the SAME attempt id, which stays
+            # idempotent if it did land after all.
+        # The CID is assigned and durably saved BEFORE the network call so
+        # an accepted-but-lost submission — or a crash mid-flight — remains
+        # reconcilable instead of spawning a second full-size close under a
+        # fresh id.
+        c["closeCid"] = livedesk.mirror_cid(c, False, attempt)
+        if save:
+            save(st)
+        try:
+            livedesk.mirror_position(executor, c, opening=False,
+                                     attempt=attempt)
+            print(f"  alpaca close submitted {c['symbol']}", flush=True)
+        except Exception as e:                            # noqa: BLE001
+            print(f"  alpaca close submit failed: {e}", flush=True)
+        pending = True                   # confirm on a later pass either way
+    return pending
 
 
 def _git_push():
@@ -195,11 +486,31 @@ def _git_push():
                        "auto: stocks desk update")
 
 
+def cmd_sweep(args):
+    from stocks.backtest import sweep
+    rows = sweep(range_=args.range, interval=args.interval,
+                 train_frac=args.train_frac)
+    if rows and "error" in rows[0]:
+        print(rows[0]["error"])
+        return 1
+    hdr = ["entry_bps", "stop_bps", "min_driver_move_bps", "max_hold_minutes",
+           "anchor_minutes", "trainPnl", "testPnl", "trades", "winRate"]
+    print("  ".join(f"{h[:9]:>9}" for h in hdr))
+    for r in rows[:args.top]:
+        print("  ".join(f"{str(r[h])[:9]:>9}" for h in hdr))
+    return 0
+
+
 def cmd_backtest(args):
     r = backtest_mod.run(bankroll=args.bankroll, range_=args.range)
     if "error" in r:
         print(r["error"])
         return 1
+    if args.validate:
+        v = backtest_mod.validate(bankroll=args.bankroll)
+        if "error" in v:
+            print(v["error"])
+            return 1
     print(f"details: reports/stocks-backtest.md")
     return 0
 
@@ -260,9 +571,18 @@ def main():
     p.add_argument("--i-accept-total-loss", action="store_true")
     p.set_defaults(fn=cmd_run)
 
+    p = sub.add_parser("sweep")
+    p.add_argument("--range", default="5d")
+    p.add_argument("--interval", default="1m")
+    p.add_argument("--train-frac", type=float, default=0.6)
+    p.add_argument("--top", type=int, default=15)
+    p.set_defaults(fn=cmd_sweep)
+
     p = sub.add_parser("backtest")
     p.add_argument("--bankroll", type=float, default=1000.0)
     p.add_argument("--range", default="5d")
+    p.add_argument("--validate", action="store_true",
+                   help="also refresh the coarse-bar stress validation")
     p.set_defaults(fn=cmd_backtest)
 
     sub.add_parser("status").set_defaults(fn=cmd_status)

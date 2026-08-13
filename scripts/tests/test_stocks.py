@@ -51,17 +51,27 @@ class TestBeta(unittest.TestCase):
         self.assertAlmostEqual(beta, 2.0, places=6)
 
 
+class TestTape(unittest.TestCase):
+    def test_out_of_order_samples_are_rejected(self):
+        from stocks.strategy import RollingTape
+        t = RollingTape()
+        self.assertTrue(t.record("X", 100, 1.0))
+        # an older fallback must not be time-shifted forward onto the tape
+        self.assertFalse(t.record("X", 50, 2.0))
+        self.assertEqual(t.at("X", 200), 1.0)
+
+
 class TestSignal(unittest.TestCase):
     def setUp(self):
         self.cfg = StrategyConfig()
 
     def test_lagging_an_up_move_signals_long(self):
-        # driver +2%, beta 2 implies +4%; stock only +2% -> 200bps behind
+        # driver +2%, beta 2 implies +4%; stock only +2% -> ~200bps behind
         s = evaluate("MSTR", price=102.0, anchor_price=100.0,
                      driver_price=102.0, driver_anchor_price=100.0,
                      beta=2.0, cfg=self.cfg, spread_bps=4)
         self.assertEqual(s.action, "long")
-        self.assertLess(s.dislocation_bps, -100)
+        self.assertLess(s.dislocation_bps, -self.cfg.entry_bps)
 
     def test_lagging_a_down_move_signals_short(self):
         s = evaluate("MSTR", price=99.0, anchor_price=100.0,
@@ -84,11 +94,12 @@ class TestSignal(unittest.TestCase):
         self.assertIn("driver move", s.reason)
 
     def test_entry_threshold_scales_with_costs(self):
-        # ~70bps dislocation: enough for a tight-spread instrument, not for
-        # one whose round trip costs ~99bps
-        kw = dict(price=100.3, anchor_price=100.0, driver_price=100.5,
+        # ~180bps dislocation clears the base entry threshold on a
+        # tight-spread instrument but not the cost-scaled threshold of one
+        # whose round trip alone costs ~200bps
+        kw = dict(price=99.2, anchor_price=100.0, driver_price=100.5,
                   driver_anchor_price=100.0, beta=2.0, cfg=self.cfg)
-        self.assertEqual(evaluate("X", spread_bps=60, **kw).action, "none")
+        self.assertEqual(evaluate("X", spread_bps=200, **kw).action, "none")
         self.assertEqual(evaluate("X", spread_bps=4, **kw).action, "long")
 
     def test_bad_inputs_return_none(self):
@@ -138,6 +149,252 @@ class TestExits(unittest.TestCase):
                        mins_to_close=120, cfg=self.cfg))
 
 
+class TestQuoteGate(unittest.TestCase):
+    def test_fresh_quote_passes(self):
+        from stocks.paperdesk import quote_is_fresh
+        self.assertTrue(quote_is_fresh({"ts": 990.0}, now=1000.0,
+                                       max_age_s=20.0))
+
+    def test_stale_quote_fails(self):
+        from stocks.paperdesk import quote_is_fresh
+        self.assertFalse(quote_is_fresh({"ts": 900.0}, now=1000.0,
+                                        max_age_s=20.0))
+
+    def test_missing_timestamp_fails_closed(self):
+        # a quote that cannot prove its age must not be treated as fresh
+        from stocks.paperdesk import quote_is_fresh
+        self.assertFalse(quote_is_fresh({"ts": None}, now=1000.0,
+                                        max_age_s=20.0))
+        self.assertFalse(quote_is_fresh({}, now=1000.0, max_age_s=20.0))
+
+    def test_future_stamped_quote_fails(self):
+        # a venue clock fault must not make a quote look freshly minted;
+        # only small skew is tolerated
+        from stocks.paperdesk import quote_is_fresh
+        self.assertFalse(quote_is_fresh({"ts": 1100.0}, now=1000.0,
+                                        max_age_s=20.0))
+        self.assertTrue(quote_is_fresh({"ts": 1001.0}, now=1000.0,
+                                       max_age_s=20.0))
+
+
+class TestHaltFlatten(unittest.TestCase):
+    def test_halted_day_flattens_position_when_quote_returns(self):
+        # a position whose symbol had no quote on the tripping cycle must
+        # still be flattened on a later halted cycle, not survive until an
+        # ordinary exit fires
+        import time as _t
+        from stocks import paperdesk, stocklib
+        from stocks.strategy import RollingTape, StrategyConfig
+        cfg = StrategyConfig()
+        st = paperdesk.default_state(1000.0)
+        pos = {"symbol": "IBIT", "side": "long", "shares": 5.0,
+               "entry": 60.0, "cost": 300.0, "openedAt": 0, "reason": "t"}
+        st["positions"].append(pos)
+        st["cash"] -= pos["cost"]
+        st["day"] = {"date": _t.strftime("%Y-%m-%d"), "trades": 0,
+                     "pnl": 0.0, "halted": True, "startEquity": 1000.0}
+        orig = (stocklib.crypto_mids, stocklib.live_quotes,
+                stocklib.minutes_to_close)
+        stocklib.crypto_mids = lambda syms: {}
+        stocklib.live_quotes = lambda syms: (
+            {"IBIT": {"price": 60.0, "bid": None, "ask": None,
+                      "ts": 1000.0}}, "yahoo")
+        stocklib.minutes_to_close = lambda: 120.0
+        try:
+            paperdesk.step(st, cfg, {}, RollingTape(), now=1000.0)
+        finally:
+            (stocklib.crypto_mids, stocklib.live_quotes,
+             stocklib.minutes_to_close) = orig
+        self.assertEqual(st["positions"], [])
+        self.assertEqual(st["closed"][-1]["exitReason"], "halt")
+
+
+class TestNoSnapshotExits(unittest.TestCase):
+    """A cycle with no fresh observation must not read as reversion."""
+
+    def _step(self, opened_at, minutes_to_close=120.0):
+        import time as _t
+        from stocks import paperdesk, stocklib
+        from stocks.strategy import RollingTape, StrategyConfig
+        cfg = StrategyConfig()
+        st = paperdesk.default_state(1000.0)
+        pos = {"symbol": "IBIT", "side": "long", "shares": 5.0,
+               "entry": 60.0, "cost": 300.0, "openedAt": opened_at,
+               "reason": "t"}
+        st["positions"].append(pos)
+        st["cash"] -= pos["cost"]
+        st["day"] = {"date": _t.strftime("%Y-%m-%d"), "trades": 0,
+                     "pnl": 0.0, "halted": False, "startEquity": 1000.0}
+        orig = (stocklib.crypto_mids, stocklib.live_quotes,
+                stocklib.minutes_to_close)
+        stocklib.crypto_mids = lambda syms: {}
+        stocklib.live_quotes = lambda syms: (
+            {"IBIT": {"price": 60.0, "bid": None, "ask": None,
+                      "ts": 1000.0}}, "yahoo")
+        stocklib.minutes_to_close = lambda: minutes_to_close
+        try:
+            paperdesk.step(st, cfg, {}, RollingTape(), now=1000.0)
+        finally:
+            (stocklib.crypto_mids, stocklib.live_quotes,
+             stocklib.minutes_to_close) = orig
+        return st
+
+    def test_missing_snapshot_is_not_reversion(self):
+        st = self._step(opened_at=820)          # held 3 minutes
+        self.assertEqual(len(st["positions"]), 1)
+
+    def test_time_stop_applies_without_snapshot(self):
+        st = self._step(opened_at=1000 - 3600)  # held 60 minutes
+        self.assertEqual(st["positions"], [])
+        self.assertEqual(st["closed"][-1]["exitReason"], "time")
+
+
+class TestMirrorReconciliation(unittest.TestCase):
+    """Live mirroring records completion only on confirmed fills."""
+
+    def _run(self, closed, order_states, submitted, positions=None):
+        from stocks import bot, livedesk
+        orig_state = livedesk.order_state
+        orig_mirror = livedesk.mirror_position
+
+        def fake_mirror(ex, pos, opening, attempt=0):
+            submitted.append((pos["symbol"], opening, attempt))
+            return {}
+        livedesk.order_state = lambda ex, cid: order_states.get(cid,
+                                                                (None, 0.0))
+        livedesk.mirror_position = fake_mirror
+        try:
+            st = {"positions": positions or [], "closed": closed}
+            return bot._reconcile_mirrors(object(), st)
+        finally:
+            livedesk.order_state = orig_state
+            livedesk.mirror_position = orig_mirror
+
+    def test_close_completes_only_on_fill(self):
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        pending = self._run([c], {"pm-c-IBIT-100": ("filled", 5.0)}, [])
+        self.assertTrue(c.get("mirrored"))
+        self.assertFalse(pending)
+
+    def test_working_close_stays_pending(self):
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        pending = self._run([c], {"pm-c-IBIT-100": ("accepted", 0.0)}, [])
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
+    def test_rejected_close_retries_with_attempt_scoped_id(self):
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        submitted = []
+        pending = self._run([c], {"pm-c-IBIT-100": ("rejected", 0.0)},
+                            submitted)
+        self.assertEqual(submitted, [("IBIT", False, 1)])
+        self.assertEqual(c["closeCid"], "pm-c-IBIT-100-a1")
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
+    def test_dead_open_needs_no_close(self):
+        # open was submitted but rejected, then the paper side closed:
+        # nothing is live, so nothing must be closed (a close would open a
+        # reverse position)
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100"}
+        pending = self._run([c], {"pm-o-IBIT-100": ("rejected", 0.0)}, [])
+        self.assertTrue(c.get("mirrored"))
+        self.assertFalse(pending)
+
+    def test_working_partial_open_counts_as_live_exposure(self):
+        # a partially_filled WORKING order already holds shares: exposure is
+        # recorded immediately while reconciliation keeps watching the
+        # unfilled remainder
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100"}
+        pending = self._run([], {"pm-o-IBIT-100": ("partially_filled", 2.0)},
+                            [], positions=[p])
+        self.assertTrue(p.get("liveOpen"))
+        self.assertEqual(p["liveQty"], 2.0)
+        self.assertNotIn("liveOpenFinal", p)
+        self.assertTrue(pending)
+
+    def test_partially_filled_dead_open_still_gets_closed(self):
+        # a canceled opening order that filled 3 of 5 shares put real live
+        # exposure on the book; those shares must be closed, not forgotten
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100"}
+        submitted = []
+        pending = self._run([c], {"pm-o-IBIT-100": ("canceled", 3.0)},
+                            submitted)
+        self.assertEqual(c.get("liveQty"), 3.0)
+        self.assertEqual(submitted, [("IBIT", False, 0)])
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
+    def test_lost_close_submission_reuses_the_same_attempt_id(self):
+        # the close CID points at an order the venue never received; the
+        # retry must reuse the same id (idempotent if it landed after all),
+        # not burn a new attempt that could double-close
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "closeCid": "pm-c-IBIT-100"}
+        submitted = []
+        self._run([c], {"pm-c-IBIT-100": ("not_found", 0.0)}, submitted)
+        self.assertEqual(submitted, [("IBIT", False, 0)])
+        self.assertEqual(c["closeCid"], "pm-c-IBIT-100")
+        self.assertNotIn("mirrorAttempts", c)
+
+    def test_partial_close_keeps_blocking_and_resubmits_residual(self):
+        # a close that died with 2 of 5 shares filled leaves 3 live; the
+        # record must stay pending (blocking new trading) and the residual
+        # must resubmit at the reduced quantity
+        c = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveOpen": True, "liveQty": 5.0, "closeCid": "pm-c-IBIT-100"}
+        submitted = []
+        pending = self._run([c], {"pm-c-IBIT-100": ("canceled", 2.0)},
+                            submitted)
+        self.assertEqual(c["liveQty"], 3.0)
+        self.assertEqual(submitted, [("IBIT", False, 1)])
+        self.assertEqual(c["closeCid"], "pm-c-IBIT-100-a1")
+        self.assertIsNone(c.get("mirrored"))
+        self.assertTrue(pending)
+
+    def test_never_landed_open_clears_after_sustained_probes(self):
+        # a dead open becomes permanently paper-only: resubmitting later
+        # would chase the stale signal that priced the original entry. The
+        # conclusion requires a sustained 404 streak (count AND elapsed
+        # time), never a burst inside one poll cycle.
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100", "liveNotFound": 2,
+             "liveNotFoundSince": 0}
+        pending = self._run([], {"pm-o-IBIT-100": ("not_found", 0.0)}, [],
+                            positions=[p])
+        self.assertIsNone(p["liveCid"])
+        self.assertTrue(p.get("liveDead"))
+        self.assertFalse(pending)
+
+    def test_burst_404s_within_a_cycle_stay_pending(self):
+        # three quick 404s without elapsed wall-clock time must NOT kill
+        # the order — a slowly indexed accepted submission still resolves
+        import time as _t
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100", "liveNotFound": 5,
+             "liveNotFoundSince": _t.time()}
+        pending = self._run([], {"pm-o-IBIT-100": ("not_found", 0.0)}, [],
+                            positions=[p])
+        self.assertEqual(p["liveCid"], "pm-o-IBIT-100")
+        self.assertTrue(pending)
+
+    def test_404_streak_resets_on_other_responses(self):
+        p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
+             "liveCid": "pm-o-IBIT-100", "liveNotFound": 2,
+             "liveNotFoundSince": 0}
+        pending = self._run([], {"pm-o-IBIT-100": ("accepted", 0.0)}, [],
+                            positions=[p])
+        self.assertNotIn("liveNotFound", p)
+        self.assertNotIn("liveNotFoundSince", p)
+        self.assertTrue(pending)
+
+
 class TestAccounting(unittest.TestCase):
     def test_short_pnl_is_entry_minus_exit(self):
         from stocks.paperdesk import default_state, close_position
@@ -153,6 +410,25 @@ class TestAccounting(unittest.TestCase):
         closed = close_position(st, pos, 45.0, "reverted", cfg, now=60)
         self.assertGreater(closed["pnl"], 45.0)
         self.assertLess(closed["pnl"], 50.5)
+
+    def test_short_open_fee_lands_in_reported_pnl(self):
+        # the opening-sale fee is deducted from cash at open; realized P&L
+        # must include it or trade stats and equity drift apart
+        from stocks.paperdesk import default_state, close_position
+        from stocks.strategy import StrategyConfig
+        cfg = StrategyConfig()
+        cfg.slippage_bps = 0.0
+        results = []
+        for fee in (0.0, 1.0):
+            st = default_state(1000.0)
+            pos = {"symbol": "IBIT", "side": "short", "shares": 10.0,
+                   "entry": 50.0, "cost": 500.0, "openFee": fee,
+                   "openedAt": 0, "reason": "t"}
+            st["positions"].append(pos)
+            st["cash"] -= pos["cost"] + fee
+            results.append(close_position(st, pos, 45.0, "reverted",
+                                          cfg, now=60)["pnl"])
+        self.assertAlmostEqual(results[0] - results[1], 1.0, places=6)
 
     def test_daily_loss_halt(self):
         from stocks.paperdesk import default_state, _day

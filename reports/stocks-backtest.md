@@ -1,25 +1,24 @@
 # Equities desk — replay backtest
 
-Generated 2026-08-13 12:07 UTC · range 5d · entries filled at the next bar's open plus costs.
+Generated 2026-08-13 14:42 UTC · range 5d · entries filled at the next bar's open plus costs.
 
-## $1000 → $1007.45 (+0.75%)
+## $1000 → $1003.77 (+0.38%)
 
-- Trades: 33 · win rate 55% · avg P&L $0.23
-- Exits: reverted 19, stop 14
+- Trades: 13 · win rate 62% · avg P&L $0.29
+- Exits: reverted 10, stop 3
 
 | day | P&L |
 |---|---|
-| 2026-08-06 | +3.46 |
-| 2026-08-07 | +4.29 |
-| 2026-08-10 | -3.06 |
-| 2026-08-11 | -0.82 |
-| 2026-08-12 | +3.60 |
+| 2026-08-07 | +1.26 |
+| 2026-08-10 | +1.49 |
+| 2026-08-11 | -0.23 |
+| 2026-08-12 | +1.25 |
 
 | symbol | beta | n | r² |
 |---|---|---|---|
-| MSTR | 1.789 | 46 | 0.527 |
-| COIN | 1.518 | 46 | 0.538 |
-| MARA | 1.196 | 46 | 0.177 |
-| RIOT | 0.866 | 46 | 0.082 |
-| IBIT | 1.023 | 46 | 0.888 |
-| ETHA | 1.039 | 46 | 0.891 |
+| MSTR | 1.794 | 47 | 0.525 |
+| COIN | 1.519 | 47 | 0.538 |
+| MARA | 1.197 | 47 | 0.178 |
+| RIOT | 0.869 | 47 | 0.083 |
+| IBIT | 1.023 | 47 | 0.888 |
+| ETHA | 1.039 | 47 | 0.891 |

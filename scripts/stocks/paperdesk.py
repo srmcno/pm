@@ -72,10 +72,42 @@ def _day(st):
     return st["day"]
 
 
-def fill_price(symbol, quote_px, side_is_buy, cfg):
-    half_spread = UNIVERSE[symbol]["spreadBps"] / 2.0
-    adj = (half_spread + cfg.slippage_bps) / 1e4
-    return quote_px * (1 + adj) if side_is_buy else quote_px * (1 - adj)
+# Sell-side regulatory fees, charged on the leg that is a sale exactly as a
+# US broker passes them through: SEC fee per dollar of sale proceeds and
+# FINRA TAF per share sold.
+SEC_FEE_PER_DOLLAR = 27.80 / 1_000_000
+TAF_PER_SHARE = 0.000166
+
+
+def sell_side_fees(shares, price):
+    return shares * price * SEC_FEE_PER_DOLLAR + shares * TAF_PER_SHARE
+
+
+def quote_is_fresh(q, now, max_age_s):
+    """Entry-gate freshness. A quote with no venue timestamp cannot prove it
+    is current, so it fails closed — usable for marks and exits, not entries.
+    A timestamp meaningfully ahead of now is equally unverifiable (venue
+    clock fault or bad payload); only small clock skew is tolerated."""
+    ts = q.get("ts")
+    if not ts:
+        return False
+    age = now - ts
+    return -2.0 <= age <= max_age_s
+
+
+def fill_price(symbol, quote, side_is_buy, cfg):
+    """Simulated fill. With a real NBBO quote (dict with bid/ask) the fill is
+    the touch plus slippage — a buy lifts the ask, a sell hits the bid. With
+    only a last price, the symbol's spread estimate stands in for the touch."""
+    slip = cfg.slippage_bps / 1e4
+    if isinstance(quote, dict) and quote.get("bid") and quote.get("ask"):
+        return (quote["ask"] * (1 + slip) if side_is_buy
+                else quote["bid"] * (1 - slip))
+    px = quote["price"] if isinstance(quote, dict) else quote
+    half_spread = UNIVERSE[symbol]["spreadBps"] / 2.0 / 1e4
+    if side_is_buy:
+        return px * (1 + half_spread + slip)
+    return px * (1 - half_spread - slip)
 
 
 def open_position(st, snap, quote_px, cfg: StrategyConfig, now=None):
@@ -86,14 +118,21 @@ def open_position(st, snap, quote_px, cfg: StrategyConfig, now=None):
         return None
     if any(p["symbol"] == snap.symbol for p in st["positions"]):
         return None
-    eq = equity(st, {snap.symbol: quote_px})
+    mark = quote_px["price"] if isinstance(quote_px, dict) else quote_px
+    eq = equity(st, {snap.symbol: mark})
     stake = round(eq * cfg.risk_frac, 2)
     if stake < 10.0 or stake > st["cash"]:
         stake = min(stake, round(st["cash"], 2))
         if stake < 10.0:
             return None
     px = fill_price(snap.symbol, quote_px, snap.action == "long", cfg)
-    shares = round(stake / px, 4)
+    if snap.action == "short":
+        # Live shorting cannot be fractional; simulate the same constraint.
+        shares = float(int(stake / px))
+        if shares < 1:
+            return None
+    else:
+        shares = round(stake / px, 4)
     pos = {"symbol": snap.symbol, "side": snap.action, "shares": shares,
            "entry": round(px, 4), "cost": round(shares * px, 2),
            "openedAt": int(now or time.time()),
@@ -101,6 +140,11 @@ def open_position(st, snap, quote_px, cfg: StrategyConfig, now=None):
            "driverMoveBps": snap.driver_move_bps, "beta": snap.beta,
            "reason": snap.reason}
     st["cash"] = round(st["cash"] - pos["cost"], 4)
+    if snap.action == "short":
+        # Opening a short is a sale; regulatory fees apply on this leg. The
+        # fee is recorded on the position so realized P&L includes it.
+        pos["openFee"] = round(sell_side_fees(shares, px), 4)
+        st["cash"] = round(st["cash"] - pos["openFee"], 4)
     st["positions"].append(pos)
     log(st, action="OPEN", **{k: pos[k] for k in
         ("symbol", "side", "shares", "entry", "cost", "reason")})
@@ -110,10 +154,11 @@ def open_position(st, snap, quote_px, cfg: StrategyConfig, now=None):
 def close_position(st, pos, quote_px, why, cfg: StrategyConfig, now=None):
     px = fill_price(pos["symbol"], quote_px, pos["side"] == "short", cfg)
     if pos["side"] == "long":
-        proceeds = pos["shares"] * px
+        # Closing a long is a sale; regulatory fees come out of proceeds.
+        proceeds = pos["shares"] * px - sell_side_fees(pos["shares"], px)
     else:
         proceeds = pos["shares"] * (2 * pos["entry"] - px)
-    pnl = round(proceeds - pos["cost"], 2)
+    pnl = round(proceeds - pos["cost"] - pos.get("openFee", 0.0), 2)
     st["cash"] = round(st["cash"] + proceeds, 4)
     st["positions"].remove(pos)
     closed = {**pos, "exit": round(px, 4), "closedAt": int(now or time.time()),
@@ -131,21 +176,44 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     """One evaluation cycle: quotes, exits, entries, mark. Returns snapshot
     rows for publication. Dislocation is measured against the tape value
     `cfg.anchor_minutes` back for both the equity and its driver."""
+    fixed_now = now
     now = now or time.time()
-    anchor_ts = now - cfg.anchor_minutes * 60
     mins_left = stocklib.minutes_to_close()
+    # One batched quote call: real NBBO with venue timestamps when Alpaca
+    # keys are present, Yahoo last prices otherwise. The crypto driver is
+    # sampled AFTER the potentially slow equity fetches, so the dislocation
+    # always compares the freshest crypto print against equity quotes whose
+    # own staleness the entry gate bounds.
+    raw_quotes, feed = stocklib.live_quotes(list(UNIVERSE))
     drv_prices = stocklib.crypto_mids(tuple({m["driver"] for m in UNIVERSE.values()}))
-    quotes, snaps = {}, []
+    # Freshness, quote ages, and the rolling anchor are all measured
+    # against the wall clock AFTER every retrieval — equity and crypto —
+    # so time spent in any slow request counts against the quotes' age
+    # instead of hiding inside a stale cycle-start timestamp.
+    if fixed_now is None:
+        now = time.time()
+    anchor_ts = now - cfg.anchor_minutes * 60
+    quotes, quote_objs, ages, snaps = {}, {}, [], []
 
     day = _day(st)
     for drv, px in drv_prices.items():
         tape.record(drv, now, px)
     for sym, meta in UNIVERSE.items():
-        q = stocklib.quote(sym)
+        q = raw_quotes.get(sym)
         if not q or not q.get("price"):
             continue
         quotes[sym] = q["price"]
-        tape.record(sym, now, q["price"])
+        quote_objs[sym] = q
+        if q.get("ts"):
+            ages.append(max(0.0, now - q["ts"]))
+        # The signal tape records at the VENUE timestamp: a fallback quote
+        # older than an observation already on the tape is rejected
+        # (RollingTape refuses out-of-order writes), and a rejected sample
+        # is excluded from the ENTIRE signal path this cycle — no snapshot,
+        # no entry — exactly like a missing driver. The quote itself stays
+        # usable for marks and exits regardless.
+        if not tape.record(sym, q.get("ts") or now, q["price"]):
+            continue
         drv = meta["driver"]
         if betas.get(sym, {}).get("r2", 0) < cfg.min_beta_r2:
             continue
@@ -163,32 +231,72 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     eq = equity(st, quotes)
     if day["startEquity"] is None:
         day["startEquity"] = round(eq, 2)
+    closed_now = set()
     if (day["startEquity"] - eq) / max(day["startEquity"], 1) >= cfg.max_daily_loss_frac \
             and not day["halted"]:
         day["halted"] = True
         log(st, action="HALT", reason="daily loss limit")
+    if day["halted"]:
+        # Flatten on every halted cycle, not only the tripping one: a
+        # symbol with no quote in that cycle would otherwise keep its
+        # exposure until an ordinary exit fired, unbounded by the rail.
         for p in list(st["positions"]):
-            if p["symbol"] in quotes:
-                close_position(st, p, quotes[p["symbol"]], "halt", cfg, now)
+            if p["symbol"] in quote_objs:
+                close_position(st, p, quote_objs[p["symbol"]], "halt", cfg, now)
+                closed_now.add(p["symbol"])
 
     by_symbol = {s.symbol: s for s in snaps}
     for p in list(st["positions"]):
-        q = quotes.get(p["symbol"])
+        q = quote_objs.get(p["symbol"])
         if q is None:
             continue
         snap = by_symbol.get(p["symbol"])
-        d_bps = snap.dislocation_bps if snap else 0.0
         held_min = (now - p["openedAt"]) / 60.0
-        why = exit_check(p, d_bps, held_min, mins_left, cfg)
+        if snap is not None:
+            why = exit_check(p, snap.dislocation_bps, held_min, mins_left,
+                             cfg)
+        else:
+            # No fresh observation this cycle — a duplicate venue timestamp
+            # on a fast poll, a rejected fallback, or missing driver data.
+            # Absence of a signal is NOT evidence of reversion, so
+            # dislocation-based exits are skipped; time and session-close
+            # exits still apply.
+            why = None
+            if held_min >= cfg.max_hold_minutes:
+                why = "time"
+            elif mins_left <= cfg.flatten_minutes_before_close:
+                why = "close"
         if why:
             close_position(st, p, q, why, cfg, now)
+            closed_now.add(p["symbol"])
 
     if not day["halted"] and mins_left > cfg.flatten_minutes_before_close:
         ranked = sorted((s for s in snaps if s.action != "none"),
                         key=lambda s: -abs(s.dislocation_bps))
         for snap in ranked:
-            open_position(st, snap, quotes[snap.symbol], cfg, now)
+            # No same-cycle re-entry: a symbol that just closed would have
+            # its replacement racing the old position's live close, and the
+            # signal it would chase is the one that was just exited.
+            if snap.symbol in closed_now:
+                log(st, action="SKIP", symbol=snap.symbol,
+                    reason="closed this cycle; no same-cycle re-entry")
+                continue
+            # Latency gate: the measured edge decays within minutes, so an
+            # entry priced off a stale — or unverifiable — quote has already
+            # missed it. Exits are never gated: leaving late beats not
+            # leaving.
+            q = quote_objs[snap.symbol]
+            if not quote_is_fresh(q, now, cfg.max_quote_age_s):
+                ts = q.get("ts")
+                log(st, action="SKIP", symbol=snap.symbol,
+                    reason=(f"quote {now - ts:.0f}s old" if ts
+                            else "quote has no venue timestamp"))
+                continue
+            open_position(st, snap, q, cfg, now)
 
     eq = equity(st, quotes)
     st["equityCurve"].append({"t": int(now), "equity": round(eq, 2)})
-    return snaps, quotes, eq
+    ages.sort()
+    telemetry = {"feed": feed,
+                 "quoteAgeS": round(ages[len(ages) // 2], 1) if ages else None}
+    return snaps, quotes, eq, telemetry

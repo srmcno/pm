@@ -40,24 +40,36 @@ UNIVERSE = {
 
 @dataclass
 class StrategyConfig:
-    # Defaults chosen by a 5-day minute-bar replay: 45/25 traded 66 times for
-    # -0.05% while 60/35 traded 33 times for +0.75% at a 54% win rate. The
-    # sample is one week; treat these as a starting point, not a result.
-    entry_bps: float = 60.0          # |d| to open
+    # Defaults selected by a 216-config grid on 5 days of 1-minute bars
+    # (train on the first 3 sessions, score on the held-out last 2) and
+    # confirmed on 22 sessions of 5-minute bars with the driver aligned to
+    # each bar's close and fills at the next bar's open (dislocations seen
+    # up to ~300s late). At selection this configuration was the only
+    # leader positive in all three views — training days, held-out days,
+    # and the month stress — while the tighter 90bps/20-minute variant
+    # scored comparably in the stress but lost money on the held-out
+    # sessions. Both replay windows roll daily, so the committed
+    # backtest.json is the live source for current numbers, not this
+    # comment. The edge decays within minutes, which is why entries are
+    # gated on quote freshness.
+    entry_bps: float = 75.0          # |d| to open
     exit_bps: float = 12.0           # |d| to close on reversion
-    stop_bps: float = 55.0           # adverse widening beyond entry level
-    min_driver_move_bps: float = 35.0  # required |beta * crypto move|
-    # Dislocation is measured against a rolling anchor this many minutes
-    # back, not the session open. From an open anchor, idiosyncratic drift
-    # accumulates all day and "dislocation" stops reverting: a 5-day replay
-    # anchored at the open stopped out on 260 of 288 trades.
-    anchor_minutes: float = 30.0
+    stop_bps: float = 70.0           # adverse widening beyond entry level
+    min_driver_move_bps: float = 25.0  # required |beta * crypto move|
+    # Rolling anchor: dislocation is measured over this trailing window.
+    # Anchoring at the session open let idiosyncratic drift accumulate all
+    # day and stopped out 260 of 288 replay trades.
+    anchor_minutes: float = 20.0
     max_hold_minutes: float = 45.0
     flatten_minutes_before_close: float = 5.0
     slippage_bps: float = 3.0        # paid on top of half the spread
-    risk_frac: float = 0.30          # of equity per position
+    # Entries require a quote at most this old. The replay evidence puts the
+    # whole edge inside the first couple of minutes, so trading on a stale
+    # quote is donating the spread.
+    max_quote_age_s: float = 20.0
+    risk_frac: float = 0.20          # of equity per position
     max_positions: int = 3
-    max_daily_loss_frac: float = 0.10  # halt for the day past this drawdown
+    max_daily_loss_frac: float = 0.04  # halt for the day past this drawdown
     poll_seconds: float = 12.0
     beta_lookback_days: int = 60
     # Minimum daily-return R^2 against the driver. Fitted values on live
@@ -91,13 +103,17 @@ class RollingTape:
         self.series = {}
 
     def record(self, key, ts, price):
+        """Append an observation; returns False for an out-of-order sample
+        (at or before the series head), which is rejected — callers must
+        keep such samples out of the signal path."""
         s = self.series.setdefault(key, [])
         if s and ts <= s[-1][0]:
-            return
+            return False
         s.append((int(ts), float(price)))
         cutoff = ts - self.keep
         while s and s[0][0] < cutoff:
             s.pop(0)
+        return True
 
     def at(self, key, ts):
         """Latest recorded price at or before ts."""
@@ -144,10 +160,14 @@ def fit_beta(stock_closes, crypto_closes, bounds):
 
 
 def fit_all_betas(cfg: StrategyConfig):
-    """Fit and persist betas for the whole universe. Refit at most daily."""
+    """Fit and persist betas for the whole universe. Refit at most daily —
+    unless the requested lookback differs from the cached fit, so a sweep or
+    validation run with a custom lookback can never leak its betas into a
+    later replay or live session."""
     state = stocklib.load_state("betas.json", {})
     today = time.strftime("%Y-%m-%d")
-    if state.get("date") == today and state.get("betas"):
+    if state.get("date") == today and state.get("betas") \
+            and state.get("lookbackDays") == cfg.beta_lookback_days:
         return state["betas"]
     crypto_cache = {}
     betas = {}
@@ -161,7 +181,8 @@ def fit_all_betas(cfg: StrategyConfig):
         if beta is None:
             beta = sum(meta["betaBounds"]) / 2.0
         betas[sym] = {"beta": round(beta, 3), "n": n, "r2": round(r2, 3)}
-    stocklib.save_state("betas.json", {"date": today, "betas": betas})
+    stocklib.save_state("betas.json", {"date": today, "betas": betas,
+                                       "lookbackDays": cfg.beta_lookback_days})
     return betas
 
 

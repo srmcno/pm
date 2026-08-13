@@ -76,36 +76,58 @@ def crypto_mids(symbols=("BTCUSDT", "ETHUSDT")):
 
 
 def crypto_klines(symbol, interval="1m", start_ms=None, end_ms=None, limit=1000):
-    """OHLCV rows: [openTime, open, high, low, close, volume, closeTime, ...]."""
+    """OHLCV rows: [openTime, open, high, low, close, volume, closeTime, ...].
+
+    Returns [] when the venue answered with no rows for the window and None
+    when the request itself failed — callers that paginate must not treat a
+    failed request as a hole in history."""
     params = {"symbol": symbol, "interval": interval, "limit": limit}
     if start_ms:
         params["startTime"] = int(start_ms)
     if end_ms:
         params["endTime"] = int(end_ms)
-    return get_json(f"{MEXC}/klines", params) or []
+    rows = get_json(f"{MEXC}/klines", params)
+    return rows if isinstance(rows, list) else None
 
 
 def crypto_minutes(symbol, start_ts, end_ts):
-    """1m closes covering [start_ts, end_ts]: {minute_ts: close}."""
+    """1m closes covering [start_ts, end_ts]: {minute_ts: close}.
+
+    Each page requests a bounded window: MEXC answers a windowed query at
+    least 29 days back, but returns an empty list when the requested span is
+    too wide, so paginating with an open-ended end silently yields nothing
+    for long ranges."""
     out = {}
     cur = int(start_ts) * 1000
     end_ms = int(end_ts) * 1000
+    failures = 0
     while cur < end_ms:
-        rows = crypto_klines(symbol, "1m", start_ms=cur, end_ms=end_ms)
+        page_end = min(end_ms, cur + 1000 * 60_000)
+        rows = crypto_klines(symbol, "1m", start_ms=cur, end_ms=page_end)
+        if rows is None:
+            # Request failure, not a hole: skipping the page would silently
+            # drop up to ~17 hours of driver data from any replay built on
+            # it. Retry the same window; give up loudly if the venue stays
+            # unreachable.
+            failures += 1
+            if failures > 3:
+                raise RuntimeError(f"MEXC kline requests failing for {symbol}")
+            time.sleep(2.0 * failures)
+            continue
+        failures = 0
         if not rows:
-            break
+            cur = page_end + 60_000       # confirmed hole; skip forward
+            continue
         for r in rows:
             out[int(r[0]) // 1000] = float(r[4])
         last = int(rows[-1][0])
-        if last <= cur:
-            break
-        cur = last + 60_000
-        time.sleep(0.15)
+        cur = max(last + 60_000, cur + 60_000)
+        time.sleep(0.12)
     return out
 
 
 def crypto_daily_closes(symbol, days=90):
-    rows = crypto_klines(symbol, "1d", limit=days)
+    rows = crypto_klines(symbol, "1d", limit=days) or []
     return {int(r[0]) // 1000: float(r[4]) for r in rows}
 
 
@@ -155,9 +177,12 @@ def quote(symbol):
     }
 
 
-def minute_bars(symbol, range_="5d"):
-    """Regular-session 1m bars: sorted [(ts, open, high, low, close, volume)]."""
-    r = chart(symbol, "1m", range_, cache_ttl=300)
+def minute_bars(symbol, range_="5d", interval="1m"):
+    """Regular-session bars: sorted [(ts, open, high, low, close, volume)].
+
+    Yahoo serves 1m bars for about a week and 5m bars for about two months,
+    so longer-horizon validation uses interval="5m"."""
+    r = chart(symbol, interval, range_, cache_ttl=300)
     if not r:
         return []
     ts = r.get("timestamp") or []
@@ -240,3 +265,75 @@ def save_state(name, obj):
     with open(tmp, "w") as f:
         json.dump(obj, f, indent=1)
     os.replace(tmp, os.path.join(DATA_DIR, name))
+
+
+# ------------------------------------------------- low-latency quote path
+
+ALPACA_DATA = "https://data.alpaca.markets"
+
+
+def _alpaca_headers():
+    key = os.environ.get("APCA_API_KEY_ID")
+    secret = os.environ.get("APCA_API_SECRET_KEY")
+    if not (key and secret):
+        return None
+    return {"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": secret}
+
+
+def alpaca_quotes(symbols):
+    """Latest NBBO quotes for many symbols in one request (IEX feed).
+
+    Returns {symbol: {price, bid, ask, ts}} or None when keys are absent or
+    the call fails. One batched call at a free-tier limit of 200/min supports
+    a poll cadence Yahoo cannot, with real bid/ask instead of estimates.
+    """
+    headers = _alpaca_headers()
+    if not headers:
+        return None
+    try:
+        r = _session.get(f"{ALPACA_DATA}/v2/stocks/quotes/latest",
+                         params={"symbols": ",".join(symbols)},
+                         headers=headers, timeout=10)
+        if r.status_code != 200:
+            return None
+        out = {}
+        for sym, q in (r.json().get("quotes") or {}).items():
+            bid, ask = q.get("bp"), q.get("ap")
+            if not bid or not ask or ask <= 0:
+                continue
+            ts = q.get("t") or ""
+            try:
+                epoch = datetime.fromisoformat(
+                    ts.replace("Z", "+00:00")).timestamp()
+            except ValueError:
+                # A malformed venue timestamp must not masquerade as fresh;
+                # ts=None keeps the quote usable for marks and exits while
+                # the entry gate fails closed on it.
+                epoch = None
+            out[sym] = {"price": (bid + ask) / 2.0, "bid": bid, "ask": ask,
+                        "ts": epoch}
+        return out or None
+    except requests.RequestException:
+        return None
+
+
+def live_quotes(symbols):
+    """Best available quotes: Alpaca NBBO when keys are present, Yahoo last
+    prices otherwise — and Yahoo fills any per-symbol gaps in a partial
+    Alpaca answer, because a symbol with no quote at all would lose its
+    marks, stops, and time exits. Rows carry the venue timestamp when the
+    venue supplies one and ts=None when it does not — staleness is measured,
+    never assumed, and entries fail closed on an unverifiable quote. The
+    "alpaca" feed label is only returned when the batched feed covered the
+    whole universe; the faster poll cadence in bot.py depends on it."""
+    quotes = alpaca_quotes(symbols) or {}
+    missing = [s for s in symbols if s not in quotes]
+    if quotes and not missing:
+        return quotes, "alpaca"
+    out = dict(quotes)
+    for sym in missing:
+        q = quote(sym)
+        if q and q.get("price"):
+            out[sym] = {"price": q["price"], "bid": None, "ask": None,
+                        "ts": q.get("marketTime")}
+    return out, ("alpaca+yahoo" if quotes else "yahoo")
