@@ -406,7 +406,8 @@ class DualFeed:
         self.stats = {"chain": 0, "rest": 0, "duplicates": 0,
                       "chainLatency": [], "restLatency": []}
 
-    def _remember(self, fill):
+    def remember(self, fill):
+        """Record a fill as already handled. Returns False if it was."""
         if fill.key in self.seen:
             self.stats["duplicates"] += 1
             return False
@@ -414,6 +415,8 @@ class DualFeed:
         while len(self.seen) > self.dedupe_size:
             self.seen.popitem(last=False)
         return True
+
+    _remember = remember
 
     def poll(self):
         out = []

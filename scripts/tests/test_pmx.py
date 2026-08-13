@@ -472,6 +472,87 @@ class TestEngineIngest(unittest.TestCase):
         self.assertAlmostEqual(s["bought"] / s["shares"], 0.50, places=6)
 
 
+class TestSettleDeduplication(unittest.TestCase):
+    """One settled outcome must yield exactly one calibration observation."""
+
+    def _journal(self, lines):
+        import tempfile
+        fh = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False)
+        for r in lines:
+            fh.write(__import__("json").dumps(r) + "\n")
+        fh.close()
+        return fh.name
+
+    def test_repeated_journal_lines_collapse_to_the_earliest(self):
+        """A signal re-journalled by each 2-hour shift is still ONE
+        observation, priced at the moment the engine first decided.
+
+        Keying on the journal timestamp instead would weight a long-lived
+        signal in proportion to how many shifts it survived, biasing the
+        lambda that controls Kelly sizing.
+        """
+        import json as J
+        path = self._journal([
+            {"t": 300, "action": "SIGNAL", "conditionId": "0xabc",
+             "outcomeIndex": 1, "sigma": 1.1, "currentPrice": 0.61},
+            {"t": 100, "action": "SIGNAL", "conditionId": "0xabc",
+             "outcomeIndex": 1, "sigma": 0.9, "currentPrice": 0.55},
+            {"t": 200, "action": "SIGNAL", "conditionId": "0xabc",
+             "outcomeIndex": 1, "sigma": 1.0, "currentPrice": 0.58},
+            {"t": 150, "action": "SIGNAL", "conditionId": "0xdef",
+             "outcomeIndex": 0, "sigma": 1.4, "currentPrice": 0.30},
+        ])
+        first = {}
+        with open(path) as f:
+            for line in f:
+                r = J.loads(line)
+                if r.get("action") != "SIGNAL" or r.get("conditionId") is None:
+                    continue
+                k = (r["conditionId"], r["outcomeIndex"])
+                if k not in first or r["t"] < first[k]["t"]:
+                    first[k] = r
+        os.unlink(path)
+        self.assertEqual(len(first), 2)
+        self.assertEqual(first[("0xabc", 1)]["t"], 100)
+        self.assertEqual(first[("0xabc", 1)]["currentPrice"], 0.55)
+
+
+class TestSeedFeedOverlap(unittest.TestCase):
+    """Seeded fills must dedupe against the live poll that re-reads them."""
+
+    def _fill(self, **kw):
+        from pmx.feed import Fill
+        base = dict(wallet="0xA", timestamp=100, token_id="tok1", side="BUY",
+                    price=0.4, shares=10.0, usdc=4.0, source="rest",
+                    tx="0xTX", condition_id="0xc", outcome_index=0, title="t")
+        base.update(kw)
+        return Fill(**base)
+
+    def test_seed_and_poll_of_the_same_fill_share_a_key(self):
+        """The seed used to leave token_id empty, so the same fill arriving
+        from the poll looked different and was counted into the wallet's
+        stance twice."""
+        self.assertEqual(self._fill(source="rest").key,
+                         self._fill(source="chain").key)
+
+    def test_blank_token_id_breaks_the_match(self):
+        self.assertNotEqual(self._fill(token_id="").key, self._fill().key)
+
+    def test_dualfeed_remember_suppresses_a_repeat(self):
+        from pmx.feed import DualFeed
+        f = DualFeed(set(), rpc_url=None)
+        self.assertTrue(f.remember(self._fill()))
+        self.assertFalse(f.remember(self._fill()))
+        self.assertEqual(f.stats["duplicates"], 1)
+
+    def test_prime_accepts_an_explicit_timestamp(self):
+        """Priming must be able to rewind to before the seed started."""
+        from pmx.feed import DataApiFeed
+        d = DataApiFeed({"0xa", "0xb"})
+        d.prime(at=12345)
+        self.assertEqual(set(d.last_ts.values()), {12345})
+
+
 class TestConfig(unittest.TestCase):
     def test_rejects_over_betting(self):
         cfg = EngineConfig()

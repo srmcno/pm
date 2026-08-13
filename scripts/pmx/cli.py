@@ -50,6 +50,23 @@ def load_profiles(path=None):
             f"  python3 -m pmx.profiles --degraded   (metadata only)")
 
 
+SEEN_PATH = os.path.join(pmlib.BASE, "data", "live", "engine-seen.json")
+
+
+def _load_seen():
+    try:
+        with open(SEEN_PATH) as f:
+            return {tuple(k) for k in json.load(f)}
+    except (OSError, ValueError):
+        return set()
+
+
+def _save_seen(seen):
+    os.makedirs(os.path.dirname(SEEN_PATH), exist_ok=True)
+    with open(SEEN_PATH, "w") as f:
+        json.dump([list(k) for k in seen], f)
+
+
 def watchlist_from(profiles, limit):
     live = [(a, p) for a, p in profiles["profiles"].items() if not p["excluded"]]
     live.sort(key=lambda kv: -(kv[1].get("pnl90") or 0))
@@ -81,9 +98,15 @@ def cmd_preflight(args):
     return 0
 
 
-def _seed_window(eng, watch, hours):
+def _seed_window(eng, watch, hours, feed=None):
     """Backfill the rolling window from REST history so a fresh process has
-    context instead of waiting `hours` for the live feed to rebuild it."""
+    context instead of waiting `hours` for the live feed to rebuild it.
+
+    Seeded fills are registered with `feed` so the first live poll can safely
+    overlap them: the poll re-fetches the interval the seed itself spanned,
+    and without registration every one of those fills would be counted a
+    second time into the wallets' stances.
+    """
     import signals as sigmod
 
     from .feed import Fill, resolve_outcome_index
@@ -99,7 +122,11 @@ def _seed_window(eng, watch, hours):
                 continue
             fills.append(Fill(
                 wallet=wallet, timestamp=t.get("timestamp") or 0,
-                token_id="", side=t.get("side") or "BUY",
+                # The real token id, not "": Fill.key includes it, so a seed
+                # that leaves it blank cannot be matched against the same
+                # fill arriving from the live poll.
+                token_id=str(t.get("asset") or ""),
+                side=t.get("side") or "BUY",
                 price=t.get("price") or 0.0, shares=t.get("size") or 0.0,
                 usdc=t.get("usdcSize") or 0.0, source="rest",
                 tx=t.get("transactionHash") or "",
@@ -108,6 +135,9 @@ def _seed_window(eng, watch, hours):
                 event_slug=t.get("eventSlug") or "", detected_at=now))
             total += 1
     eng.ingest(fills)
+    if feed is not None:
+        for f in fills:
+            feed.remember(f)
     return total
 
 
@@ -200,13 +230,23 @@ def cmd_watch(args):
     print(f"Watching {len(watch)} wallets "
           f"({'chain + REST' if feed.chain else 'REST only — pass --rpc for sub-second'})",
           flush=True)
-    _seed_window(eng, watch, args.hours)
-    # The seed just ingested the last `hours` of history; anything older than
-    # this moment is not a new detection and must not be timed as one.
-    feed.rest.prime()
+    # Prime from BEFORE the seed, not after. Seeding 60 wallets takes a
+    # couple of minutes and fetches each at a different instant, so a cursor
+    # set to the moment seeding finished silently drops any fill that landed
+    # after its own wallet's request but before the last one returned. The
+    # chain feed cannot recover those either — its first poll looks back only
+    # a dozen blocks. Priming to the pre-seed timestamp makes the first poll
+    # re-read that whole interval; the seeded fills registered above are what
+    # stop the overlap being double-counted.
+    seed_started = time.time()
+    _seed_window(eng, watch, args.hours, feed=feed)
+    feed.rest.prime(at=seed_started)
     deadline = time.time() + args.minutes * 60 if args.minutes else None
     portfolio = Portfolio(cash=cfg.sizing.bankroll, positions=[])
-    seen = set()
+    # Which signals this engine has already announced, carried across shifts.
+    # A shift is two hours; a signal can outlive several of them, and a fresh
+    # in-memory set would re-announce and re-journal it at every restart.
+    seen = _load_seen()
     last_beat = 0.0
 
     while not deadline or time.time() < deadline:
@@ -260,6 +300,8 @@ def cmd_watch(args):
                 cmd_settle(args)
             except SystemExit:
                 pass
+        if fresh:
+            _save_seen(seen)
         if args.git_push and (fresh or beat_due):
             pmlib.publish_repo(
                 ["dashboard/data/engine.json", "data/live"],
@@ -296,7 +338,18 @@ def cmd_settle(args):
     seen_path = os.path.join(pmlib.BASE, "data", "live", "settled.json")
     seen = set(tuple(k) for k in (json.load(open(seen_path))
                                   if os.path.exists(seen_path) else []))
-    fired, added, pending = [], 0, 0
+    journaled, added, pending = 0, 0, 0
+    # One observation per (market, outcome) — NOT per journal line. A signal
+    # that stays live across several two-hour shifts is re-journalled by each
+    # one with a fresh timestamp, and keying on that timestamp would turn a
+    # single settled outcome into several identical observations, weighting
+    # long-lived signals in proportion to how long they lasted and biasing
+    # the very lambda that ends up controlling Kelly sizing.
+    #
+    # The earliest journal line wins: that is the price and Sigma at the
+    # moment the engine actually decided, which is the decision the
+    # calibration is trying to score.
+    first = {}
     try:
         with open(JOURNAL) as f:
             for line in f:
@@ -304,14 +357,19 @@ def cmd_settle(args):
                     r = json.loads(line)
                 except ValueError:
                     continue
-                if r.get("action") == "SIGNAL":
-                    fired.append(r)
+                if r.get("action") != "SIGNAL" or r.get("conditionId") is None:
+                    continue
+                journaled += 1
+                k = (r.get("conditionId"), r.get("outcomeIndex"))
+                if k not in first or (r.get("t") or 0) < (first[k].get("t") or 0):
+                    first[k] = r
     except OSError:
         raise SystemExit(f"no journal at {JOURNAL} — run scan or watch first")
 
+    fired = list(first.values())
     for r in fired:
-        key = (r.get("conditionId"), r.get("outcomeIndex"), r.get("t"))
-        if key in seen or key[0] is None:
+        key = (r.get("conditionId"), r.get("outcomeIndex"))
+        if key in seen:
             continue
         m = resolver.get(r["conditionId"])
         oi = r.get("outcomeIndex") or 0
@@ -335,8 +393,8 @@ def cmd_settle(args):
 
     total = len(calmod.load_observations())
     need = EngineConfig.load().probability.min_calibration_samples
-    print(f"{len(fired)} signals journaled · {added} newly settled · "
-          f"{pending} still open")
+    print(f"{journaled} journal lines · {len(fired)} distinct market outcomes · "
+          f"{added} newly settled · {pending} still open")
     print(f"observations: {total}/{need} needed before lambda can be fitted"
           + ("  — run `python3 -m pmx.calibrate`" if total >= need else ""))
     return 0

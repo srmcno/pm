@@ -64,7 +64,7 @@ def recent_trades_live(wallets, since):
                 trades.append({k: t.get(k) for k in (
                     "timestamp", "conditionId", "size", "usdcSize", "price",
                     "side", "outcome", "outcomeIndex", "title", "slug",
-                    "eventSlug", "transactionHash")})
+                    "eventSlug", "transactionHash", "asset")})
             if stop or len(rows) < 500:
                 break
             oldest = rows[-1]["timestamp"]

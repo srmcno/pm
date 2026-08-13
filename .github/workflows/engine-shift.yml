@@ -84,7 +84,8 @@ jobs:
           # be clobbered by this one.
           git add dashboard/data/engine.json data/live/engine-journal.jsonl \
                   data/live/observations.jsonl data/live/settled.json \
-                  data/live/engine-state.json data/live/engine.json || true
+                  data/live/engine-seen.json data/live/engine-state.json \
+                  data/live/engine.json || true
           git diff --cached --quiet && exit 0
           git commit -m "auto: engine shift $(date -u +'%Y-%m-%d %H:%M UTC')"
           # -X theirs during a rebase keeps the commit being replayed — ours.
