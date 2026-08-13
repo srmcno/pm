@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-13 11:26 UTC · started with $20.00 (virtual)
+Updated 2026-08-13 11:41 UTC · started with $20.00 (virtual)
 
-**Equity $19.32 (-3.4%)** · cash $11.46 · 7 open · 1 settled
+**Equity $19.32 (-3.4%)** · cash $11.46 · 6 open · 2 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -12,8 +12,8 @@ Updated 2026-08-13 11:26 UTC · started with $20.00 (virtual)
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.15 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.23 | $1.01 |
-| LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner | Ninjas in Pyjamas | 2.41 | 0.68 | 0.00 | $0.00 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
 | Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner | Team Liquid | 0.67 | 1.00 | +0.96 |
+| LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner | Ninjas in Pyjamas | 0.68 | 0.00 | -1.63 |

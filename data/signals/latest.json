@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786620364,
+  "generatedAt": 1786621301,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 655.41,
      "avgPrice": 0.9291,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 2.322806852504734
+     "lastTradeAgoH": 4.6,
+     "score": 2.2985769027560825
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 392.63,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 2.164433658015774
+     "lastTradeAgoH": 4.6,
+     "score": 2.14185575029544
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -41,14 +41,14 @@
      "netUsd": 721.84,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 1.926873866282336
+     "lastTradeAgoH": 4.6,
+     "score": 1.9067740216044777
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1769.88,
-   "score": 6.4141,
+   "score": 6.3472,
    "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
    "outcome": "No",
    "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
