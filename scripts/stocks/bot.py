@@ -147,10 +147,13 @@ def cmd_run(args):
         livedesk.assert_armed(args)
         executor = livedesk.Alpaca()
         print(f"executor: {executor.base}")
-        # Closed trades already in state predate this session; only closes
-        # produced by this loop are mirrored, each exactly once.
+        # Closed trades that never held a live position have nothing to
+        # mirror. A close still pending from an interrupted session — saved
+        # with liveOpen but not yet flagged mirrored — keeps its retry state
+        # and is picked up by the loop below.
         for c in st["closed"]:
-            c.setdefault("mirrored", True)
+            if not c.get("liveOpen"):
+                c.setdefault("mirrored", True)
 
     deadline = time.time() + args.minutes * 60 if args.minutes else None
     last_push = 0.0

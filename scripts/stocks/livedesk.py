@@ -63,14 +63,20 @@ class Alpaca:
     def close_all(self):
         return self._req("DELETE", "/v2/positions?cancel_orders=true")
 
-    def submit(self, symbol, qty, side, limit_price=None):
+    def submit(self, symbol, qty, side, limit_price=None, client_order_id=None):
         order = {"symbol": symbol, "qty": str(qty), "side": side,
                  "time_in_force": "day"}
+        if client_order_id:
+            order["client_order_id"] = client_order_id
         if limit_price:
             order.update({"type": "limit", "limit_price": str(round(limit_price, 2))})
         else:
             order["type"] = "market"
         return self._req("POST", "/v2/orders", data=json.dumps(order))
+
+    def order_by_client_id(self, client_order_id):
+        return self._req("GET", "/v2/orders:by_client_order_id",
+                         params={"client_order_id": client_order_id})
 
 
 def assert_armed(args):
@@ -83,8 +89,20 @@ def assert_armed(args):
 
 
 def mirror_position(client: Alpaca, pos, opening):
-    """Mirror one paper decision onto the Alpaca account."""
+    """Mirror one paper decision onto the Alpaca account.
+
+    The client order id is deterministic per position and leg, so retrying an
+    ambiguous submission — the order was accepted but the response was lost —
+    reconciles to the already-accepted order instead of firing a second one
+    (a duplicated close would reverse the position, not flatten it)."""
     side = ("buy" if pos["side"] == "long" else "sell") if opening else \
            ("sell" if pos["side"] == "long" else "buy")
     qty = max(1, int(pos["shares"]))
-    return client.submit(pos["symbol"], qty, side)
+    cid = f"pm-{'o' if opening else 'c'}-{pos['symbol']}-{int(pos['openedAt'])}"
+    try:
+        return client.submit(pos["symbol"], qty, side, client_order_id=cid)
+    except Exception as submit_err:
+        try:
+            return client.order_by_client_id(cid)
+        except Exception:
+            raise submit_err

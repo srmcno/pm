@@ -228,7 +228,8 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
         # different config would misrepresent both.
         prev = stocklib.load_state("backtest.json", {})
         if isinstance(prev, dict) and isinstance(prev.get("validation"), dict) \
-                and prev["validation"].get("config") == result["config"]:
+                and prev["validation"].get("config") == result["config"] \
+                and prev["validation"].get("bankroll") == result["bankroll"]:
             result["validation"] = prev["validation"]
         stocklib.save_state("backtest.json", result)
         _write_report(result)
@@ -285,6 +286,9 @@ def validate(cfg=None, range_="1mo", interval="5m", bankroll=1000.0):
                     f"the next bar's open",
         "returnPct": m["returnPct"], "trades": m["trades"],
         "winRate": m["winRate"], "worstDay": round(worst, 2),
+        # Whole-share sizing makes results bankroll-dependent; the block is
+        # only comparable to a base replay of the same bankroll.
+        "bankroll": bankroll,
         "config": {k: getattr(cfg, k) for k in CONFIG_KEYS},
     }
     bt = stocklib.load_state("backtest.json", {})

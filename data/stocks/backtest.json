@@ -336,6 +336,7 @@
    "slippage_bps": 3.0,
    "min_beta_r2": 0.25,
    "beta_lookback_days": 60
-  }
+  },
+  "bankroll": 1000.0
  }
 }
