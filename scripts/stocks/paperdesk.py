@@ -206,7 +206,12 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
         quote_objs[sym] = q
         if q.get("ts"):
             ages.append(max(0.0, now - q["ts"]))
-        tape.record(sym, now, q["price"])
+        # The signal tape records at the VENUE timestamp: a fallback quote
+        # older than an observation already on the tape is silently dropped
+        # (RollingTape rejects out-of-order writes), so a stale price can
+        # never be time-shifted forward to fabricate an anchor regression.
+        # The quote itself stays usable for marks and exits regardless.
+        tape.record(sym, q.get("ts") or now, q["price"])
         drv = meta["driver"]
         if betas.get(sym, {}).get("r2", 0) < cfg.min_beta_r2:
             continue

@@ -242,17 +242,32 @@ def cmd_run(args):
             sleep_s = max(3.0, cfg.poll_seconds / 3.0)
         time.sleep(sleep_s)
     if executor:
+        from stocks import livedesk
         # The paper-session deadline never abandons live orders: a DAY
         # order can fill after the process stops, so pending mirrors keep
-        # being reconciled past the deadline until settled — bounded by a
-        # grace period, after which the next session's startup
-        # reconciliation picks the persisted state back up.
+        # being reconciled past the deadline until settled. If the grace
+        # period expires, every unconfirmed OPEN order is cancelled — an
+        # open filling after exit would be unmanaged new exposure — and
+        # reconciliation continues briefly so cancellations confirm and
+        # any partial fills get their closes submitted. Closes are left
+        # working: they can only flatten, and the next session's startup
+        # reconciliation settles their records from persisted state.
         settle_deadline = time.time() + 1800
+        cancelled_opens = False
         while _reconcile_mirrors(executor, st, save=paperdesk.save):
             paperdesk.save(st)
-            if time.time() > settle_deadline:
-                print("  ALERT: live orders still unsettled at shutdown; "
-                      "the next session resumes reconciliation", flush=True)
+            if time.time() > settle_deadline and not cancelled_opens:
+                cancelled_opens = True
+                settle_deadline = time.time() + 300
+                for p in st["positions"]:
+                    if p.get("liveCid") and not p.get("liveOpen"):
+                        if livedesk.cancel_by_client_id(executor, p["liveCid"]):
+                            print(f"  cancelled pending open {p['symbol']} "
+                                  f"at shutdown", flush=True)
+            elif time.time() > settle_deadline:
+                print("  ALERT: live close orders still working at "
+                      "shutdown; they only reduce exposure and the next "
+                      "session resumes reconciliation", flush=True)
                 break
             print("  settling pending live orders before shutdown",
                   flush=True)

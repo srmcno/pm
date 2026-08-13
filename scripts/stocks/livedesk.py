@@ -78,6 +78,9 @@ class Alpaca:
         return self._req("GET", "/v2/orders:by_client_order_id",
                          params={"client_order_id": client_order_id})
 
+    def cancel_order(self, order_id):
+        return self._req("DELETE", f"/v2/orders/{order_id}")
+
 
 # Order statuses that will never fill. Everything else — new, accepted,
 # pending_new, partially_filled — is still working (or queued for the next
@@ -108,6 +111,27 @@ def mirror_cid(pos, opening, attempt=0):
     leg = "o" if opening else "c"
     suffix = f"-a{attempt}" if attempt else ""
     return f"pm-{leg}-{pos['symbol']}-{int(pos['openedAt'])}{suffix}"
+
+
+def cancel_by_client_id(client, client_order_id):
+    """Cancel the order with this client id if it is still working.
+
+    Returns True when a cancellation was submitted, False when the order is
+    already terminal or cannot be found. Used at shutdown to stop pending
+    OPEN orders from filling into unmanaged exposure after the process
+    exits; closes are deliberately left working — they can only flatten."""
+    try:
+        o = client.order_by_client_id(client_order_id)
+    except Exception:                                     # noqa: BLE001
+        return False
+    status = o.get("status")
+    if status == "filled" or status in FAILED_STATUSES:
+        return False
+    try:
+        client.cancel_order(o.get("id"))
+        return True
+    except Exception:                                     # noqa: BLE001
+        return False
 
 
 def assert_armed(args):
