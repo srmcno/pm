@@ -110,6 +110,27 @@ publish. It stays live end to end:
   60 s and shows a **bot live / bot stale** pill, so a dead pipeline is
   visible instead of silently serving old numbers.
 
+## The arb desk
+
+A second page of the app — **https://srmcno.github.io/pm/arb.html** — runs a
+micro-cap arbitrage scanner on MEXC spot (chosen over Pionex for its full
+public market-data API and ~2,100 listed pairs), rescanning every ~25 s:
+
+- **Triangular cycles** (USDT → coin → USDC/USD1/BTC/ETH → USDT) priced by
+  crossing real bids and asks net of each pair's actual taker fee, then
+  re-verified by walking live order-book depth at size. Fees kill almost
+  everything — what survives is small and dies in seconds, so the page also
+  measures edge survival scan-to-scan.
+- **Microstructure board** — spread, depth within 1%, book imbalance, taker
+  aggression, print sizes: the flow behind the candles.
+- **Cross-venue gaps vs Gate.io**, guarded against the same-ticker-
+  different-token trap (price-ratio and volume filters), published as intel
+  only — capturing one needs funded accounts on both venues.
+- A **$100 paper account** executes verified cycles at walked-depth prices,
+  assuming atomic fills — an upper bound, clearly labeled. No keys, no real
+  orders. `arb-watch.yml` runs the scanner in self-chaining ~2-hour shifts
+  like the Polymarket watcher.
+
 ## Data sources
 
 - `https://data-api.polymarket.com/v1/leaderboard` — trader rankings

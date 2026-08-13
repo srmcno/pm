@@ -7,6 +7,7 @@ data/cache/ and are safe to delete.
 """
 import json
 import os
+import subprocess
 import time
 
 import requests
@@ -163,6 +164,45 @@ def book_price(token_id, side):
         return float(d["price"])
     except (TypeError, KeyError, ValueError):
         return None
+
+
+# ---------------------------------------------------------------- publishing
+
+LIVE_BRANCH = "claude/polymarket-wallets-analysis-m81p4j"
+
+
+def publish_repo(paths, message):
+    """Commit the given paths, push to the checked-out branch, and dispatch
+    the Pages deploy. Best-effort: returns True when the push landed.
+
+    The explicit deploy dispatch matters — pushes made with the workflow's
+    GITHUB_TOKEN never trigger on-push workflows (GitHub's recursion
+    guard), so without it the site silently serves stale data.
+    """
+    def git(*argv):
+        return subprocess.run(["git", *argv], cwd=BASE, check=False,
+                              capture_output=True, text=True)
+    b = (git("rev-parse", "--abbrev-ref", "HEAD").stdout or "").strip()
+    branch = b if b and b != "HEAD" else LIVE_BRANCH
+    git("add", *paths)
+    if git("diff", "--cached", "--quiet").returncode == 0:
+        return False
+    git("commit", "-m", message)
+    git("pull", "--rebase", "origin", branch)
+    r = git("push", "origin", f"HEAD:{branch}")
+    ok = r.returncode == 0
+    print("  site push:", "ok" if ok else (r.stderr or "").strip()[:200],
+          flush=True)
+    if ok and (os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")):
+        try:
+            d = subprocess.run(["gh", "workflow", "run", "jekyll-gh-pages.yml",
+                                "--ref", branch], cwd=BASE, check=False,
+                               capture_output=True, text=True)
+            print("  site deploy:", "dispatched" if d.returncode == 0
+                  else (d.stderr or "").strip()[:120], flush=True)
+        except OSError:
+            pass
+    return ok
 
 
 # ---------------------------------------------------------------- watchlist
