@@ -6,14 +6,24 @@ import os
 BASE = os.path.join(os.path.dirname(__file__), "..")
 
 
+def read_optional(*path):
+    try:
+        with open(os.path.join(BASE, *path)) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
 def main():
     with open(os.path.join(BASE, "data", "analyzed.json")) as f:
         data = json.load(f)
     with open(os.path.join(BASE, "dashboard", "template.html")) as f:
         tpl = f.read()
     # </script> inside JSON strings would close the data block early.
-    payload = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
-    out = tpl.replace("/*__DATA__*/", payload)
+    enc = lambda obj: json.dumps(obj, separators=(",", ":")).replace("</", "<\\/")
+    out = (tpl.replace("/*__DATA__*/", enc(data))
+              .replace("/*__SIGNALS__*/", enc(read_optional("data", "signals", "latest.json")))
+              .replace("/*__PAPER__*/", enc(read_optional("dashboard", "data", "paper.json"))))
     out_path = os.path.join(BASE, "dashboard", "index.html")
     with open(out_path, "w") as f:
         f.write(out)

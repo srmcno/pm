@@ -148,16 +148,28 @@ NOISE_ARCHETYPES = {"Market maker / HFT", "Crypto scalper"}
 
 
 def build_watchlist(analyzed, min_pnl=100_000, max_wallets=60,
-                    require_win_rate=0.5, pnl_key="pnl90"):
+                    require_win_rate=0.5, pnl_key="pnl90", categories=None):
     """Qualified wallets whose buys plausibly carry information.
 
     Quality score in (0, 1]: rank-normalized PnL blended with win-day rate.
+    With `categories`, only wallets that do most of their volume there
+    qualify — a specialist desk follows proven specialists, not tourists.
     """
+    def specialist(w):
+        if not categories:
+            return True
+        vol = w.get("volume90") or 0
+        if not vol:
+            return False
+        share = sum((w.get("categoryVol") or {}).get(c, 0) for c in categories)
+        return share / vol >= 0.5
+
     ranked = [w for w in analyzed["wallets"]
               if (w.get(pnl_key) or 0) >= min_pnl
               and w["archetype"] not in NOISE_ARCHETYPES
               and not w.get("truncated")
-              and (w.get("winDayRate") or 0) >= require_win_rate]
+              and (w.get("winDayRate") or 0) >= require_win_rate
+              and specialist(w)]
     ranked.sort(key=lambda w: -(w.get(pnl_key) or 0))
     ranked = ranked[:max_wallets]
     n = len(ranked)

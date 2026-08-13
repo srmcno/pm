@@ -10,17 +10,19 @@
   :root {
     color-scheme: light;
     --display: "Josefin Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --page: #f3eee0;
-    --surface: #faf6ea;
-    --ink: #191c26;
-    --ink-2: #55503f;
-    --muted: #8c8471;
-    --grid: #e2dac3;
-    --baseline: #c8bfa3;
-    --border: rgba(25, 28, 38, 0.14);
-    --accent: #96762f;
-    --accent-wash: rgba(150, 118, 47, 0.10);
-    --gold-line: rgba(150, 118, 47, 0.45);
+    --page: #faf9f5;
+    --surface: #ffffff;
+    --ink: #101010;
+    --ink-2: #45433c;
+    --muted: #837d6c;
+    --grid: #e9e5d8;
+    --baseline: #cfc9b6;
+    --border: rgba(16, 16, 16, 0.16);
+    --accent: #a9852e;
+    --accent-wash: rgba(169, 133, 46, 0.08);
+    --gold-line: rgba(169, 133, 46, 0.55);
+    --title-grad: linear-gradient(180deg, #2a2a2a, #101010);
+    --tex: rgba(169, 133, 46, 0.05);
     --up: #006300;
     --down: #d03b3b;
     --up-wash: rgba(12, 163, 12, 0.12);
@@ -32,17 +34,19 @@
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) {
       color-scheme: dark;
-      --page: #0b0d14;
-      --surface: #141826;
-      --ink: #f2ead6;
-      --ink-2: #c8bfa8;
-      --muted: #8f8873;
-      --grid: #272c3a;
-      --baseline: #3c4254;
-      --border: rgba(203, 170, 110, 0.24);
-      --accent: #cbaa6e;
-      --accent-wash: rgba(203, 170, 110, 0.12);
-      --gold-line: rgba(203, 170, 110, 0.55);
+      --page: #070706;
+      --surface: #101010;
+      --ink: #f7f4ec;
+      --ink-2: #c9c5b6;
+      --muted: #8b8676;
+      --grid: #1f1f1d;
+      --baseline: #353531;
+      --border: rgba(212, 175, 90, 0.30);
+      --accent: #d4af5a;
+      --accent-wash: rgba(212, 175, 90, 0.12);
+      --gold-line: rgba(212, 175, 90, 0.62);
+      --title-grad: linear-gradient(180deg, #f2d894, #d4af5a 52%, #a5813c);
+      --tex: rgba(212, 175, 90, 0.04);
       --up: #0ca30c;
       --down: #e05252;
       --up-wash: rgba(12, 163, 12, 0.14);
@@ -54,17 +58,19 @@
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --page: #0b0d14;
-    --surface: #141826;
-    --ink: #f2ead6;
-    --ink-2: #c8bfa8;
-    --muted: #8f8873;
-    --grid: #272c3a;
-    --baseline: #3c4254;
-    --border: rgba(203, 170, 110, 0.24);
-    --accent: #cbaa6e;
-    --accent-wash: rgba(203, 170, 110, 0.12);
-    --gold-line: rgba(203, 170, 110, 0.55);
+    --page: #070706;
+    --surface: #101010;
+    --ink: #f7f4ec;
+    --ink-2: #c9c5b6;
+    --muted: #8b8676;
+    --grid: #1f1f1d;
+    --baseline: #353531;
+    --border: rgba(212, 175, 90, 0.30);
+    --accent: #d4af5a;
+    --accent-wash: rgba(212, 175, 90, 0.12);
+    --gold-line: rgba(212, 175, 90, 0.62);
+    --title-grad: linear-gradient(180deg, #f2d894, #d4af5a 52%, #a5813c);
+    --tex: rgba(212, 175, 90, 0.04);
     --up: #0ca30c;
     --down: #e05252;
     --up-wash: rgba(12, 163, 12, 0.14);
@@ -77,7 +83,10 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: var(--page);
+    background:
+      repeating-linear-gradient(45deg, var(--tex) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(-45deg, var(--tex) 0 1px, transparent 1px 26px),
+      var(--page);
     color: var(--ink);
     font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
   }
@@ -92,9 +101,22 @@
   }
   h1 {
     font-family: var(--display); font-weight: 600; text-transform: uppercase;
-    font-size: 44px; line-height: 1.08; margin: 0 0 6px;
+    font-size: 48px; line-height: 1.08; margin: 0 0 6px;
     letter-spacing: 0.16em; text-indent: 0.16em; text-wrap: balance;
+    background: var(--title-grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
   }
+  .asof {
+    text-align: center; color: var(--muted); font-size: 12.5px; margin: 0 0 14px;
+  }
+  .meter {
+    display: inline-block; width: 54px; height: 7px; vertical-align: 1px;
+    background: var(--chip); border: 1px solid var(--border);
+  }
+  .meter-fill { display: block; height: 100%; background: var(--accent); }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--gold-line); }
+  a:hover { border-bottom-color: var(--accent); }
   .rule {
     display: flex; align-items: center; gap: 12px; margin: 14px auto 18px; max-width: 420px;
   }
@@ -185,7 +207,11 @@
   tr.mainrow:hover td { background: var(--accent-wash); }
   tr.mainrow.open td { background: var(--accent-wash); }
   td .who { display: flex; flex-direction: column; }
-  td .who .nm { font-weight: 600; max-width: 230px; overflow: hidden; text-overflow: ellipsis; }
+  td .who .nm {
+    font-weight: 600; max-width: 230px; overflow: hidden; text-overflow: ellipsis;
+    color: var(--ink); border-bottom: none;
+  }
+  td .who .nm:hover { color: var(--accent); }
   td .who .addr { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--muted); }
   .chip {
     display: inline-block; font-size: 11.5px; padding: 2px 9px; border-radius: 2px;
@@ -234,7 +260,7 @@
 
 <div class="wrap">
   <header class="masthead">
-    <svg id="sunburst" width="150" height="40" viewBox="0 0 150 40" aria-hidden="true"></svg>
+    <svg id="sunburst" width="190" height="48" viewBox="0 0 190 48" aria-hidden="true"></svg>
     <p class="eyebrow">Polymarket ◆ trailing 90 days</p>
     <h1>Moffitt Money</h1>
     <div class="rule" aria-hidden="true"><span class="dia"></span></div>
@@ -243,16 +269,45 @@
 
   <div class="tiles" id="tiles"></div>
 
-  <div class="filters" id="filters">
-    <input type="search" id="q" placeholder="Search trader or address" aria-label="Search trader">
-    <select id="archsel" aria-label="Filter by archetype"><option value="">All archetypes</option></select>
-    <select id="catsel" aria-label="Filter by dominant category"><option value="">All specialties</option></select>
-    <span class="count" id="count"></span>
-  </div>
+
+  <section id="signals">
+    <h2>Live signals</h2>
+    <p class="asof" id="sig-asof"></p>
+    <div class="tablewrap">
+      <table class="main" id="sigtable">
+        <thead><tr>
+          <th class="l">Market</th><th class="l">Buy</th><th>Price</th>
+          <th>Backers</th><th>Staked</th><th>Score</th><th>Resolves</th><th></th>
+        </tr></thead>
+        <tbody id="sigbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="ledger">
+    <h2>Bot ledger</h2>
+    <p class="asof" id="paper-asof"></p>
+    <div class="tiles" id="papertiles"></div>
+    <div class="cardgrid">
+      <div class="card">
+        <h3>Open positions</h3>
+        <div id="paperopen"></div>
+      </div>
+      <div class="card">
+        <h3>Settled</h3>
+        <div id="paperclosed"></div>
+      </div>
+    </div>
+  </section>
 
   <section id="cohort">
-    <h2>The cohort</h2>
-    <p class="sectionnote">Every wallet below ranked top-50 on at least one Polymarket leaderboard (weekly, monthly, or all-time; profit or volume; overall or category). Click a row for the full profile. Click a column header to sort.</p>
+    <h2>The sharps</h2>
+    <div class="filters" id="filters">
+      <input type="search" id="q" placeholder="Search trader or address" aria-label="Search trader">
+      <select id="archsel" aria-label="Filter by archetype"><option value="">All archetypes</option></select>
+      <select id="catsel" aria-label="Filter by dominant category"><option value="">All specialties</option></select>
+      <span class="count" id="count"></span>
+    </div>
     <div class="tablewrap">
       <table class="main" id="maintable">
         <thead><tr id="headrow"></tr></thead>
@@ -262,32 +317,26 @@
   </section>
 
   <section id="aggsec">
-    <h2>How the sharp money behaves</h2>
-    <p class="sectionnote">Aggregates recompute against the filter row above, so the charts always agree with the table.</p>
+    <h2>Patterns</h2>
     <div class="cardgrid">
       <div class="card">
-        <h3>Where the volume goes</h3>
-        <p class="note">90-day traded volume by market category, classified from event slugs.</p>
+        <h3>Volume by category</h3>
         <div id="catchart"></div>
       </div>
       <div class="card">
-        <h3>Eight ways to trade</h3>
-        <p class="note">Wallet archetypes: count of wallets and combined 90-day profit.</p>
+        <h3>Archetypes</h3>
         <div id="archchart"></div>
       </div>
       <div class="card full" style="grid-column: 1 / -1;">
-        <h3>Volume buys you nothing</h3>
-        <p class="note">Each dot is one wallet: 90-day volume (log scale) against 90-day profit. Hover for names.</p>
+        <h3>Volume vs 90-day PnL</h3>
         <div id="scatter"></div>
       </div>
       <div class="card">
-        <h3>The trading clock</h3>
-        <p class="note">Trades by hour of day (UTC), summed across the filtered cohort.</p>
+        <h3>Trades by hour · UTC</h3>
         <div id="clock"></div>
       </div>
       <div class="card">
-        <h3>Entry-price appetite</h3>
-        <p class="note">Wallets by volume-weighted average buy price — favorites (&gt;75¢) vs longshots (&lt;30¢).</p>
+        <h3>Average buy price</h3>
         <div id="pricehist"></div>
       </div>
     </div>
@@ -298,6 +347,8 @@
 <div id="tooltip" role="status"></div>
 
 <script id="data" type="application/json">/*__DATA__*/</script>
+<script id="signals-snapshot" type="application/json">/*__SIGNALS__*/</script>
+<script id="paper-snapshot" type="application/json">/*__PAPER__*/</script>
 <script>
 "use strict";
 const DATA = JSON.parse(document.getElementById("data").textContent);
@@ -343,7 +394,7 @@ function hideTT() { tt.style.display = "none"; }
 /* ---------- masthead ornament: deco fan ---------- */
 (function () {
   const svg = document.getElementById("sunburst");
-  const cx = 75, cy = 38, R = 34, r = 12, n = 13;
+  const cx = 95, cy = 46, R = 42, r = 14, n = 17;
   for (let i = 0; i < n; i++) {
     const a = Math.PI * (1 - i / (n - 1));
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -366,9 +417,132 @@ const genDate = new Date(DATA.generatedAt * 1000);
 const dateStr = genDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 document.getElementById("lede").append(
   Object.assign(document.createElement("span"), { textContent:
-    `${DATA.walletCount} wallets that topped a Polymarket leaderboard, studied trade by trade across the trailing 90 days: ` +
-    `${fmtInt(DATA.aggregates.totalTrades90)} trades, ${fmtUsd(DATA.aggregates.totalVolume90)} in volume, ` +
-    `${fmtUsd(DATA.aggregates.totalPnl90, true)} in combined profit. Snapshot ${dateStr}.` }));
+    `${DATA.walletCount} top wallets · ${fmtInt(DATA.aggregates.totalTrades90)} trades · ` +
+    `${fmtUsd(DATA.aggregates.totalVolume90)} volume · ${fmtUsd(DATA.aggregates.totalPnl90, true)} PnL · 90 days` }));
+
+/* ---------- live data: fetch fresh, fall back to embedded ---------- */
+function readSnapshot(id) {
+  try { return JSON.parse(document.getElementById(id).textContent); }
+  catch (e) { return null; }
+}
+const LIVE = { signals: readSnapshot("signals-snapshot"), paper: readSnapshot("paper-snapshot") };
+function ago(ts) {
+  const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
+  return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
+}
+const OUTLINK = (slug, eventSlug) =>
+  eventSlug ? `https://polymarket.com/event/${eventSlug}` :
+  slug ? `https://polymarket.com/market/${slug}` : null;
+
+function renderSignals() {
+  const body = document.getElementById("sigbody");
+  body.replaceChildren();
+  const payload = LIVE.signals;
+  const sigs = (payload && payload.signals) || [];
+  document.getElementById("sig-asof").textContent = payload && payload.meta
+    ? `Updated ${ago(payload.meta.generatedAt)} · ${payload.meta.watchlistSize} wallets watched · ` +
+      `${payload.meta.minBackers}+ independent backers required`
+    : "";
+  if (!sigs.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td"); td.colSpan = 8; td.className = "l";
+    td.textContent = "No consensus among the sharps right now — the bot is waiting.";
+    tr.appendChild(td); body.appendChild(tr);
+    return;
+  }
+  const maxScore = Math.max(...sigs.map(s => s.score), 1);
+  for (const s of sigs) {
+    const tr = document.createElement("tr");
+    const mkTd = (cls) => { const td = document.createElement("td"); if (cls) td.className = cls; tr.appendChild(td); return td; };
+    mkTd("l").textContent = s.question || s.title || "?";
+    const side = mkTd("l"); side.textContent = s.outcome || "?"; side.style.fontWeight = "600";
+    mkTd().textContent = s.currentPrice != null ? Math.round(s.currentPrice * 100) + "¢" : "—";
+    mkTd().textContent = s.backerCount;
+    mkTd().textContent = fmtUsd(s.totalNetUsd);
+    const sc = mkTd();
+    const meter = document.createElement("span"); meter.className = "meter";
+    const fill = document.createElement("span"); fill.className = "meter-fill";
+    fill.style.width = Math.max(8, Math.round(s.score / maxScore * 100)) + "%";
+    meter.appendChild(fill);
+    const num = document.createElement("span"); num.textContent = " " + s.score.toFixed(1);
+    sc.append(meter, num);
+    mkTd().textContent = s.endDate ? s.endDate.slice(5, 10) : "—";
+    const act = mkTd();
+    const url = OUTLINK(s.slug, s.eventSlug);
+    if (url) {
+      const a = document.createElement("a"); a.href = url; a.target = "_blank";
+      a.rel = "noopener"; a.textContent = "Open ↗"; act.appendChild(a);
+    }
+    body.appendChild(tr);
+  }
+}
+
+function renderLedger() {
+  const p = LIVE.paper;
+  const tiles = document.getElementById("papertiles");
+  tiles.replaceChildren();
+  if (!p) { document.getElementById("paper-asof").textContent = "No bot data yet."; return; }
+  document.getElementById("paper-asof").textContent =
+    `Paper account — no real money. Updated ${ago(p.updatedAt)} · started with $${p.bankrollStart.toFixed(2)}`;
+  const ret = (p.equity / p.bankrollStart - 1) * 100;
+  const defs = [
+    ["Equity", `$${p.equity.toFixed(2)}`, (ret >= 0 ? "+" : "") + ret.toFixed(1) + "% since start", true],
+    ["Cash", `$${p.cash.toFixed(2)}`, "ready to deploy", false],
+    ["Open positions", String(p.positions.length), fmtUsd(p.positions.reduce((s2, x) => s2 + (x.valueUsd || 0), 0)) + " at market", false],
+    ["Settled", String(p.closedCount), (p.wins || 0) + " wins", false],
+  ];
+  for (const [label, value, sub, hero] of defs) {
+    const d = document.createElement("div");
+    d.className = "tile" + (hero ? " hero" : "");
+    const l = document.createElement("div"); l.className = "label"; l.textContent = label;
+    const v = document.createElement("div"); v.className = "value" + (hero ? (ret >= 0 ? " pos" : " neg") : ""); v.textContent = value;
+    const s2 = document.createElement("div"); s2.className = "sub"; s2.textContent = sub;
+    d.append(l, v, s2); tiles.appendChild(d);
+  }
+  const mkTable = (rows, headers) => {
+    const t = document.createElement("table"); t.className = "minitable";
+    const th = document.createElement("thead"); const hr = document.createElement("tr");
+    headers.forEach(([txt, left]) => { const c = document.createElement("th"); if (left) c.className = "l"; c.textContent = txt; hr.appendChild(c); });
+    th.appendChild(hr); t.appendChild(th);
+    const tb = document.createElement("tbody");
+    rows.forEach(cells => {
+      const r = document.createElement("tr");
+      cells.forEach(([txt, cls]) => { const c = document.createElement("td"); if (cls) c.className = cls; c.textContent = txt; r.appendChild(c); });
+      tb.appendChild(r);
+    });
+    t.appendChild(tb); return t;
+  };
+  const openBox = document.getElementById("paperopen");
+  openBox.replaceChildren(p.positions.length ? mkTable(
+    p.positions.map(x => [[x.question, "l"], [x.outcome, "l"],
+      [Math.round(x.entryPrice * 100) + "¢", ""], [x.markPrice != null ? Math.round(x.markPrice * 100) + "¢" : "—", ""],
+      [`$${(x.valueUsd != null ? x.valueUsd : x.costUsd).toFixed(2)}`, ""]]),
+    [["Market", 1], ["Side", 1], ["Entry", 0], ["Now", 0], ["Value", 0]])
+    : Object.assign(document.createElement("p"), { textContent: "None open." }));
+  const closedBox = document.getElementById("paperclosed");
+  closedBox.replaceChildren((p.closed || []).length ? mkTable(
+    p.closed.map(x => [[x.question, "l"], [x.outcome, "l"],
+      [Math.round(x.entryPrice * 100) + "¢", ""], [x.settlePrice >= 0.999 ? "WON" : x.settlePrice <= 0.001 ? "LOST" : Math.round(x.settlePrice * 100) + "¢", x.pnl >= 0 ? "pos" : "neg"],
+      [(x.pnl >= 0 ? "+" : "") + `$${x.pnl.toFixed(2)}`, x.pnl >= 0 ? "pos" : "neg"]]),
+    [["Market", 1], ["Side", 1], ["Entry", 0], ["Result", 0], ["PnL", 0]])
+    : Object.assign(document.createElement("p"), { textContent: "Nothing settled yet." }));
+}
+
+async function refreshLive() {
+  const bust = "?t=" + Math.floor(Date.now() / 60000);
+  try {
+    const r = await fetch("data/signals.json" + bust, { cache: "no-store" });
+    if (r.ok) { LIVE.signals = await r.json(); renderSignals(); }
+  } catch (e) { /* offline snapshot stays */ }
+  try {
+    const r = await fetch("data/paper.json" + bust, { cache: "no-store" });
+    if (r.ok) { LIVE.paper = await r.json(); renderLedger(); }
+  } catch (e) { /* offline snapshot stays */ }
+}
+renderSignals();
+renderLedger();
+refreshLive();
+setInterval(refreshLive, 120000);
 
 function tiles(list) {
   const t = document.getElementById("tiles");
@@ -474,7 +648,11 @@ function cellValue(w, key) {
   if (key === "name") {
     td.className = "l";
     const box = document.createElement("div"); box.className = "who";
-    const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = w.name;
+    const nm = document.createElement("a"); nm.className = "nm";
+    nm.textContent = w.name;
+    nm.href = "https://polymarket.com/profile/" + w.wallet;
+    nm.target = "_blank"; nm.rel = "noopener";
+    nm.addEventListener("click", e => e.stopPropagation());
     const ad = document.createElement("span"); ad.className = "addr"; ad.textContent = short(w.wallet);
     box.append(nm, ad); td.appendChild(box);
   } else if (key === "archetype") {
@@ -788,12 +966,11 @@ function renderScatter(list) {
 /* ---------- footer ---------- */
 (function () {
   const f = document.getElementById("method");
-  const mk = t => { const p = document.createElement("p"); p.textContent = t; return p; };
-  f.append(
-    mk("Method: cohort seeded from Polymarket's public leaderboard API (top 50 by profit and by volume for the week, month, and all-time windows, plus top 10 by monthly profit in each of ten categories). Every wallet's individual trades were then fetched for the trailing 90 days from the public data API, along with open positions, portfolio value, and the daily PnL series."),
-    mk("Caveats: 90-day PnL is read from Polymarket's own per-user PnL series (realized + marked-to-market). Categories are classified from event slugs with keyword rules, so a small share lands in Other. Hours are UTC. Trade counts marked with + hit the fetch cap and are undercounts. This is a leaderboard-seeded cohort — a top wallet that never surfaced on any leaderboard window would not appear."),
-    mk("Snapshot " + dateStr + " · window " + DATA.windowDays + " days · built from data-api.polymarket.com and user-pnl-api.polymarket.com · not financial advice.")
-  );
+  const p = document.createElement("p");
+  p.style.textAlign = "center";
+  p.textContent = "Moffitt Money ◆ Polymarket public data · cohort refreshed " + dateStr +
+    " · signals & ledger update continuously · not financial advice";
+  f.appendChild(p);
 })();
 
 /* ---------- render ---------- */

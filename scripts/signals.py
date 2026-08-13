@@ -22,6 +22,7 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 
 import pmlib
+from analyze import classify
 
 RAW_DIR = os.path.join(pmlib.BASE, "data", "raw")
 SIG_DIR = os.path.join(pmlib.BASE, "data", "signals")
@@ -61,7 +62,8 @@ def recent_trades_live(wallets, since):
                     break
                 trades.append({k: t.get(k) for k in (
                     "timestamp", "conditionId", "size", "usdcSize", "price",
-                    "side", "outcome", "outcomeIndex", "title")})
+                    "side", "outcome", "outcomeIndex", "title", "slug",
+                    "eventSlug")})
             if stop or len(rows) < 500:
                 break
             oldest = rows[-1]["timestamp"]
@@ -89,7 +91,7 @@ def compute_signals(trades_by_wallet, watchlist, now, hours,
     # (conditionId) -> wallet -> outcomeIndex -> flow
     flows = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: {
         "net": 0.0, "bought": 0.0, "px_num": 0.0, "last": 0})))
-    titles = {}
+    titles, cats = {}, {}
     for addr, trades in trades_by_wallet.items():
         for t in trades:
             cid = t["conditionId"]
@@ -103,6 +105,8 @@ def compute_signals(trades_by_wallet, watchlist, now, hours,
                 f["net"] -= usd
             f["last"] = max(f["last"], t["timestamp"])
             titles.setdefault(cid, t.get("title"))
+            if cid not in cats:
+                cats[cid] = classify(t)
 
     per_market = defaultdict(lambda: defaultdict(list))  # cid -> oi -> backers
     for cid, per_wallet in flows.items():
@@ -141,6 +145,7 @@ def compute_signals(trades_by_wallet, watchlist, now, hours,
         signals.append({
             "conditionId": cid, "outcomeIndex": top_oi,
             "title": titles.get(cid),
+            "category": cats.get(cid, "Other"),
             "backers": top_backers,
             "backerCount": len(top_backers),
             "contested": len(scored) > 1,
@@ -185,6 +190,8 @@ def enrich(signals, top, max_drift=0.15, max_days=None):
             "backersAvgEntry": round(entry, 4) if entry else None,
             "driftSinceEntry": round(cur - entry, 4) if entry else None,
             "endDate": m["endDate"],
+            "slug": m.get("slug"),
+            "eventSlug": m.get("eventSlug"),
         })
         kept.append(s)
     res.save()
@@ -245,11 +252,17 @@ def main():
     ap.add_argument("--max-wallets", type=int, default=60)
     ap.add_argument("--max-days", type=float, default=None,
                     help="skip markets resolving more than this many days out")
+    ap.add_argument("--categories", default=None,
+                    help="specialist desk: comma-separated categories "
+                         "(e.g. 'Sports' or 'Politics,Economics,Mentions') — "
+                         "restricts both the watchlist and the signals")
     args = ap.parse_args()
+    cats = [c.strip() for c in args.categories.split(",")] if args.categories else None
 
     analyzed = pmlib.load_analyzed()
     watchlist = pmlib.build_watchlist(analyzed, min_pnl=args.min_pnl,
-                                      max_wallets=args.max_wallets)
+                                      max_wallets=args.max_wallets,
+                                      categories=cats)
     now = int(time.time())
     since = now - args.hours * 3600
     print(f"Watchlist: {len(watchlist)} qualified wallets")
@@ -262,6 +275,8 @@ def main():
     signals = compute_signals(trades, watchlist, now, args.hours,
                               min_net_usd=args.min_net_usd,
                               min_backers=args.min_backers)
+    if cats:
+        signals = [s for s in signals if s["category"] in cats]
     print(f"Raw consensus candidates: {len(signals)}")
     signals = enrich(signals, args.top, max_days=args.max_days)
     print(f"Live signals after enrichment: {len(signals)}")
@@ -270,8 +285,14 @@ def main():
             "watchlistSize": len(watchlist), "minBackers": args.min_backers,
             "live": args.live}
     os.makedirs(SIG_DIR, exist_ok=True)
+    payload = {"meta": meta, "signals": signals}
     with open(os.path.join(SIG_DIR, "latest.json"), "w") as f:
-        json.dump({"meta": meta, "signals": signals}, f, indent=1)
+        json.dump(payload, f, indent=1)
+    # copy for the live dashboard (served by GitHub Pages)
+    dash_data = os.path.join(pmlib.BASE, "dashboard", "data")
+    os.makedirs(dash_data, exist_ok=True)
+    with open(os.path.join(dash_data, "signals.json"), "w") as f:
+        json.dump(payload, f)
     write_report(signals, meta)
     print(f"Wrote data/signals/latest.json and reports/signals-latest.md")
     for s in signals[:8]:

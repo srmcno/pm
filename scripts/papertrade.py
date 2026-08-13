@@ -145,6 +145,20 @@ def cmd_mark(args):
                          f"| {p['settlePrice']:.2f} | {p['pnl']:+.2f} |")
     with open(os.path.join(REP_DIR, "paper-latest.md"), "w") as f:
         f.write("\n".join(lines) + "\n")
+
+    # copy for the live dashboard (served by GitHub Pages)
+    dash_data = os.path.join(pmlib.BASE, "dashboard", "data")
+    os.makedirs(dash_data, exist_ok=True)
+    with open(os.path.join(dash_data, "paper.json"), "w") as f:
+        json.dump({
+            "updatedAt": now, "bankrollStart": st["bankrollStart"],
+            "equity": equity, "cash": st["cash"],
+            "positions": st["positions"],
+            "closed": st["closed"][-15:],
+            "closedCount": len(st["closed"]),
+            "wins": sum(1 for p in st["closed"] if p["pnl"] > 0),
+            "equityCurve": st["equityCurve"][-180:],
+        }, f)
     print(f"Equity ${equity:.2f} ({ret:+.1f}%) -> reports/paper-latest.md")
 
 
@@ -170,13 +184,16 @@ def cmd_backtest(args):
         mid_ts = cutoff + (end_ts - cutoff) // 2
 
     # Watchlist from FIRST-HALF performance only.
+    cats = ([c.strip() for c in args.categories.split(",")]
+            if getattr(args, "categories", None) else None)
     for w in analyzed["wallets"]:
         w["pnlH1"] = first_half_pnl(w, cutoff, mid_ts)
     pool = {"wallets": [w for w in analyzed["wallets"] if w["pnlH1"] is not None]}
     watchlist = pmlib.build_watchlist(pool, min_pnl=args.min_pnl,
                                       max_wallets=args.max_wallets,
-                                      pnl_key="pnlH1")
-    print(f"Watchlist (first-half qualifiers): {len(watchlist)} wallets")
+                                      pnl_key="pnlH1", categories=cats)
+    print(f"Watchlist (first-half qualifiers): {len(watchlist)} wallets"
+          + (f" · desk: {'+'.join(cats)}" if cats else ""))
 
     # Their second-half trades (plus the lookback runway), sorted ascending
     # once so each step can slice its window with bisect instead of scanning.
@@ -205,6 +222,8 @@ def cmd_backtest(args):
             window_trades[a] = ts_list[i:j]
         sigs = sigmod.compute_signals(window_trades, watchlist, day, args.hours,
                                       min_backers=args.min_backers)
+        if cats:
+            sigs = [s for s in sigs if s["category"] in cats]
         # entries
         for s in sigs[:args.top_per_day]:
             key = (s["conditionId"], s["outcomeIndex"])
@@ -367,6 +386,8 @@ def main():
                    help="how often the simulated bot recomputes signals")
     p.add_argument("--train-days", type=float, default=None,
                    help="watchlist qualifies on the first N days (default: half)")
+    p.add_argument("--categories", default=None,
+                   help="specialist desk: comma-separated categories")
     p.add_argument("--hours", type=int, default=72, help="signal lookback")
     p.add_argument("--min-backers", type=int, default=2)
     p.add_argument("--min-pnl", type=float, default=50_000,
