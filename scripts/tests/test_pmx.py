@@ -580,6 +580,57 @@ class TestSeedFeedOverlap(unittest.TestCase):
                            "boundary second must still be re-read")
 
 
+class TestRejectionDiagnostics(unittest.TestCase):
+    """The panel names why a quiet engine is quiet, so the counts must be
+    complete and must not fragment."""
+
+    def _engine(self, market):
+        from pmx.engine import ConsensusEngine
+
+        class R:
+            def get(self, cid):
+                return market
+        return ConsensusEngine(EngineConfig(), {"profiles": {}}, resolver=R())
+
+    def _cand(self):
+        from pmx.engine import Candidate
+        return Candidate(condition_id="0xc", outcome_index=0,
+                         category="Sports", title="Q?", sigma=1.0, n_eff=2.0,
+                         backers=[{"value": 1.0, "avgPrice": 0.40}])
+
+    def test_enrichment_rejections_are_counted(self):
+        """These set `rejected` but used not to increment the counter, so the
+        dominant real-world cause was invisible on the dashboard."""
+        eng = self._engine({"closed": True, "outcomePrices": [0.4, 0.6],
+                            "outcomes": ["Yes", "No"], "clobTokenIds": ["a", "b"]})
+        eng.enrich([self._cand()], max_days=None)
+        self.assertEqual(sum(eng.rejections.values()), 1)
+        self.assertIn("market already closed", eng.rejections)
+
+    def test_out_of_band_price_is_counted(self):
+        eng = self._engine({"closed": False, "outcomePrices": [0.99, 0.01],
+                            "outcomes": ["Yes", "No"], "clobTokenIds": ["a", "b"],
+                            "endDate": "2099-01-01T00:00:00Z"})
+        eng.enrich([self._cand()], max_days=None)
+        self.assertIn("price outside the tradable band", eng.rejections)
+
+    def test_buckets_do_not_fragment_on_the_numbers(self):
+        """Two markets failing the same rail at different Sigma values must
+        land in ONE bucket, or 'most common reason' is meaningless."""
+        from pmx.consensus import passes_consensus
+        cfg = EngineConfig().consensus
+        buckets = set()
+        for sigma, n_eff in ((0.26, 1.0), (0.48, 1.0), (0.17, 1.0)):
+            ok, _ = passes_consensus(sigma, n_eff, 3, cfg)
+            self.assertFalse(ok)
+            buckets.add(" + ".join(label for failed, label in (
+                (sigma < cfg.theta_trigger, "Sigma below Theta"),
+                (n_eff < cfg.min_effective_backers, "few effective backers"),
+                (3 < cfg.min_backers, "too few backers"),
+            ) if failed))
+        self.assertEqual(len(buckets), 1)
+
+
 class TestEnrichedDetail(unittest.TestCase):
     def test_enrich_carries_the_slugs_the_site_links_from(self):
         """The dashboard's Open link is built from slug/eventSlug; without

@@ -247,7 +247,11 @@ def cmd_watch(args):
     # to be killed before it can settle observations and push its results.
     # `--minutes` now means what the caller wrote.
     deadline = seed_started + args.minutes * 60 if args.minutes else None
-    if deadline and time.time() >= deadline:
+    # Always run the body once, even if seeding already ate the budget. The
+    # loop condition would otherwise be false on entry and the process would
+    # exit having published nothing, while printing that it had.
+    force_first = bool(deadline and time.time() >= deadline)
+    if force_first:
         print(f"Seeding consumed the whole {args.minutes:g}-minute budget — "
               f"publishing once and exiting.", flush=True)
     portfolio = Portfolio(cash=cfg.sizing.bankroll, positions=[])
@@ -257,7 +261,9 @@ def cmd_watch(args):
     seen = _load_seen()
     last_beat = 0.0
 
-    while not deadline or time.time() < deadline:
+    while force_first or not deadline or time.time() < deadline:
+        expired = force_first
+        force_first = False
         fills = feed.poll()
         if fills:
             eng.ingest(fills)
@@ -317,6 +323,8 @@ def cmd_watch(args):
                 ["dashboard/data/engine.json", "data/live"],
                 "auto: engine signal" if fresh else "auto: engine heartbeat")
         eng.rejections.clear()
+        if expired:
+            break                       # the forced pass has published; leave
         time.sleep(cfg.feed.data_api_poll_s)
 
     print(json.dumps(feed.summary(), indent=1))

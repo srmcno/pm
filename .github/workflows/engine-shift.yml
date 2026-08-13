@@ -85,11 +85,20 @@ jobs:
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
           # Only engine-owned paths, so a concurrent watch-shift push cannot
-          # be clobbered by this one.
-          git add dashboard/data/engine.json data/live/engine-journal.jsonl \
-                  data/live/observations.jsonl data/live/settled.json \
-                  data/live/engine-seen.json data/live/engine-state.json \
-                  data/live/engine.json || true
+          # be clobbered by this one. Added one at a time and only when
+          # present: `git add a b missing` aborts on the unmatched pathspec
+          # and stages NOTHING (verified on git 2.43), which the trailing
+          # `|| true` would hide -- the commit below would then find an empty
+          # index and exit 0, silently discarding the final settle's results.
+          for p in dashboard/data/engine.json \
+                   data/live/engine-journal.jsonl \
+                   data/live/observations.jsonl \
+                   data/live/settled.json \
+                   data/live/engine-seen.json \
+                   data/live/engine-state.json \
+                   data/live/engine.json; do
+            [ -e "$p" ] && git add "$p"
+          done
           git diff --cached --quiet && exit 0
           git commit -m "auto: engine shift $(date -u +'%Y-%m-%d %H:%M UTC')"
           # -X theirs during a rebase keeps the commit being replayed — ours.
