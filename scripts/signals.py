@@ -20,6 +20,7 @@ import os
 import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 
 import pmlib
 from analyze import classify
@@ -63,7 +64,7 @@ def recent_trades_live(wallets, since):
                 trades.append({k: t.get(k) for k in (
                     "timestamp", "conditionId", "size", "usdcSize", "price",
                     "side", "outcome", "outcomeIndex", "title", "slug",
-                    "eventSlug")})
+                    "eventSlug", "transactionHash")})
             if stop or len(rows) < 500:
                 break
             oldest = rows[-1]["timestamp"]
@@ -166,13 +167,21 @@ def enrich(signals, top, max_drift=0.15, max_days=None):
         m = res.get(s["conditionId"])
         if not m or m["closed"]:
             continue
-        if max_days is not None and m.get("endDate"):
-            try:
-                end_ts = time.mktime(time.strptime(m["endDate"][:10], "%Y-%m-%d"))
-                if end_ts - time.time() > max_days * 86400:
-                    continue  # resolves too far out — capital would sit locked
-            except ValueError:
-                pass
+        if max_days is not None:
+            end_ts = None
+            if isinstance(m.get("endDate"), str):
+                try:
+                    end = datetime.fromisoformat(m["endDate"].replace("Z", "+00:00"))
+                    if end.tzinfo is None:
+                        end = end.replace(tzinfo=timezone.utc)
+                    end_ts = end.timestamp()
+                except ValueError:
+                    end_ts = None
+            if end_ts is None or end_ts - time.time() > max_days * 86400:
+                # No parseable end date counts as "too far out": an unknown
+                # horizon can lock capital for weeks, which is exactly what
+                # the max-days rail exists to prevent.
+                continue
         oi = s["outcomeIndex"] if s["outcomeIndex"] is not None else 0
         prices = m["outcomePrices"]
         cur = prices[oi] if oi < len(prices) else None

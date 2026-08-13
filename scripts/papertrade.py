@@ -73,6 +73,9 @@ def cmd_trade(args):
             continue
         px = pmlib.midpoint(s["tokenId"]) or s["currentPrice"]
         fill = min(0.99, px + args.slippage)
+        if fill > args.max_price:
+            continue  # the live rails cap entries at max_price; the paper
+                      # record must trade the same book to stay predictive
         shares = round(stake / fill, 4)
         st["cash"] = round(st["cash"] - stake, 4)
         st["positions"].append({
@@ -99,7 +102,12 @@ def cmd_mark(args):
         oi = p["outcomeIndex"] or 0
         px = (m["outcomePrices"][oi]
               if m and oi < len(m["outcomePrices"]) else p["entryPrice"])
-        if m and m["closed"]:
+        # Settle only at a final price. A market can be closed to trading
+        # while resolution is pending, with outcomePrices still showing the
+        # last trade — booking that would misstate every winner and loser.
+        final = m and m["closed"] and (m.get("resolved")
+                                       or px >= 0.99 or px <= 0.01)
+        if final:
             proceeds = round(p["shares"] * px, 4)
             st["cash"] = round(st["cash"] + proceeds, 4)
             p.update({"settledAt": now, "settlePrice": px,
@@ -375,6 +383,8 @@ def main():
     p.add_argument("--risk-frac", type=float, default=0.08)
     p.add_argument("--min-score", type=float, default=0.8)
     p.add_argument("--slippage", type=float, default=0.01)
+    p.add_argument("--max-price", type=float, default=0.90,
+                   help="skip fills above this, mirroring the live rails")
     p.set_defaults(fn=cmd_trade)
 
     p = sub.add_parser("mark"); p.set_defaults(fn=cmd_mark)

@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Moffitt Money</title>
 <style>
   @font-face {
@@ -118,6 +121,17 @@
   .asof {
     text-align: center; color: var(--muted); font-size: 12.5px; margin: 0 0 14px;
   }
+  .pill {
+    display: inline-block; padding: 2px 9px 1px; margin-right: 7px;
+    border-radius: 999px; font-family: var(--display); font-size: 10.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; vertical-align: 1px;
+  }
+  .pill.live { color: var(--up); background: var(--up-wash); }
+  .pill.live::before { content: "● "; }
+  .pill.stale { color: var(--down); background: var(--down-wash); }
+  .pill.stale::before { content: "○ "; }
+  .equityspark { display: block; margin: 6px auto 0; overflow: visible; }
+  .equityspark path { fill: none; stroke-width: 1.5; }
   .meter {
     display: inline-block; width: 54px; height: 7px; vertical-align: 1px;
     background: var(--chip); border: 1px solid var(--border);
@@ -454,6 +468,22 @@ function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
   return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
 }
+/* The watcher heartbeats every ~15 min (paper mark + signal re-price), so a
+   quiet bot and a dead bot look different: no heartbeat for 40+ min = stale. */
+function lastBeatTs() {
+  return Math.max((LIVE.paper && LIVE.paper.updatedAt) || 0,
+    (LIVE.signals && LIVE.signals.meta && LIVE.signals.meta.generatedAt) || 0);
+}
+function statusPill() {
+  const ts = lastBeatTs();
+  const live = ts && (Date.now() / 1000 - ts) / 60 < 40;
+  const el = document.createElement("span");
+  el.className = "pill " + (live ? "live" : "stale");
+  el.textContent = live ? "bot live" : "bot stale";
+  el.title = live ? "The watcher checked in within the last 40 minutes."
+    : "No watcher heartbeat for 40+ minutes — the data below may be old.";
+  return el;
+}
 const OUTLINK = (slug, eventSlug) =>
   eventSlug ? `https://polymarket.com/event/${eventSlug}` :
   slug ? `https://polymarket.com/market/${slug}` : null;
@@ -463,10 +493,13 @@ function renderSignals() {
   body.replaceChildren();
   const payload = LIVE.signals;
   const sigs = (payload && payload.signals) || [];
-  document.getElementById("sig-asof").textContent = payload && payload.meta
-    ? `Updated ${ago(payload.meta.generatedAt)} · ${payload.meta.watchlistSize} wallets watched · ` +
-      `${payload.meta.minBackers}+ independent backers required`
-    : "";
+  const sigAsof = document.getElementById("sig-asof");
+  sigAsof.replaceChildren();
+  if (payload && payload.meta) {
+    sigAsof.append(statusPill(),
+      `Updated ${ago(payload.meta.generatedAt)} · ${payload.meta.watchlistSize} wallets watched · ` +
+      `${payload.meta.minBackers}+ independent backers required`);
+  }
   if (!sigs.length) {
     const tr = document.createElement("tr");
     const td = document.createElement("td"); td.colSpan = 8; td.className = "l";
@@ -506,8 +539,9 @@ function renderLedger() {
   const tiles = document.getElementById("papertiles");
   tiles.replaceChildren();
   if (!p) { document.getElementById("paper-asof").textContent = "No bot data yet."; return; }
-  document.getElementById("paper-asof").textContent =
-    `Paper account — no real money. Updated ${ago(p.updatedAt)} · started with $${p.bankrollStart.toFixed(2)}`;
+  const paperAsof = document.getElementById("paper-asof");
+  paperAsof.replaceChildren(statusPill(),
+    `Paper account — no real money. Updated ${ago(p.updatedAt)} · started with $${p.bankrollStart.toFixed(2)}`);
   const ret = (p.equity / p.bankrollStart - 1) * 100;
   const defs = [
     ["Equity", `$${p.equity.toFixed(2)}`, (ret >= 0 ? "+" : "") + ret.toFixed(1) + "% since start", true],
@@ -521,7 +555,9 @@ function renderLedger() {
     const l = document.createElement("div"); l.className = "label"; l.textContent = label;
     const v = document.createElement("div"); v.className = "value" + (hero ? (ret >= 0 ? " pos" : " neg") : ""); v.textContent = value;
     const s2 = document.createElement("div"); s2.className = "sub"; s2.textContent = sub;
-    d.append(l, v, s2); tiles.appendChild(d);
+    d.append(l, v, s2);
+    if (hero) { const sp = equitySparkline(p.equityCurve, 150, 26); if (sp) d.appendChild(sp); }
+    tiles.appendChild(d);
   }
   const mkTable = (rows, headers) => {
     const t = document.createElement("table"); t.className = "minitable";
@@ -552,21 +588,45 @@ function renderLedger() {
     : Object.assign(document.createElement("p"), { textContent: "Nothing settled yet." }));
 }
 
+function equitySparkline(curve, w, h) {
+  const pts = (curve || []).filter(q => q && q.equity != null);
+  if (pts.length < 2) return null;
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "equityspark");
+  svg.setAttribute("width", w); svg.setAttribute("height", h);
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  const t0 = pts[0].t, t1 = pts[pts.length - 1].t;
+  let lo = Math.min(...pts.map(q => q.equity)), hi = Math.max(...pts.map(q => q.equity));
+  if (hi - lo < 0.01) { hi += 0.01; lo -= 0.01; }
+  const x = t => t1 === t0 ? 1 : (t - t0) / (t1 - t0) * (w - 2) + 1;
+  const y = v => h - 2 - (v - lo) / (hi - lo) * (h - 4);
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", pts.map((q, i) =>
+    (i ? "L" : "M") + x(q.t).toFixed(1) + " " + y(q.equity).toFixed(1)).join(""));
+  path.setAttribute("stroke", pts[pts.length - 1].equity >= pts[0].equity ? "var(--up)" : "var(--down)");
+  svg.appendChild(path);
+  return svg;
+}
+
 async function refreshLive() {
   const bust = "?t=" + Math.floor(Date.now() / 60000);
   try {
     const r = await fetch("data/signals.json" + bust, { cache: "no-store" });
-    if (r.ok) { LIVE.signals = await r.json(); renderSignals(); }
+    if (r.ok) LIVE.signals = await r.json();
   } catch (e) { /* offline snapshot stays */ }
   try {
     const r = await fetch("data/paper.json" + bust, { cache: "no-store" });
-    if (r.ok) { LIVE.paper = await r.json(); renderLedger(); }
+    if (r.ok) LIVE.paper = await r.json();
   } catch (e) { /* offline snapshot stays */ }
+  // Always re-render: "x min ago" and the live/stale pill must keep ticking
+  // even when a fetch fails or nothing changed.
+  renderSignals();
+  renderLedger();
 }
 renderSignals();
 renderLedger();
 refreshLive();
-setInterval(refreshLive, 120000);
+setInterval(refreshLive, 60000);
 
 function tiles(list) {
   const t = document.getElementById("tiles");

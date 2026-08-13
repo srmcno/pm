@@ -1,0 +1,31 @@
+name: Watcher watchdog
+
+# GitHub silently skips scheduled runs under load; a skipped shift means a
+# dark watcher, a stale site, and missed signals until the next cron fires.
+# Twice an hour, start a shift if none is running or queued.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "20,50 * * * *"
+
+permissions:
+  actions: write
+
+jobs:
+  ensure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Start a shift if none is active
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for st in in_progress queued; do
+            n=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/watch-shift.yml/runs?status=$st&per_page=1" --jq '.total_count')
+            if [ "$n" != "0" ]; then
+              echo "A shift is $st — nothing to do."
+              exit 0
+            fi
+          done
+          echo "No active shift — dispatching one."
+          gh workflow run watch-shift.yml --ref "${GITHUB_REF_NAME}"

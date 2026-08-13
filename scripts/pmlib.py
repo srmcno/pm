@@ -70,8 +70,17 @@ class MarketResolver:
     def get(self, condition_id):
         now = time.time()
         hit = self.cache.get(condition_id)
-        if hit and (hit.get("closed") or now - hit.get("_at", 0) < self.open_ttl):
-            return hit
+        if hit:
+            prices = hit.get("outcomePrices") or []
+            settled = hit.get("resolved") or (
+                prices and not any(0.01 < p < 0.99 for p in prices))
+            if hit.get("closed") and settled:
+                return hit  # final — never changes again
+            # Open markets refresh on open_ttl; closed-but-unresolved ones
+            # refresh hourly so the resolution eventually lands.
+            ttl = 3600 if hit.get("closed") else self.open_ttl
+            if now - hit.get("_at", 0) < ttl:
+                return hit
         m = None
         for extra in ({}, {"closed": "true"}):
             rows = get_json(f"{GAMMA_API}/markets",
@@ -137,6 +146,21 @@ def midpoint(token_id):
     d = get_json(f"{CLOB_API}/midpoint", {"token_id": token_id})
     try:
         return float(d["mid"])
+    except (TypeError, KeyError, ValueError):
+        return None
+
+
+def book_price(token_id, side):
+    """Best price on one side of the book: side='bid' or 'ask'.
+
+    The CLOB /price endpoint labels sides by the resting orders it reads:
+    side=BUY returns the best bid, side=SELL the best ask (verified against
+    /book). A buyer therefore pays the 'ask'; a seller receives the 'bid'.
+    """
+    api_side = {"bid": "BUY", "ask": "SELL"}[side]
+    d = get_json(f"{CLOB_API}/price", {"token_id": token_id, "side": api_side})
+    try:
+        return float(d["price"])
     except (TypeError, KeyError, ValueError):
         return None
 

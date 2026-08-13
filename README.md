@@ -58,6 +58,10 @@ python3 scripts/papertrade.py backtest --bankroll 20
    emits nothing.
 4. **No chasing** — signals whose price has already moved >15¢ past the
    backers' average entry are dropped; the move already happened.
+5. **Short horizon only** — with a max-days rail set (the watcher uses 3),
+   markets resolving further out are skipped, and a market with *no*
+   parseable end date counts as too far out: an unknown horizon can lock
+   capital for weeks.
 
 Scoring per backer: `wallet quality × √conviction × recency decay`, where
 conviction is the net stake relative to that wallet's own median trade.
@@ -87,6 +91,21 @@ Run it before believing anything about copy-trading. The verdict line in
 
 Full breakdown: `reports/backtest-summary.md`. The live paper account runs the
 strict config to accumulate a real out-of-sample record before any conclusion.
+
+## The live site
+
+The dashboard deploys to **https://srmcno.github.io/pm/** on every push that
+touches `dashboard/` (GitHub Pages). It stays live end to end:
+
+- A cloud watcher (`watch-shift.yml`) runs back-to-back ~2-hour shifts,
+  polling the trade feed every 45 s. It reacts to new consensus within about
+  a minute, and every ~15 minutes it re-prices standing signals, re-marks the
+  paper account, and pushes the data — each push redeploys the site.
+- A watchdog (`watch-watchdog.yml`) checks twice an hour that a shift is
+  actually running and dispatches one if GitHub dropped the scheduled start.
+- The page itself re-fetches `data/signals.json` and `data/paper.json` every
+  60 s and shows a **bot live / bot stale** pill, so a dead pipeline is
+  visible instead of silently serving old numbers.
 
 ## Data sources
 

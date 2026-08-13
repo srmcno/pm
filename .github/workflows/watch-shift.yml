@@ -22,9 +22,11 @@ jobs:
       PM_PROXY_ADDRESS: ${{ secrets.PM_PROXY_ADDRESS }}
       PM_SIGNATURE_TYPE: ${{ secrets.PM_SIGNATURE_TYPE }}
     steps:
+      # Run on whichever branch the schedule or dispatch targeted, so a
+      # dispatch for another branch can never publish data to this one.
       - uses: actions/checkout@v4
         with:
-          ref: claude/polymarket-wallets-analysis-m81p4j
+          ref: ${{ github.ref_name }}
 
       - uses: actions/setup-python@v5
         with:
@@ -39,10 +41,10 @@ jobs:
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
           if [ -n "$PM_PRIVATE_KEY" ]; then
-            python3 watch.py --duration-minutes 110 --paper --execute --git-push
+            python3 watch.py --duration-minutes 115 --paper --execute --git-push
           else
             echo "No keys configured — paper trading only."
-            python3 watch.py --duration-minutes 110 --paper --git-push
+            python3 watch.py --duration-minutes 115 --paper --git-push
           fi
 
       - name: Commit journal and reports back
@@ -52,5 +54,5 @@ jobs:
           git add data/live data/signals data/paper reports dashboard/data || true
           git diff --cached --quiet && exit 0
           git commit -m "auto: watcher shift $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin claude/polymarket-wallets-analysis-m81p4j || true
-          git push origin HEAD:claude/polymarket-wallets-analysis-m81p4j
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
