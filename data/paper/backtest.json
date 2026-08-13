@@ -5,7 +5,7 @@
   "delay_hours": 1.0,
   "step_hours": 6.0,
   "train_days": null,
-  "categories": "Politics,Economics,Mentions",
+  "categories": "Esports",
   "hours": 72,
   "min_backers": 2,
   "min_pnl": 50000,
@@ -14,9 +14,9 @@
   "max_positions": 10,
   "risk_frac": 0.08,
   "slippage": 0.01,
-  "fn": "<function cmd_backtest at 0x7fb3a9987e20>"
+  "fn": "<function cmd_backtest at 0x7f1125eebe20>"
  },
- "finalEquity": 16.4249,
+ "finalEquity": 18.4,
  "equityCurve": [
   {
    "t": 1782683566,
@@ -44,930 +44,720 @@
   },
   {
    "t": 1782813166,
-   "equity": 20.2626
+   "equity": 20.0
   },
   {
    "t": 1782834766,
-   "equity": 20.2626
+   "equity": 20.0
   },
   {
    "t": 1782856366,
-   "equity": 20.2626
+   "equity": 20.0
   },
   {
    "t": 1782877966,
-   "equity": 18.7906
+   "equity": 20.0
   },
   {
    "t": 1782899566,
-   "equity": 18.7906
+   "equity": 20.0
   },
   {
    "t": 1782921166,
-   "equity": 18.7906
+   "equity": 20.0
   },
   {
    "t": 1782942766,
-   "equity": 18.7906
+   "equity": 20.0
   },
   {
    "t": 1782964366,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1782985966,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783007566,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783029166,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783050766,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783072366,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783093966,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783115566,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783137166,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783158766,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783180366,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783201966,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783223566,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783245166,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783266766,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783288366,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783309966,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783331566,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783353166,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783374766,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783396366,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783417966,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783439566,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783461166,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783482766,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783504366,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783525966,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783547566,
-   "equity": 17.2873
+   "equity": 20.0
   },
   {
    "t": 1783569166,
-   "equity": 15.9043
+   "equity": 20.0
   },
   {
    "t": 1783590766,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783612366,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783633966,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783655566,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783677166,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783698766,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783720366,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783741966,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783763566,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783785166,
-   "equity": 14.632
+   "equity": 20.0
   },
   {
    "t": 1783806766,
-   "equity": 13.4614
+   "equity": 20.0
   },
   {
    "t": 1783828366,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1783849966,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1783871566,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1783893166,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1783914766,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1783936366,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1783957966,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1783979566,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784001166,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784022766,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784044366,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784065966,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784087566,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784109166,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784130766,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784152366,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784173966,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784195566,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784217166,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784238766,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784260366,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784281966,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784303566,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784325166,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784346766,
-   "equity": 14.1076
+   "equity": 20.0
   },
   {
    "t": 1784368366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784389966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784411566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784433166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784454766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784476366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784497966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784519566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784541166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784562766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784584366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784605966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784627566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784649166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784670766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784692366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784713966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784735566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784757166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784778766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784800366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784821966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784843566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784865166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784886766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784908366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784929966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784951566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784973166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1784994766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785016366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785037966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785059566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785081166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785102766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785124366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785145966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785167566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785189166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785210766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785232366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785253966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785275566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785297166,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785318766,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785340366,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785361966,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785383566,
-   "equity": 17.9181
+   "equity": 20.0
   },
   {
    "t": 1785405166,
-   "equity": 15.5886
+   "equity": 20.0
   },
   {
    "t": 1785426766,
-   "equity": 15.4934
+   "equity": 20.0
   },
   {
    "t": 1785448366,
-   "equity": 15.7991
+   "equity": 20.0
   },
   {
    "t": 1785469966,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785491566,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785513166,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785534766,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785556366,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785577966,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785599566,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785621166,
-   "equity": 15.823
+   "equity": 20.0
   },
   {
    "t": 1785642766,
-   "equity": 15.7889
+   "equity": 20.0
   },
   {
    "t": 1785664366,
-   "equity": 15.7889
+   "equity": 20.0
   },
   {
    "t": 1785685966,
-   "equity": 15.7872
+   "equity": 20.0
   },
   {
    "t": 1785707566,
-   "equity": 15.7872
+   "equity": 20.0
   },
   {
    "t": 1785729166,
-   "equity": 15.6258
+   "equity": 20.0
   },
   {
    "t": 1785750766,
-   "equity": 15.6258
+   "equity": 20.0
   },
   {
    "t": 1785772366,
-   "equity": 15.2565
+   "equity": 20.0
   },
   {
    "t": 1785793966,
-   "equity": 15.2565
+   "equity": 18.4
   },
   {
    "t": 1785815566,
-   "equity": 14.9739
+   "equity": 18.4
   },
   {
    "t": 1785837166,
-   "equity": 14.9739
+   "equity": 18.4
   },
   {
    "t": 1785858766,
-   "equity": 15.1518
+   "equity": 18.4
   },
   {
    "t": 1785880366,
-   "equity": 15.1518
+   "equity": 18.4
   },
   {
    "t": 1785901966,
-   "equity": 15.2082
+   "equity": 18.4
   },
   {
    "t": 1785923566,
-   "equity": 15.2082
+   "equity": 18.4
   },
   {
    "t": 1785945166,
-   "equity": 17.1784
+   "equity": 18.4
   },
   {
    "t": 1785966766,
-   "equity": 17.1784
+   "equity": 18.4
   },
   {
    "t": 1785988366,
-   "equity": 17.2541
+   "equity": 18.4
   },
   {
    "t": 1786009966,
-   "equity": 17.2541
+   "equity": 18.4
   },
   {
    "t": 1786031566,
-   "equity": 16.8565
+   "equity": 18.4
   },
   {
    "t": 1786053166,
-   "equity": 16.8565
+   "equity": 18.4
   },
   {
    "t": 1786074766,
-   "equity": 16.6444
+   "equity": 18.4
   },
   {
    "t": 1786096366,
-   "equity": 16.6444
+   "equity": 18.4
   },
   {
    "t": 1786117966,
-   "equity": 16.5747
+   "equity": 18.4
   },
   {
    "t": 1786139566,
-   "equity": 16.5747
+   "equity": 18.4
   },
   {
    "t": 1786161166,
-   "equity": 16.8073
+   "equity": 18.4
   },
   {
    "t": 1786182766,
-   "equity": 16.8073
+   "equity": 18.4
   },
   {
    "t": 1786204366,
-   "equity": 16.7334
+   "equity": 18.4
   },
   {
    "t": 1786225966,
-   "equity": 16.7334
+   "equity": 18.4
   },
   {
    "t": 1786247566,
-   "equity": 16.762
+   "equity": 18.4
   },
   {
    "t": 1786269166,
-   "equity": 16.762
+   "equity": 18.4
   },
   {
    "t": 1786290766,
-   "equity": 16.8606
+   "equity": 18.4
   },
   {
    "t": 1786312366,
-   "equity": 16.8606
+   "equity": 18.4
   },
   {
    "t": 1786333966,
-   "equity": 16.9609
+   "equity": 18.4
   },
   {
    "t": 1786355566,
-   "equity": 16.9609
+   "equity": 18.4
   },
   {
    "t": 1786377166,
-   "equity": 16.849
+   "equity": 18.4
   },
   {
    "t": 1786398766,
-   "equity": 16.849
+   "equity": 18.4
   },
   {
    "t": 1786420366,
-   "equity": 16.6072
+   "equity": 18.4
   },
   {
    "t": 1786441966,
-   "equity": 16.6072
+   "equity": 18.4
   },
   {
    "t": 1786463566,
-   "equity": 16.5428
+   "equity": 18.4
   },
   {
    "t": 1786485166,
-   "equity": 16.5428
+   "equity": 18.4
   },
   {
    "t": 1786506766,
-   "equity": 16.6094
+   "equity": 18.4
   },
   {
    "t": 1786528366,
-   "equity": 16.6094
+   "equity": 18.4
   },
   {
    "t": 1786549966,
-   "equity": 16.4249
+   "equity": 18.4
   },
   {
    "t": 1786571566,
-   "equity": 16.4249
+   "equity": 18.4
   }
  ],
  "closed": [
   {
    "key": [
-    "0x274cec202608757e62a0cf64ec63a3a814a6cc23a1bff1819b437362c5c16732",
-    1
+    "0x2525048b6487955ab915d4c3a84ecc0dde78685232a450de6eb82c135e94b889",
+    0
    ],
-   "token": "108160955862936312471476912639093161977554383788339192385382533545770243910649",
-   "question": "Will Lebanon recognize Israel by June 30?",
-   "outcome": "No",
-   "shares": 1.862630966239814,
-   "entry": 0.859,
+   "token": "104598949370300428828967044393058702087024826756687249867285676413390174471139",
+   "question": "Dota 2: REKONIX vs Yakult Brothers (BO3) - Games of the Future Playoffs",
+   "outcome": "REKONIX",
+   "shares": 1.787709497206704,
+   "entry": 0.895,
    "cost": 1.6,
-   "openedAt": 1782709205,
-   "settle": 1.0,
-   "pnl": 0.26263096623981386
-  },
-  {
-   "key": [
-    "0x80026e4a0a2aad15549a47671a54aa95afc86325c60481ca11c500025f68b926",
-    1
-   ],
-   "token": "38992902454352364358887929901105765380288340807703261057608210090907678247398",
-   "question": "Will Melat Kiros be the Democratic nominee for CO-01?",
-   "outcome": "No",
-   "shares": 5.554716981132075,
-   "entry": 0.265,
-   "cost": 1.472,
-   "openedAt": 1782774005,
+   "openedAt": 1785690011,
    "settle": 0.0,
-   "pnl": -1.472
-  },
-  {
-   "key": [
-    "0x8b08f0f9f302e2c4f54e4eb238b2954df5fd33218cc713ff83808d47687e5ba2",
-    1
-   ],
-   "token": "110497699584092981271645275659518009509426434681323672798794261900579552307405",
-   "question": "Will Donald Trump publicly insult Benjamin Netanyahu by June 30, 2026?",
-   "outcome": "No",
-   "shares": 2.0735172413793106,
-   "entry": 0.725,
-   "cost": 1.5033,
-   "openedAt": 1782860405,
-   "settle": 0.0,
-   "pnl": -1.5033
-  },
-  {
-   "key": [
-    "0x74efaa758c3c08921bd143b0a1696b54890834d073fc6df01dfb75f6f4e38528",
-    0
-   ],
-   "token": "80655987484539542272292015917457196157132492963245419797914585876172872547466",
-   "question": "Will Cori Bush be the Democratic nominee for MO-01?",
-   "outcome": "Yes",
-   "shares": 2.1609375,
-   "entry": 0.64,
-   "cost": 1.383,
-   "openedAt": 1783465207,
-   "settle": 0.0,
-   "pnl": -1.383
-  },
-  {
-   "key": [
-    "0x50456e2e7c3255745217051c90241a036a508b2972ffcf6a6eb83779f1934661",
-    1
-   ],
-   "token": "81368256751864171364185343974349993485093762905849059935724916947854983823753",
-   "question": "Will Troy Jackson be the Maine Senate Democratic nominee on July 27?",
-   "outcome": "No",
-   "shares": 2.5194059405940594,
-   "entry": 0.505,
-   "cost": 1.2723,
-   "openedAt": 1783486804,
-   "settle": 0.0,
-   "pnl": -1.2723
-  },
-  {
-   "key": [
-    "0x136f4e242faeb42f66fa6baf4c192fbfa0b5788ed47a2bf1a3d3a2051b87715a",
-    1
-   ],
-   "token": "6471354829856286372940449560728966503891654198106921816089384164547339752596",
-   "question": "Will the US announce a blockade on Iran by July 31?",
-   "outcome": "No",
-   "shares": 1.510451612903226,
-   "entry": 0.775,
-   "cost": 1.1706,
-   "openedAt": 1783702804,
-   "settle": 0.0,
-   "pnl": -1.1706
-  },
-  {
-   "key": [
-    "0x50456e2e7c3255745217051c90241a036a508b2972ffcf6a6eb83779f1934661",
-    0
-   ],
-   "token": "92257949995604386168666591829297332940242696592210490879190573221921075299609",
-   "question": "Will Troy Jackson be the Maine Senate Democratic nominee on July 27?",
-   "outcome": "Yes",
-   "shares": 1.72304,
-   "entry": 0.625,
-   "cost": 1.0769,
-   "openedAt": 1783724423,
-   "settle": 1.0,
-   "pnl": 0.6461399999999999
-  },
-  {
-   "key": [
-    "0x4c63863c9f4449243981ae1748c5ee9d4d8c8f22e25f708a9afd4c86e124f360",
-    0
-   ],
-   "token": "4514603758205646648829440876458893210600340145888059868720133003939336634458",
-   "question": "Will WTI Crude Oil (WTI) hit (HIGH) $90 in July?",
-   "outcome": "Yes",
-   "shares": 4.939168490153173,
-   "entry": 0.2285,
-   "cost": 1.1286,
-   "openedAt": 1784264410,
-   "settle": 1.0,
-   "pnl": 3.8105684901531727
-  },
-  {
-   "key": [
-    "0x051cd7d8ee2d0d4b38aef35adbf4ad4de44ea5bda2f9f36c70d919179ef75491",
-    0
-   ],
-   "token": "12769703657222289110863139123222000053803471956261605910761965486624303252006",
-   "question": "Will WTI Crude Oil (WTI) hit (HIGH) $90 in July?",
-   "outcome": "Yes",
-   "shares": 8.455052264808362,
-   "entry": 0.14350000000000002,
-   "cost": 1.2133,
-   "openedAt": 1785301247,
-   "settle": 0.0,
-   "pnl": -1.2133
-  },
-  {
-   "key": [
-    "0x7d352ec1d718dd1f2d2fdb93d65fd3908cf34755d1aa45a8697a84d2b5ae1e8e",
-    0
-   ],
-   "token": "55689044028128278672494108251217443782536678376777545334307559186551480418539",
-   "question": "Will WTI Crude Oil (WTI) hit (HIGH) $95 in July?",
-   "outcome": "Yes",
-   "shares": 14.686842105263159,
-   "entry": 0.076,
-   "cost": 1.1162,
-   "openedAt": 1785301250,
-   "settle": 0.0,
-   "pnl": -1.1162
-  },
-  {
-   "key": [
-    "0xb5c0abeecb5502e6e8d83155c27819174d8317af3c425c3afc5a8c45257a3793",
-    1
-   ],
-   "token": "102979714187432523726496609637889951679226430871494531752837414533106422105296",
-   "question": "Will the Fed increase interest rates by 25 bps after the July 2026 meeting?",
-   "outcome": "No",
-   "shares": 1.2505625413633354,
-   "entry": 0.7555000000000001,
-   "cost": 0.9448,
-   "openedAt": 1785344445,
-   "settle": 1.0,
-   "pnl": 0.30576254136333547
-  },
-  {
-   "key": [
-    "0x399b69600812f9997ee0dcac06c74c9351f230baa53765eacbc443a77bc520b9",
-    1
-   ],
-   "token": "109662195595524275261718540822508102276538892129220487987001465595904763399663",
-   "question": "Will Shri Thanedar be the Democratic Nominee for MI-13?",
-   "outcome": "No",
-   "shares": 1.0282285714285715,
-   "entry": 0.875,
-   "cost": 0.8997,
-   "openedAt": 1785625213,
-   "settle": 1.0,
-   "pnl": 0.12852857142857144
-  },
-  {
-   "key": [
-    "0x399b69600812f9997ee0dcac06c74c9351f230baa53765eacbc443a77bc520b9",
-    0
-   ],
-   "token": "60140391190972147972725614646143873455539192565387824092604601196643874302959",
-   "question": "Will Shri Thanedar be the Democratic Nominee for MI-13?",
-   "outcome": "Yes",
-   "shares": 9.992248062015504,
-   "entry": 0.0645,
-   "cost": 0.6445,
-   "openedAt": 1785906007,
-   "settle": 0.0,
-   "pnl": -0.6445
-  },
-  {
-   "key": [
-    "0x2cfbd8aabc3519021dc16ab0c7e0f42b0fdac191e64bcc3c42c2319c4c0117f3",
-    1
-   ],
-   "token": "26254438925251912081598370591454720643937751655789913814108820938080159672958",
-   "question": "Will Donavan McKinney be the Democratic Nominee for MI-13?",
-   "outcome": "No",
-   "shares": 8.471428571428572,
-   "entry": 0.06999999999999999,
-   "cost": 0.593,
-   "openedAt": 1785906009,
-   "settle": 0.0,
-   "pnl": -0.593
-  },
-  {
-   "key": [
-    "0x7900b6dc4e7127b83f04a6b1c29a4ba3a93beec444a8d086831415252ffb16f9",
-    0
-   ],
-   "token": "90531897052223135539335388091510367900639862892627882517049326673874776572544",
-   "question": "Will Haley Stevens win Genesee County in the Michigan Senate Democratic primary?",
-   "outcome": "Yes",
-   "shares": 2.5467692307692307,
-   "entry": 0.325,
-   "cost": 0.8277,
-   "openedAt": 1785668409,
-   "settle": 1.0,
-   "pnl": 1.7190692307692306
+   "pnl": -1.6
   }
  ]
 }
