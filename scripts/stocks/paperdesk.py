@@ -208,6 +208,7 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
     eq = equity(st, quotes)
     if day["startEquity"] is None:
         day["startEquity"] = round(eq, 2)
+    closed_now = set()
     if (day["startEquity"] - eq) / max(day["startEquity"], 1) >= cfg.max_daily_loss_frac \
             and not day["halted"]:
         day["halted"] = True
@@ -215,6 +216,7 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
         for p in list(st["positions"]):
             if p["symbol"] in quote_objs:
                 close_position(st, p, quote_objs[p["symbol"]], "halt", cfg, now)
+                closed_now.add(p["symbol"])
 
     by_symbol = {s.symbol: s for s in snaps}
     for p in list(st["positions"]):
@@ -227,11 +229,19 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
         why = exit_check(p, d_bps, held_min, mins_left, cfg)
         if why:
             close_position(st, p, q, why, cfg, now)
+            closed_now.add(p["symbol"])
 
     if not day["halted"] and mins_left > cfg.flatten_minutes_before_close:
         ranked = sorted((s for s in snaps if s.action != "none"),
                         key=lambda s: -abs(s.dislocation_bps))
         for snap in ranked:
+            # No same-cycle re-entry: a symbol that just closed would have
+            # its replacement racing the old position's live close, and the
+            # signal it would chase is the one that was just exited.
+            if snap.symbol in closed_now:
+                log(st, action="SKIP", symbol=snap.symbol,
+                    reason="closed this cycle; no same-cycle re-entry")
+                continue
             # Latency gate: the measured edge decays within minutes, so an
             # entry priced off a stale — or unverifiable — quote has already
             # missed it. Exits are never gated: leaving late beats not

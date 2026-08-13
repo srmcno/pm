@@ -146,9 +146,8 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                     # Exposure is measured to this bar's close (t + step_s),
                     # the instant actually being evaluated.
                     held = (t + step_s - pos["openedAt"]) / 60.0
-                    why = "halt" if halted else \
-                        exit_check(pos, snap.dislocation_bps, held,
-                                   mins_left, cfg)
+                    why = exit_check(pos, snap.dislocation_bps, held,
+                                     mins_left, cfg)
                     if why and i + 1 < len(bars):
                         exit_q = bars[i + 1][1]
                         fpx = fill_price(sym, exit_q, pos["side"] == "short", cfg)
@@ -201,6 +200,27 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
                 if (day_start_eq - eq) / max(day_start_eq, 1e-9) \
                         >= cfg.max_daily_loss_frac:
                     halted = True
+                    # Production flattens at the quotes that tripped the
+                    # rail; the replay does the same with each symbol's
+                    # latest close, not at some later snapshot that may
+                    # never come.
+                    for sym, pos in list(open_pos.items()):
+                        mark = last_px.get(sym, pos["entry"])
+                        fpx = fill_price(sym, mark, pos["side"] == "short",
+                                         cfg)
+                        if pos["side"] == "long":
+                            proceeds = (pos["shares"] * fpx
+                                        - sell_side_fees(pos["shares"], fpx))
+                        else:
+                            proceeds = pos["shares"] * (2 * pos["entry"] - fpx)
+                        cash += proceeds
+                        closed.append({**pos, "exit": round(fpx, 4),
+                                       "closedAt": t,
+                                       "pnl": round(proceeds - pos["cost"]
+                                                    - pos.get("openFee", 0.0),
+                                                    2),
+                                       "exitReason": "halt", "day": day})
+                        del open_pos[sym]
             t += step_s
         # forced flat at session end
         for sym, pos in list(open_pos.items()):
