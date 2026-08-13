@@ -119,8 +119,8 @@ def plan_orders(cfg, state=None):
         if len(state["open"]) + len(orders) >= cfg["max_open"]:
             break
         px = pmlib.midpoint(s["tokenId"]) or s["currentPrice"]
-        bid = pmlib.best_price(s["tokenId"], "sell")
-        ask = pmlib.best_price(s["tokenId"], "buy")
+        bid = pmlib.book_price(s["tokenId"], "bid")
+        ask = pmlib.book_price(s["tokenId"], "ask")
         if ask is None:
             print(f"  skip (no ask in the book): {o_desc(s)}")
             continue
@@ -129,7 +129,9 @@ def plan_orders(cfg, state=None):
             # 40¢ spread is how a $4 order overpays by dimes.
             print(f"  skip (spread {ask - bid:.2f} too wide): {o_desc(s)}")
             continue
-        limit = round(min(px + cfg["price_buffer"], ask + 0.005, 0.99), 3)
+        # Never bid above the observed ask: if the ask vanishes first, the
+        # order rests at it and the next cycle's cancel_all reclaims it.
+        limit = round(min(px + cfg["price_buffer"], ask, 0.99), 3)
         if not (cfg["min_price"] <= limit <= cfg["max_price"]):
             continue
         stake = round(min(cfg["max_stake_per_trade"], budget_day, budget_total), 2)
@@ -228,6 +230,10 @@ def cmd_execute(args, cfg):
         client.cancel_all()  # stale resting orders die before we re-plan
     except Exception as e:  # noqa: BLE001
         journal({"action": "CANCEL_ALL_ERROR", "error": str(e)})
+        # Abort the whole cycle: if resting orders survived, reconciliation
+        # (which sees only filled positions) would under-count exposure and
+        # this run could place duplicates past the rails. Next cycle retries.
+        raise SystemExit(f"cancel_all failed — skipping this cycle: {e}")
     state = reconcile_state(load_json(
         POSITIONS, {"open": [], "dailySpend": [], "totalDeployed": 0.0}))
     save_json(POSITIONS, state)

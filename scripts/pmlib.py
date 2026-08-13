@@ -150,9 +150,15 @@ def midpoint(token_id):
         return None
 
 
-def best_price(token_id, side):
-    """Best executable price from the book: side='buy' -> ask, 'sell' -> bid."""
-    d = get_json(f"{CLOB_API}/price", {"token_id": token_id, "side": side})
+def book_price(token_id, side):
+    """Best price on one side of the book: side='bid' or 'ask'.
+
+    The CLOB /price endpoint labels sides by the resting orders it reads:
+    side=BUY returns the best bid, side=SELL the best ask (verified against
+    /book). A buyer therefore pays the 'ask'; a seller receives the 'bid'.
+    """
+    api_side = {"bid": "BUY", "ask": "SELL"}[side]
+    d = get_json(f"{CLOB_API}/price", {"token_id": token_id, "side": api_side})
     try:
         return float(d["price"])
     except (TypeError, KeyError, ValueError):

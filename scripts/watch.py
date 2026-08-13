@@ -29,10 +29,16 @@ SEEN_PATH = os.path.join(pmlib.BASE, "data", "live", "seen_signals.json")
 
 
 def trade_key(wallet, t):
-    """Identity of a fill, stable across the feed and the seed fetch."""
-    return (wallet, t.get("timestamp") or 0, t.get("conditionId") or "",
-            t.get("outcomeIndex"), t.get("side") or "",
-            round(t.get("price") or 0, 4), round(t.get("usdcSize") or 0, 2))
+    """Identity of a fill, stable across the feed and the seed fetch.
+
+    transactionHash is the strongest identifier either API exposes (there
+    is no per-fill id); with exact price and size alongside it, only two
+    equal-sized fills inside the same transaction collide — accepted, and
+    conservative: it can only undercount a stake, never double it.
+    """
+    return (wallet, t.get("timestamp") or 0, t.get("transactionHash") or "",
+            t.get("conditionId") or "", t.get("outcomeIndex"),
+            t.get("side") or "", t.get("price") or 0, t.get("size") or 0)
 
 
 def poll_feed(last_seen_ts, watch_set, seen_keys, max_pages=6):
@@ -64,8 +70,10 @@ def poll_feed(last_seen_ts, watch_set, seen_keys, max_pages=6):
                 "conditionId": t.get("conditionId"),
                 "outcomeIndex": t.get("outcomeIndex"),
                 "side": t.get("side"),
+                "size": t.get("size"),
                 "usdcSize": (t.get("size") or 0) * (t.get("price") or 0),
                 "price": t.get("price"), "title": t.get("title"),
+                "transactionHash": t.get("transactionHash"),
             }
             k = trade_key(w, row)
             if k in seen_keys:
@@ -165,7 +173,7 @@ def main():
             fresh, last_seen_ts = poll_feed(last_seen_ts, watch_set, seen_keys)
         except Exception as e:  # noqa: BLE001 — a bad poll must not kill the watch
             print(f"poll error: {e}", flush=True)
-            continue
+            fresh = []  # fall through: heartbeats must survive a feed outage
         for t in fresh:
             window.setdefault(t["wallet"], []).append(t)
         cutoff = time.time() - args.hours * 3600

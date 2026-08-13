@@ -13,7 +13,6 @@ Usage:
 Output: data/signals/latest.json and reports/signals-latest.md
 """
 import argparse
-import calendar
 import glob
 import json
 import math
@@ -21,6 +20,7 @@ import os
 import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 
 import pmlib
 from analyze import classify
@@ -64,7 +64,7 @@ def recent_trades_live(wallets, since):
                 trades.append({k: t.get(k) for k in (
                     "timestamp", "conditionId", "size", "usdcSize", "price",
                     "side", "outcome", "outcomeIndex", "title", "slug",
-                    "eventSlug")})
+                    "eventSlug", "transactionHash")})
             if stop or len(rows) < 500:
                 break
             oldest = rows[-1]["timestamp"]
@@ -169,9 +169,12 @@ def enrich(signals, top, max_drift=0.15, max_days=None):
             continue
         if max_days is not None:
             end_ts = None
-            if m.get("endDate"):
+            if isinstance(m.get("endDate"), str):
                 try:
-                    end_ts = calendar.timegm(time.strptime(m["endDate"][:10], "%Y-%m-%d"))
+                    end = datetime.fromisoformat(m["endDate"].replace("Z", "+00:00"))
+                    if end.tzinfo is None:
+                        end = end.replace(tzinfo=timezone.utc)
+                    end_ts = end.timestamp()
                 except ValueError:
                     end_ts = None
             if end_ts is None or end_ts - time.time() > max_days * 86400:
