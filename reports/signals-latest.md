@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-13 11:41 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-13 11:57 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 A signal means several historically profitable wallets (market makers excluded) independently put meaningful money on the same outcome recently. It is information, not a guarantee — treat it as a shortlist for your own judgment.
 
 ## 1. Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? — **No**
 
-- Score **6.35** · 3 backers · net $1,770 staked
+- Score **6.28** · 3 backers · net $1,770 staked
 - Backers' average entry 0.93 → current price **0.92** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-13
 
