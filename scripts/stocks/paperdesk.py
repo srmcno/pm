@@ -251,9 +251,21 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
         if q is None:
             continue
         snap = by_symbol.get(p["symbol"])
-        d_bps = snap.dislocation_bps if snap else 0.0
         held_min = (now - p["openedAt"]) / 60.0
-        why = exit_check(p, d_bps, held_min, mins_left, cfg)
+        if snap is not None:
+            why = exit_check(p, snap.dislocation_bps, held_min, mins_left,
+                             cfg)
+        else:
+            # No fresh observation this cycle — a duplicate venue timestamp
+            # on a fast poll, a rejected fallback, or missing driver data.
+            # Absence of a signal is NOT evidence of reversion, so
+            # dislocation-based exits are skipped; time and session-close
+            # exits still apply.
+            why = None
+            if held_min >= cfg.max_hold_minutes:
+                why = "time"
+            elif mins_left <= cfg.flatten_minutes_before_close:
+                why = "close"
         if why:
             close_position(st, p, q, why, cfg, now)
             closed_now.add(p["symbol"])

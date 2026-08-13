@@ -209,6 +209,46 @@ class TestHaltFlatten(unittest.TestCase):
         self.assertEqual(st["closed"][-1]["exitReason"], "halt")
 
 
+class TestNoSnapshotExits(unittest.TestCase):
+    """A cycle with no fresh observation must not read as reversion."""
+
+    def _step(self, opened_at, minutes_to_close=120.0):
+        import time as _t
+        from stocks import paperdesk, stocklib
+        from stocks.strategy import RollingTape, StrategyConfig
+        cfg = StrategyConfig()
+        st = paperdesk.default_state(1000.0)
+        pos = {"symbol": "IBIT", "side": "long", "shares": 5.0,
+               "entry": 60.0, "cost": 300.0, "openedAt": opened_at,
+               "reason": "t"}
+        st["positions"].append(pos)
+        st["cash"] -= pos["cost"]
+        st["day"] = {"date": _t.strftime("%Y-%m-%d"), "trades": 0,
+                     "pnl": 0.0, "halted": False, "startEquity": 1000.0}
+        orig = (stocklib.crypto_mids, stocklib.live_quotes,
+                stocklib.minutes_to_close)
+        stocklib.crypto_mids = lambda syms: {}
+        stocklib.live_quotes = lambda syms: (
+            {"IBIT": {"price": 60.0, "bid": None, "ask": None,
+                      "ts": 1000.0}}, "yahoo")
+        stocklib.minutes_to_close = lambda: minutes_to_close
+        try:
+            paperdesk.step(st, cfg, {}, RollingTape(), now=1000.0)
+        finally:
+            (stocklib.crypto_mids, stocklib.live_quotes,
+             stocklib.minutes_to_close) = orig
+        return st
+
+    def test_missing_snapshot_is_not_reversion(self):
+        st = self._step(opened_at=820)          # held 3 minutes
+        self.assertEqual(len(st["positions"]), 1)
+
+    def test_time_stop_applies_without_snapshot(self):
+        st = self._step(opened_at=1000 - 3600)  # held 60 minutes
+        self.assertEqual(st["positions"], [])
+        self.assertEqual(st["closed"][-1]["exitReason"], "time")
+
+
 class TestMirrorReconciliation(unittest.TestCase):
     """Live mirroring records completion only on confirmed fills."""
 
