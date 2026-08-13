@@ -394,8 +394,8 @@ def _reconcile_mirrors(executor, st, save=None):
     for c in st["closed"]:
         if c.get("mirrored"):
             continue
-        if not c.get("liveOpenFinal"):
-            # The open was submitted but not terminally settled when the
+        if not c.get("liveOpen"):
+            # The open was submitted but nothing has filled yet when the
             # paper side closed; settle what actually happened live first.
             if not c.get("liveCid"):
                 c["mirrored"] = True     # never touched the live account
@@ -408,6 +408,14 @@ def _reconcile_mirrors(executor, st, save=None):
                 # The paper side is closed, so any FURTHER fill is
                 # unwanted: cancel the working remainder and keep watching
                 # until the order settles terminally.
+                livedesk.cancel_by_client_id(executor, c["liveCid"])
+                pending = True
+                continue
+        elif c.get("liveCid") and not c.get("liveOpenFinal"):
+            # Exposure is recorded but the opening order may still be
+            # working; cancel the remainder and wait for terminal
+            # settlement so the close flattens the FINAL quantity.
+            if settle_open(c) == "pending":
                 livedesk.cancel_by_client_id(executor, c["liveCid"])
                 pending = True
                 continue
