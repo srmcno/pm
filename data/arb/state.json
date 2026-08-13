@@ -1,8 +1,16 @@
 {
  "bankrollStart": 20.0,
- "cash": 20.0,
+ "cash": 20.0187,
  "createdAt": 1786597058,
- "trades": [],
+ "trades": [
+  {
+   "t": 1786598156,
+   "path": "USDT\u2192PLUMBER\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0187,
+   "bps": 37.5
+  }
+ ],
  "equityCurve": [
   {
    "t": 1786597058,
@@ -111,13 +119,83 @@
   {
    "t": 1786597731,
    "equity": 20.0
+  },
+  {
+   "t": 1786597756,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597781,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597806,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597831,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597856,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597881,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597906,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597931,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597956,
+   "equity": 20.0
+  },
+  {
+   "t": 1786597981,
+   "equity": 20.0
+  },
+  {
+   "t": 1786598006,
+   "equity": 20.0
+  },
+  {
+   "t": 1786598031,
+   "equity": 20.0
+  },
+  {
+   "t": 1786598056,
+   "equity": 20.0
+  },
+  {
+   "t": 1786598081,
+   "equity": 20.0
+  },
+  {
+   "t": 1786598106,
+   "equity": 20.0
+  },
+  {
+   "t": 1786598131,
+   "equity": 20.0
+  },
+  {
+   "t": 1786598156,
+   "equity": 20.0187
   }
  ],
  "decay": {
   "checked": 0,
   "survived": 0
  },
- "cooldown": {},
- "tradeCountAll": 0,
+ "cooldown": {
+  "USDT\u2192PLUMBER\u2192USD1\u2192USDT|PLUMBERUSDT|PLUMBERUSD1|USD1USDT": 1786598156
+ },
+ "tradeCountAll": 1,
  "replay": null
 }
