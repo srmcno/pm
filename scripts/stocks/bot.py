@@ -252,23 +252,33 @@ def cmd_run(args):
         # any partial fills get their closes submitted. Closes are left
         # working: they can only flatten, and the next session's startup
         # reconciliation settles their records from persisted state.
-        settle_deadline = time.time() + 1800
-        cancelled_opens = False
+        cancel_after = time.time() + 1800
+        exit_after = cancel_after + 300
         while _reconcile_mirrors(executor, st, save=paperdesk.save):
             paperdesk.save(st)
-            if time.time() > settle_deadline and not cancelled_opens:
-                cancelled_opens = True
-                settle_deadline = time.time() + 300
-                for p in st["positions"]:
-                    if p.get("liveCid") and not p.get("liveOpen"):
-                        if livedesk.cancel_by_client_id(executor, p["liveCid"]):
-                            print(f"  cancelled pending open {p['symbol']} "
-                                  f"at shutdown", flush=True)
-            elif time.time() > settle_deadline:
-                print("  ALERT: live close orders still working at "
-                      "shutdown; they only reduce exposure and the next "
-                      "session resumes reconciliation", flush=True)
-                break
+            now_ts = time.time()
+            pending_opens = [p for p in st["positions"]
+                             if p.get("liveCid") and not p.get("liveOpen")]
+            if now_ts > cancel_after:
+                # Cancellation is retried on EVERY pass until each pending
+                # open confirms terminal — a transient lookup or DELETE
+                # failure must not leave a working open to fill after exit.
+                for p in pending_opens:
+                    if livedesk.cancel_by_client_id(executor, p["liveCid"]):
+                        print(f"  cancelled pending open {p['symbol']} "
+                              f"at shutdown", flush=True)
+            if now_ts > exit_after:
+                if pending_opens:
+                    # Never exit while an open could still fill; keep
+                    # cancelling and reconciling.
+                    print("  ALERT: pending open orders still unconfirmed; "
+                          "continuing cancellation", flush=True)
+                    exit_after = now_ts + 300
+                else:
+                    print("  ALERT: live close orders still working at "
+                          "shutdown; they only reduce exposure and the next "
+                          "session resumes reconciliation", flush=True)
+                    break
             print("  settling pending live orders before shutdown",
                   flush=True)
             time.sleep(15)

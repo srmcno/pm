@@ -207,11 +207,13 @@ def step(st, cfg: StrategyConfig, betas, tape, now=None):
         if q.get("ts"):
             ages.append(max(0.0, now - q["ts"]))
         # The signal tape records at the VENUE timestamp: a fallback quote
-        # older than an observation already on the tape is silently dropped
-        # (RollingTape rejects out-of-order writes), so a stale price can
-        # never be time-shifted forward to fabricate an anchor regression.
-        # The quote itself stays usable for marks and exits regardless.
-        tape.record(sym, q.get("ts") or now, q["price"])
+        # older than an observation already on the tape is rejected
+        # (RollingTape refuses out-of-order writes), and a rejected sample
+        # is excluded from the ENTIRE signal path this cycle — no snapshot,
+        # no entry — exactly like a missing driver. The quote itself stays
+        # usable for marks and exits regardless.
+        if not tape.record(sym, q.get("ts") or now, q["price"]):
+            continue
         drv = meta["driver"]
         if betas.get(sym, {}).get("r2", 0) < cfg.min_beta_r2:
             continue

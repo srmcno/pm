@@ -103,13 +103,17 @@ class RollingTape:
         self.series = {}
 
     def record(self, key, ts, price):
+        """Append an observation; returns False for an out-of-order sample
+        (at or before the series head), which is rejected — callers must
+        keep such samples out of the signal path."""
         s = self.series.setdefault(key, [])
         if s and ts <= s[-1][0]:
-            return
+            return False
         s.append((int(ts), float(price)))
         cutoff = ts - self.keep
         while s and s[0][0] < cutoff:
             s.pop(0)
+        return True
 
     def at(self, key, ts):
         """Latest recorded price at or before ts."""

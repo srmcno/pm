@@ -51,6 +51,16 @@ class TestBeta(unittest.TestCase):
         self.assertAlmostEqual(beta, 2.0, places=6)
 
 
+class TestTape(unittest.TestCase):
+    def test_out_of_order_samples_are_rejected(self):
+        from stocks.strategy import RollingTape
+        t = RollingTape()
+        self.assertTrue(t.record("X", 100, 1.0))
+        # an older fallback must not be time-shifted forward onto the tape
+        self.assertFalse(t.record("X", 50, 2.0))
+        self.assertEqual(t.at("X", 200), 1.0)
+
+
 class TestSignal(unittest.TestCase):
     def setUp(self):
         self.cfg = StrategyConfig()
