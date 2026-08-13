@@ -151,6 +151,51 @@ between an edge and its execution:
   `arb-watch.yml` runs everything in self-chaining ~2-hour shifts like the
   Polymarket watcher.
 
+### The event-driven engine (`engine/`)
+
+The scanner above is a REST polling loop: by the time it sees an edge, the edge
+is a historical artifact — its own latency replay measures how much survives one
+scan of delay. `engine/` is the rewrite that removes the polling: WebSocket L2
+deltas into an in-memory book, cycle re-evaluation triggered only by the books
+that actually mutated, and IOC leg chaining driven off private fill pushes
+instead of `sleep`-and-poll.
+
+```bash
+python3 -m unittest discover -s tests    # 62 tests, stdlib only
+python3 -m engine selftest               # full pipeline vs a simulated venue
+python3 -m engine plan                   # universe + connection-pool arithmetic
+
+pip install -r requirements-engine.txt
+python3 -m engine run                    # paper: real feeds, no orders
+```
+
+| Piece | Path | What it does |
+|---|---|---|
+| L2 book | `engine/book.py` | delta apply in ~1.7 µs, sequence-gap detection, non-blocking resync state machine |
+| Shared memory | `engine/shm.py` | seqlock slab; ingestion processes publish, compute reads without locks |
+| Connection pool | `engine/feed.py` | MEXC allows 30 subs/socket, so 2,100 pairs is 70 sockets — sharded, self-recycling |
+| Graph engine | `engine/graph.py` | −ln(rate) edges net of taker fees; symbol→cycles inverted index (1.3 µs/frame) plus a background Bellman-Ford sweep for longer routes |
+| Sizer | `engine/sizing.py` | depth walking with lot/notional quantization, bisection for the largest size that holds the edge |
+| Execution | `engine/execution.py` | FOK leg 1, IOC legs 2-3 sized from actual fills, continue-vs-exit decision on the live book, two-hop unwind |
+| Risk | `engine/risk.py` | rails re-checked per leg, inventory ledger, kill switch |
+| Telemetry | `engine/telemetry.py` | T+25/100/500 ms edge decay, edge survival distribution, tick-to-trade breakdown |
+
+Three things worth knowing before believing any of it — all detailed in
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md):
+
+1. **MEXC has no order-entry WebSocket.** Orders are REST-only; the private WS
+   carries fills. The recoverable latency is the pre-warmed keep-alive pool plus
+   taking fills from the push instead of polling — which is worth ~1 s per
+   triangle against the current `arblive.py`.
+2. **Where the process runs dominates everything the code does.** Compute is
+   tens of microseconds; RTT from a GitHub Actions runner to MEXC is 150-250 ms.
+   Sub-100 ms tick-to-trade needs a VPS in the venue's metro, in any language.
+3. **The decay telemetry is the stop condition.** If capture at T+100 ms is
+   already near zero, the edge dies before any router could reach it and the
+   correct action is to stop — not to optimize further.
+
+It ships disarmed, under the same rails as the rest of the desk.
+
 ## Data sources
 
 - `https://data-api.polymarket.com/v1/leaderboard` — trader rankings

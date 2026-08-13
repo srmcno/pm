@@ -1,0 +1,12 @@
+# Live I/O for engine/. The computation layer — books, graph, sizing,
+# execution, telemetry — is stdlib-only and imports without any of these,
+# which is why `python3 -m engine selftest` and the test suite run bare.
+aiohttp>=3.9          # keep-alive HTTP pool for REST order entry + snapshots
+websockets>=12.0      # market-data and private streams
+
+# Optional, and worth it in production:
+# uvloop>=0.19        # ~2-4x lower event-loop overhead on Linux; import and
+#                     #   uvloop.install() before asyncio.run(). Not on Windows.
+# protobuf>=4.25      # only if you generate MEXC's PushDataV3ApiWrapper stubs
+#                     #   with protoc instead of using the schema-free reader
+#                     #   in engine/venues/protobuf.py.
