@@ -151,10 +151,15 @@ def cmd_run(args):
         # Anything pending from an interrupted session — an unconfirmed open
         # (liveCid) or an unfinished close (liveOpen without mirrored) —
         # keeps its state and is reconciled immediately, before any new
-        # trading.
+        # trading. Open positions that predate execution are marked
+        # paper-only: submitting them now would chase a signal from before
+        # this session started.
         for c in st["closed"]:
             if not c.get("liveOpen") and not c.get("liveCid"):
                 c.setdefault("mirrored", True)
+        for p in st["positions"]:
+            if not p.get("liveCid"):
+                p["liveDead"] = True
         _reconcile_mirrors(executor, st, save=paperdesk.save)
 
     deadline = time.time() + args.minutes * 60 if args.minutes else None
@@ -199,12 +204,15 @@ def cmd_run(args):
             # Closes created by this step are submitted before any new
             # opens; the paper desk additionally never re-enters a symbol
             # in the cycle that closed it, so an old close and its
-            # replacement's open can never race at the broker. Positions
-            # are identified by the absence of a liveCid, never by object
-            # identity — id() values can be reused within one step.
+            # replacement's open can never race at the broker. A new open
+            # is a position with neither a liveCid nor the explicit
+            # paper-only marker (liveDead) — never object identity, since
+            # id() values can be reused within one step, and never bare
+            # CID absence, which would resubmit dead or pre-execution
+            # positions on a stale signal.
             _reconcile_mirrors(executor, st, save=paperdesk.save)
             for p in st["positions"]:
-                if not p.get("liveCid"):
+                if not p.get("liveCid") and not p.get("liveDead"):
                     # The CID is assigned and DURABLY SAVED before the
                     # network call: if the order is accepted but the
                     # response is lost — or the process dies mid-flight —
@@ -292,7 +300,11 @@ def _reconcile_mirrors(executor, st, save=None):
         if p.get("liveCid") and not p.get("liveOpen"):
             outcome = settle_open(p)
             if outcome == "dead":
-                p["liveCid"] = None      # open never happened; stay paper-only
+                # The open never happened; the position stays paper-only
+                # PERMANENTLY (liveDead) — resubmitting later would chase
+                # the stale signal that priced the original entry.
+                p["liveCid"] = None
+                p["liveDead"] = True
             elif outcome == "pending":
                 pending = True
     for c in st["closed"]:

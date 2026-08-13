@@ -296,11 +296,14 @@ class TestMirrorReconciliation(unittest.TestCase):
         self.assertTrue(pending)
 
     def test_never_landed_open_clears_after_probes(self):
+        # a dead open becomes permanently paper-only: resubmitting later
+        # would chase the stale signal that priced the original entry
         p = {"symbol": "IBIT", "side": "long", "shares": 5.0, "openedAt": 100,
              "liveCid": "pm-o-IBIT-100", "liveNotFound": 2}
         pending = self._run([], {"pm-o-IBIT-100": ("not_found", 0.0)}, [],
                             positions=[p])
         self.assertIsNone(p["liveCid"])
+        self.assertTrue(p.get("liveDead"))
         self.assertFalse(pending)
 
 

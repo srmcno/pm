@@ -142,19 +142,27 @@ def run(bankroll=1000.0, range_="5d", cfg=None, verbose=True, interval="1m",
 
         t = open_ts
         while t <= last_ts:
+            # Pass 1: refresh EVERY symbol's mark for this timestamp before
+            # any decision — production evaluates one batched quote set, so
+            # the rail must see all same-bar marks together, not a mix of
+            # current and previous-bar prices.
+            bars_at_t = []
             for sym, bars in day_bars.items():
                 i = idx[sym]
                 while i < len(bars) and bars[i][0] < t:
                     i += 1
                 idx[sym] = i
-                if i >= len(bars) or bars[i][0] != t:
-                    continue
+                if i < len(bars) and bars[i][0] == t:
+                    last_px[sym] = bars[i][4]
+                    bars_at_t.append(sym)
+            rail_check(t)
+            for sym in bars_at_t:
+                bars = day_bars[sym]
+                i = idx[sym]
                 bar = bars[i]
                 px = bar[4]
-                last_px[sym] = px
-                # The rail is evaluated at this symbol's fresh mark, BEFORE
-                # its exit/entry decisions: an earlier symbol's loss or this
-                # bar's own move must not let a later entry through.
+                # Exits below can realize losses mid-pass; re-check before
+                # each symbol's decisions so no later entry slips through.
                 rail_check(t)
                 meta = UNIVERSE[sym]
                 if betas[sym]["r2"] < cfg.min_beta_r2:
