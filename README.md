@@ -114,7 +114,12 @@ publish. It stays live end to end:
 
 A second page of the app — **https://srmcno.github.io/pm/arb.html** — runs a
 micro-cap arbitrage scanner on MEXC spot (chosen over Pionex for its full
-public market-data API and ~2,100 listed pairs), rescanning every ~25 s:
+public market-data API and ~2,100 listed pairs). The full universe is
+re-screened every **2 seconds** (one bulk book-ticker call plus pure CPU
+over ~740 cycles); candidate legs get their depth fetched in parallel, so
+a screen hit is depth-verified within a second or two. Heavy extras (Gate
+comparison, volumes, the tape) refresh on a slower timer so they never sit
+between an edge and its execution:
 
 - **Triangular cycles** (USDT → coin → USDC/USD1/BTC/ETH → USDT) priced by
   crossing real bids and asks net of each pair's actual taker fee, then
@@ -127,8 +132,17 @@ public market-data API and ~2,100 listed pairs), rescanning every ~25 s:
   different-token trap (price-ratio and volume filters), published as intel
   only — capturing one needs funded accounts on both venues.
 - A **$20 paper account** (same stake as the Polymarket bot) executes
-  verified cycles at walked-depth prices, assuming atomic fills — an upper
-  bound, clearly labeled. No keys, no real orders.
+  verified cycles at the largest depth-verified size that fits, re-striking
+  a persisting edge every 30 s against freshly walked depth — atomic fills
+  assumed, an upper bound, clearly labeled.
+- **Real money (ships disarmed)**: `scripts/arblive.py` can fire verified
+  triangles as real IOC orders with automatic unwind if a leg fails, under
+  hard rails (`data/arb/live-config.json`: $20 bankroll, $10/cycle,
+  $40/day, 10 bps minimum edge, `data/arb/STOP` kill file). Arming needs
+  MEXC repo secrets (spot-trade-only API key, never withdrawal) — see the
+  checklist in the file's docstring, and read the latency-capture ratio
+  first: if a one-scan delay already kills the edges, real money is a
+  donation to faster bots.
 - **Historical testing, the honest way**: books aren't archived anywhere
   public and candles can't see spreads, so the desk records its own tick
   history every scan (`data/arb/history/`) and continuously replays it with
