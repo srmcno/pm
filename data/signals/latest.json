@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786603702,
+  "generatedAt": 1786604610,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,18 +21,18 @@
      "netUsd": 2285.12,
      "avgPrice": 0.6306,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.4909977330275193
+     "lastTradeAgoH": 0.5,
+     "score": 2.4649562699580048
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
      "name": "zb8",
      "quality": 0.6567,
-     "netUsd": 8923.77,
+     "netUsd": 8224.71,
      "avgPrice": 0.6182,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.0479296899864385
+     "lastTradeAgoH": 0.1,
+     "score": 2.0643740577139664
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -41,20 +41,20 @@
      "netUsd": 17136.0,
      "avgPrice": 0.6,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.4964201457794202
+     "lastTradeAgoH": 0.6,
+     "score": 1.4807762254955465
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 28344.89,
-   "score": 6.0353,
+   "totalNetUsd": 27645.83,
+   "score": 6.0101,
    "question": "Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner",
    "outcome": "Team Liquid",
    "tokenId": "2842276822365184660788300168309564867681014111251933436598845034848736946032",
-   "currentPrice": 0.575,
+   "currentPrice": 0.595,
    "backersAvgEntry": 0.6163,
-   "driftSinceEntry": -0.0413,
+   "driftSinceEntry": -0.0213,
    "endDate": "2026-08-13T12:00:00Z",
    "slug": "dota2-liquid-vg-2026-08-13-game1",
    "eventSlug": "dota2-liquid-vg-2026-08-13"
@@ -72,8 +72,8 @@
      "netUsd": 313.57,
      "avgPrice": 0.4958,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.8,
-     "score": 1.5044978303608736
+     "lastTradeAgoH": 15.0,
+     "score": 1.4887694641050402
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -82,8 +82,8 @@
      "netUsd": 262.45,
      "avgPrice": 0.4961,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.7,
-     "score": 1.4043544329759827
+     "lastTradeAgoH": 15.0,
+     "score": 1.3896729888229187
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -92,20 +92,20 @@
      "netUsd": 234.05,
      "avgPrice": 0.4964,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.7,
-     "score": 1.2502179708200825
+     "lastTradeAgoH": 15.0,
+     "score": 1.237147904683818
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 810.07,
-   "score": 4.1591,
+   "score": 4.1156,
    "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "26418124513273531493042185776538890382070385858747044148067615795770766670254",
-   "currentPrice": 0.46,
+   "currentPrice": 0.465,
    "backersAvgEntry": 0.4961,
-   "driftSinceEntry": -0.0361,
+   "driftSinceEntry": -0.0311,
    "endDate": "2026-08-15T16:00:00Z",
    "slug": "elon-musk-of-tweets-august-13-august-15-40-64",
    "eventSlug": "elon-musk-of-tweets-august-13-august-15"
@@ -123,8 +123,8 @@
      "netUsd": 855.47,
      "avgPrice": 0.7629,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.8,
-     "score": 1.504480417292311
+     "lastTradeAgoH": 15.0,
+     "score": 1.4887522330767005
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -133,8 +133,8 @@
      "netUsd": 377.59,
      "avgPrice": 0.7318,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.7,
-     "score": 1.4043544329759827
+     "lastTradeAgoH": 15.0,
+     "score": 1.3896729888229187
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -143,14 +143,14 @@
      "netUsd": 349.12,
      "avgPrice": 0.7593,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.7,
-     "score": 1.2502179708200825
+     "lastTradeAgoH": 15.0,
+     "score": 1.237147904683818
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1582.18,
-   "score": 4.1591,
+   "score": 4.1156,
    "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
    "outcome": "No",
    "tokenId": "69962024849840853998461872215176721695006892813256543475794817418366358101285",
