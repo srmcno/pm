@@ -553,6 +553,31 @@ class TestSeedFeedOverlap(unittest.TestCase):
         self.assertEqual(set(d.last_ts.values()), {12345})
 
 
+class TestEnrichedDetail(unittest.TestCase):
+    def test_enrich_carries_the_slugs_the_site_links_from(self):
+        """The dashboard's Open link is built from slug/eventSlug; without
+        them in the enriched detail every published signal points nowhere."""
+        from pmx.engine import Candidate, ConsensusEngine
+
+        class FakeResolver:
+            def get(self, cid):
+                return {"question": "Q?", "outcomes": ["Yes", "No"],
+                        "outcomePrices": [0.4, 0.6],
+                        "clobTokenIds": ["t0", "t1"], "closed": False,
+                        "slug": "a-market", "eventSlug": "an-event",
+                        "endDate": "2099-01-01T00:00:00Z"}
+
+        eng = ConsensusEngine(EngineConfig(), {"profiles": {}},
+                              resolver=FakeResolver())
+        c = Candidate(condition_id="0xc", outcome_index=0, category="Sports",
+                      title="Q?", sigma=1.0, n_eff=2.0,
+                      backers=[{"value": 1.0, "avgPrice": 0.40}])
+        kept = eng.enrich([c], max_days=None)
+        self.assertEqual(len(kept), 1)
+        self.assertEqual(kept[0].detail["slug"], "a-market")
+        self.assertEqual(kept[0].detail["eventSlug"], "an-event")
+
+
 class TestConfig(unittest.TestCase):
     def test_rejects_over_betting(self):
         cfg = EngineConfig()

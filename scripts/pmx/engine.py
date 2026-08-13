@@ -237,6 +237,11 @@ class ConsensusEngine:
                 "tokenId": (m.get("clobTokenIds") or [None] * (oi + 1))[oi],
                 "currentPrice": price,
                 "backersAvgEntry": round(entry, 4) if entry else None,
+                # The dashboard builds its "Open" link from these; without
+                # them every published signal points nowhere. The resolver
+                # has both, so omitting them was pure loss.
+                "slug": m.get("slug"),
+                "eventSlug": m.get("eventSlug"),
                 "endDate": m.get("endDate"),
                 "daysToResolution": ((end_ts - now) / 86400.0
                                      if end_ts else None),
