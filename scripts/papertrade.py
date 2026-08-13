@@ -162,7 +162,12 @@ def cmd_backtest(args):
     analyzed = pmlib.load_analyzed()
     cutoff = analyzed["cutoff"]
     end_ts = analyzed["generatedAt"]
-    mid_ts = cutoff + (end_ts - cutoff) // 2
+    if args.train_days:
+        mid_ts = cutoff + int(args.train_days * 86400)
+        if not cutoff < mid_ts < end_ts:
+            raise SystemExit("--train-days must fall inside the data window")
+    else:
+        mid_ts = cutoff + (end_ts - cutoff) // 2
 
     # Watchlist from FIRST-HALF performance only.
     for w in analyzed["wallets"]:
@@ -360,6 +365,8 @@ def main():
     p.add_argument("--delay-hours", type=float, default=1.0)
     p.add_argument("--step-hours", type=float, default=6.0,
                    help="how often the simulated bot recomputes signals")
+    p.add_argument("--train-days", type=float, default=None,
+                   help="watchlist qualifies on the first N days (default: half)")
     p.add_argument("--hours", type=int, default=72, help="signal lookback")
     p.add_argument("--min-backers", type=int, default=2)
     p.add_argument("--min-pnl", type=float, default=50_000,
