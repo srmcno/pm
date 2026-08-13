@@ -92,6 +92,14 @@
   }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 80px; }
 
+  #themetoggle {
+    position: absolute; top: 18px; right: 22px;
+    font: 18px/1 system-ui, sans-serif; color: var(--accent);
+    background: transparent; border: 1px solid var(--border); border-radius: 2px;
+    width: 34px; height: 34px; cursor: pointer;
+  }
+  #themetoggle:hover { background: var(--accent-wash); }
+  .wrap { position: relative; }
   header.masthead { margin-bottom: 34px; text-align: center; }
   #sunburst { display: block; margin: 6px auto 10px; }
   .eyebrow {
@@ -259,6 +267,7 @@
 </style>
 
 <div class="wrap">
+  <button id="themetoggle" type="button" aria-label="Switch color theme" title="Switch theme">◐</button>
   <header class="masthead">
     <svg id="sunburst" width="190" height="48" viewBox="0 0 190 48" aria-hidden="true"></svg>
     <p class="eyebrow">Polymarket ◆ trailing 90 days</p>
@@ -351,6 +360,21 @@
 <script id="paper-snapshot" type="application/json">/*__PAPER__*/</script>
 <script>
 "use strict";
+/* Theme: black by default; the toggle flips and remembers the choice. */
+(function () {
+  const root = document.documentElement;
+  let saved = null;
+  try { saved = localStorage.getItem("mm-theme"); } catch (e) { /* private mode */ }
+  if (!root.dataset.theme) root.dataset.theme = saved || "dark";
+  addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("themetoggle");
+    btn.addEventListener("click", () => {
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      try { localStorage.setItem("mm-theme", next); } catch (e) { /* ok */ }
+    });
+  });
+})();
 const DATA = JSON.parse(document.getElementById("data").textContent);
 const W = DATA.wallets;
 const fmtUsd = (v, plus) => {

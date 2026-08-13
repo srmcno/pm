@@ -92,6 +92,14 @@
   }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 80px; }
 
+  #themetoggle {
+    position: absolute; top: 18px; right: 22px;
+    font: 18px/1 system-ui, sans-serif; color: var(--accent);
+    background: transparent; border: 1px solid var(--border); border-radius: 2px;
+    width: 34px; height: 34px; cursor: pointer;
+  }
+  #themetoggle:hover { background: var(--accent-wash); }
+  .wrap { position: relative; }
   header.masthead { margin-bottom: 34px; text-align: center; }
   #sunburst { display: block; margin: 6px auto 10px; }
   .eyebrow {
@@ -259,6 +267,7 @@
 </style>
 
 <div class="wrap">
+  <button id="themetoggle" type="button" aria-label="Switch color theme" title="Switch theme">◐</button>
   <header class="masthead">
     <svg id="sunburst" width="190" height="48" viewBox="0 0 190 48" aria-hidden="true"></svg>
     <p class="eyebrow">Polymarket ◆ trailing 90 days</p>
@@ -351,6 +360,21 @@
 <script id="paper-snapshot" type="application/json">{"updatedAt":1786586822,"bankrollStart":20.0,"equity":19.8627,"cash":12.13,"positions":[{"conditionId":"0xea83e5554bfb997ea9d6569133e45165e8613dcc8fe6d0ae2a1c6cc1ae7c3a7f","outcomeIndex":1,"tokenId":"108575195641642223372823895926575400070857162378893231389202602385992685880359","question":"Will Sergio Massa win the 2027 Argentina presidential election?","outcome":"No","shares":1.7204,"entryPrice":0.93,"costUsd":1.6,"openedAt":1786581744,"signalScore":6.1408,"markPrice":0.9235,"valueUsd":1.5888},{"conditionId":"0xa3b36b2d6104d34af4e6c6215fc818e43352e78a748fbfb0b85e3a35f71dec9a","outcomeIndex":1,"tokenId":"97050921740416192996389806693742575608111328819185493163189880975611314813724","question":"Will there be no change in Fed interest rates after the September 2026 meeting?","outcome":"No","shares":4.2609,"entryPrice":0.34500000000000003,"costUsd":1.47,"openedAt":1786581744,"signalScore":6.1385,"markPrice":0.335,"valueUsd":1.4274},{"conditionId":"0x876506d8b2bd7a0d3fa4fe18c024eee6e1dd81ee24c26795dadd6cfe4a7b5d0d","outcomeIndex":1,"tokenId":"2881957189963819690709899387312951271986076905757701114514025622922000576600","question":"Will the Fed increase interest rates by 25 bps after the September 2026 meeting?","outcome":"No","shares":1.9708,"entryPrice":0.685,"costUsd":1.35,"openedAt":1786581744,"signalScore":5.7186,"markPrice":0.675,"valueUsd":1.3303},{"conditionId":"0xb7da3878391b4ed1f1a4a4d6c11afd740b2730e3251c4ffddaf910f56348b6d5","outcomeIndex":1,"tokenId":"104921559757967622795634820444980902727988756064112315776695453325703597702109","question":"Will Team Falcons Win The International 2026?","outcome":"No","shares":1.3889,"entryPrice":0.9,"costUsd":1.25,"openedAt":1786581744,"signalScore":5.6764,"markPrice":0.89,"valueUsd":1.2361},{"conditionId":"0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335","outcomeIndex":1,"tokenId":"26418124513273531493042185776538890382070385858747044148067615795770766670254","question":"Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?","outcome":"No","shares":2.4211,"entryPrice":0.47500000000000003,"costUsd":1.15,"openedAt":1786581744,"signalScore":5.3633,"markPrice":0.46,"valueUsd":1.1137},{"conditionId":"0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998","outcomeIndex":1,"tokenId":"69962024849840853998461872215176721695006892813256543475794817418366358101285","question":"Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?","outcome":"No","shares":1.3548,"entryPrice":0.775,"costUsd":1.05,"openedAt":1786581744,"signalScore":5.3633,"markPrice":0.765,"valueUsd":1.0364}],"closed":[],"closedCount":0,"wins":0,"equityCurve":[{"t":1786581746,"equity":19.8705,"cash":12.13},{"t":1786585016,"equity":19.8688,"cash":12.13},{"t":1786586822,"equity":19.8627,"cash":12.13}]}</script>
 <script>
 "use strict";
+/* Theme: black by default; the toggle flips and remembers the choice. */
+(function () {
+  const root = document.documentElement;
+  let saved = null;
+  try { saved = localStorage.getItem("mm-theme"); } catch (e) { /* private mode */ }
+  if (!root.dataset.theme) root.dataset.theme = saved || "dark";
+  addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("themetoggle");
+    btn.addEventListener("click", () => {
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      try { localStorage.setItem("mm-theme", next); } catch (e) { /* ok */ }
+    });
+  });
+})();
 const DATA = JSON.parse(document.getElementById("data").textContent);
 const W = DATA.wallets;
 const fmtUsd = (v, plus) => {
