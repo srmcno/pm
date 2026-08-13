@@ -1,10 +1,45 @@
 {
  "bankrollStart": 1000.0,
- "cash": 1000.0,
+ "cash": 700.0,
  "createdAt": 1786622317,
- "positions": [],
+ "positions": [
+  {
+   "symbol": "COIN",
+   "side": "long",
+   "shares": 1.99,
+   "entry": 150.7553,
+   "cost": 300.0,
+   "openedAt": 1786631718,
+   "entryDislocationBps": -106.7,
+   "driverMoveBps": 55.7,
+   "beta": 1.518,
+   "reason": "lagging a +56bps driver move by 107bps"
+  }
+ ],
  "closed": [],
- "equityCurve": [],
- "log": [],
- "day": {}
+ "equityCurve": [
+  {
+   "t": 1786631718,
+   "equity": 999.85
+  }
+ ],
+ "log": [
+  {
+   "t": 1786631718,
+   "action": "OPEN",
+   "symbol": "COIN",
+   "side": "long",
+   "shares": 1.99,
+   "entry": 150.7553,
+   "cost": 300.0,
+   "reason": "lagging a +56bps driver move by 107bps"
+  }
+ ],
+ "day": {
+  "date": "2026-08-13",
+  "trades": 0,
+  "pnl": 0.0,
+  "halted": false,
+  "startEquity": 1000.0
+ }
 }
