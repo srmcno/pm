@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-14 12:14 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 12:29 UTC · started with $20.00 (virtual)
 
-**Equity $17.43 (-12.9%)** · cash $6.11 · 9 open · 7 settled
+**Equity $17.42 (-12.9%)** · cash $6.11 · 9 open · 7 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -14,7 +14,7 @@ Updated 2026-08-14 12:14 UTC · started with $20.00 (virtual)
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.73 |
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.46 | $1.03 |
 | LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner | Nongshim Red Force | 2.21 | 0.62 | 1.00 | $2.21 |
-| LoL: Anyone's Legend vs JD Gaming - Game 1 Winner | Anyone's Legend | 1.83 | 0.64 | 0.01 | $0.01 |
+| LoL: Anyone's Legend vs JD Gaming - Game 1 Winner | Anyone's Legend | 1.83 | 0.64 | 0.00 | $0.00 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
