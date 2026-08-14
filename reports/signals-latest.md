@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-14 01:10 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 01:25 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? — **No**
 
-- Score **6.80** · 4 backers · net $5,813 staked
-- Backers' average entry 0.95 → current price **0.88** (moved against them -0.07 since entry)
+- Score **6.73** · 4 backers · net $5,813 staked
+- Backers' average entry 0.95 → current price **0.89** (moved against them -0.06 since entry)
 - Resolves by 2026-08-13
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
