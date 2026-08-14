@@ -6,7 +6,7 @@ Scanned 2026-08-14 16:51 UTC · 1454 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→RSC→EUR→USD at 93.2 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→RSC→EUR→USD at 93.1 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
