@@ -15,6 +15,10 @@
   {
    "t": 1786667645,
    "equity": 40.0
+  },
+  {
+   "t": 1786667724,
+   "equity": 40.0
   }
  ],
  "decay": {
@@ -22,5 +26,6 @@
   "survived": 0
  },
  "cooldown": {},
- "tradeCountAll": 0
+ "tradeCountAll": 0,
+ "replay": null
 }
