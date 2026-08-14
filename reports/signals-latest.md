@@ -1,6 +1,6 @@
 # Smart-money signals
 
-Generated 2026-08-14 20:57 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 21:22 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
