@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 8.316,
+ "cash": 6.986,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.905,
-   "valueUsd": 2.8306
+   "markPrice": 0.895,
+   "valueUsd": 2.7993
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -70,8 +70,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.955,
-   "valueUsd": 1.1746
+   "markPrice": 0.959,
+   "valueUsd": 1.1795
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -84,8 +84,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.1555,
-   "valueUsd": 0.6817
+   "markPrice": 0.096,
+   "valueUsd": 0.4209
   },
   {
    "conditionId": "0x24d61ebc7ac6b5bd92ac78023080b181df68eafba7e8eae5ec6c7cc3b600b261",
@@ -114,6 +114,20 @@
    "signalScore": 3.9252,
    "markPrice": 0.0005,
    "valueUsd": 0.0009
+  },
+  {
+   "conditionId": "0x38aae5f85f4ea1da3474ff779979018a5f1c4c9bb3315a1de336c11b6f548920",
+   "outcomeIndex": 1,
+   "tokenId": "52961601704467535200547663003676556584892462877074041702255576250631028352163",
+   "question": "Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C",
+   "outcome": "MOUZ",
+   "shares": 2.6869,
+   "entryPrice": 0.495,
+   "costUsd": 1.33,
+   "openedAt": 1786722632,
+   "signalScore": 5.6156,
+   "markPrice": 0.495,
+   "valueUsd": 1.33
   }
  ],
  "closed": [
@@ -969,6 +983,11 @@
    "t": 1786721724,
    "equity": 17.3484,
    "cash": 8.316
+  },
+  {
+   "t": 1786722632,
+   "equity": 17.0612,
+   "cash": 6.986
   }
  ],
  "log": [
@@ -1155,6 +1174,14 @@
    "question": "LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner",
    "price": 1.0,
    "pnl": 0.828
+  },
+  {
+   "t": 1786722632,
+   "action": "BUY",
+   "question": "Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C",
+   "outcome": "MOUZ",
+   "stake": 1.33,
+   "price": 0.495
   }
  ]
 }

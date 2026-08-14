@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-14 15:35 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 15:50 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C — **MOUZ**
 
-- Score **5.67** · 4 backers · net $145,406 staked
-- Backers' average entry 0.58 → current price **0.60** (already moved +0.02 since entry)
+- Score **5.62** · 4 backers · net $145,406 staked
+- Backers' average entry 0.58 → current price **0.49** (moved against them -0.09 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
 
-- Score **2.98** · 3 backers · net $42,756 staked
+- Score **2.95** · 3 backers · net $42,756 staked
 - Backers' average entry 0.46 → current price **0.45** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-14
 
