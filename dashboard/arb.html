@@ -230,6 +230,16 @@
   <div class="card" id="ledger"></div>
 </section>
 
+<section>
+  <h2>Kraken viability trial</h2>
+  <p class="sectionnote">The same triangle scanner pointed at Kraken, the closest US-legal venue —
+    cycles through USD at base-tier taker fees on all three legs, with the venue's per-pair
+    minimum order size and cost enforced. The question the trial answers with data: does any
+    edge survive a fee hurdle roughly twenty times MEXC's? Paper only; there is no live
+    execution path in this code.</p>
+  <div class="card" id="kraken"></div>
+</section>
+
 <p class="foot" id="notes"></p>
 </div>
 <script>
@@ -385,12 +395,65 @@ function render() {
   document.getElementById("notes").textContent = d.notes || "";
 }
 
+let KDATA = null;
+
+function renderKraken() {
+  const k = KDATA;
+  const box = document.getElementById("kraken");
+  if (!k) {
+    box.replaceChildren(el("p", "empty",
+      "No trial data yet — the Kraken shift publishes within minutes of its first run."));
+    return;
+  }
+  const wrap = el("div");
+  const p = k.paper || {};
+  const meta = k.meta || {};
+  const head = el("p", "sectionnote",
+    `Updated ${ago(k.updatedAt)} · ${(meta.pairs ?? 0).toLocaleString()} pairs · ` +
+    `${meta.triangles ?? 0} cycles · median fee hurdle ${meta.feeHurdleBps ?? "—"} bps · ` +
+    `paper $${(p.equity ?? 0).toFixed(2)} of $${(p.bankrollStart ?? 0).toFixed(0)} · ` +
+    `${p.tradeCount ?? 0} round trips`);
+  wrap.appendChild(head);
+  const opps = k.opportunities || [];
+  if (opps.length) {
+    wrap.appendChild(table(
+      [["Cycle", 1], ["Screen", 0], ["Fee hurdle", 0], ["Verified", 0], ["Size", 0], ["Profit", 0]],
+      opps.map(o => [[o.path, "l"], [o.screenBps + " bps", "pos"],
+        [(o.feeBps ?? "—") + " bps", ""], [(o.verifiedBps ?? "—") + " bps", "pos"],
+        [`$${o.sizeUsd}`, ""], [`+$${(o.profitUsd ?? 0).toFixed(3)}`, "pos"]])));
+  } else {
+    const watching = k.watching || [];
+    wrap.appendChild(el("p", "empty", watching.length
+      ? "No cycle clears the fee hurdle — the expected result this trial exists to confirm or refute. Closest approaches (negative = loses money after fees):"
+      : "No cycle clears the fee hurdle right now."));
+    if (watching.length) {
+      wrap.appendChild(table(
+        [["Cycle", 1], ["Net of fees", 0], ["Fee hurdle", 0]],
+        watching.map(o => [[o.path, "l"],
+          [o.screenBps + " bps", o.screenBps > 0 ? "pos" : "neg"],
+          [(o.feeBps ?? "—") + " bps", ""]])));
+    }
+  }
+  const rp = k.replay;
+  if (rp && rp.edges) {
+    wrap.appendChild(el("p", "sectionnote",
+      `Latency replay: ${rp.edges} edges, $${rp.atomicUsd} atomic → $${rp.delayedUsd} ` +
+      `one scan late (capture ${rp.captureRatio != null ? Math.round(rp.captureRatio * 100) + "%" : "—"}).`));
+  }
+  box.replaceChildren(wrap);
+}
+
 async function refresh() {
   try {
     const r = await fetch("data/arb.json?t=" + Math.floor(Date.now() / 30000), { cache: "no-store" });
     if (r.ok) DATA = await r.json();
   } catch (e) { /* keep last */ }
   render();
+  try {
+    const r = await fetch("data/krakenarb.json?t=" + Math.floor(Date.now() / 30000), { cache: "no-store" });
+    if (r.ok) KDATA = await r.json();
+  } catch (e) { /* keep last */ }
+  renderKraken();
 }
 refresh();
 setInterval(refresh, 30000);
