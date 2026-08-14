@@ -13,10 +13,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1786669264,
-   "equity": 40.0
-  },
-  {
    "t": 1786669274,
    "equity": 40.0
   },
@@ -2011,6 +2007,10 @@
   {
    "t": 1786674254,
    "equity": 40.0521
+  },
+  {
+   "t": 1786674281,
+   "equity": 40.0521
   }
  ],
  "decay": {
@@ -2021,5 +2021,12 @@
   "USD\u2192EUR\u2192SYND\u2192USD|ZEURZUSD|SYNDEUR|SYNDUSD": 1786673624
  },
  "tradeCountAll": 1,
- "replay": null
+ "replay": {
+  "edges": 1,
+  "refillable": 1,
+  "atomicUsd": 0.0521,
+  "delayedUsd": -1.3595,
+  "captureRatio": -26.094,
+  "scansReplayed": 189
+ }
 }
