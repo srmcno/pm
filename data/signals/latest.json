@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786673148,
+  "generatedAt": 1786674087,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
      "name": "donthackme",
      "quality": 0.88,
-     "netUsd": 1405.63,
+     "netUsd": 1401.93,
      "avgPrice": 0.9564,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.2,
-     "score": 2.2389983919842833
+     "lastTradeAgoH": 5.5,
+     "score": 2.2156426754008796
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +31,8 @@
      "netUsd": 1047.27,
      "avgPrice": 0.9661,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 2.2295285152761344
+     "lastTradeAgoH": 1.1,
+     "score": 2.2062715820403502
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -41,8 +41,8 @@
      "netUsd": 577.29,
      "avgPrice": 0.9585,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.4,
-     "score": 1.9060645699223622
+     "lastTradeAgoH": 7.6,
+     "score": 1.8861817937470198
     },
     {
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
@@ -51,20 +51,20 @@
      "netUsd": 2790.0,
      "avgPrice": 0.93,
      "conviction": 10.0,
-     "lastTradeAgoH": 33.4,
-     "score": 0.5404988260167751
+     "lastTradeAgoH": 33.7,
+     "score": 0.5348607079014142
     }
    ],
    "backerCount": 4,
    "contested": false,
-   "totalNetUsd": 5820.19,
-   "score": 6.9151,
+   "totalNetUsd": 5816.49,
+   "score": 6.843,
    "question": "Will Count Binface win 30\u201340% of votes in the Clacton parliamentary by-election?",
    "outcome": "No",
    "tokenId": "13662588639056571813875611685959663270684515989971036864401935269722385937833",
-   "currentPrice": 0.869,
+   "currentPrice": 0.9135,
    "backersAvgEntry": 0.9527,
-   "driftSinceEntry": -0.0837,
+   "driftSinceEntry": -0.0393,
    "endDate": "2026-08-13T00:00:00Z",
    "slug": "will-count-binface-win-3040-of-votes-in-the-clacton-parliamentary-by-election-20260708142507722",
    "eventSlug": "clacton-by-election-count-binface-vote-20260708142507718"
@@ -82,8 +82,8 @@
      "netUsd": 18896.8,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.8893621994617182
+     "lastTradeAgoH": 0.5,
+     "score": 1.869653651116171
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -92,8 +92,8 @@
      "netUsd": 10270.0,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.7,
-     "score": 1.0598165080416946
+     "lastTradeAgoH": 6.9,
+     "score": 1.0487612191764364
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -102,14 +102,14 @@
      "netUsd": 6429.87,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 1.0525729589115764
+     "lastTradeAgoH": 1.0,
+     "score": 1.0415932298507142
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 35596.67,
-   "score": 4.0018,
+   "score": 3.96,
    "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
    "outcome": "100 Thieves",
    "tokenId": "32167563431873264194928854022530992272097563625030599275250463406393644066117",
