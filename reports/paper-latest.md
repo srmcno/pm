@@ -1,20 +1,20 @@
 # Paper portfolio
 
-Updated 2026-08-14 16:20 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 16:36 UTC · started with $20.00 (virtual)
 
-**Equity $16.78 (-16.1%)** · cash $5.87 · 9 open · 9 settled
+**Equity $15.81 (-20.9%)** · cash $5.87 · 9 open · 9 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.89 | $1.57 |
-| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.84 | $2.63 |
-| Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.32 | $0.56 |
+| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.86 | $2.69 |
+| Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.33 | $0.57 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.82 | $1.24 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.18 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.10 | $0.45 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.95 | $1.17 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.10 | $0.42 |
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.45 | $1.00 |
-| Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C | MOUZ | 2.69 | 0.49 | 0.30 | $0.81 |
-| LoL: Shifters vs SK Gaming - Game 2 Winner | Shifters | 2.67 | 0.42 | 0.56 | $1.48 |
+| Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C | MOUZ | 2.69 | 0.49 | 0.01 | $0.01 |
+| LoL: Shifters vs SK Gaming - Game 2 Winner | Shifters | 2.67 | 0.42 | 0.47 | $1.27 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

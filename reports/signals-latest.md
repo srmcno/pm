@@ -1,26 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-14 16:20 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 16:36 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C — **MOUZ**
+## 1. LoL: Shifters vs SK Gaming - Game 2 Winner — **Shifters**
 
-- Score **5.50** · 4 backers · net $145,406 staked
-- Backers' average entry 0.58 → current price **0.30** (moved against them -0.28 since entry)
-- Resolves by 2026-08-14
-
-| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
-|---|---|---|---|---|
-| AV23IUa | 0.60 | $96,786 | 0.64 | 10.0× |
-| GreenBerry1337 | 0.48 | $10,137 | 0.4 | 10.0× |
-| CORGI8 | 0.48 | $30,519 | 0.64 | 10.0× |
-| BajaBlaster | 0.40 | $7,964 | 0.6569 | 10.0× |
-
-## 2. LoL: Shifters vs SK Gaming - Game 2 Winner — **Shifters**
-
-- Score **4.62** · 3 backers · net $6,633 staked
-- Backers' average entry 0.51 → current price **0.56** (already moved +0.04 since entry)
+- Score **4.57** · 3 backers · net $6,633 staked
+- Backers' average entry 0.51 → current price **0.47** (moved against them -0.04 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -29,9 +16,9 @@ Each signal marks an outcome that several qualified wallets have independently n
 | fkigedgjdgwbg | 0.51 | $1,526 | 0.5 | 10.0× |
 | BajaBlaster | 0.40 | $1,542 | 0.5208 | 10.0× |
 
-## 3. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
+## 2. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
 
-- Score **2.88** · 3 backers · net $42,756 staked
+- Score **2.85** · 3 backers · net $42,756 staked
 - Backers' average entry 0.46 → current price **0.45** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-14
 
