@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-14 03:06 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 03:22 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? — **No**
 
-- Score **6.63** · 4 backers · net $5,816 staked
-- Backers' average entry 0.95 → current price **0.92** (moved against them -0.03 since entry)
+- Score **6.56** · 4 backers · net $5,816 staked
+- Backers' average entry 0.95 → current price **0.93** (moved against them -0.02 since entry)
 - Resolves by 2026-08-13
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
 
-- Score **3.84** · 3 backers · net $35,597 staked
+- Score **3.80** · 3 backers · net $35,597 staked
 - Backers' average entry 0.46 → current price **0.46** (roughly flat -0.00 since entry)
 - Resolves by 2026-08-14
 
