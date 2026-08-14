@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786680085,
+  "generatedAt": 1786681027,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -8,6 +8,57 @@
   "source": "watch.py"
  },
  "signals": [
+  {
+   "conditionId": "0xb250f71e99c64d332937397d913f1bfe3ae7a7a8e60e8f1fde4a9a9bf9df4c32",
+   "outcomeIndex": 1,
+   "title": "Dota 2: Team Spirit vs Aurora - Game 2 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
+     "name": "CORGI8",
+     "quality": 0.4831,
+     "netUsd": 20854.43,
+     "avgPrice": 0.4596,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.7,
+     "score": 1.4816712316882705
+    },
+    {
+     "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
+     "name": "GreenBerry1337",
+     "quality": 0.48,
+     "netUsd": 12517.19,
+     "avgPrice": 0.4514,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.8,
+     "score": 1.4681648011154993
+    },
+    {
+     "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
+     "name": "meoooow",
+     "quality": 0.3157,
+     "netUsd": 11176.34,
+     "avgPrice": 0.4393,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.8,
+     "score": 0.9669774927426684
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 44547.96,
+   "score": 3.9168,
+   "question": "Dota 2: Team Spirit vs Aurora - Game 2 Winner",
+   "outcome": "Aurora",
+   "tokenId": "24374126437345877996140693771381238648808424017778754676058289028168499475444",
+   "currentPrice": 0.405,
+   "backersAvgEntry": 0.4501,
+   "driftSinceEntry": -0.0451,
+   "endDate": "2026-08-14T08:05:00Z",
+   "slug": "dota2-ts8-aur1-2026-08-13-game2",
+   "eventSlug": "dota2-ts8-aur1-2026-08-13"
+  },
   {
    "conditionId": "0x24d61ebc7ac6b5bd92ac78023080b181df68eafba7e8eae5ec6c7cc3b600b261",
    "outcomeIndex": 1,
@@ -21,8 +72,8 @@
      "netUsd": 18896.8,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.2,
-     "score": 1.7435965446811237
+     "lastTradeAgoH": 2.5,
+     "score": 1.7253486160602898
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -31,8 +82,8 @@
      "netUsd": 6567.88,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 1.0408942468118798
+     "lastTradeAgoH": 1.2,
+     "score": 1.0300005776453502
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,14 +92,14 @@
      "netUsd": 10270.0,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.6,
-     "score": 0.9780509009569366
+     "lastTradeAgoH": 8.8,
+     "score": 0.9678149303233354
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 35734.68,
-   "score": 3.7625,
+   "score": 3.7232,
    "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
    "outcome": "100 Thieves",
    "tokenId": "32167563431873264194928854022530992272097563625030599275250463406393644066117",
