@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-14 00:55 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 01:10 UTC · started with $20.00 (virtual)
 
-**Equity $17.34 (-13.3%)** · cash $7.78 · 7 open · 5 settled
+**Equity $17.38 (-13.1%)** · cash $6.53 · 8 open · 5 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -11,8 +11,9 @@ Updated 2026-08-14 00:55 UTC · started with $20.00 (virtual)
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.47 | $0.81 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.15 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.77 |
-| Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 1.71 | 0.90 | 0.96 | $1.64 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.76 |
+| Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 1.71 | 0.90 | 0.97 | $1.66 |
+| Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? | No | 1.46 | 0.86 | 0.88 | $1.28 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

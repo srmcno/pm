@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 7.7817,
+ "cash": 6.5317,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -84,8 +84,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.1745,
-   "valueUsd": 0.765
+   "markPrice": 0.1725,
+   "valueUsd": 0.7563
   },
   {
    "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
@@ -98,8 +98,22 @@
    "costUsd": 1.54,
    "openedAt": 1786629946,
    "signalScore": 5.7408,
-   "markPrice": 0.961,
-   "valueUsd": 1.6444
+   "markPrice": 0.9715,
+   "valueUsd": 1.6623
+  },
+  {
+   "conditionId": "0x8bac2275c9adc63db392b57aaa48d626dc5d697f5aa1dac099f00b1fc40efb53",
+   "outcomeIndex": 1,
+   "tokenId": "13662588639056571813875611685959663270684515989971036864401935269722385937833",
+   "question": "Will Count Binface win 30\u201340% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "shares": 1.4552,
+   "entryPrice": 0.859,
+   "costUsd": 1.25,
+   "openedAt": 1786669835,
+   "signalScore": 6.7988,
+   "markPrice": 0.878,
+   "valueUsd": 1.2777
   }
  ],
  "closed": [
@@ -624,6 +638,11 @@
    "t": 1786668925,
    "equity": 17.3399,
    "cash": 7.7817
+  },
+  {
+   "t": 1786669835,
+   "equity": 17.3768,
+   "cash": 6.5317
   }
  ],
  "log": [
@@ -757,6 +776,14 @@
    "question": "Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B",
    "price": 1.0,
    "pnl": 0.9862
+  },
+  {
+   "t": 1786669835,
+   "action": "BUY",
+   "question": "Will Count Binface win 30\u201340% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "stake": 1.25,
+   "price": 0.859
   }
  ]
 }
