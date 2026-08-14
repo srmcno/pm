@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786707844,
+  "generatedAt": 1786708751,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -8,67 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x7cbd831c0ed473cba90e45e10074c95a69b9a234c1bdfaceb758686b927b12f7",
-   "outcomeIndex": 0,
-   "title": "LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.5477,
-     "netUsd": 14799.8,
-     "avgPrice": 0.5501,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.7135556083083368
-    },
-    {
-     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
-     "name": "fkigedgjdgwbg",
-     "quality": 0.5131,
-     "netUsd": 1595.72,
-     "avgPrice": 0.5586,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.6053046971389584
-    },
-    {
-     "wallet": "0x8a8685a792c184e5c2ee8c7d4d4baba7c2c94998",
-     "name": "BrotherObama",
-     "quality": 0.49,
-     "netUsd": 4090.51,
-     "avgPrice": 0.5475,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.5316497713397073
-    },
-    {
-     "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
-     "name": "meoooow",
-     "quality": 0.3157,
-     "netUsd": 8982.37,
-     "avgPrice": 0.51,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 0.9847891276546279
-    }
-   ],
-   "backerCount": 4,
-   "contested": false,
-   "totalNetUsd": 29468.4,
-   "score": 5.8353,
-   "question": "LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner",
-   "outcome": "Nongshim Red Force",
-   "tokenId": "84340461724225139366846740288900442941289285914418147936781659077632009804702",
-   "currentPrice": 0.575,
-   "backersAvgEntry": 0.5415,
-   "driftSinceEntry": 0.0334,
-   "endDate": "2026-08-14T17:15:00Z",
-   "slug": "lol-ns-bro2-2026-08-14-game1",
-   "eventSlug": "lol-ns-bro2-2026-08-14"
-  },
   {
    "conditionId": "0x248a6e1e73182c0fdc01828db56261a238b5fc92680ad772e4e3982966776df2",
    "outcomeIndex": 0,
@@ -79,11 +18,11 @@
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
      "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
      "quality": 0.5477,
-     "netUsd": 11014.1,
-     "avgPrice": 0.55,
+     "netUsd": 12776.5,
+     "avgPrice": 0.5127,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.6964269050249392
+     "lastTradeAgoH": 0.1,
+     "score": 1.7274949730726294
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -92,8 +31,8 @@
      "netUsd": 9176.13,
      "avgPrice": 0.605,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.2340485809323762
+     "lastTradeAgoH": 0.6,
+     "score": 1.2211616870499422
     },
     {
      "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
@@ -102,20 +41,20 @@
      "netUsd": 4333.8,
      "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 0.9627562070076332
+     "lastTradeAgoH": 1.1,
+     "score": 0.9527023588317467
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 24524.03,
-   "score": 3.8932,
+   "totalNetUsd": 26286.43,
+   "score": 3.9014,
    "question": "LoL: Anyone's Legend vs JD Gaming - Game 1 Winner",
    "outcome": "Anyone's Legend",
    "tokenId": "109710403422589373346723662789225748642460121014818357447197876450167761316828",
-   "currentPrice": 0.615,
-   "backersAvgEntry": 0.565,
-   "driftSinceEntry": 0.05,
+   "currentPrice": 0.27,
+   "backersAvgEntry": 0.5526,
+   "driftSinceEntry": -0.2826,
    "endDate": "2026-08-14T17:15:00Z",
    "slug": "lol-al-jdg-2026-08-14-game1",
    "eventSlug": "lol-al-jdg-2026-08-14"
@@ -133,8 +72,8 @@
      "netUsd": 12324.0,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.2926213055334888
+     "lastTradeAgoH": 2.2,
+     "score": 1.2791227497618856
     },
     {
      "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
@@ -143,8 +82,8 @@
      "netUsd": 18896.8,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.9,
-     "score": 1.26448539550726
+     "lastTradeAgoH": 10.2,
+     "score": 1.2512806567639292
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -153,14 +92,14 @@
      "netUsd": 11534.83,
      "avgPrice": 0.4501,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.5,
-     "score": 0.9378587621485143
+     "lastTradeAgoH": 3.7,
+     "score": 0.9280649124320084
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 42755.63,
-   "score": 3.495,
+   "score": 3.4585,
    "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
    "outcome": "100 Thieves",
    "tokenId": "32167563431873264194928854022530992272097563625030599275250463406393644066117",
