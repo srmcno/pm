@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786697599,
+  "generatedAt": 1786698508,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 18896.8,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.1,
-     "score": 1.423708055092504
+     "lastTradeAgoH": 7.3,
+     "score": 1.4088079779814968
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -31,8 +31,8 @@
      "netUsd": 11416.73,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 0.9703661149132967
+     "lastTradeAgoH": 2.9,
+     "score": 0.9602105708139292
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,14 +41,14 @@
      "netUsd": 10270.0,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 13.5,
-     "score": 0.7986130451053001
+     "lastTradeAgoH": 13.7,
+     "score": 0.7902550141793936
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 40583.53,
-   "score": 3.1927,
+   "score": 3.1593,
    "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
    "outcome": "100 Thieves",
    "tokenId": "32167563431873264194928854022530992272097563625030599275250463406393644066117",
