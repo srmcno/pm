@@ -120,6 +120,23 @@ class TestLegFill(unittest.TestCase):
         asks = [(100.0, 0.5)]
         self.assertIsNone(leg_fill([], asks, self.meta, 100.0, "buy"))
 
+    def test_buy_minimum_checks_gross_volume_not_fee_net(self):
+        # Gross order volume is 1.0, exactly at the minimum; the venue
+        # validates the submitted volume before fees, so the 0.996 net
+        # receipt must not read as a rejection.
+        meta = dict(self.meta, orderMin=1.0)
+        asks = [(100.0, 10.0)]
+        got = leg_fill([], asks, meta, 100.0, "buy")
+        self.assertAlmostEqual(got, 1.0 * 0.996)
+
+    def test_sell_minimum_checks_gross_notional_not_fee_net(self):
+        # Gross proceeds 100 clear a 99.8 cost minimum even though the
+        # fee-net receipt (99.6) is below it.
+        meta = dict(self.meta, costMin=99.8)
+        bids = [(100.0, 10.0)]
+        got = leg_fill(bids, [], meta, 1.0, "sell")
+        self.assertAlmostEqual(got, 100.0 * 0.996)
+
 
 class TestVerifyCycle(unittest.TestCase):
     def test_depth_walk_confirms_and_sizes_the_edge(self):

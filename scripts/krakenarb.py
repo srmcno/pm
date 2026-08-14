@@ -227,29 +227,31 @@ def leg_fill(bids, asks, meta, amt, action):
     """One depth-walked leg with Kraken's per-pair minimums enforced.
 
     A buy spends `amt` of the pair's quote currency; a sell disposes `amt`
-    of its base. The venue rejects orders below its minimum volume (base
-    units) or minimum cost (quote units) — that raises TooSmall, a
-    rejection a bigger start size can outgrow. A book too thin for the
-    size returns None, which no bigger size can fix.
+    of its base. The venue validates minimum order volume (base units) and
+    minimum cost (quote units) against the GROSS submitted order — before
+    fees — so the minimums are checked on the gross walked amount and the
+    fee is netted off afterward. A violation raises TooSmall, a rejection
+    a bigger start size can outgrow. A book too thin for the size returns
+    None, which no bigger size can fix.
     """
     fee = meta["taker"]
     if action == "buy":
         if amt < meta["costMin"]:
             raise TooSmall
-        got = walk_buy(asks, amt, fee)
-        if got is None:
+        gross = walk_buy(asks, amt, 0.0)
+        if gross is None:
             return None
-        if got < meta["orderMin"]:
+        if gross < meta["orderMin"]:
             raise TooSmall
-        return got
+        return gross * (1 - fee)
     if amt < meta["orderMin"]:
         raise TooSmall
-    got = walk_sell(bids, amt, fee)
-    if got is None:
+    gross = walk_sell(bids, amt, 0.0)
+    if gross is None:
         return None
-    if got < meta["costMin"]:
+    if gross < meta["costMin"]:
         raise TooSmall
-    return got
+    return gross * (1 - fee)
 
 
 def verify_cycle(opp, info, books_cache):
