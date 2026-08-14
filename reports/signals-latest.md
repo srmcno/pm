@@ -1,25 +1,25 @@
 # Smart-money signals
 
-Generated 2026-08-14 13:39 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 13:54 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Anyone's Legend vs JD Gaming (BO3) - LPL Group Ascend — **JD Gaming**
 
-- Score **5.61** · 3 backers · net $6,017 staked
-- Backers' average entry 0.43 → current price **0.43** (roughly flat +0.00 since entry)
+- Score **5.58** · 3 backers · net $6,330 staked
+- Backers' average entry 0.46 → current price **0.23** (moved against them -0.23 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x076daa87 | 0.80 | $2,849 | 0.4208 | 10.0× |
+| 0x076daa87 | 0.80 | $2,249 | 0.4248 | 10.0× |
 | jtwyslljy | 0.77 | $1,736 | 0.44 | 10.0× |
-| BajaBlaster | 0.40 | $1,432 | 0.44 | 10.0× |
+| BajaBlaster | 0.40 | $2,346 | 0.5199 | 10.0× |
 
 ## 2. Map Handicap: VIT (-1.5) vs B8 (+1.5) — **Vitality**
 
-- Score **4.59** · 3 backers · net $50,020 staked
-- Backers' average entry 0.65 → current price **0.65** (roughly flat -0.00 since entry)
+- Score **4.54** · 3 backers · net $50,020 staked
+- Backers' average entry 0.65 → current price **0.62** (moved against them -0.02 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -30,8 +30,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C — **MOUZ**
 
-- Score **4.58** · 3 backers · net $86,303 staked
-- Backers' average entry 0.65 → current price **0.65** (roughly flat -0.00 since entry)
+- Score **4.53** · 3 backers · net $86,303 staked
+- Backers' average entry 0.65 → current price **0.45** (moved against them -0.20 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -42,7 +42,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 4. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
 
-- Score **3.23** · 3 backers · net $42,756 staked
+- Score **3.19** · 3 backers · net $42,756 staked
 - Backers' average entry 0.46 → current price **0.45** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-14
 
