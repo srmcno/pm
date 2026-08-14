@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-14 07:52 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 08:07 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: EDward Gaming vs LGD Gaming (BO3) - LPL Group Ascend — **EDward Gaming**
 
-- Score **5.45** · 3 backers · net $12,178 staked
-- Backers' average entry 0.37 → current price **0.17** (moved against them -0.21 since entry)
+- Score **5.39** · 3 backers · net $12,178 staked
+- Backers' average entry 0.37 → current price **0.14** (moved against them -0.23 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
 
-- Score **3.33** · 3 backers · net $40,584 staked
+- Score **3.30** · 3 backers · net $40,584 staked
 - Backers' average entry 0.46 → current price **0.46** (roughly flat -0.00 since entry)
 - Resolves by 2026-08-14
 
