@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.108,
+ "cash": 8.316,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.89,
-   "valueUsd": 2.7837
+   "markPrice": 0.905,
+   "valueUsd": 2.8306
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -42,8 +42,8 @@
    "costUsd": 1.35,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.335,
-   "valueUsd": 0.5835
+   "markPrice": 0.305,
+   "valueUsd": 0.5313
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -84,8 +84,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.166,
-   "valueUsd": 0.7278
+   "markPrice": 0.1555,
+   "valueUsd": 0.6817
   },
   {
    "conditionId": "0x24d61ebc7ac6b5bd92ac78023080b181df68eafba7e8eae5ec6c7cc3b600b261",
@@ -100,20 +100,6 @@
    "signalScore": 4.0403,
    "markPrice": 0.445,
    "valueUsd": 1.0049
-  },
-  {
-   "conditionId": "0x7cbd831c0ed473cba90e45e10074c95a69b9a234c1bdfaceb758686b927b12f7",
-   "outcomeIndex": 0,
-   "tokenId": "84340461724225139366846740288900442941289285914418147936781659077632009804702",
-   "question": "LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner",
-   "outcome": "Nongshim Red Force",
-   "shares": 2.208,
-   "entryPrice": 0.625,
-   "costUsd": 1.38,
-   "openedAt": 1786707147,
-   "signalScore": 5.8832,
-   "markPrice": 0.9995,
-   "valueUsd": 2.2069
   },
   {
    "conditionId": "0x248a6e1e73182c0fdc01828db56261a238b5fc92680ad772e4e3982966776df2",
@@ -249,6 +235,23 @@
    "settledAt": 1786706382,
    "settlePrice": 1.0,
    "pnl": 0.2052
+  },
+  {
+   "conditionId": "0x7cbd831c0ed473cba90e45e10074c95a69b9a234c1bdfaceb758686b927b12f7",
+   "outcomeIndex": 0,
+   "tokenId": "84340461724225139366846740288900442941289285914418147936781659077632009804702",
+   "question": "LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner",
+   "outcome": "Nongshim Red Force",
+   "shares": 2.208,
+   "entryPrice": 0.625,
+   "costUsd": 1.38,
+   "openedAt": 1786707147,
+   "signalScore": 5.8832,
+   "markPrice": 0.9995,
+   "valueUsd": 2.2069,
+   "settledAt": 1786721724,
+   "settlePrice": 1.0,
+   "pnl": 0.828
   }
  ],
  "equityCurve": [
@@ -961,6 +964,11 @@
    "t": 1786720266,
    "equity": 17.3987,
    "cash": 6.108
+  },
+  {
+   "t": 1786721724,
+   "equity": 17.3484,
+   "cash": 8.316
   }
  ],
  "log": [
@@ -1140,6 +1148,13 @@
    "outcome": "Anyone's Legend",
    "stake": 1.16,
    "price": 0.635
+  },
+  {
+   "t": 1786721724,
+   "action": "SETTLE",
+   "question": "LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner",
+   "price": 1.0,
+   "pnl": 0.828
   }
  ]
 }

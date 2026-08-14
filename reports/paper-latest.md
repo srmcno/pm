@@ -1,19 +1,18 @@
 # Paper portfolio
 
-Updated 2026-08-14 15:11 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 15:35 UTC · started with $20.00 (virtual)
 
-**Equity $17.40 (-13.0%)** · cash $6.11 · 9 open · 7 settled
+**Equity $17.35 (-13.3%)** · cash $8.32 · 8 open · 8 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.89 | $1.57 |
-| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.89 | $2.78 |
-| Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.34 | $0.58 |
+| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.91 | $2.83 |
+| Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.30 | $0.53 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.82 | $1.24 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.95 | $1.17 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.73 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.16 | $0.68 |
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.45 | $1.00 |
-| LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner | Nongshim Red Force | 2.21 | 0.62 | 1.00 | $2.21 |
 | LoL: Anyone's Legend vs JD Gaming - Game 1 Winner | Anyone's Legend | 1.83 | 0.64 | 0.00 | $0.00 |
 
 | settled market | side | entry | settle | PnL |
@@ -25,3 +24,4 @@ Updated 2026-08-14 15:11 UTC · started with $20.00 (virtual)
 | Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B | FaZe | 0.53 | 1.00 | +0.99 |
 | Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 0.90 | 1.00 | +0.17 |
 | Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? | No | 0.86 | 1.00 | +0.21 |
+| LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner | Nongshim Red Force | 0.62 | 1.00 | +0.83 |
