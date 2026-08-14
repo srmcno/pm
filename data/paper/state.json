@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.845,
-   "valueUsd": 2.6429
+   "markPrice": 0.84,
+   "valueUsd": 2.6273
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -42,8 +42,8 @@
    "costUsd": 1.35,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.305,
-   "valueUsd": 0.5313
+   "markPrice": 0.32,
+   "valueUsd": 0.5574
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -102,20 +102,6 @@
    "valueUsd": 1.0049
   },
   {
-   "conditionId": "0x248a6e1e73182c0fdc01828db56261a238b5fc92680ad772e4e3982966776df2",
-   "outcomeIndex": 0,
-   "tokenId": "109710403422589373346723662789225748642460121014818357447197876450167761316828",
-   "question": "LoL: Anyone's Legend vs JD Gaming - Game 1 Winner",
-   "outcome": "Anyone's Legend",
-   "shares": 1.8268,
-   "entryPrice": 0.635,
-   "costUsd": 1.16,
-   "openedAt": 1786707147,
-   "signalScore": 3.9252,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0009
-  },
-  {
    "conditionId": "0x38aae5f85f4ea1da3474ff779979018a5f1c4c9bb3315a1de336c11b6f548920",
    "outcomeIndex": 1,
    "tokenId": "52961601704467535200547663003676556584892462877074041702255576250631028352163",
@@ -126,8 +112,8 @@
    "costUsd": 1.33,
    "openedAt": 1786722632,
    "signalScore": 5.6156,
-   "markPrice": 0.195,
-   "valueUsd": 0.5239
+   "markPrice": 0.3,
+   "valueUsd": 0.8061
   },
   {
    "conditionId": "0xd08a5441e548d2c9b06dc7a7b7631389f9e544750cb58325ebe80438dcee5f6a",
@@ -280,6 +266,23 @@
    "settledAt": 1786721724,
    "settlePrice": 1.0,
    "pnl": 0.828
+  },
+  {
+   "conditionId": "0x248a6e1e73182c0fdc01828db56261a238b5fc92680ad772e4e3982966776df2",
+   "outcomeIndex": 0,
+   "tokenId": "109710403422589373346723662789225748642460121014818357447197876450167761316828",
+   "question": "LoL: Anyone's Legend vs JD Gaming - Game 1 Winner",
+   "outcome": "Anyone's Legend",
+   "shares": 1.8268,
+   "entryPrice": 0.635,
+   "costUsd": 1.16,
+   "openedAt": 1786707147,
+   "signalScore": 3.9252,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0009,
+   "settledAt": 1786724454,
+   "settlePrice": 0.0,
+   "pnl": -1.16
   }
  ],
  "equityCurve": [
@@ -1012,6 +1015,11 @@
    "t": 1786723968,
    "equity": 16.4884,
    "cash": 5.866
+  },
+  {
+   "t": 1786724454,
+   "equity": 16.7802,
+   "cash": 5.866
   }
  ],
  "log": [
@@ -1214,6 +1222,13 @@
    "outcome": "Shifters",
    "stake": 1.12,
    "price": 0.42
+  },
+  {
+   "t": 1786724454,
+   "action": "SETTLE",
+   "question": "LoL: Anyone's Legend vs JD Gaming - Game 1 Winner",
+   "price": 0.0,
+   "pnl": -1.16
   }
  ]
 }

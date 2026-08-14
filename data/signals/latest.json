@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786723968,
+  "generatedAt": 1786724454,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 96785.62,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.8,
-     "score": 1.7032061742264275
+     "lastTradeAgoH": 2.9,
+     "score": 1.6936329319525
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -31,8 +31,8 @@
      "netUsd": 10136.57,
      "avgPrice": 0.4,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.7,
-     "score": 1.411168774093455
+     "lastTradeAgoH": 1.9,
+     "score": 1.403236991806479
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -41,8 +41,8 @@
      "netUsd": 30519.26,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.5,
-     "score": 1.3223481889845763
+     "lastTradeAgoH": 3.6,
+     "score": 1.314915642194175
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -51,20 +51,20 @@
      "netUsd": 7964.1,
      "avgPrice": 0.6569,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.0927308423387503
+     "lastTradeAgoH": 3.4,
+     "score": 1.0865889099924488
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 145405.55,
-   "score": 5.5295,
+   "score": 5.4984,
    "question": "Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C",
    "outcome": "MOUZ",
    "tokenId": "52961601704467535200547663003676556584892462877074041702255576250631028352163",
-   "currentPrice": 0.195,
+   "currentPrice": 0.3,
    "backersAvgEntry": 0.5842,
-   "driftSinceEntry": -0.3892,
+   "driftSinceEntry": -0.2842,
    "endDate": "2026-08-14T19:30:00Z",
    "slug": "cs2-fut-mouz-2026-08-14",
    "eventSlug": "cs2-fut-mouz-2026-08-14"
@@ -82,8 +82,8 @@
      "netUsd": 3565.4,
      "avgPrice": 0.52,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.7926746428369098
+     "lastTradeAgoH": 0.4,
+     "score": 1.7825985234956923
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -92,30 +92,30 @@
      "netUsd": 1525.79,
      "avgPrice": 0.5,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.6046731042926605
+     "lastTradeAgoH": 0.4,
+     "score": 1.5956536886574244
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
      "name": "BajaBlaster",
      "quality": 0.3953,
-     "netUsd": 1004.28,
-     "avgPrice": 0.5641,
+     "netUsd": 1541.96,
+     "avgPrice": 0.5208,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.2442600726890858
+     "score": 1.2443320805638705
     }
    ],
    "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 6095.47,
-   "score": 4.6416,
+   "contested": true,
+   "totalNetUsd": 6633.15,
+   "score": 4.6226,
    "question": "LoL: Shifters vs SK Gaming - Game 2 Winner",
    "outcome": "Shifters",
    "tokenId": "23244602503608968687100755930463262318793665247761987668305626443368906448534",
    "currentPrice": 0.555,
-   "backersAvgEntry": 0.528,
-   "driftSinceEntry": 0.027,
+   "backersAvgEntry": 0.5136,
+   "driftSinceEntry": 0.0414,
    "endDate": "2026-08-14T19:00:00Z",
    "slug": "lol-shft-sk-2026-08-14-game2",
    "eventSlug": "lol-shft-sk-2026-08-14"
@@ -133,8 +133,8 @@
      "netUsd": 12324.0,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.4,
-     "score": 1.072576159096011
+     "lastTradeAgoH": 6.5,
+     "score": 1.0665475105485573
     },
     {
      "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
@@ -143,8 +143,8 @@
      "netUsd": 18896.8,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.4,
-     "score": 1.0492298733900451
+     "lastTradeAgoH": 14.5,
+     "score": 1.0433324477401131
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -153,14 +153,14 @@
      "netUsd": 11534.83,
      "avgPrice": 0.4501,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.9,
-     "score": 0.7782054531931368
+     "lastTradeAgoH": 8.1,
+     "score": 0.7738313794872961
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 42755.63,
-   "score": 2.9,
+   "score": 2.8837,
    "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
    "outcome": "100 Thieves",
    "tokenId": "32167563431873264194928854022530992272097563625030599275250463406393644066117",
