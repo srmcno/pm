@@ -1,6 +1,6 @@
 # Paper portfolio
 
-Updated 2026-08-14 02:36 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 02:51 UTC · started with $20.00 (virtual)
 
 **Equity $17.41 (-12.9%)** · cash $5.48 · 9 open · 5 settled
 
@@ -13,7 +13,7 @@ Updated 2026-08-14 02:36 UTC · started with $20.00 (virtual)
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.15 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.74 |
 | Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 1.71 | 0.90 | 0.99 | $1.70 |
-| Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? | No | 1.46 | 0.86 | 0.92 | $1.34 |
+| Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? | No | 1.46 | 0.86 | 0.92 | $1.33 |
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.46 | $1.03 |
 
 | settled market | side | entry | settle | PnL |
