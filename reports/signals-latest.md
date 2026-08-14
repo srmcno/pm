@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-14 14:10 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 14:25 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Map Handicap: VIT (-1.5) vs B8 (+1.5) — **Vitality**
 
-- Score **4.49** · 3 backers · net $50,020 staked
-- Backers' average entry 0.65 → current price **0.17** (moved against them -0.48 since entry)
+- Score **4.45** · 3 backers · net $50,020 staked
+- Backers' average entry 0.65 → current price **0.59** (moved against them -0.05 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -18,8 +18,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C — **MOUZ**
 
-- Score **4.48** · 3 backers · net $86,303 staked
-- Backers' average entry 0.65 → current price **0.43** (moved against them -0.22 since entry)
+- Score **4.44** · 3 backers · net $86,303 staked
+- Backers' average entry 0.65 → current price **0.41** (moved against them -0.24 since entry)
 - Resolves by 2026-08-14
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -30,7 +30,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
 
-- Score **3.16** · 3 backers · net $42,756 staked
+- Score **3.12** · 3 backers · net $42,756 staked
 - Backers' average entry 0.46 → current price **0.45** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-14
 
