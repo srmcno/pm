@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-14 12:44 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 12:59 UTC · started with $20.00 (virtual)
 
-**Equity $17.40 (-13.0%)** · cash $6.11 · 9 open · 7 settled
+**Equity $17.38 (-13.1%)** · cash $6.11 · 9 open · 7 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -12,7 +12,7 @@ Updated 2026-08-14 12:44 UTC · started with $20.00 (virtual)
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.82 | $1.24 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.15 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.73 |
-| Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.46 | $1.03 |
+| Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.45 | $1.00 |
 | LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner | Nongshim Red Force | 2.21 | 0.62 | 1.00 | $2.21 |
 | LoL: Anyone's Legend vs JD Gaming - Game 1 Winner | Anyone's Legend | 1.83 | 0.64 | 0.00 | $0.00 |
 
