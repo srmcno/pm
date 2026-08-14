@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.5317,
+ "cash": 5.4817,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -14,8 +14,8 @@
    "costUsd": 1.6,
    "openedAt": 1786587299,
    "signalScore": 5.3524,
-   "markPrice": 0.87,
-   "valueUsd": 1.5467
+   "markPrice": 0.875,
+   "valueUsd": 1.5556
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -84,8 +84,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.172,
-   "valueUsd": 0.7541
+   "markPrice": 0.17,
+   "valueUsd": 0.7453
   },
   {
    "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
@@ -112,8 +112,22 @@
    "costUsd": 1.25,
    "openedAt": 1786669835,
    "signalScore": 6.7988,
-   "markPrice": 0.878,
-   "valueUsd": 1.2777
+   "markPrice": 0.869,
+   "valueUsd": 1.2646
+  },
+  {
+   "conditionId": "0x24d61ebc7ac6b5bd92ac78023080b181df68eafba7e8eae5ec6c7cc3b600b261",
+   "outcomeIndex": 1,
+   "tokenId": "32167563431873264194928854022530992272097563625030599275250463406393644066117",
+   "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
+   "outcome": "100 Thieves",
+   "shares": 2.2581,
+   "entryPrice": 0.465,
+   "costUsd": 1.05,
+   "openedAt": 1786672329,
+   "signalScore": 4.0403,
+   "markPrice": 0.455,
+   "valueUsd": 1.0274
   }
  ],
  "closed": [
@@ -653,6 +667,11 @@
    "t": 1786671655,
    "equity": 17.4105,
    "cash": 6.5317
+  },
+  {
+   "t": 1786672330,
+   "equity": 17.3749,
+   "cash": 5.4817
   }
  ],
  "log": [
@@ -794,6 +813,14 @@
    "outcome": "No",
    "stake": 1.25,
    "price": 0.859
+  },
+  {
+   "t": 1786672329,
+   "action": "BUY",
+   "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
+   "outcome": "100 Thieves",
+   "stake": 1.05,
+   "price": 0.465
   }
  ]
 }
