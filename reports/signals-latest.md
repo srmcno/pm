@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-14 18:07 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 18:16 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: GIANTX vs Team Vitality - Game 2 Winner — **GIANTX**
 
-- Score **5.52** · 4 backers · net $6,625 staked
+- Score **5.48** · 4 backers · net $6,625 staked
 - Backers' average entry 0.23 → current price **0.09** (moved against them -0.14 since entry)
 - Resolves by 2026-08-14
 

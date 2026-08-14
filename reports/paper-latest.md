@@ -1,18 +1,18 @@
 # Paper portfolio
 
-Updated 2026-08-14 18:07 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 18:16 UTC · started with $20.00 (virtual)
 
-**Equity $13.87 (-30.6%)** · cash $5.87 · 9 open · 9 settled
+**Equity $13.80 (-31.0%)** · cash $5.87 · 9 open · 9 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.89 | $1.57 |
-| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.84 | $2.63 |
+| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.83 | $2.61 |
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.30 | $0.53 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.82 | $1.24 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.95 | $1.17 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.08 | $0.36 |
-| Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.23 | $0.51 |
+| Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.20 | $0.45 |
 | Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C | MOUZ | 2.69 | 0.49 | 0.00 | $0.00 |
 | LoL: Shifters vs SK Gaming - Game 2 Winner | Shifters | 2.67 | 0.42 | 0.00 | $0.00 |
 
