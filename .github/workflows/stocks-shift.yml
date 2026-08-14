@@ -22,11 +22,21 @@ permissions:
 jobs:
   shift:
     runs-on: ubuntu-latest
-    timeout-minutes: 118
+    # 110 minutes of trading plus the executor's worst-case shutdown —
+    # up to 30 minutes working a pending order and 5 more to cancel —
+    # plus setup, the backtest refresh, and the commit step. Killing the
+    # job mid-shutdown could orphan a working order, so the timeout must
+    # outlast the whole sequence; the concurrency group simply queues the
+    # next shift behind a long one.
+    timeout-minutes: 160
     env:
       GH_TOKEN: ${{ github.token }}
       APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
       APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
+      # Unset or 0 = Alpaca's PAPER endpoint (simulated money, real order
+      # lifecycle). Setting the ALPACA_LIVE secret to 1 is the deliberate,
+      # separate step that points the mirror at real money.
+      ALPACA_LIVE: ${{ secrets.ALPACA_LIVE }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,7 +54,16 @@ jobs:
         run: |
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
-          python3 -m stocks.bot run --minutes 110 --git-push --push-minutes 10
+          if [ -n "$APCA_API_KEY_ID" ] && [ -n "$APCA_API_SECRET_KEY" ]; then
+            # Keys present: mirror each paper decision onto the Alpaca
+            # account. Which account is governed by ALPACA_LIVE above;
+            # a STOP file at data/stocks/STOP halts execution either way.
+            python3 -m stocks.bot run --minutes 110 --git-push --push-minutes 10 \
+              --execute --live --i-accept-total-loss
+          else
+            echo "No Alpaca keys — paper desk only."
+            python3 -m stocks.bot run --minutes 110 --git-push --push-minutes 10
+          fi
 
       - name: Refresh the replay backtest after the close
         working-directory: scripts

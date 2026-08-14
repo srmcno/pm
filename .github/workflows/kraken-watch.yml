@@ -1,0 +1,61 @@
+name: Kraken viability trial
+
+# Points the triangle scanner at Kraken (US-legal venue) in back-to-back
+# ~2-hour shifts to measure whether any edge survives base-tier taker fees
+# on three legs. Paper only — the module has no live execution path.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "50 */2 * * *"   # best-effort backup; the chain below is primary
+
+concurrency:
+  group: kraken-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write   # queues the next shift and dispatches the Pages deploy
+
+jobs:
+  shift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 118
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      # GitHub's cron scheduler is best-effort, so shifts perpetuate
+      # themselves; the concurrency group holds the successor pending until
+      # this shift ends. Disabling the workflow in the Actions UI is the
+      # off switch.
+      - name: Queue the next shift
+        run: gh workflow run kraken-watch.yml --ref "${GITHUB_REF_NAME}" || true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install "requests>=2.31,<3"
+
+      - name: Scan for one shift
+        working-directory: scripts
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          python3 krakenarb.py watch --duration-minutes 113
+
+      - name: Commit results
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/krakenarb dashboard/data reports || true
+          git diff --cached --quiet && exit 0
+          git commit -m "auto: kraken trial shift $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
+          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" || true

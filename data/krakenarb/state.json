@@ -1,0 +1,26 @@
+{
+ "bankrollStart": 40.0,
+ "cash": 40.0,
+ "createdAt": 1786666692,
+ "trades": [],
+ "equityCurve": [
+  {
+   "t": 1786666692,
+   "equity": 40.0
+  },
+  {
+   "t": 1786667207,
+   "equity": 40.0
+  },
+  {
+   "t": 1786667645,
+   "equity": 40.0
+  }
+ ],
+ "decay": {
+  "checked": 0,
+  "survived": 0
+ },
+ "cooldown": {},
+ "tradeCountAll": 0
+}
