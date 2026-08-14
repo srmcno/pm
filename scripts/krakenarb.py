@@ -35,6 +35,7 @@ import json
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor
+from itertools import pairwise
 
 import pmlib
 from arb import walk_buy, walk_sell
@@ -215,27 +216,39 @@ def depth(key, limit=25):
         return [], []
 
 
+class TooSmall(Exception):
+    """A leg below the venue's minimum order volume or cost.
+
+    Distinct from a thin-book failure on purpose: a larger STARTING size
+    may clear the minimums, whereas nothing clears an exhausted book."""
+
+
 def leg_fill(bids, asks, meta, amt, action):
     """One depth-walked leg with Kraken's per-pair minimums enforced.
 
     A buy spends `amt` of the pair's quote currency; a sell disposes `amt`
     of its base. The venue rejects orders below its minimum volume (base
-    units) or minimum cost (quote units), so a leg that violates either is
-    a rejection, not a fill — returns None exactly like a too-thin book.
+    units) or minimum cost (quote units) — that raises TooSmall, a
+    rejection a bigger start size can outgrow. A book too thin for the
+    size returns None, which no bigger size can fix.
     """
     fee = meta["taker"]
     if action == "buy":
         if amt < meta["costMin"]:
-            return None
+            raise TooSmall
         got = walk_buy(asks, amt, fee)
-        if got is None or got < meta["orderMin"]:
+        if got is None:
             return None
+        if got < meta["orderMin"]:
+            raise TooSmall
         return got
     if amt < meta["orderMin"]:
-        return None
+        raise TooSmall
     got = walk_sell(bids, amt, fee)
-    if got is None or got < meta["costMin"]:
+    if got is None:
         return None
+    if got < meta["costMin"]:
+        raise TooSmall
     return got
 
 
@@ -249,15 +262,18 @@ def verify_cycle(opp, info, books_cache):
     viable = {}
     for size in SIZES:
         amt = size
-        ok = True
-        for key, act in legs:
-            bids, asks = books_cache[key]
-            amt = leg_fill(bids, asks, info[key], amt, act)
-            if amt is None:
-                ok = False
-                break
-        if not ok:
-            break  # thinner books won't fit bigger sizes either
+        exhausted = False
+        try:
+            for key, act in legs:
+                bids, asks = books_cache[key]
+                amt = leg_fill(bids, asks, info[key], amt, act)
+                if amt is None:
+                    exhausted = True
+                    break
+        except TooSmall:
+            continue  # a larger start size may clear the venue minimums
+        if exhausted:
+            break  # a book too thin for this size is too thin for bigger
         profit = amt - size
         bps = profit / size * 10_000
         if profit > 0.005:
@@ -383,7 +399,7 @@ def replay_backtest(info):
         return None
     atomic = delayed = 0.0
     edges = filled = 0
-    for cur, nxt in zip(lines, lines[1:]):
+    for cur, nxt in pairwise(lines):
         if not (0 < nxt["t"] - cur["t"] <= 180):
             continue  # shift boundary or gap — not a fair next-scan fill
         for o in cur.get("verified", []):
@@ -489,7 +505,7 @@ def scan_once(st, prev_keys):
         # Kraken's public rate limit is stricter than MEXC's — fetch depth
         # with modest parallelism and let a failed fetch read as unverified.
         with ThreadPoolExecutor(max_workers=3) as ex:
-            for key, d in zip(keys, ex.map(depth, keys)):
+            for key, d in zip(keys, ex.map(depth, keys), strict=True):
                 books_cache[key] = d
     verified = []
     for o in live[:12]:
@@ -504,7 +520,9 @@ def scan_once(st, prev_keys):
     if verified or time.time() - _last_hist >= 30:
         _last_hist = time.time()
         record_history(now, verified, watching, book)
-    hurdles = sorted(o["feeBps"] for o in screened) or [0.0]
+    # Median over the FULL cycle universe, so the hurdle describes the same
+    # population as the cycle count published beside it.
+    hurdles = sorted(cycle_fee_bps(info, c[:3]) for c in cycles) or [0.0]
     meta = {"pairs": len(book), "triangles": len(cycles),
             "screened": len(live), "verified": len(verified),
             "feeHurdleBps": round(hurdles[len(hurdles) // 2], 1),

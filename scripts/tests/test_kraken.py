@@ -7,8 +7,8 @@ import unittest
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 import krakenarb  # noqa: E402
-from krakenarb import (build_cycles, cycle_fee_bps, leg_fill,   # noqa: E402
-                       parse_pairs, screen_cycles, verify_cycle)
+from krakenarb import (TooSmall, build_cycles, cycle_fee_bps,   # noqa: E402
+                       leg_fill, parse_pairs, screen_cycles, verify_cycle)
 
 
 def pairs_fixture():
@@ -100,18 +100,21 @@ class TestLegFill(unittest.TestCase):
         # 1.0 @ 100 + ~0.495 @ 101, then 0.4% fee
         self.assertAlmostEqual(got, (1.0 + 50.0 / 101.0) * 0.996, places=6)
 
-    def test_buy_below_cost_minimum_is_rejected(self):
+    def test_buy_below_cost_minimum_raises_too_small(self):
         asks = [(100.0, 10.0)]
-        self.assertIsNone(leg_fill([], asks, self.meta, 0.4, "buy"))
+        with self.assertRaises(TooSmall):
+            leg_fill([], asks, self.meta, 0.4, "buy")
 
-    def test_buy_result_below_volume_minimum_is_rejected(self):
+    def test_buy_result_below_volume_minimum_raises_too_small(self):
         meta = dict(self.meta, orderMin=1.0)
         asks = [(100.0, 10.0)]
-        self.assertIsNone(leg_fill([], asks, meta, 50.0, "buy"))
+        with self.assertRaises(TooSmall):
+            leg_fill([], asks, meta, 50.0, "buy")
 
-    def test_sell_below_volume_minimum_is_rejected(self):
+    def test_sell_below_volume_minimum_raises_too_small(self):
         bids = [(100.0, 10.0)]
-        self.assertIsNone(leg_fill(bids, [], self.meta, 0.01, "sell"))
+        with self.assertRaises(TooSmall):
+            leg_fill(bids, [], self.meta, 0.01, "sell")
 
     def test_thin_book_is_not_a_fill(self):
         asks = [(100.0, 0.5)]
@@ -136,7 +139,7 @@ class TestVerifyCycle(unittest.TestCase):
         # so the $5 start size is present (5 USD -> ~0.025 SOL clears both).
         self.assertIn(5.0, opp["viable"])
 
-    def test_venue_minimum_blocks_small_sizes(self):
+    def test_venue_minimum_blocks_small_sizes_but_not_larger_ones(self):
         raw = pairs_fixture()
         raw["SOLUSD"]["costmin"] = "15"   # venue demands $15+ per order
         info = parse_pairs(raw)
@@ -148,9 +151,28 @@ class TestVerifyCycle(unittest.TestCase):
         opp = {"legs": [["SOLUSD", "buy"], ["SOLXBT", "sell"],
                         ["XXBTZUSD", "sell"]],
                "path": "USD→SOL→XBT→USD", "screenBps": 30.0, "feeBps": 119.5}
-        verify_cycle(opp, info, books)
+        # A too-small rejection at $5 and $10 must not hide the $20 and
+        # $40 candidates that clear the venue minimum.
+        self.assertTrue(verify_cycle(opp, info, books))
         self.assertNotIn(5.0, opp.get("viable", {}))
         self.assertNotIn(10.0, opp.get("viable", {}))
+        self.assertIn(20.0, opp["viable"])
+        self.assertIn(40.0, opp["viable"])
+
+    def test_thin_book_still_ends_the_size_ladder(self):
+        info = parse_pairs(pairs_fixture())
+        books = {
+            "SOLUSD": ([(196.9, 100.0)], [(197.0, 0.03)]),   # ~$6 of asks
+            "SOLXBT": ([(0.002, 100.0)], [(0.00201, 100.0)]),
+            "XXBTZUSD": ([(100_000.0, 1.0)], [(100_010.0, 1.0)]),
+        }
+        opp = {"legs": [["SOLUSD", "buy"], ["SOLXBT", "sell"],
+                        ["XXBTZUSD", "sell"]],
+               "path": "USD→SOL→XBT→USD", "screenBps": 30.0, "feeBps": 119.5}
+        verify_cycle(opp, info, books)
+        self.assertNotIn(10.0, opp.get("viable", {}))
+        self.assertNotIn(20.0, opp.get("viable", {}))
+        self.assertNotIn(40.0, opp.get("viable", {}))
 
 
 class TestReplayMath(unittest.TestCase):

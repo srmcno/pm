@@ -39,7 +39,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install "requests>=2.31,<3"
 
       - name: Scan for one shift
         working-directory: scripts
