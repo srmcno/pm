@@ -14,8 +14,8 @@
    "costUsd": 1.6,
    "openedAt": 1786587299,
    "signalScore": 5.3524,
-   "markPrice": 0.895,
-   "valueUsd": 1.5911
+   "markPrice": 0.89,
+   "valueUsd": 1.5822
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.77,
-   "valueUsd": 2.4083
+   "markPrice": 0.745,
+   "valueUsd": 2.3301
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -42,8 +42,8 @@
    "costUsd": 1.35,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.35,
-   "valueUsd": 0.6097
+   "markPrice": 0.36,
+   "valueUsd": 0.6271
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -84,8 +84,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.09,
-   "valueUsd": 0.3946
+   "markPrice": 0.0885,
+   "valueUsd": 0.388
   },
   {
    "conditionId": "0x24d61ebc7ac6b5bd92ac78023080b181df68eafba7e8eae5ec6c7cc3b600b261",
@@ -1110,6 +1110,11 @@
   {
    "t": 1786740150,
    "equity": 13.2717,
+   "cash": 5.866
+  },
+  {
+   "t": 1786741057,
+   "equity": 13.1954,
    "cash": 5.866
   }
  ],
