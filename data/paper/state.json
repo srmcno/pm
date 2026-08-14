@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.855,
-   "valueUsd": 2.6742
+   "markPrice": 0.835,
+   "valueUsd": 2.6116
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -786,6 +786,11 @@
   {
    "t": 1786694872,
    "equity": 17.8013,
+   "cash": 5.4817
+  },
+  {
+   "t": 1786695781,
+   "equity": 17.7387,
    "cash": 5.4817
   }
  ],
