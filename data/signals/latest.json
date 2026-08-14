@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786715699,
+  "generatedAt": 1786716610,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -8,57 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x8ce33e7b4a7f62a665eb1c61d1fce7ac2843c1b67838c75fa524fee612619387",
-   "outcomeIndex": 1,
-   "title": "LoL: Anyone's Legend vs JD Gaming (BO3) - LPL Group Ascend",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.7954,
-     "netUsd": 2248.7,
-     "avgPrice": 0.4248,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.4962793960681755
-    },
-    {
-     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
-     "name": "jtwyslljy",
-     "quality": 0.7702,
-     "netUsd": 1735.9,
-     "avgPrice": 0.44,
-     "conviction": 10.0,
-     "lastTradeAgoH": 6.6,
-     "score": 1.8491685395966342
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.3953,
-     "netUsd": 2345.71,
-     "avgPrice": 0.5199,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.238584598516887
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 6330.31,
-   "score": 5.584,
-   "question": "LoL: Anyone's Legend vs JD Gaming (BO3) - LPL Group Ascend",
-   "outcome": "JD Gaming",
-   "tokenId": "23873209337604096948763060458217675098410689987009113959223186526633642530177",
-   "currentPrice": 0.235,
-   "backersAvgEntry": 0.4616,
-   "driftSinceEntry": -0.2266,
-   "endDate": "2026-08-14T17:15:00Z",
-   "slug": "lol-al-jdg-2026-08-14",
-   "eventSlug": "lol-al-jdg-2026-08-14"
-  },
   {
    "conditionId": "0x3648489dc6760f9e4cf8331d55af925213705a9f1eae503a3f1de2d1119ecbea",
    "outcomeIndex": 0,
@@ -72,8 +21,8 @@
      "netUsd": 39456.94,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 1.8353490508919348
+     "lastTradeAgoH": 1.2,
+     "score": 1.8160988298203442
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -82,8 +31,8 @@
      "netUsd": 8579.28,
      "avgPrice": 0.6477,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.4840704982774044
+     "lastTradeAgoH": 0.8,
+     "score": 1.4685046934165895
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -92,20 +41,20 @@
      "netUsd": 1984.12,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 1.2213313046185355
+     "lastTradeAgoH": 0.8,
+     "score": 1.2085212630604267
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 50020.34,
-   "score": 4.5408,
+   "score": 4.4931,
    "question": "Map Handicap: VIT (-1.5) vs B8 (+1.5)",
    "outcome": "Vitality",
    "tokenId": "26117995677060931225610567401308948070774116520224718127816598282685745652673",
-   "currentPrice": 0.625,
+   "currentPrice": 0.165,
    "backersAvgEntry": 0.6492,
-   "driftSinceEntry": -0.0242,
+   "driftSinceEntry": -0.4842,
    "endDate": "2026-08-14T19:30:00Z",
    "slug": "cs2-b8-vit-2026-08-14-map-handicap-home-1pt5",
    "eventSlug": "cs2-b8-vit-2026-08-14"
@@ -123,8 +72,8 @@
      "netUsd": 47819.15,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.8724255611367864
+     "lastTradeAgoH": 0.8,
+     "score": 1.8527864598037382
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -133,8 +82,8 @@
      "netUsd": 30519.26,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.2,
-     "score": 1.4551589021236606
+     "lastTradeAgoH": 1.4,
+     "score": 1.4398963390997166
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -143,20 +92,20 @@
      "netUsd": 7964.1,
      "avgPrice": 0.6569,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 1.2024798204437706
+     "lastTradeAgoH": 1.2,
+     "score": 1.189867504347048
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 86302.51,
-   "score": 4.5301,
+   "score": 4.4826,
    "question": "Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C",
    "outcome": "MOUZ",
    "tokenId": "52961601704467535200547663003676556584892462877074041702255576250631028352163",
-   "currentPrice": 0.445,
+   "currentPrice": 0.43,
    "backersAvgEntry": 0.6456,
-   "driftSinceEntry": -0.2006,
+   "driftSinceEntry": -0.2156,
    "endDate": "2026-08-14T19:30:00Z",
    "slug": "cs2-fut-mouz-2026-08-14",
    "eventSlug": "cs2-fut-mouz-2026-08-14"
@@ -174,8 +123,8 @@
      "netUsd": 12324.0,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.1,
-     "score": 1.180300891335337
+     "lastTradeAgoH": 4.3,
+     "score": 1.1679212009008886
     },
     {
      "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
@@ -184,8 +133,8 @@
      "netUsd": 18896.8,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 12.1,
-     "score": 1.154609809546473
+     "lastTradeAgoH": 12.4,
+     "score": 1.1424995822987485
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -194,14 +143,14 @@
      "netUsd": 11534.83,
      "avgPrice": 0.4501,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.7,
-     "score": 0.8563649138164917
+     "lastTradeAgoH": 5.9,
+     "score": 0.8473828545722788
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 42755.63,
-   "score": 3.1913,
+   "score": 3.1578,
    "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
    "outcome": "100 Thieves",
    "tokenId": "32167563431873264194928854022530992272097563625030599275250463406393644066117",
