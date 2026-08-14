@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-14 16:05 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 16:12 UTC · started with $20.00 (virtual)
 
-**Equity $16.13 (-19.4%)** · cash $6.99 · 9 open · 8 settled
+**Equity $16.49 (-17.6%)** · cash $5.87 · 10 open · 8 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -15,6 +15,7 @@ Updated 2026-08-14 16:05 UTC · started with $20.00 (virtual)
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 2.26 | 0.47 | 0.45 | $1.00 |
 | LoL: Anyone's Legend vs JD Gaming - Game 1 Winner | Anyone's Legend | 1.83 | 0.64 | 0.00 | $0.00 |
 | Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C | MOUZ | 2.69 | 0.49 | 0.20 | $0.52 |
+| LoL: Shifters vs SK Gaming - Game 2 Winner | Shifters | 2.67 | 0.42 | 0.56 | $1.48 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

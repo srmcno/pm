@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.986,
+ "cash": 5.866,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -128,6 +128,20 @@
    "signalScore": 5.6156,
    "markPrice": 0.195,
    "valueUsd": 0.5239
+  },
+  {
+   "conditionId": "0xd08a5441e548d2c9b06dc7a7b7631389f9e544750cb58325ebe80438dcee5f6a",
+   "outcomeIndex": 0,
+   "tokenId": "23244602503608968687100755930463262318793665247761987668305626443368906448534",
+   "question": "LoL: Shifters vs SK Gaming - Game 2 Winner",
+   "outcome": "Shifters",
+   "shares": 2.6667,
+   "entryPrice": 0.42,
+   "costUsd": 1.12,
+   "openedAt": 1786723968,
+   "signalScore": 4.6416,
+   "markPrice": 0.555,
+   "valueUsd": 1.48
   }
  ],
  "closed": [
@@ -993,6 +1007,11 @@
    "t": 1786723541,
    "equity": 16.1284,
    "cash": 6.986
+  },
+  {
+   "t": 1786723968,
+   "equity": 16.4884,
+   "cash": 5.866
   }
  ],
  "log": [
@@ -1187,6 +1206,14 @@
    "outcome": "MOUZ",
    "stake": 1.33,
    "price": 0.495
+  },
+  {
+   "t": 1786723968,
+   "action": "BUY",
+   "question": "LoL: Shifters vs SK Gaming - Game 2 Winner",
+   "outcome": "Shifters",
+   "stake": 1.12,
+   "price": 0.42
   }
  ]
 }
