@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 5.4817,
+ "cash": 8.648,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -14,8 +14,8 @@
    "costUsd": 1.6,
    "openedAt": 1786587299,
    "signalScore": 5.3524,
-   "markPrice": 0.885,
-   "valueUsd": 1.5734
+   "markPrice": 0.89,
+   "valueUsd": 1.5822
   },
   {
    "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
@@ -28,8 +28,8 @@
    "costUsd": 1.47,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.835,
-   "valueUsd": 2.6116
+   "markPrice": 0.845,
+   "valueUsd": 2.6429
   },
   {
    "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
@@ -42,8 +42,8 @@
    "costUsd": 1.35,
    "openedAt": 1786587299,
    "signalScore": 5.0571,
-   "markPrice": 0.435,
-   "valueUsd": 0.7577
+   "markPrice": 0.42,
+   "valueUsd": 0.7316
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -86,34 +86,6 @@
    "signalScore": 3.1826,
    "markPrice": 0.168,
    "valueUsd": 0.7365
-  },
-  {
-   "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
-   "outcomeIndex": 1,
-   "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
-   "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
-   "outcome": "No",
-   "shares": 1.7111,
-   "entryPrice": 0.9,
-   "costUsd": 1.54,
-   "openedAt": 1786629946,
-   "signalScore": 5.7408,
-   "markPrice": 0.9995,
-   "valueUsd": 1.7102
-  },
-  {
-   "conditionId": "0x8bac2275c9adc63db392b57aaa48d626dc5d697f5aa1dac099f00b1fc40efb53",
-   "outcomeIndex": 1,
-   "tokenId": "13662588639056571813875611685959663270684515989971036864401935269722385937833",
-   "question": "Will Count Binface win 30\u201340% of votes in the Clacton parliamentary by-election?",
-   "outcome": "No",
-   "shares": 1.4552,
-   "entryPrice": 0.859,
-   "costUsd": 1.25,
-   "openedAt": 1786669835,
-   "signalScore": 6.7988,
-   "markPrice": 0.9995,
-   "valueUsd": 1.4545
   },
   {
    "conditionId": "0x24d61ebc7ac6b5bd92ac78023080b181df68eafba7e8eae5ec6c7cc3b600b261",
@@ -215,6 +187,40 @@
    "settledAt": 1786664701,
    "settlePrice": 1.0,
    "pnl": 0.9862
+  },
+  {
+   "conditionId": "0x57386fa65bb2d5264e28c20dc9ee89240d5f30f7615c6010ff6eb22a3c50e1e3",
+   "outcomeIndex": 1,
+   "tokenId": "54556308966957778058867283981701806660197335841030147127279628017129760135316",
+   "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "shares": 1.7111,
+   "entryPrice": 0.9,
+   "costUsd": 1.54,
+   "openedAt": 1786629946,
+   "signalScore": 5.7408,
+   "markPrice": 0.9995,
+   "valueUsd": 1.7102,
+   "settledAt": 1786706382,
+   "settlePrice": 1.0,
+   "pnl": 0.1711
+  },
+  {
+   "conditionId": "0x8bac2275c9adc63db392b57aaa48d626dc5d697f5aa1dac099f00b1fc40efb53",
+   "outcomeIndex": 1,
+   "tokenId": "13662588639056571813875611685959663270684515989971036864401935269722385937833",
+   "question": "Will Count Binface win 30\u201340% of votes in the Clacton parliamentary by-election?",
+   "outcome": "No",
+   "shares": 1.4552,
+   "entryPrice": 0.859,
+   "costUsd": 1.25,
+   "openedAt": 1786669835,
+   "signalScore": 6.7988,
+   "markPrice": 0.9995,
+   "valueUsd": 1.4545,
+   "settledAt": 1786706382,
+   "settlePrice": 1.0,
+   "pnl": 0.2052
   }
  ],
  "equityCurve": [
@@ -842,6 +848,11 @@
    "t": 1786705473,
    "equity": 17.738,
    "cash": 5.4817
+  },
+  {
+   "t": 1786706382,
+   "equity": 17.7536,
+   "cash": 8.648
   }
  ],
  "log": [
@@ -991,6 +1002,20 @@
    "outcome": "100 Thieves",
    "stake": 1.05,
    "price": 0.465
+  },
+  {
+   "t": 1786706382,
+   "action": "SETTLE",
+   "question": "Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election?",
+   "price": 1.0,
+   "pnl": 0.1711
+  },
+  {
+   "t": 1786706382,
+   "action": "SETTLE",
+   "question": "Will Count Binface win 30\u201340% of votes in the Clacton parliamentary by-election?",
+   "price": 1.0,
+   "pnl": 0.2052
   }
  ]
 }

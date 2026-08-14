@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-14 11:04 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-14 11:19 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C — **100 Thieves**
 
-- Score **2.99** · 3 backers · net $40,702 staked
+- Score **2.96** · 3 backers · net $40,702 staked
 - Backers' average entry 0.46 → current price **0.46** (roughly flat -0.00 since entry)
 - Resolves by 2026-08-14
 
