@@ -1,17 +1,17 @@
 # Paper portfolio
 
-Updated 2026-08-14 21:22 UTC · started with $20.00 (virtual)
+Updated 2026-08-14 21:37 UTC · started with $20.00 (virtual)
 
-**Equity $13.12 (-34.4%)** · cash $5.87 · 6 open · 12 settled
+**Equity $13.11 (-34.5%)** · cash $5.87 · 6 open · 12 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.90 | $1.59 |
-| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.72 | $2.27 |
+| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.71 | $2.24 |
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 0.36 | $0.64 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.82 | $1.24 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.95 | $1.17 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.08 | $0.36 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.09 | $0.38 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
