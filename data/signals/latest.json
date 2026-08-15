@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786822408,
+  "generatedAt": 1786822564,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.6399,
      "conviction": 8.88,
      "lastTradeAgoH": 0.1,
-     "score": 2.3616155786508677
+     "score": 2.3573826820407078
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -32,7 +32,7 @@
      "avgPrice": 0.63,
      "conviction": 10.0,
      "lastTradeAgoH": 0.3,
-     "score": 1.5013644040086067
+     "score": 1.4986733985995158
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,14 +41,14 @@
      "netUsd": 30012.15,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 1.3196042732111826
+     "lastTradeAgoH": 1.5,
+     "score": 1.3172390498000042
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 33412.46,
-   "score": 5.1826,
+   "score": 5.1733,
    "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
    "outcome": "Spirit",
    "tokenId": "58026126495994237628057033349978050512887296918798343322836174500795977306383",
