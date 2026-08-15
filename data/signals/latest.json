@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786777273,
+  "generatedAt": 1786778182,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 15084.39,
      "avgPrice": 0.4595,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.285184411691861
+     "lastTradeAgoH": 0.5,
+     "score": 2.2612683961679703
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -31,8 +31,8 @@
      "netUsd": 8294.88,
      "avgPrice": 0.41,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.0430763575425748
+     "lastTradeAgoH": 0.6,
+     "score": 2.02169416815187
     },
     {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
@@ -41,8 +41,8 @@
      "netUsd": 6967.32,
      "avgPrice": 0.4069,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.7802892447100431
+     "lastTradeAgoH": 0.6,
+     "score": 1.761657301924306
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -51,20 +51,20 @@
      "netUsd": 18957.51,
      "avgPrice": 0.4333,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.5006383266768635
+     "lastTradeAgoH": 0.7,
+     "score": 1.4849331217345725
     }
    ],
    "backerCount": 4,
    "contested": false,
    "totalNetUsd": 49304.1,
-   "score": 7.6092,
+   "score": 7.5296,
    "question": "Dota 2: TEAM VISION vs Team Spirit - Game 1 Winner",
    "outcome": "Team Spirit",
    "tokenId": "72227585678358308315093713311639228881390537106867401598265279183135180738471",
-   "currentPrice": 0.415,
+   "currentPrice": 0.115,
    "backersAvgEntry": 0.4274,
-   "driftSinceEntry": -0.0124,
+   "driftSinceEntry": -0.3124,
    "endDate": "2026-08-15T09:00:00Z",
    "slug": "dota2-vsn2-ts8-2026-08-15-game1",
    "eventSlug": "dota2-vsn2-ts8-2026-08-15"
