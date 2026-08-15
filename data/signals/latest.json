@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786805946,
+  "generatedAt": 1786806856,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 680.06,
      "avgPrice": 0.4378,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.4612786993966957
+     "lastTradeAgoH": 0.8,
+     "score": 2.43551973688924
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -31,8 +31,8 @@
      "netUsd": 31855.14,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 1.4679134307779471
+     "lastTradeAgoH": 1.2,
+     "score": 1.4525507142205463
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,20 +41,20 @@
      "netUsd": 10275.0,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.2222721299930597
+     "lastTradeAgoH": 3.5,
+     "score": 1.2094802174078996
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 42810.2,
-   "score": 5.1515,
+   "score": 5.0976,
    "question": "Counter-Strike: magic vs 3DMAX (BO3) - Esports World Cup Group D",
    "outcome": "3DMAX",
    "tokenId": "43957349317513176959325459617660153921016574750325075545224044606186479059873",
-   "currentPrice": 0.38,
+   "currentPrice": 0.225,
    "backersAvgEntry": 0.4459,
-   "driftSinceEntry": -0.0659,
+   "driftSinceEntry": -0.2209,
    "endDate": "2026-08-15T19:55:00Z",
    "slug": "cs2-mgc-3dmax-2026-08-15",
    "eventSlug": "cs2-mgc-3dmax-2026-08-15"
