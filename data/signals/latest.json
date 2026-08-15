@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786824386,
+  "generatedAt": 1786825841,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -18,21 +18,21 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.7954,
-     "netUsd": 250.31,
-     "avgPrice": 0.6399,
-     "conviction": 8.88,
-     "lastTradeAgoH": 0.6,
-     "score": 2.3082175000970326
+     "netUsd": 268.08,
+     "avgPrice": 0.6301,
+     "conviction": 9.51,
+     "lastTradeAgoH": 0.5,
+     "score": 2.4004009409498153
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
      "name": "GreenBerry1337",
      "quality": 0.48,
-     "netUsd": 3150.0,
+     "netUsd": 12658.26,
      "avgPrice": 0.63,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 1.4674173149446943
+     "lastTradeAgoH": 1.2,
+     "score": 1.4428958124209077
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,20 +41,20 @@
      "netUsd": 30012.15,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.0,
-     "score": 1.2897669308096888
+     "lastTradeAgoH": 2.4,
+     "score": 1.2682140823276342
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 33412.46,
-   "score": 5.0654,
+   "totalNetUsd": 42938.49,
+   "score": 5.1115,
    "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
    "outcome": "Spirit",
    "tokenId": "58026126495994237628057033349978050512887296918798343322836174500795977306383",
-   "currentPrice": 0.605,
-   "backersAvgEntry": 0.7033,
-   "driftSinceEntry": -0.0983,
+   "currentPrice": 0.745,
+   "backersAvgEntry": 0.7,
+   "driftSinceEntry": 0.045,
    "endDate": "2026-08-16T00:00:00Z",
    "slug": "cs2-big5-ts7-2026-08-15",
    "eventSlug": "cs2-big5-ts7-2026-08-15"
