@@ -1,17 +1,20 @@
 # Smart-money signals
 
-Generated 2026-08-15 08:32 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-15 08:47 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. LoL: Hanwha Life Esports vs KT Rolster - Game 1 Winner — **KT Rolster**
+## 1. Dota 2: TEAM VISION vs Team Spirit - Game 2 Winner — **Team Spirit**
 
-- Score **4.60** · 3 backers · net $5,397 staked
-- Backers' average entry 0.41 → current price **0.30** (moved against them -0.10 since entry)
+- Score **11.82** · 7 backers · net $50,329 staked
+- Backers' average entry 0.35 → current price **0.05** (moved against them -0.30 since entry)
 - Resolves by 2026-08-15
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x076daa87 | 0.80 | $426 | 0.3302 | 10.0× |
-| 467j6yj | 0.41 | $530 | 0.5298 | 9.72× |
-| meoooow | 0.32 | $4,442 | 0.36 | 10.0× |
+| 0x076daa87 | 0.80 | $430 | 0.3343 | 10.0× |
+| Djdjdjekekek | 0.73 | $5,047 | 0.3868 | 10.0× |
+| IMAREALPERSON | 0.57 | $9,659 | 0.3746 | 10.0× |
+| HOG993 | 0.48 | $913 | 0.2793 | 10.0× |
+| CORGI8 | 0.48 | $21,176 | 0.3301 | 10.0× |
+| GreenBerry1337 | 0.48 | $10,126 | 0.3284 | 10.0× |
