@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 5.866,
+ "cash": 7.6079,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -30,20 +30,6 @@
    "signalScore": 5.0571,
    "markPrice": 0.0005,
    "valueUsd": 0.0016
-  },
-  {
-   "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
-   "outcomeIndex": 1,
-   "tokenId": "69962024849840853998461872215176721695006892813256543475794817418366358101285",
-   "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
-   "outcome": "No",
-   "shares": 1.7419,
-   "entryPrice": 0.775,
-   "costUsd": 1.35,
-   "openedAt": 1786587299,
-   "signalScore": 5.0571,
-   "markPrice": 0.9995,
-   "valueUsd": 1.741
   },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
@@ -84,8 +70,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.123,
-   "valueUsd": 0.5392
+   "markPrice": 0.1225,
+   "valueUsd": 0.5371
   }
  ],
  "closed": [
@@ -292,6 +278,23 @@
    "settledAt": 1786742540,
    "settlePrice": 0.0,
    "pnl": -1.05
+  },
+  {
+   "conditionId": "0x0210351712833c74d663bc8960e9fd82b04afa9215f6f1dc71a09ec3114cb998",
+   "outcomeIndex": 1,
+   "tokenId": "69962024849840853998461872215176721695006892813256543475794817418366358101285",
+   "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
+   "outcome": "No",
+   "shares": 1.7419,
+   "entryPrice": 0.775,
+   "costUsd": 1.35,
+   "openedAt": 1786587299,
+   "signalScore": 5.0571,
+   "markPrice": 0.9995,
+   "valueUsd": 1.741,
+   "settledAt": 1786817419,
+   "settlePrice": 1.0,
+   "pnl": 0.3919
   }
  ],
  "equityCurve": [
@@ -1534,6 +1537,11 @@
    "t": 1786816509,
    "equity": 12.2406,
    "cash": 5.866
+  },
+  {
+   "t": 1786817419,
+   "equity": 12.2394,
+   "cash": 7.6079
   }
  ],
  "log": [
@@ -1764,6 +1772,13 @@
    "question": "Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C",
    "price": 0.0,
    "pnl": -1.05
+  },
+  {
+   "t": 1786817419,
+   "action": "SETTLE",
+   "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
+   "price": 1.0,
+   "pnl": 0.3919
   }
  ]
 }
