@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786799604,
+  "generatedAt": 1786799909,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 5138.8,
      "avgPrice": 0.24,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 2.4191409380770135
+     "lastTradeAgoH": 1.0,
+     "score": 2.410588301488545
     },
     {
      "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
@@ -31,8 +31,8 @@
      "netUsd": 12917.7,
      "avgPrice": 0.24,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 2.367080635054
+     "lastTradeAgoH": 0.8,
+     "score": 2.3587120525838476
     },
     {
      "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
@@ -41,14 +41,14 @@
      "netUsd": 279.3,
      "avgPrice": 0.23,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 0.9698805358778465
+     "lastTradeAgoH": 0.8,
+     "score": 0.9664516179396522
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 18335.8,
-   "score": 5.7561,
+   "score": 5.7358,
    "question": "LoL: Bilibili Gaming vs Team WE (BO3) - LPL Group Ascend",
    "outcome": "Team WE",
    "tokenId": "2919408392518342384923153237808638578314660503823134086780803298232703397334",
@@ -72,8 +72,8 @@
      "netUsd": 504.4,
      "avgPrice": 0.5305,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.506760285624638
+     "lastTradeAgoH": 0.2,
+     "score": 2.497897879387821
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -82,8 +82,8 @@
      "netUsd": 7875.44,
      "avgPrice": 0.5343,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 1.729375446379205
+     "lastTradeAgoH": 0.1,
+     "score": 1.7232614083398756
     },
     {
      "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
@@ -92,14 +92,14 @@
      "netUsd": 8018.4,
      "avgPrice": 0.4475,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 0.9702510471131497
+     "lastTradeAgoH": 0.8,
+     "score": 0.9668208192686585
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 16398.24,
-   "score": 5.2064,
+   "score": 5.188,
    "question": "Dota 2: Team Liquid vs Aurora - Game 2 Winner",
    "outcome": "Team Liquid",
    "tokenId": "50083846789004682466707644037547228489656611825428044373157268760316474269035",
