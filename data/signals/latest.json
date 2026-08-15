@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786822564,
+  "generatedAt": 1786823475,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 250.31,
      "avgPrice": 0.6399,
      "conviction": 8.88,
-     "lastTradeAgoH": 0.1,
-     "score": 2.3573826820407078
+     "lastTradeAgoH": 0.4,
+     "score": 2.3326570649938745
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -31,8 +31,8 @@
      "netUsd": 3150.0,
      "avgPrice": 0.63,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.4986733985995158
+     "lastTradeAgoH": 0.6,
+     "score": 1.4829544299253377
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,20 +41,20 @@
      "netUsd": 30012.15,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 1.3172390498000042
+     "lastTradeAgoH": 1.7,
+     "score": 1.3034230713623012
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 33412.46,
-   "score": 5.1733,
+   "score": 5.119,
    "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
    "outcome": "Spirit",
    "tokenId": "58026126495994237628057033349978050512887296918798343322836174500795977306383",
-   "currentPrice": 0.675,
+   "currentPrice": 0.375,
    "backersAvgEntry": 0.7033,
-   "driftSinceEntry": -0.0283,
+   "driftSinceEntry": -0.3283,
    "endDate": "2026-08-16T00:00:00Z",
    "slug": "cs2-big5-ts7-2026-08-15",
    "eventSlug": "cs2-big5-ts7-2026-08-15"
