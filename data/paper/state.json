@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.3879,
+ "cash": 8.3092,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -28,8 +28,8 @@
    "costUsd": 1.25,
    "openedAt": 1786587299,
    "signalScore": 5.0186,
-   "markPrice": 0.85,
-   "valueUsd": 1.2725
+   "markPrice": 0.845,
+   "valueUsd": 1.265
   },
   {
    "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
@@ -56,22 +56,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.1325,
-   "valueUsd": 0.5809
-  },
-  {
-   "conditionId": "0x3c135db7b77cc830e908088df95a06b0ef0b38c9d4e13eb828c7839d593381d1",
-   "outcomeIndex": 1,
-   "tokenId": "58026126495994237628057033349978050512887296918798343322836174500795977306383",
-   "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
-   "outcome": "Spirit",
-   "shares": 1.9213,
-   "entryPrice": 0.635,
-   "costUsd": 1.22,
-   "openedAt": 1786822408,
-   "signalScore": 5.1826,
-   "markPrice": 0.9995,
-   "valueUsd": 1.9203
+   "markPrice": 0.132,
+   "valueUsd": 0.5787
   }
  ],
  "closed": [
@@ -312,6 +298,23 @@
    "settledAt": 1786818919,
    "settlePrice": 0.0,
    "pnl": -1.47
+  },
+  {
+   "conditionId": "0x3c135db7b77cc830e908088df95a06b0ef0b38c9d4e13eb828c7839d593381d1",
+   "outcomeIndex": 1,
+   "tokenId": "58026126495994237628057033349978050512887296918798343322836174500795977306383",
+   "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
+   "outcome": "Spirit",
+   "shares": 1.9213,
+   "entryPrice": 0.635,
+   "costUsd": 1.22,
+   "openedAt": 1786822408,
+   "signalScore": 5.1826,
+   "markPrice": 0.9995,
+   "valueUsd": 1.9203,
+   "settledAt": 1786836422,
+   "settlePrice": 1.0,
+   "pnl": 0.7013
   }
  ],
  "equityCurve": [
@@ -1654,6 +1657,11 @@
    "t": 1786835511,
    "equity": 12.9721,
    "cash": 6.3879
+  },
+  {
+   "t": 1786836422,
+   "equity": 12.9634,
+   "cash": 8.3092
   }
  ],
  "log": [
@@ -1906,6 +1914,13 @@
    "outcome": "Spirit",
    "stake": 1.22,
    "price": 0.635
+  },
+  {
+   "t": 1786836422,
+   "action": "SETTLE",
+   "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
+   "price": 1.0,
+   "pnl": 0.7013
   }
  ]
 }
