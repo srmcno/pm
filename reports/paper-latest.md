@@ -1,13 +1,13 @@
 # Paper portfolio
 
-Updated 2026-08-15 18:35 UTC · started with $20.00 (virtual)
+Updated 2026-08-15 18:50 UTC · started with $20.00 (virtual)
 
-**Equity $12.36 (-38.2%)** · cash $7.61 · 4 open · 14 settled
+**Equity $12.33 (-38.4%)** · cash $7.61 · 4 open · 14 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.94 | $1.66 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.90 | $1.34 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.88 | $1.31 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.97 | $1.19 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.13 | $0.56 |
 
