@@ -1,12 +1,12 @@
 # Paper portfolio
 
-Updated 2026-08-15 16:39 UTC · started with $20.00 (virtual)
+Updated 2026-08-15 16:54 UTC · started with $20.00 (virtual)
 
-**Equity $12.29 (-38.5%)** · cash $5.87 · 6 open · 12 settled
+**Equity $12.27 (-38.6%)** · cash $5.87 · 6 open · 12 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.94 | $1.68 |
+| Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.94 | $1.66 |
 | Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.00 | $0.00 |
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 1.74 | 0.78 | 1.00 | $1.74 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.83 | $1.25 |
