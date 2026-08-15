@@ -1,15 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 45.9817,
+ "cash": 45.989,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1786665306,
-   "path": "USDT\u2192PLUMBER\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0147,
-   "bps": 29.4
-  },
   {
    "t": 1786665336,
    "path": "USDT\u2192PLUMBER\u2192USD1\u2192USDT",
@@ -1402,13 +1395,16 @@
    "sizeUsd": 20.0,
    "profitUsd": 0.0181,
    "bps": 9.1
+  },
+  {
+   "t": 1786773289,
+   "path": "USDT\u2192HMM\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0073,
+   "bps": 14.6
   }
  ],
  "equityCurve": [
-  {
-   "t": 1786772266,
-   "equity": 45.8454
-  },
   {
    "t": 1786772268,
    "equity": 45.8454
@@ -3404,6 +3400,10 @@
   {
    "t": 1786773269,
    "equity": 45.9817
+  },
+  {
+   "t": 1786773289,
+   "equity": 45.989
   }
  ],
  "decay": {
@@ -3411,15 +3411,16 @@
   "survived": 2260
  },
  "cooldown": {
-  "USDT\u2192USDC\u2192NIL\u2192USDT|USDCUSDT|NILUSDC|NILUSDT": 1786772308
+  "USDT\u2192USDC\u2192NIL\u2192USDT|USDCUSDT|NILUSDC|NILUSDT": 1786772308,
+  "USDT\u2192HMM\u2192USD1\u2192USDT|HMMUSDT|HMMUSD1|USD1USDT": 1786773289
  },
- "tradeCountAll": 590,
+ "tradeCountAll": 591,
  "replay": {
-  "edges": 2804,
-  "refillable": 2804,
-  "atomicUsd": 70.8305,
-  "delayedUsd": 104.4967,
-  "captureRatio": 1.475,
-  "scansReplayed": 12792
+  "edges": 2811,
+  "refillable": 2811,
+  "atomicUsd": 71.0614,
+  "delayedUsd": 104.5567,
+  "captureRatio": 1.471,
+  "scansReplayed": 12867
  }
 }
