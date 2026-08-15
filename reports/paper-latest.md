@@ -1,16 +1,15 @@
 # Paper portfolio
 
-Updated 2026-08-15 18:10 UTC · started with $20.00 (virtual)
+Updated 2026-08-15 18:35 UTC · started with $20.00 (virtual)
 
-**Equity $12.24 (-38.8%)** · cash $7.61 · 5 open · 13 settled
+**Equity $12.36 (-38.2%)** · cash $7.61 · 4 open · 14 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.94 | $1.66 |
-| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 3.13 | 0.47 | 0.00 | $0.00 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.83 | $1.24 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.90 | $1.34 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.97 | $1.19 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.12 | $0.54 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.13 | $0.56 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
@@ -27,3 +26,4 @@ Updated 2026-08-15 18:10 UTC · started with $20.00 (virtual)
 | LoL: Shifters vs SK Gaming - Game 2 Winner | Shifters | 0.42 | 0.00 | -1.12 |
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 0.47 | 0.00 | -1.05 |
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 0.78 | 1.00 | +0.39 |
+| Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 0.47 | 0.00 | -1.47 |

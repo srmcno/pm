@@ -18,20 +18,6 @@
    "valueUsd": 1.6622
   },
   {
-   "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
-   "outcomeIndex": 1,
-   "tokenId": "26418124513273531493042185776538890382070385858747044148067615795770766670254",
-   "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
-   "outcome": "No",
-   "shares": 3.1277,
-   "entryPrice": 0.47000000000000003,
-   "costUsd": 1.47,
-   "openedAt": 1786587299,
-   "signalScore": 5.0571,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0016
-  },
-  {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
    "outcomeIndex": 1,
    "tokenId": "58272724633332095197168705267006575600942802701828320183221249647889946434963",
@@ -42,8 +28,8 @@
    "costUsd": 1.25,
    "openedAt": 1786587299,
    "signalScore": 5.0186,
-   "markPrice": 0.83,
-   "valueUsd": 1.2425
+   "markPrice": 0.895,
+   "valueUsd": 1.3398
   },
   {
    "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
@@ -70,8 +56,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.1225,
-   "valueUsd": 0.5371
+   "markPrice": 0.1275,
+   "valueUsd": 0.559
   }
  ],
  "closed": [
@@ -295,6 +281,23 @@
    "settledAt": 1786817419,
    "settlePrice": 1.0,
    "pnl": 0.3919
+  },
+  {
+   "conditionId": "0x41335f8c458b41c53a85e5492d52026cd311b8d430f8d0f3801a556379638335",
+   "outcomeIndex": 1,
+   "tokenId": "26418124513273531493042185776538890382070385858747044148067615795770766670254",
+   "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
+   "outcome": "No",
+   "shares": 3.1277,
+   "entryPrice": 0.47000000000000003,
+   "costUsd": 1.47,
+   "openedAt": 1786587299,
+   "signalScore": 5.0571,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0016,
+   "settledAt": 1786818919,
+   "settlePrice": 0.0,
+   "pnl": -1.47
   }
  ],
  "equityCurve": [
@@ -1542,6 +1545,11 @@
    "t": 1786817419,
    "equity": 12.2394,
    "cash": 7.6079
+  },
+  {
+   "t": 1786818919,
+   "equity": 12.357,
+   "cash": 7.6079
   }
  ],
  "log": [
@@ -1779,6 +1787,13 @@
    "question": "Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026?",
    "price": 1.0,
    "pnl": 0.3919
+  },
+  {
+   "t": 1786818919,
+   "action": "SETTLE",
+   "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
+   "price": 0.0,
+   "pnl": -1.47
   }
  ]
 }
