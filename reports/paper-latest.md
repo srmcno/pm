@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-15 19:20 UTC · started with $20.00 (virtual)
+Updated 2026-08-15 19:33 UTC · started with $20.00 (virtual)
 
-**Equity $12.34 (-38.3%)** · cash $7.61 · 4 open · 14 settled
+**Equity $12.42 (-37.9%)** · cash $6.39 · 5 open · 14 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -10,6 +10,7 @@ Updated 2026-08-15 19:20 UTC · started with $20.00 (virtual)
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.89 | $1.32 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.18 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.13 | $0.56 |
+| Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A | Spirit | 1.92 | 0.64 | 0.68 | $1.30 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 7.6079,
+ "cash": 6.3879,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -58,6 +58,20 @@
    "signalScore": 3.1826,
    "markPrice": 0.1285,
    "valueUsd": 0.5634
+  },
+  {
+   "conditionId": "0x3c135db7b77cc830e908088df95a06b0ef0b38c9d4e13eb828c7839d593381d1",
+   "outcomeIndex": 1,
+   "tokenId": "58026126495994237628057033349978050512887296918798343322836174500795977306383",
+   "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
+   "outcome": "Spirit",
+   "shares": 1.9213,
+   "entryPrice": 0.635,
+   "costUsd": 1.22,
+   "openedAt": 1786822408,
+   "signalScore": 5.1826,
+   "markPrice": 0.675,
+   "valueUsd": 1.2969
   }
  ],
  "closed": [
@@ -1565,6 +1579,11 @@
    "t": 1786821649,
    "equity": 12.3421,
    "cash": 7.6079
+  },
+  {
+   "t": 1786822408,
+   "equity": 12.419,
+   "cash": 6.3879
   }
  ],
  "log": [
@@ -1809,6 +1828,14 @@
    "question": "Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026?",
    "price": 0.0,
    "pnl": -1.47
+  },
+  {
+   "t": 1786822408,
+   "action": "BUY",
+   "question": "Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A",
+   "outcome": "Spirit",
+   "stake": 1.22,
+   "price": 0.635
   }
  ]
 }
