@@ -10,5 +10,5 @@ Closest approach: USD→COOKIE→EUR→USD at 159.5 bps against a 99.7 bps fee h
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 2 across 2735 scans
+- Edges replayed: 2 across 2767 scans
 - Atomic PnL $0.1075 → one-scan-delay PnL $-2.2046 (capture ratio -20.508)
