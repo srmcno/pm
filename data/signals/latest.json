@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786802299,
+  "generatedAt": 1786802635,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 5138.8,
      "avgPrice": 0.24,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.7,
-     "score": 2.3448474893328433
+     "lastTradeAgoH": 1.8,
+     "score": 2.33574634612285
     },
     {
      "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
@@ -31,8 +31,8 @@
      "netUsd": 12917.7,
      "avgPrice": 0.24,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 2.29438599330506
+     "lastTradeAgoH": 1.5,
+     "score": 2.2854807081643136
     },
     {
      "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
@@ -41,14 +41,14 @@
      "netUsd": 279.3,
      "avgPrice": 0.23,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 0.9400948509075914
+     "lastTradeAgoH": 1.5,
+     "score": 0.9364460260232397
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 18335.8,
-   "score": 5.5793,
+   "score": 5.5577,
    "question": "LoL: Bilibili Gaming vs Team WE (BO3) - LPL Group Ascend",
    "outcome": "Team WE",
    "tokenId": "2919408392518342384923153237808638578314660503823134086780803298232703397334",
@@ -72,18 +72,18 @@
      "netUsd": 593.8,
      "avgPrice": 0.4366,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.4,
-     "score": 2.0964168437293633
+     "lastTradeAgoH": 4.5,
+     "score": 2.0882799435644612
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
      "name": "CORGI8",
      "quality": 0.4831,
-     "netUsd": 19434.45,
+     "netUsd": 31002.57,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.5217139951700012
+     "lastTradeAgoH": 0.0,
+     "score": 1.5252758682721725
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -92,14 +92,14 @@
      "netUsd": 10275.0,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.2,
-     "score": 1.2749841542339906
+     "lastTradeAgoH": 2.3,
+     "score": 1.2700355111214028
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 30303.25,
-   "score": 4.8931,
+   "totalNetUsd": 41871.37,
+   "score": 4.8836,
    "question": "Counter-Strike: magic vs 3DMAX (BO3) - Esports World Cup Group D",
    "outcome": "3DMAX",
    "tokenId": "43957349317513176959325459617660153921016574750325075545224044606186479059873",
