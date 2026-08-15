@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786805038,
+  "generatedAt": 1786805946,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -8,67 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x50b7c28e26ddb582c1bd9a91d7babbe572dc55f12d38b967c300a12c7979b51e",
-   "outcomeIndex": 0,
-   "title": "Dota 2: Team Liquid vs Aurora (BO3) - The International Group Stage",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.7954,
-     "netUsd": 1352.94,
-     "avgPrice": 0.5211,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.487051016963541
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.5477,
-     "netUsd": 727.22,
-     "avgPrice": 0.4599,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 1.7295756171581216
-    },
-    {
-     "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
-     "name": "GreenBerry1337",
-     "quality": 0.48,
-     "netUsd": 14059.38,
-     "avgPrice": 0.55,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.4930120561460902
-    },
-    {
-     "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
-     "name": "meoooow",
-     "quality": 0.3157,
-     "netUsd": 8785.99,
-     "avgPrice": 0.5398,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 0.9833654050060722
-    }
-   ],
-   "backerCount": 4,
-   "contested": true,
-   "totalNetUsd": 24925.53,
-   "score": 6.693,
-   "question": "Dota 2: Team Liquid vs Aurora (BO3) - The International Group Stage",
-   "outcome": "Team Liquid",
-   "tokenId": "27785190335867893949500390780074744875727801333849946947759047321764857970507",
-   "currentPrice": 0.545,
-   "backersAvgEntry": 0.5177,
-   "driftSinceEntry": 0.0273,
-   "endDate": "2026-08-15T18:00:00Z",
-   "slug": "dota2-liquid-aur1-2026-08-15",
-   "eventSlug": "dota2-liquid-aur1-2026-08-15"
-  },
   {
    "conditionId": "0xafc0ded22349c9109c2ca3e81bba224e45a657558d8d56347c36a3c43dfe22bb",
    "outcomeIndex": 1,
@@ -82,8 +21,8 @@
      "netUsd": 680.06,
      "avgPrice": 0.4378,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.4872813101266678
+     "lastTradeAgoH": 0.5,
+     "score": 2.4612786993966957
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -92,8 +31,8 @@
      "netUsd": 31855.14,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 1.4834214598098372
+     "lastTradeAgoH": 1.0,
+     "score": 1.4679134307779471
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -102,21 +41,21 @@
      "netUsd": 10275.0,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.0,
-     "score": 1.2351850383971723
+     "lastTradeAgoH": 3.2,
+     "score": 1.2222721299930597
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 42810.2,
-   "score": 5.2059,
+   "score": 5.1515,
    "question": "Counter-Strike: magic vs 3DMAX (BO3) - Esports World Cup Group D",
    "outcome": "3DMAX",
    "tokenId": "43957349317513176959325459617660153921016574750325075545224044606186479059873",
-   "currentPrice": 0.47,
+   "currentPrice": 0.38,
    "backersAvgEntry": 0.4459,
-   "driftSinceEntry": 0.0241,
-   "endDate": "2026-08-15T20:20:00Z",
+   "driftSinceEntry": -0.0659,
+   "endDate": "2026-08-15T19:55:00Z",
    "slug": "cs2-mgc-3dmax-2026-08-15",
    "eventSlug": "cs2-mgc-3dmax-2026-08-15"
   }
