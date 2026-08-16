@@ -1,16 +1,16 @@
 # Paper portfolio
 
-Updated 2026-08-16 22:04 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 22:20 UTC · started with $20.00 (virtual)
 
-**Equity $11.83 (-40.8%)** · cash $5.64 · 5 open · 20 settled
+**Equity $11.83 (-40.9%)** · cash $5.64 · 5 open · 20 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.91 | $1.61 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.83 | $1.25 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.92 | $1.13 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.91 | $1.12 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.99 | $1.58 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.99 | $1.59 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
