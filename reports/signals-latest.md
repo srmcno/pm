@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-16 17:43 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-16 17:58 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Liverpool FC win on 2026-08-16? — **No**
 
-- Score **7.04** · 3 backers · net $5,045 staked
-- Backers' average entry 0.43 → current price **0.20** (moved against them -0.23 since entry)
+- Score **6.97** · 3 backers · net $5,045 staked
+- Backers' average entry 0.43 → current price **0.07** (moved against them -0.35 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -16,15 +16,14 @@ Each signal marks an outcome that several qualified wallets have independently n
 | 0x076daa87 | 0.80 | $2,004 | 0.4359 | 10.0× |
 | dv-pm | 0.68 | $2,819 | 0.42 | 8.75× |
 
-## 2. LoL: G2 Esports vs Fnatic - Game 1 Winner — **Fnatic**
+## 2. Counter-Strike: Astralis vs NIP (BO3) - Esports World Cup Group B — **Astralis**
 
-- Score **5.69** · 4 backers · net $16,925 staked
-- Backers' average entry 0.29 → current price **0.41** (already moved +0.11 since entry)
+- Score **3.74** · 3 backers · net $13,720 staked
+- Backers' average entry 0.55 → current price **0.57** (already moved +0.03 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| IMAREALPERSON | 0.57 | $4,263 | 0.3595 | 10.0× |
-| 0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616 | 0.55 | $1,638 | 0.3225 | 10.0× |
-| BajaBlaster | 0.40 | $3,964 | 0.2536 | 10.0× |
-| meoooow | 0.32 | $7,061 | 0.24 | 10.0× |
+| 0x076daa87 | 0.80 | $267 | 0.5404 | 9.46× |
+| meoooow | 0.32 | $1,183 | 0.55 | 10.0× |
+| 0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740 | 0.44 | $12,270 | 0.55 | 10.0× |

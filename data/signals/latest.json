@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786902203,
+  "generatedAt": 1786903110,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 222.63,
      "avgPrice": 0.4295,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.2,
-     "score": 2.6459520246278467
+     "lastTradeAgoH": 1.5,
+     "score": 2.618320938229588
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -31,8 +31,8 @@
      "netUsd": 2003.84,
      "avgPrice": 0.4359,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 2.456838733475999
+     "lastTradeAgoH": 0.8,
+     "score": 2.4311825149658346
     },
     {
      "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
@@ -41,84 +41,74 @@
      "netUsd": 2818.89,
      "avgPrice": 0.42,
      "conviction": 8.75,
-     "lastTradeAgoH": 0.9,
-     "score": 1.94137748355361
+     "lastTradeAgoH": 1.2,
+     "score": 1.9211041118218422
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 5045.36,
-   "score": 7.0442,
+   "score": 6.9706,
    "question": "Will Liverpool FC win on 2026-08-16?",
    "outcome": "No",
    "tokenId": "6269518140101593452861753269481086876925011372840155761316270593251954852283",
-   "currentPrice": 0.195,
+   "currentPrice": 0.075,
    "backersAvgEntry": 0.4285,
-   "driftSinceEntry": -0.2335,
+   "driftSinceEntry": -0.3535,
    "endDate": "2026-08-16T17:00:00Z",
    "slug": "clf-lfc-com-2026-08-16-lfc",
    "eventSlug": "clf-lfc-com-2026-08-16"
   },
   {
-   "conditionId": "0x8f6e3bc77cacdb7112dc476a356e2ff815ac81ac7ebaefd139c5d488037ca1d5",
-   "outcomeIndex": 1,
-   "title": "LoL: G2 Esports vs Fnatic - Game 1 Winner",
+   "conditionId": "0x32a9e1c910b0938abf010cde694578a21437ebbf2a8d33fa773e21297c27ede7",
+   "outcomeIndex": 0,
+   "title": "Counter-Strike: Astralis vs NIP (BO3) - Esports World Cup Group B",
    "category": "Esports",
    "backers": [
     {
-     "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
-     "name": "IMAREALPERSON",
-     "quality": 0.5722,
-     "netUsd": 4262.62,
-     "avgPrice": 0.3595,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.7886332380895669
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.5477,
-     "netUsd": 1637.84,
-     "avgPrice": 0.3225,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.724458533271492
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.3953,
-     "netUsd": 3963.54,
-     "avgPrice": 0.2536,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.2246860833074584
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7954,
+     "netUsd": 266.68,
+     "avgPrice": 0.5404,
+     "conviction": 9.46,
+     "lastTradeAgoH": 2.4,
+     "score": 2.21349194124907
     },
     {
      "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
      "name": "meoooow",
      "quality": 0.3157,
-     "netUsd": 7060.69,
-     "avgPrice": 0.24,
+     "netUsd": 1183.24,
+     "avgPrice": 0.55,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.2,
-     "score": 0.9513140138060853
+     "lastTradeAgoH": 2.7,
+     "score": 0.890486384093391
+    },
+    {
+     "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
+     "name": "0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740",
+     "quality": 0.4425,
+     "netUsd": 12270.0,
+     "avgPrice": 0.55,
+     "conviction": 10.0,
+     "lastTradeAgoH": 18.9,
+     "score": 0.6370636582382999
     }
    ],
-   "backerCount": 4,
+   "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 16924.69,
-   "score": 5.6891,
-   "question": "LoL: G2 Esports vs Fnatic - Game 1 Winner",
-   "outcome": "Fnatic",
-   "tokenId": "22983194152699871438980498611639301476164929474434058582721864333131902805842",
-   "currentPrice": 0.405,
-   "backersAvgEntry": 0.2939,
-   "driftSinceEntry": 0.1111,
-   "endDate": "2026-08-16T23:05:00Z",
-   "slug": "lol-g2-fnc-2026-08-16-game1",
-   "eventSlug": "lol-g2-fnc-2026-08-16"
+   "totalNetUsd": 13719.92,
+   "score": 3.741,
+   "question": "Counter-Strike: Astralis vs NIP (BO3) - Esports World Cup Group B",
+   "outcome": "Astralis",
+   "tokenId": "4041716522743579149489841193243588409197787111019160732214230768919221575533",
+   "currentPrice": 0.575,
+   "backersAvgEntry": 0.5468,
+   "driftSinceEntry": 0.0282,
+   "endDate": "2026-08-16T22:00:00Z",
+   "slug": "cs2-ast10-nip-2026-08-16",
+   "eventSlug": "cs2-ast10-nip-2026-08-16"
   }
  ]
 }
