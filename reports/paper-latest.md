@@ -1,17 +1,17 @@
 # Paper portfolio
 
-Updated 2026-08-16 13:12 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 13:27 UTC · started with $20.00 (virtual)
 
-**Equity $14.33 (-28.3%)** · cash $7.99 · 7 open · 16 settled
+**Equity $14.22 (-28.9%)** · cash $7.99 · 7 open · 16 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.90 | $1.60 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.83 | $1.25 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.97 | $1.19 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.18 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.81 | $1.31 |
-| LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 3.18 | 0.57 | 0.12 | $0.37 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.85 | $1.36 |
+| LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 3.18 | 0.57 | 0.07 | $0.21 |
 | LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana | Weibo Gaming | 13.82 | 0.11 | 0.00 | $0.01 |
 
 | settled market | side | entry | settle | PnL |

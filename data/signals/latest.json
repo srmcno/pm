@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786885957,
+  "generatedAt": 1786886867,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
      "name": "jtwyslljy",
      "quality": 0.7702,
-     "netUsd": 559.71,
-     "avgPrice": 0.27,
+     "netUsd": 562.47,
+     "avgPrice": 0.269,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.284528622900783
+     "lastTradeAgoH": 0.2,
+     "score": 2.4104867368287746
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -31,8 +31,8 @@
      "netUsd": 209.91,
      "avgPrice": 0.56,
      "conviction": 7.44,
-     "lastTradeAgoH": 0.6,
-     "score": 2.118516912634739
+     "lastTradeAgoH": 0.8,
+     "score": 2.096320923199176
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -41,8 +41,8 @@
      "netUsd": 10803.34,
      "avgPrice": 0.6094,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.032651197527982
+     "lastTradeAgoH": 0.8,
+     "score": 2.011354834852074
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -51,20 +51,20 @@
      "netUsd": 15421.99,
      "avgPrice": 0.4804,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.714488004406858
+     "lastTradeAgoH": 0.5,
+     "score": 1.6965250807189438
     }
    ],
    "backerCount": 4,
    "contested": true,
-   "totalNetUsd": 26994.95,
-   "score": 8.1502,
+   "totalNetUsd": 26997.71,
+   "score": 8.2147,
    "question": "LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group",
    "outcome": "Kiwoom DRX",
    "tokenId": "46591016893876288996230672462963813568127985119248859915586998121748451905008",
-   "currentPrice": 0.115,
-   "backersAvgEntry": 0.48,
-   "driftSinceEntry": -0.365,
+   "currentPrice": 0.065,
+   "backersAvgEntry": 0.4797,
+   "driftSinceEntry": -0.4147,
    "endDate": "2026-08-16T16:30:00Z",
    "slug": "lol-drx-bro2-2026-08-16",
    "eventSlug": "lol-drx-bro2-2026-08-16"
@@ -79,11 +79,11 @@
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
      "name": "donthackme",
      "quality": 0.88,
-     "netUsd": 1227.25,
-     "avgPrice": 0.8445,
+     "netUsd": 1150.72,
+     "avgPrice": 0.8547,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.569565845089945
+     "lastTradeAgoH": 2.2,
+     "score": 2.5426441547265353
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -92,8 +92,8 @@
      "netUsd": 581.88,
      "avgPrice": 0.8769,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.131645681139677
+     "lastTradeAgoH": 2.2,
+     "score": 2.1093121398133086
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -102,20 +102,20 @@
      "netUsd": 429.46,
      "avgPrice": 0.7971,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.5,
-     "score": 2.0597548649910475
+     "lastTradeAgoH": 5.8,
+     "score": 2.038174533509846
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 2238.59,
-   "score": 6.761,
+   "totalNetUsd": 2162.06,
+   "score": 6.6901,
    "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
    "outcome": "No",
    "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
-   "currentPrice": 0.815,
-   "backersAvgEntry": 0.8395,
-   "driftSinceEntry": -0.0245,
+   "currentPrice": 0.85,
+   "backersAvgEntry": 0.8429,
+   "driftSinceEntry": 0.0071,
    "endDate": "2026-08-16T23:59:00Z",
    "slug": "will-the-end-of-oak-street-opening-weekend-box-office-be-between-17m-and-20m-20260811181702929",
    "eventSlug": "the-end-of-oak-street-opening-weekend-box-office-20260811181702926"
