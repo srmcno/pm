@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786916683,
+  "generatedAt": 1786916988,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1770.96,
      "avgPrice": 0.7442,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.4688107746774253
+     "lastTradeAgoH": 0.5,
+     "score": 2.4600825352312787
     },
     {
      "wallet": "0xd487f513cfead22d76b6db4567c756b3cf25053e",
@@ -31,8 +31,8 @@
      "netUsd": 8894.99,
      "avgPrice": 0.9898,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 1.2941650310182569
+     "lastTradeAgoH": 0.1,
+     "score": 1.2895896369097177
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -41,14 +41,14 @@
      "netUsd": 9053.03,
      "avgPrice": 0.6611,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.2239775579680667
+     "lastTradeAgoH": 0.6,
+     "score": 1.2196503048175893
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 19718.98,
-   "score": 4.987,
+   "score": 4.9693,
    "question": "LoL: FlyQuest vs Cloud9 - Game 2 Winner",
    "outcome": "Cloud9",
    "tokenId": "45348312432616871711483313662554407757656425460848826753153088909665681701407",

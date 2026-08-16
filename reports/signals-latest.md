@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-16 21:44 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-16 21:49 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: FlyQuest vs Cloud9 - Game 2 Winner — **Cloud9**
 
-- Score **4.99** · 3 backers · net $19,719 staked
+- Score **4.97** · 3 backers · net $19,719 staked
 - Backers' average entry 0.80 → current price **0.91** (already moved +0.11 since entry)
 - Resolves by 2026-08-17
 
