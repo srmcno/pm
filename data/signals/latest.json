@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786876137,
+  "generatedAt": 1786876291,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.8466,
      "conviction": 10.0,
      "lastTradeAgoH": 0.4,
-     "score": 2.739756087314809
+     "score": 2.7348137686486287
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -32,7 +32,7 @@
      "avgPrice": 0.7971,
      "conviction": 10.0,
      "lastTradeAgoH": 2.8,
-     "score": 2.3076572016738055
+     "score": 2.303494357647002
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -42,13 +42,13 @@
      "avgPrice": 0.8805,
      "conviction": 10.0,
      "lastTradeAgoH": 2.8,
-     "score": 2.0543777527096077
+     "score": 2.050671806197941
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 2049.86,
-   "score": 7.1018,
+   "score": 7.089,
    "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
    "outcome": "No",
    "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
@@ -72,8 +72,8 @@
      "netUsd": 1954.56,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 2.3532039125872557
+     "lastTradeAgoH": 0.9,
+     "score": 2.3489589056407043
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -82,8 +82,8 @@
      "netUsd": 242.03,
      "avgPrice": 0.6305,
      "conviction": 8.58,
-     "lastTradeAgoH": 0.5,
-     "score": 2.27913558553712
+     "lastTradeAgoH": 0.6,
+     "score": 2.2750241924100782
     },
     {
      "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
@@ -92,14 +92,14 @@
      "netUsd": 9925.09,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.9980780917005618
+     "lastTradeAgoH": 1.9,
+     "score": 1.9944737056404964
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 12121.68,
-   "score": 6.6304,
+   "score": 6.6185,
    "question": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
    "outcome": "Invictus Gaming",
    "tokenId": "108199638951247431067330311844955514176868616546571370178236108123627267309827",
@@ -124,7 +124,7 @@
      "avgPrice": 0.38,
      "conviction": 10.0,
      "lastTradeAgoH": 0.3,
-     "score": 2.0522719157580847
+     "score": 2.048569768021543
     },
     {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
@@ -134,7 +134,7 @@
      "avgPrice": 0.4,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.8036216683991855
+     "score": 1.8003680674382354
     },
     {
      "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
@@ -143,14 +143,14 @@
      "netUsd": 840.46,
      "avgPrice": 0.41,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 0.9677388394081502
+     "lastTradeAgoH": 0.8,
+     "score": 0.965993109650622
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 8074.92,
-   "score": 4.8236,
+   "score": 4.8149,
    "question": "LoL: Weibo Gaming vs Invictus Gaming - Game 1 Winner",
    "outcome": "Weibo Gaming",
    "tokenId": "92760633123163499458328007271724562965225761985848615642416568557201994528816",
