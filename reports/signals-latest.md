@@ -1,25 +1,25 @@
 # Smart-money signals
 
-Generated 2026-08-16 10:31 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-16 10:46 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? — **No**
 
-- Score **7.09** · 3 backers · net $2,050 staked
+- Score **7.08** · 3 backers · net $2,072 staked
 - Backers' average entry 0.84 → current price **0.85** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| donthackme | 0.88 | $1,089 | 0.8466 | 10.0× |
+| donthackme | 0.88 | $1,112 | 0.8468 | 10.0× |
 | Bigggggggg | 0.82 | $429 | 0.7971 | 10.0× |
 | Mysaria | 0.73 | $531 | 0.8805 | 10.0× |
 
 ## 2. LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana — **Invictus Gaming**
 
-- Score **6.62** · 3 backers · net $12,122 staked
-- Backers' average entry 0.64 → current price **0.64** (roughly flat -0.00 since entry)
+- Score **6.55** · 3 backers · net $12,122 staked
+- Backers' average entry 0.64 → current price **0.76** (already moved +0.12 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -30,8 +30,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. LoL: Weibo Gaming vs Invictus Gaming - Game 1 Winner — **Weibo Gaming**
 
-- Score **4.81** · 3 backers · net $8,075 staked
-- Backers' average entry 0.40 → current price **0.39** (roughly flat -0.01 since entry)
+- Score **4.76** · 3 backers · net $8,075 staked
+- Backers' average entry 0.40 → current price **0.17** (moved against them -0.22 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
