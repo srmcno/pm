@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-16 12:43 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 12:48 UTC · started with $20.00 (virtual)
 
-**Equity $17.36 (-13.2%)** · cash $9.51 · 6 open · 16 settled
+**Equity $17.77 (-11.1%)** · cash $7.99 · 7 open · 16 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -12,6 +12,7 @@ Updated 2026-08-16 12:43 UTC · started with $20.00 (virtual)
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
 | Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.85 | $1.37 |
 | LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 3.18 | 0.57 | 0.56 | $1.79 |
+| LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana | Weibo Gaming | 13.82 | 0.11 | 0.14 | $1.93 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

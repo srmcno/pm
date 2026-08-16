@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 9.5126,
+ "cash": 7.9926,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -86,6 +86,20 @@
    "signalScore": 8.2912,
    "markPrice": 0.565,
    "valueUsd": 1.7941
+  },
+  {
+   "conditionId": "0x57ebba23afe9193586f18981fbf7c739dd5e473218a7df0ed298bff877cbe569",
+   "outcomeIndex": 0,
+   "tokenId": "73092090206414017878223265370947182523831499667603068596486998278093120389354",
+   "question": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
+   "outcome": "Weibo Gaming",
+   "shares": 13.8182,
+   "entryPrice": 0.11,
+   "costUsd": 1.52,
+   "openedAt": 1786884528,
+   "signalScore": 9.4837,
+   "markPrice": 0.14,
+   "valueUsd": 1.9345
   }
  ],
  "closed": [
@@ -1982,6 +1996,11 @@
    "t": 1786884224,
    "equity": 17.3596,
    "cash": 9.5126
+  },
+  {
+   "t": 1786884529,
+   "equity": 17.7741,
+   "cash": 7.9926
   }
  ],
  "log": [
@@ -2272,6 +2291,14 @@
    "outcome": "Kiwoom DRX",
    "stake": 1.81,
    "price": 0.5700000000000001
+  },
+  {
+   "t": 1786884528,
+   "action": "BUY",
+   "question": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
+   "outcome": "Weibo Gaming",
+   "stake": 1.52,
+   "price": 0.11
   }
  ]
 }
