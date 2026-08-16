@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786904020,
+  "generatedAt": 1786904929,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 222.63,
      "avgPrice": 0.4295,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.7,
-     "score": 2.5908884341333245
+     "lastTradeAgoH": 2.0,
+     "score": 2.5638026907060465
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -31,8 +31,8 @@
      "netUsd": 2003.84,
      "avgPrice": 0.4359,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 2.405710685547681
+     "lastTradeAgoH": 1.3,
+     "score": 2.380560832883028
     },
     {
      "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
@@ -41,23 +41,74 @@
      "netUsd": 2818.89,
      "avgPrice": 0.42,
      "conviction": 8.75,
-     "lastTradeAgoH": 1.4,
-     "score": 1.9009764431134617
+     "lastTradeAgoH": 1.7,
+     "score": 1.881103198275463
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 5045.36,
-   "score": 6.8976,
+   "score": 6.8255,
    "question": "Will Liverpool FC win on 2026-08-16?",
    "outcome": "No",
    "tokenId": "6269518140101593452861753269481086876925011372840155761316270593251954852283",
-   "currentPrice": 0.075,
+   "currentPrice": 0.07,
    "backersAvgEntry": 0.4285,
-   "driftSinceEntry": -0.3535,
+   "driftSinceEntry": -0.3585,
    "endDate": "2026-08-16T17:00:00Z",
    "slug": "clf-lfc-com-2026-08-16-lfc",
    "eventSlug": "clf-lfc-com-2026-08-16"
+  },
+  {
+   "conditionId": "0x32a9e1c910b0938abf010cde694578a21437ebbf2a8d33fa773e21297c27ede7",
+   "outcomeIndex": 0,
+   "title": "Counter-Strike: Astralis vs NIP (BO3) - Esports World Cup Group B",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7954,
+     "netUsd": 266.68,
+     "avgPrice": 0.5404,
+     "conviction": 9.46,
+     "lastTradeAgoH": 2.9,
+     "score": 2.167402976453953
+    },
+    {
+     "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
+     "name": "meoooow",
+     "quality": 0.3157,
+     "netUsd": 1183.24,
+     "avgPrice": 0.55,
+     "conviction": 10.0,
+     "lastTradeAgoH": 3.2,
+     "score": 0.8719448232039253
+    },
+    {
+     "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
+     "name": "0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740",
+     "quality": 0.4425,
+     "netUsd": 12270.0,
+     "avgPrice": 0.55,
+     "conviction": 10.0,
+     "lastTradeAgoH": 19.4,
+     "score": 0.6237988236257895
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 13719.92,
+   "score": 3.6631,
+   "question": "Counter-Strike: Astralis vs NIP (BO3) - Esports World Cup Group B",
+   "outcome": "Astralis",
+   "tokenId": "4041716522743579149489841193243588409197787111019160732214230768919221575533",
+   "currentPrice": 0.665,
+   "backersAvgEntry": 0.5468,
+   "driftSinceEntry": 0.1182,
+   "endDate": "2026-08-16T22:00:00Z",
+   "slug": "cs2-ast10-nip-2026-08-16",
+   "eventSlug": "cs2-ast10-nip-2026-08-16"
   }
  ]
 }
