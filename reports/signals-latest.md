@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-16 13:39 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-16 13:52 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? — **No**
 
-- Score **6.74** · 3 backers · net $2,179 staked
+- Score **6.68** · 3 backers · net $2,179 staked
 - Backers' average entry 0.84 → current price **0.85** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-16
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D — **9z**
 
-- Score **4.11** · 3 backers · net $71,848 staked
+- Score **4.07** · 3 backers · net $71,848 staked
 - Backers' average entry 0.64 → current price **0.64** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-16
 
