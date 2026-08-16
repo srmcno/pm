@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-16 15:47 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 16:02 UTC · started with $20.00 (virtual)
 
-**Equity $13.62 (-31.9%)** · cash $5.64 · 8 open · 17 settled
+**Equity $12.97 (-35.1%)** · cash $5.64 · 7 open · 18 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -10,14 +10,12 @@ Updated 2026-08-16 15:47 UTC · started with $20.00 (virtual)
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.27 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.15 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.84 | $1.35 |
-| LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 3.18 | 0.57 | 0.00 | $0.00 |
-| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.49 | $0.90 |
-| LoL: Movistar KOI vs Natus Vincere - Game 1 Winner | Natus Vincere | 19.45 | 0.06 | 0.06 | $1.07 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.93 | $1.49 |
+| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.64 | $1.17 |
+| LoL: Movistar KOI vs Natus Vincere - Game 1 Winner | Natus Vincere | 19.45 | 0.06 | 0.00 | $0.01 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group | Hanwha Life Esports | 0.06 | 0.00 | -1.83 |
 | Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage | Team Falcons | 0.21 | 0.00 | -1.29 |
 | Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B | FaZe | 0.53 | 1.00 | +0.99 |
 | Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 0.90 | 1.00 | +0.17 |
@@ -32,3 +30,4 @@ Updated 2026-08-16 15:47 UTC · started with $20.00 (virtual)
 | Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A | Spirit | 0.64 | 1.00 | +0.70 |
 | LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend | LGD Gaming | 0.21 | 1.00 | +4.34 |
 | LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana | Weibo Gaming | 0.11 | 0.00 | -1.52 |
+| LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 0.57 | 0.00 | -1.81 |
