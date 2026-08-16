@@ -70,22 +70,8 @@
    "costUsd": 1.33,
    "openedAt": 1786867127,
    "signalScore": 7.5907,
-   "markPrice": 0.9835,
-   "valueUsd": 1.576
-  },
-  {
-   "conditionId": "0x9b9d8e2d6473045b3ad32fc5992093a6995c7dec18180999c2c279b29f6b794d",
-   "outcomeIndex": 0,
-   "tokenId": "2267900204984046133344700056638429335456820064622744365002659737605590828897",
-   "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
-   "outcome": "9z",
-   "shares": 1.8417,
-   "entryPrice": 0.6950000000000001,
-   "costUsd": 1.28,
-   "openedAt": 1786887546,
-   "signalScore": 4.1113,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0009
+   "markPrice": 0.992,
+   "valueUsd": 1.5896
   },
   {
    "conditionId": "0x6b059637d3cca3928f49b1129cbf9f638f5b32964b9ee07a2dd57337c19cabb8",
@@ -408,6 +394,23 @@
    "settledAt": 1786896174,
    "settlePrice": 0.0,
    "pnl": -1.81
+  },
+  {
+   "conditionId": "0x9b9d8e2d6473045b3ad32fc5992093a6995c7dec18180999c2c279b29f6b794d",
+   "outcomeIndex": 0,
+   "tokenId": "2267900204984046133344700056638429335456820064622744365002659737605590828897",
+   "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
+   "outcome": "9z",
+   "shares": 1.8417,
+   "entryPrice": 0.6950000000000001,
+   "costUsd": 1.28,
+   "openedAt": 1786887546,
+   "signalScore": 4.1113,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0009,
+   "settledAt": 1786907654,
+   "settlePrice": 0.0,
+   "pnl": -1.28
   }
  ],
  "equityCurve": [
@@ -2165,6 +2168,11 @@
    "t": 1786906744,
    "equity": 11.8614,
    "cash": 5.6426
+  },
+  {
+   "t": 1786907654,
+   "equity": 11.8741,
+   "cash": 5.6426
   }
  ],
  "log": [
@@ -2493,6 +2501,13 @@
    "question": "LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group",
    "price": 0.0,
    "pnl": -1.81
+  },
+  {
+   "t": 1786907654,
+   "action": "SETTLE",
+   "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
+   "price": 0.0,
+   "pnl": -1.28
   }
  ]
 }
