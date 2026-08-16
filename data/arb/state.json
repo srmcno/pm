@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1786837837,
-   "equity": 54.5839
-  },
-  {
    "t": 1786837839,
    "equity": 54.5839
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1786838840,
    "equity": 54.6556
+  },
+  {
+   "t": 1786838859,
+   "equity": 54.6556
   }
  ],
  "decay": {
@@ -3411,7 +3411,6 @@
   "survived": 2527
  },
  "cooldown": {
-  "USDT\u2192USD1\u2192BRIAN\u2192USDT|USD1USDT|BRIANUSD1|BRIANUSDT": 1786835244,
   "USDT\u2192USDC\u2192VANRY\u2192USDT|USDCUSDT|VANRYUSDC|VANRYUSDT": 1786836176,
   "USDT\u2192BRIAN\u2192USD1\u2192USDT|BRIANUSDT|BRIANUSD1|USD1USDT": 1786836503,
   "USDT\u2192USD1\u2192AIINU\u2192USDT|USD1USDT|AIINUUSD1|AIINUUSDT": 1786837405,
@@ -3419,11 +3418,11 @@
  },
  "tradeCountAll": 747,
  "replay": {
-  "edges": 3276,
-  "refillable": 3275,
-  "atomicUsd": 86.9471,
-  "delayedUsd": 125.3201,
-  "captureRatio": 1.441,
-  "scansReplayed": 17154
+  "edges": 3277,
+  "refillable": 3276,
+  "atomicUsd": 87.0188,
+  "delayedUsd": 125.1868,
+  "captureRatio": 1.439,
+  "scansReplayed": 17226
  }
 }
