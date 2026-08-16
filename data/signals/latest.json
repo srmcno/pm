@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786880330,
+  "generatedAt": 1786880942,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -8,57 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x2cdee06270692f6cb227ebf3eb2c934b013ecc65c13763e7a981b29f46150df8",
-   "outcomeIndex": 1,
-   "title": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
-   "category": "Culture",
-   "backers": [
-    {
-     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
-     "name": "donthackme",
-     "quality": 0.88,
-     "netUsd": 1111.78,
-     "avgPrice": 0.8468,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 2.675298671035955
-    },
-    {
-     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
-     "name": "Bigggggggg",
-     "quality": 0.82,
-     "netUsd": 429.46,
-     "avgPrice": 0.7971,
-     "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 2.1982895280980124
-    },
-    {
-     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
-     "name": "Mysaria",
-     "quality": 0.73,
-     "netUsd": 530.96,
-     "avgPrice": 0.8805,
-     "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 1.9570138481848165
-    }
-   ],
-   "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 2072.2,
-   "score": 6.8306,
-   "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
-   "outcome": "No",
-   "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
-   "currentPrice": 0.845,
-   "backersAvgEntry": 0.8415,
-   "driftSinceEntry": 0.0035,
-   "endDate": "2026-08-16T23:59:00Z",
-   "slug": "will-the-end-of-oak-street-opening-weekend-box-office-be-between-17m-and-20m-20260811181702929",
-   "eventSlug": "the-end-of-oak-street-opening-weekend-box-office-20260811181702926"
-  },
   {
    "conditionId": "0xea10d8dd95b0c4ad57330dddb04d8d832d0c85a5774c75e58628622f0aac5332",
    "outcomeIndex": 0,
@@ -69,21 +18,31 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.7954,
-     "netUsd": 2461.93,
-     "avgPrice": 0.3768,
+     "netUsd": 3394.03,
+     "avgPrice": 0.3825,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.4618200123315677
+     "lastTradeAgoH": 0.7,
+     "score": 2.4446983770331037
     },
     {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
      "name": "IMAREALPERSON",
      "quality": 0.5722,
-     "netUsd": 838.82,
-     "avgPrice": 0.22,
+     "netUsd": 2200.57,
+     "avgPrice": 0.3738,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.8017647276533801
+     "lastTradeAgoH": 0.3,
+     "score": 1.7900622309960659
+    },
+    {
+     "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
+     "name": "GreenBerry1337",
+     "quality": 0.48,
+     "netUsd": 13806.85,
+     "avgPrice": 0.3935,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.1,
+     "score": 1.4469094282299293
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -92,23 +51,145 @@
      "netUsd": 28868.08,
      "avgPrice": 0.3038,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 1.390854555660448
+     "lastTradeAgoH": 2.4,
+     "score": 1.3811813446474817
+    },
+    {
+     "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
+     "name": "meoooow",
+     "quality": 0.3157,
+     "netUsd": 6399.7,
+     "avgPrice": 0.3863,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.2,
+     "score": 0.9505215823535437
     }
    ],
-   "backerCount": 3,
+   "backerCount": 5,
    "contested": true,
-   "totalNetUsd": 32168.83,
-   "score": 5.6544,
+   "totalNetUsd": 54669.23,
+   "score": 8.0134,
    "question": "Dota 2: LGD Gaming vs Team Yandex (BO3) - The International Elimination Round",
    "outcome": "LGD Gaming",
    "tokenId": "58619727566985539737554741123634469605204734988622616626054046335566963129243",
-   "currentPrice": 0.19,
-   "backersAvgEntry": 0.3002,
-   "driftSinceEntry": -0.1102,
+   "currentPrice": 0.055,
+   "backersAvgEntry": 0.368,
+   "driftSinceEntry": -0.313,
    "endDate": "2026-08-16T14:10:00Z",
    "slug": "dota2-lgd-ty-2026-08-16",
    "eventSlug": "dota2-lgd-ty-2026-08-16"
+  },
+  {
+   "conditionId": "0x2cdee06270692f6cb227ebf3eb2c934b013ecc65c13763e7a981b29f46150df8",
+   "outcomeIndex": 1,
+   "title": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
+   "category": "Culture",
+   "backers": [
+    {
+     "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
+     "name": "donthackme",
+     "quality": 0.88,
+     "netUsd": 1227.25,
+     "avgPrice": 0.8445,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.5,
+     "score": 2.7233163356660843
+    },
+    {
+     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
+     "name": "Mysaria",
+     "quality": 0.73,
+     "netUsd": 581.88,
+     "avgPrice": 0.8769,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.5,
+     "score": 2.259193130385237
+    },
+    {
+     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
+     "name": "Bigggggggg",
+     "quality": 0.82,
+     "netUsd": 429.46,
+     "avgPrice": 0.7971,
+     "conviction": 10.0,
+     "lastTradeAgoH": 4.1,
+     "score": 2.183000712753271
+    }
+   ],
+   "backerCount": 3,
+   "contested": false,
+   "totalNetUsd": 2238.59,
+   "score": 7.1655,
+   "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
+   "outcome": "No",
+   "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
+   "currentPrice": 0.845,
+   "backersAvgEntry": 0.8395,
+   "driftSinceEntry": 0.0055,
+   "endDate": "2026-08-16T23:59:00Z",
+   "slug": "will-the-end-of-oak-street-opening-weekend-box-office-be-between-17m-and-20m-20260811181702929",
+   "eventSlug": "the-end-of-oak-street-opening-weekend-box-office-20260811181702926"
+  },
+  {
+   "conditionId": "0x200e8857f23e5a2f65afd58d4e4114bf9e6ee0b2904285b0937af73544328492",
+   "outcomeIndex": 1,
+   "title": "LoL: Weibo Gaming vs Invictus Gaming - Game 2 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
+     "name": "zb8",
+     "quality": 0.6567,
+     "netUsd": 433.53,
+     "avgPrice": 0.61,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 2.06334690494932
+    },
+    {
+     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
+     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+     "quality": 0.5477,
+     "netUsd": 10068.3,
+     "avgPrice": 0.66,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.5,
+     "score": 1.693699893894078
+    },
+    {
+     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
+     "name": "fkigedgjdgwbg",
+     "quality": 0.5131,
+     "netUsd": 7584.74,
+     "avgPrice": 0.6931,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.6138742504838444
+    },
+    {
+     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
+     "name": "BajaBlaster",
+     "quality": 0.3953,
+     "netUsd": 9307.11,
+     "avgPrice": 0.806,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.4,
+     "score": 1.2316656287054613
+    }
+   ],
+   "backerCount": 4,
+   "contested": true,
+   "totalNetUsd": 27393.68,
+   "score": 6.6026,
+   "question": "LoL: Weibo Gaming vs Invictus Gaming - Game 2 Winner",
+   "outcome": "Invictus Gaming",
+   "tokenId": "38869452780769363326860779278755918301818616152269613472847519633340987544015",
+   "currentPrice": 0.795,
+   "backersAvgEntry": 0.6923,
+   "driftSinceEntry": 0.1027,
+   "endDate": "2026-08-16T16:00:00Z",
+   "slug": "lol-wb-ig1-2026-08-16-game2",
+   "eventSlug": "lol-wb-ig1-2026-08-16"
   }
  ]
 }
