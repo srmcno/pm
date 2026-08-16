@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 7.9926,
+ "cash": 6.7126,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -42,8 +42,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.96,
-   "valueUsd": 1.1807
+   "markPrice": 0.9595,
+   "valueUsd": 1.1801
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -84,8 +84,8 @@
    "costUsd": 1.81,
    "openedAt": 1786884223,
    "signalScore": 8.2912,
-   "markPrice": 0.065,
-   "valueUsd": 0.2064
+   "markPrice": 0.0005,
+   "valueUsd": 0.0016
   },
   {
    "conditionId": "0x57ebba23afe9193586f18981fbf7c739dd5e473218a7df0ed298bff877cbe569",
@@ -100,6 +100,20 @@
    "signalScore": 9.4837,
    "markPrice": 0.0005,
    "valueUsd": 0.0069
+  },
+  {
+   "conditionId": "0x9b9d8e2d6473045b3ad32fc5992093a6995c7dec18180999c2c279b29f6b794d",
+   "outcomeIndex": 0,
+   "tokenId": "2267900204984046133344700056638429335456820064622744365002659737605590828897",
+   "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
+   "outcome": "9z",
+   "shares": 1.8417,
+   "entryPrice": 0.6950000000000001,
+   "costUsd": 1.28,
+   "openedAt": 1786887546,
+   "signalScore": 4.1113,
+   "markPrice": 0.635,
+   "valueUsd": 1.1695
   }
  ],
  "closed": [
@@ -2016,6 +2030,11 @@
    "t": 1786886867,
    "equity": 14.2221,
    "cash": 7.9926
+  },
+  {
+   "t": 1786887546,
+   "equity": 13.9062,
+   "cash": 6.7126
   }
  ],
  "log": [
@@ -2314,6 +2333,14 @@
    "outcome": "Weibo Gaming",
    "stake": 1.52,
    "price": 0.11
+  },
+  {
+   "t": 1786887546,
+   "action": "BUY",
+   "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
+   "outcome": "9z",
+   "stake": 1.28,
+   "price": 0.6950000000000001
   }
  ]
 }
