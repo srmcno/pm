@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786897991,
+  "generatedAt": 1786898899,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 482.19,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.2880745065612453
+     "lastTradeAgoH": 1.8,
+     "score": 2.2642068611496753
     },
     {
      "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
@@ -31,8 +31,8 @@
      "netUsd": 67107.48,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.2,
-     "score": 1.6044647910374246
+     "lastTradeAgoH": 4.5,
+     "score": 1.5877280997286334
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -41,8 +41,8 @@
      "netUsd": 5669.04,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 1.4214467958992845
+     "lastTradeAgoH": 1.8,
+     "score": 1.4066192245074225
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -51,8 +51,8 @@
      "netUsd": 4067.46,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.4,
-     "score": 1.0839636480513408
+     "lastTradeAgoH": 3.7,
+     "score": 1.072656472556604
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -61,20 +61,20 @@
      "netUsd": 672.88,
      "avgPrice": 0.63,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.1,
-     "score": 0.9542279698489575
+     "lastTradeAgoH": 3.3,
+     "score": 0.9442741091853962
     }
    ],
    "backerCount": 5,
    "contested": false,
    "totalNetUsd": 77999.05,
-   "score": 7.3522,
+   "score": 7.2755,
    "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
    "outcome": "9z",
    "tokenId": "2267900204984046133344700056638429335456820064622744365002659737605590828897",
-   "currentPrice": 0.345,
+   "currentPrice": 0.365,
    "backersAvgEntry": 0.574,
-   "driftSinceEntry": -0.229,
+   "driftSinceEntry": -0.209,
    "endDate": "2026-08-16T19:30:00Z",
    "slug": "cs2-9z-mgc-2026-08-16",
    "eventSlug": "cs2-9z-mgc-2026-08-16"

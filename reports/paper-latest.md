@@ -1,17 +1,17 @@
 # Paper portfolio
 
-Updated 2026-08-16 16:33 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 16:48 UTC · started with $20.00 (virtual)
 
-**Equity $12.52 (-37.4%)** · cash $5.64 · 7 open · 18 settled
+**Equity $12.57 (-37.1%)** · cash $5.64 · 7 open · 18 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.91 | $1.61 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.27 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.95 | $1.16 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.18 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
 | Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.98 | $1.57 |
-| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.34 | $0.64 |
+| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.36 | $0.67 |
 | LoL: Movistar KOI vs Natus Vincere - Game 1 Winner | Natus Vincere | 19.45 | 0.06 | 0.00 | $0.01 |
 
 | settled market | side | entry | settle | PnL |
