@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-16 09:05 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 09:13 UTC · started with $20.00 (virtual)
 
-**Equity $12.96 (-35.2%)** · cash $6.98 · 5 open · 15 settled
+**Equity $13.37 (-33.1%)** · cash $5.86 · 6 open · 15 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -11,6 +11,7 @@ Updated 2026-08-16 09:05 UTC · started with $20.00 (virtual)
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.19 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
 | Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.85 | $1.37 |
+| LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend | LGD Gaming | 5.46 | 0.21 | 0.28 | $1.53 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
