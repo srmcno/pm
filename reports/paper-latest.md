@@ -1,23 +1,22 @@
 # Paper portfolio
 
-Updated 2026-08-16 15:23 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 15:39 UTC · started with $20.00 (virtual)
 
-**Equity $13.58 (-32.1%)** · cash $6.71 · 8 open · 16 settled
+**Equity $13.62 (-31.9%)** · cash $5.64 · 8 open · 17 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.91 | $1.62 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.83 | $1.25 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.16 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.27 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.15 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.83 | $1.33 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.84 | $1.35 |
 | LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 3.18 | 0.57 | 0.00 | $0.00 |
-| LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana | Weibo Gaming | 13.82 | 0.11 | 0.00 | $0.01 |
-| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.48 | $0.89 |
+| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.49 | $0.90 |
+| LoL: Movistar KOI vs Natus Vincere - Game 1 Winner | Natus Vincere | 19.45 | 0.06 | 0.06 | $1.07 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner | Ninjas in Pyjamas | 0.68 | 0.00 | -1.63 |
 | LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group | Hanwha Life Esports | 0.06 | 0.00 | -1.83 |
 | Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage | Team Falcons | 0.21 | 0.00 | -1.29 |
 | Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B | FaZe | 0.53 | 1.00 | +0.99 |
@@ -32,3 +31,4 @@ Updated 2026-08-16 15:23 UTC · started with $20.00 (virtual)
 | Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 0.47 | 0.00 | -1.47 |
 | Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A | Spirit | 0.64 | 1.00 | +0.70 |
 | LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend | LGD Gaming | 0.21 | 1.00 | +4.34 |
+| LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana | Weibo Gaming | 0.11 | 0.00 | -1.52 |

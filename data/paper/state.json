@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.7126,
+ "cash": 5.6426,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -28,8 +28,8 @@
    "costUsd": 1.25,
    "openedAt": 1786587299,
    "signalScore": 5.0186,
-   "markPrice": 0.835,
-   "valueUsd": 1.25
+   "markPrice": 0.85,
+   "valueUsd": 1.2725
   },
   {
    "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
@@ -42,8 +42,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.9405,
-   "valueUsd": 1.1567
+   "markPrice": 0.935,
+   "valueUsd": 1.15
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -70,8 +70,8 @@
    "costUsd": 1.33,
    "openedAt": 1786867127,
    "signalScore": 7.5907,
-   "markPrice": 0.83,
-   "valueUsd": 1.33
+   "markPrice": 0.84,
+   "valueUsd": 1.346
   },
   {
    "conditionId": "0x9a0db7182e5ba1e12e49c93c30d528aa8a84bf96db18a61f42ada346755b1cec",
@@ -88,20 +88,6 @@
    "valueUsd": 0.0016
   },
   {
-   "conditionId": "0x57ebba23afe9193586f18981fbf7c739dd5e473218a7df0ed298bff877cbe569",
-   "outcomeIndex": 0,
-   "tokenId": "73092090206414017878223265370947182523831499667603068596486998278093120389354",
-   "question": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
-   "outcome": "Weibo Gaming",
-   "shares": 13.8182,
-   "entryPrice": 0.11,
-   "costUsd": 1.52,
-   "openedAt": 1786884528,
-   "signalScore": 9.4837,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0069
-  },
-  {
    "conditionId": "0x9b9d8e2d6473045b3ad32fc5992093a6995c7dec18180999c2c279b29f6b794d",
    "outcomeIndex": 0,
    "tokenId": "2267900204984046133344700056638429335456820064622744365002659737605590828897",
@@ -112,8 +98,22 @@
    "costUsd": 1.28,
    "openedAt": 1786887546,
    "signalScore": 4.1113,
-   "markPrice": 0.485,
-   "valueUsd": 0.8932
+   "markPrice": 0.49,
+   "valueUsd": 0.9024
+  },
+  {
+   "conditionId": "0x6b059637d3cca3928f49b1129cbf9f638f5b32964b9ee07a2dd57337c19cabb8",
+   "outcomeIndex": 1,
+   "tokenId": "82942705294495210802965263088038332170930703291920756989051319902589295410739",
+   "question": "LoL: Movistar KOI vs Natus Vincere - Game 1 Winner",
+   "outcome": "Natus Vincere",
+   "shares": 19.4545,
+   "entryPrice": 0.055,
+   "costUsd": 1.07,
+   "openedAt": 1786894748,
+   "signalScore": 4.731,
+   "markPrice": 0.055,
+   "valueUsd": 1.07
   }
  ],
  "closed": [
@@ -388,6 +388,23 @@
    "settledAt": 1786883220,
    "settlePrice": 1.0,
    "pnl": 4.3434
+  },
+  {
+   "conditionId": "0x57ebba23afe9193586f18981fbf7c739dd5e473218a7df0ed298bff877cbe569",
+   "outcomeIndex": 0,
+   "tokenId": "73092090206414017878223265370947182523831499667603068596486998278093120389354",
+   "question": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
+   "outcome": "Weibo Gaming",
+   "shares": 13.8182,
+   "entryPrice": 0.11,
+   "costUsd": 1.52,
+   "openedAt": 1786884528,
+   "signalScore": 9.4837,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0069,
+   "settledAt": 1786894748,
+   "settlePrice": 0.0,
+   "pnl": -1.52
   }
  ],
  "equityCurve": [
@@ -2070,6 +2087,11 @@
    "t": 1786893806,
    "equity": 13.5848,
    "cash": 6.7126
+  },
+  {
+   "t": 1786894748,
+   "equity": 13.6189,
+   "cash": 5.6426
   }
  ],
  "log": [
@@ -2376,6 +2398,21 @@
    "outcome": "9z",
    "stake": 1.28,
    "price": 0.6950000000000001
+  },
+  {
+   "t": 1786894748,
+   "action": "BUY",
+   "question": "LoL: Movistar KOI vs Natus Vincere - Game 1 Winner",
+   "outcome": "Natus Vincere",
+   "stake": 1.07,
+   "price": 0.055
+  },
+  {
+   "t": 1786894748,
+   "action": "SETTLE",
+   "question": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
+   "price": 0.0,
+   "pnl": -1.52
   }
  ]
 }
