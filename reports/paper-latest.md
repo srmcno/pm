@@ -1,21 +1,19 @@
 # Paper portfolio
 
-Updated 2026-08-16 19:14 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 19:29 UTC · started with $20.00 (virtual)
 
-**Equity $11.87 (-40.6%)** · cash $5.64 · 6 open · 19 settled
+**Equity $11.88 (-40.6%)** · cash $5.64 · 5 open · 20 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.91 | $1.61 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.83 | $1.25 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.16 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.95 | $1.17 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.99 | $1.59 |
-| LoL: Movistar KOI vs Natus Vincere - Game 1 Winner | Natus Vincere | 19.45 | 0.06 | 0.00 | $0.01 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.99 | $1.58 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| Counter-Strike: Legacy vs FaZe (BO3) - Esports World Cup Group B | FaZe | 0.53 | 1.00 | +0.99 |
 | Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 0.90 | 1.00 | +0.17 |
 | Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? | No | 0.86 | 1.00 | +0.21 |
 | LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner | Nongshim Red Force | 0.62 | 1.00 | +0.83 |
@@ -30,3 +28,4 @@ Updated 2026-08-16 19:14 UTC · started with $20.00 (virtual)
 | LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana | Weibo Gaming | 0.11 | 0.00 | -1.52 |
 | LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 0.57 | 0.00 | -1.81 |
 | Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 0.70 | 0.00 | -1.28 |
+| LoL: Movistar KOI vs Natus Vincere - Game 1 Winner | Natus Vincere | 0.06 | 0.00 | -1.07 |

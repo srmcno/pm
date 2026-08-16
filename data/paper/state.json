@@ -28,8 +28,8 @@
    "costUsd": 1.25,
    "openedAt": 1786587299,
    "signalScore": 5.0186,
-   "markPrice": 0.835,
-   "valueUsd": 1.25
+   "markPrice": 0.84,
+   "valueUsd": 1.2575
   },
   {
    "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
@@ -42,8 +42,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.941,
-   "valueUsd": 1.1573
+   "markPrice": 0.95,
+   "valueUsd": 1.1684
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -70,22 +70,8 @@
    "costUsd": 1.33,
    "openedAt": 1786867127,
    "signalScore": 7.5907,
-   "markPrice": 0.992,
-   "valueUsd": 1.5896
-  },
-  {
-   "conditionId": "0x6b059637d3cca3928f49b1129cbf9f638f5b32964b9ee07a2dd57337c19cabb8",
-   "outcomeIndex": 1,
-   "tokenId": "82942705294495210802965263088038332170930703291920756989051319902589295410739",
-   "question": "LoL: Movistar KOI vs Natus Vincere - Game 1 Winner",
-   "outcome": "Natus Vincere",
-   "shares": 19.4545,
-   "entryPrice": 0.055,
-   "costUsd": 1.07,
-   "openedAt": 1786894748,
-   "signalScore": 4.731,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0097
+   "markPrice": 0.9885,
+   "valueUsd": 1.584
   }
  ],
  "closed": [
@@ -411,6 +397,23 @@
    "settledAt": 1786907654,
    "settlePrice": 0.0,
    "pnl": -1.28
+  },
+  {
+   "conditionId": "0x6b059637d3cca3928f49b1129cbf9f638f5b32964b9ee07a2dd57337c19cabb8",
+   "outcomeIndex": 1,
+   "tokenId": "82942705294495210802965263088038332170930703291920756989051319902589295410739",
+   "question": "LoL: Movistar KOI vs Natus Vincere - Game 1 Winner",
+   "outcome": "Natus Vincere",
+   "shares": 19.4545,
+   "entryPrice": 0.055,
+   "costUsd": 1.07,
+   "openedAt": 1786894748,
+   "signalScore": 4.731,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0097,
+   "settledAt": 1786908543,
+   "settlePrice": 0.0,
+   "pnl": -1.07
   }
  ],
  "equityCurve": [
@@ -2173,6 +2176,11 @@
    "t": 1786907654,
    "equity": 11.8741,
    "cash": 5.6426
+  },
+  {
+   "t": 1786908543,
+   "equity": 11.8774,
+   "cash": 5.6426
   }
  ],
  "log": [
@@ -2508,6 +2516,13 @@
    "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
    "price": 0.0,
    "pnl": -1.28
+  },
+  {
+   "t": 1786908543,
+   "action": "SETTLE",
+   "question": "LoL: Movistar KOI vs Natus Vincere - Game 1 Winner",
+   "price": 0.0,
+   "pnl": -1.07
   }
  ]
 }
