@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786897082,
+  "generatedAt": 1786897991,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 482.19,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.2,
-     "score": 2.312274033477851
+     "lastTradeAgoH": 1.5,
+     "score": 2.2880745065612453
     },
     {
      "wallet": "0xdb859a551fcf56e49416160911476bea7307152f",
@@ -31,8 +31,8 @@
      "netUsd": 67107.48,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 1.6214342073681058
+     "lastTradeAgoH": 4.2,
+     "score": 1.6044647910374246
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -41,8 +41,8 @@
      "netUsd": 5669.04,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.3,
-     "score": 1.4364805458489684
+     "lastTradeAgoH": 1.6,
+     "score": 1.4214467958992845
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -51,8 +51,8 @@
      "netUsd": 4067.46,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.095428050719357
+     "lastTradeAgoH": 3.4,
+     "score": 1.0839636480513408
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -61,74 +61,23 @@
      "netUsd": 672.88,
      "avgPrice": 0.63,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.8,
-     "score": 0.9643202397355894
+     "lastTradeAgoH": 3.1,
+     "score": 0.9542279698489575
     }
    ],
    "backerCount": 5,
    "contested": false,
    "totalNetUsd": 77999.05,
-   "score": 7.4299,
+   "score": 7.3522,
    "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
    "outcome": "9z",
    "tokenId": "2267900204984046133344700056638429335456820064622744365002659737605590828897",
-   "currentPrice": 0.675,
+   "currentPrice": 0.345,
    "backersAvgEntry": 0.574,
-   "driftSinceEntry": 0.101,
+   "driftSinceEntry": -0.229,
    "endDate": "2026-08-16T19:30:00Z",
    "slug": "cs2-9z-mgc-2026-08-16",
    "eventSlug": "cs2-9z-mgc-2026-08-16"
-  },
-  {
-   "conditionId": "0x32a9e1c910b0938abf010cde694578a21437ebbf2a8d33fa773e21297c27ede7",
-   "outcomeIndex": 0,
-   "title": "Counter-Strike: Astralis vs NIP (BO3) - Esports World Cup Group B",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.7954,
-     "netUsd": 266.24,
-     "avgPrice": 0.5404,
-     "conviction": 9.44,
-     "lastTradeAgoH": 0.7,
-     "score": 2.371433046176797
-    },
-    {
-     "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
-     "name": "meoooow",
-     "quality": 0.3157,
-     "netUsd": 1183.24,
-     "avgPrice": 0.55,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 0.9548218292796605
-    },
-    {
-     "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
-     "name": "0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740",
-     "quality": 0.4425,
-     "netUsd": 12270.0,
-     "avgPrice": 0.55,
-     "conviction": 10.0,
-     "lastTradeAgoH": 17.2,
-     "score": 0.6830899364575703
-    }
-   ],
-   "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 13719.48,
-   "score": 4.0093,
-   "question": "Counter-Strike: Astralis vs NIP (BO3) - Esports World Cup Group B",
-   "outcome": "Astralis",
-   "tokenId": "4041716522743579149489841193243588409197787111019160732214230768919221575533",
-   "currentPrice": 0.62,
-   "backersAvgEntry": 0.5468,
-   "driftSinceEntry": 0.0732,
-   "endDate": "2026-08-16T22:00:00Z",
-   "slug": "cs2-ast10-nip-2026-08-16",
-   "eventSlug": "cs2-ast10-nip-2026-08-16"
   }
  ]
 }
