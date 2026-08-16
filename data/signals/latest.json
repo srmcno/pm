@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786872976,
+  "generatedAt": 1786873738,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
      "name": "donthackme",
      "quality": 0.88,
-     "netUsd": 701.4,
-     "avgPrice": 0.8422,
+     "netUsd": 1076.02,
+     "avgPrice": 0.8468,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.5687629812173682
+     "lastTradeAgoH": 1.1,
+     "score": 2.6597997597053773
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 429.46,
      "avgPrice": 0.7971,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.3936200506798198
+     "lastTradeAgoH": 2.1,
+     "score": 2.372849628512858
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -41,23 +41,135 @@
      "netUsd": 530.96,
      "avgPrice": 0.8805,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.1309056548734984
+     "lastTradeAgoH": 2.1,
+     "score": 2.1124149131882763
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 1661.82,
-   "score": 7.0933,
+   "totalNetUsd": 2036.44,
+   "score": 7.1451,
    "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
    "outcome": "No",
    "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
-   "currentPrice": 0.82,
-   "backersAvgEntry": 0.8399,
-   "driftSinceEntry": -0.0199,
+   "currentPrice": 0.825,
+   "backersAvgEntry": 0.8415,
+   "driftSinceEntry": -0.0165,
    "endDate": "2026-08-16T23:59:00Z",
    "slug": "will-the-end-of-oak-street-opening-weekend-box-office-be-between-17m-and-20m-20260811181702929",
    "eventSlug": "the-end-of-oak-street-opening-weekend-box-office-20260811181702926"
+  },
+  {
+   "conditionId": "0x57ebba23afe9193586f18981fbf7c739dd5e473218a7df0ed298bff877cbe569",
+   "outcomeIndex": 1,
+   "title": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
+     "name": "jtwyslljy",
+     "quality": 0.7702,
+     "netUsd": 1954.56,
+     "avgPrice": 0.64,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 2.4196830559355154
+    },
+    {
+     "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
+     "name": "dv-pm",
+     "quality": 0.6821,
+     "netUsd": 9925.09,
+     "avgPrice": 0.64,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.2,
+     "score": 2.0545247596534195
+    },
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7954,
+     "netUsd": 230.7,
+     "avgPrice": 0.63,
+     "conviction": 8.18,
+     "lastTradeAgoH": 2.7,
+     "score": 2.0348586910322406
+    }
+   ],
+   "backerCount": 3,
+   "contested": false,
+   "totalNetUsd": 12110.35,
+   "score": 6.5091,
+   "question": "LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana",
+   "outcome": "Invictus Gaming",
+   "tokenId": "108199638951247431067330311844955514176868616546571370178236108123627267309827",
+   "currentPrice": 0.635,
+   "backersAvgEntry": 0.6367,
+   "driftSinceEntry": -0.0017,
+   "endDate": "2026-08-16T16:00:00Z",
+   "slug": "lol-wb-ig1-2026-08-16",
+   "eventSlug": "lol-wb-ig1-2026-08-16"
+  },
+  {
+   "conditionId": "0xb1ef36ea9ec59e44867300cf283d14a94787dd981152cfac02fd171d45aaf72d",
+   "outcomeIndex": 0,
+   "title": "Dota 2: LGD Gaming vs Team Yandex - Game 2 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7954,
+     "netUsd": 1411.73,
+     "avgPrice": 0.4433,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 2.4946908349950343
+    },
+    {
+     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
+     "name": "CORGI8",
+     "quality": 0.4831,
+     "netUsd": 43032.97,
+     "avgPrice": 0.4417,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.5072528916101198
+    },
+    {
+     "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
+     "name": "GreenBerry1337",
+     "quality": 0.48,
+     "netUsd": 21192.59,
+     "avgPrice": 0.4571,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.4981704560591849
+    },
+    {
+     "wallet": "0xd202bf6d89dc6bab1b9f00ead175f75466348973",
+     "name": "meoooow",
+     "quality": 0.3157,
+     "netUsd": 13603.96,
+     "avgPrice": 0.4173,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 0.9881001076378155
+    }
+   ],
+   "backerCount": 4,
+   "contested": false,
+   "totalNetUsd": 79241.25,
+   "score": 6.4882,
+   "question": "Dota 2: LGD Gaming vs Team Yandex - Game 2 Winner",
+   "outcome": "LGD Gaming",
+   "tokenId": "106120269262747049995153907012500350572856398027589537147710082506420052185651",
+   "currentPrice": 0.345,
+   "backersAvgEntry": 0.4399,
+   "driftSinceEntry": -0.0949,
+   "endDate": "2026-08-16T14:10:00Z",
+   "slug": "dota2-lgd-ty-2026-08-16-game2",
+   "eventSlug": "dota2-lgd-ty-2026-08-16"
   }
  ]
 }
