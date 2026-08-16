@@ -1,19 +1,19 @@
 # Paper portfolio
 
-Updated 2026-08-16 14:37 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 14:53 UTC · started with $20.00 (virtual)
 
-**Equity $13.82 (-30.9%)** · cash $6.71 · 8 open · 16 settled
+**Equity $13.55 (-32.2%)** · cash $6.71 · 8 open · 16 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.91 | $1.62 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.28 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.94 | $1.16 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.85 | $1.36 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.84 | $1.35 |
 | LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 3.18 | 0.57 | 0.00 | $0.00 |
 | LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana | Weibo Gaming | 13.82 | 0.11 | 0.00 | $0.01 |
-| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.58 | $1.07 |
+| Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 1.84 | 0.70 | 0.46 | $0.84 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

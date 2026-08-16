@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786891069,
+  "generatedAt": 1786891980,
   "hours": 48,
   "watchlistSize": 60,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1150.72,
      "avgPrice": 0.8547,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.3,
-     "score": 2.4219434250836884
+     "lastTradeAgoH": 3.6,
+     "score": 2.3965406569654997
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +31,8 @@
      "netUsd": 599.08,
      "avgPrice": 0.8765,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.2,
-     "score": 2.1091168421753927
+     "lastTradeAgoH": 2.4,
+     "score": 2.086995183378141
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -41,20 +41,20 @@
      "netUsd": 429.46,
      "avgPrice": 0.7971,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.9,
-     "score": 1.9414212568561704
+     "lastTradeAgoH": 7.2,
+     "score": 1.9210584880578296
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 2179.26,
-   "score": 6.4725,
+   "score": 6.4046,
    "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
    "outcome": "No",
    "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
-   "currentPrice": 0.85,
+   "currentPrice": 0.84,
    "backersAvgEntry": 0.8428,
-   "driftSinceEntry": 0.0072,
+   "driftSinceEntry": -0.0028,
    "endDate": "2026-08-16T23:59:00Z",
    "slug": "will-the-end-of-oak-street-opening-weekend-box-office-be-between-17m-and-20m-20260811181702929",
    "eventSlug": "the-end-of-oak-street-opening-weekend-box-office-20260811181702926"
@@ -72,8 +72,8 @@
      "netUsd": 67107.48,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 1.738357497413956
+     "lastTradeAgoH": 2.5,
+     "score": 1.7201245808412673
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -82,8 +82,8 @@
      "netUsd": 4067.46,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 1.174420495258022
+     "lastTradeAgoH": 1.8,
+     "score": 1.1621024818786394
     },
     {
      "wallet": "0x7e5e420a5cde8a322f3b5b93a12a164827f47315",
@@ -92,20 +92,20 @@
      "netUsd": 672.88,
      "avgPrice": 0.63,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 1.033858365041768
+     "lastTradeAgoH": 1.4,
+     "score": 1.0230146500143211
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 71847.82,
-   "score": 3.9466,
+   "score": 3.9052,
    "question": "Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D",
    "outcome": "9z",
    "tokenId": "2267900204984046133344700056638429335456820064622744365002659737605590828897",
-   "currentPrice": 0.58,
+   "currentPrice": 0.455,
    "backersAvgEntry": 0.6433,
-   "driftSinceEntry": -0.0633,
+   "driftSinceEntry": -0.1883,
    "endDate": "2026-08-16T19:30:00Z",
    "slug": "cs2-9z-mgc-2026-08-16",
    "eventSlug": "cs2-9z-mgc-2026-08-16"
