@@ -1,27 +1,26 @@
 # Smart-money signals
 
-Generated 2026-08-16 11:56 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-16 12:11 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. Dota 2: LGD Gaming vs Team Yandex (BO3) - The International Elimination Round — **LGD Gaming**
+## 1. LoL: Weibo Gaming vs Invictus Gaming (BO3) - LPL Group Nirvana — **Invictus Gaming**
 
-- Score **7.97** · 5 backers · net $54,669 staked
-- Backers' average entry 0.37 → current price **0.06** (moved against them -0.31 since entry)
+- Score **8.27** · 4 backers · net $14,740 staked
+- Backers' average entry 0.64 → current price **0.57** (moved against them -0.07 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x076daa87 | 0.80 | $3,394 | 0.3825 | 10.0× |
-| IMAREALPERSON | 0.57 | $2,201 | 0.3738 | 10.0× |
-| GreenBerry1337 | 0.48 | $13,807 | 0.3935 | 10.0× |
-| CORGI8 | 0.48 | $28,868 | 0.3038 | 10.0× |
-| meoooow | 0.32 | $6,400 | 0.3863 | 10.0× |
+| 0x076daa87 | 0.80 | $265 | 0.6478 | 9.41× |
+| jtwyslljy | 0.77 | $1,955 | 0.64 | 10.0× |
+| zb8 | 0.66 | $2,595 | 0.64 | 10.0× |
+| dv-pm | 0.68 | $9,925 | 0.64 | 10.0× |
 
 ## 2. Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? — **No**
 
-- Score **7.13** · 3 backers · net $2,239 staked
-- Backers' average entry 0.84 → current price **0.84** (roughly flat +0.01 since entry)
+- Score **7.05** · 3 backers · net $2,239 staked
+- Backers' average entry 0.84 → current price **0.83** (roughly flat -0.00 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -29,16 +28,3 @@ Each signal marks an outcome that several qualified wallets have independently n
 | donthackme | 0.88 | $1,227 | 0.8445 | 10.0× |
 | Mysaria | 0.73 | $582 | 0.8769 | 10.0× |
 | Bigggggggg | 0.82 | $429 | 0.7971 | 10.0× |
-
-## 3. LoL: Weibo Gaming vs Invictus Gaming - Game 2 Winner — **Invictus Gaming**
-
-- Score **6.61** · 4 backers · net $27,464 staked
-- Backers' average entry 0.69 → current price **0.80** (already moved +0.10 since entry)
-- Resolves by 2026-08-16
-
-| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
-|---|---|---|---|---|
-| zb8 | 0.66 | $434 | 0.61 | 10.0× |
-| 0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616 | 0.55 | $10,139 | 0.6559 | 10.0× |
-| fkigedgjdgwbg | 0.51 | $7,585 | 0.6931 | 10.0× |
-| BajaBlaster | 0.40 | $9,307 | 0.806 | 10.0× |
