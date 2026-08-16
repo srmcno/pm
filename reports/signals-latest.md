@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-16 11:49 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-16 11:56 UTC · window 48h · 60 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: LGD Gaming vs Team Yandex (BO3) - The International Elimination Round — **LGD Gaming**
 
-- Score **8.01** · 5 backers · net $54,669 staked
+- Score **7.97** · 5 backers · net $54,669 staked
 - Backers' average entry 0.37 → current price **0.06** (moved against them -0.31 since entry)
 - Resolves by 2026-08-16
 
@@ -20,7 +20,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? — **No**
 
-- Score **7.17** · 3 backers · net $2,239 staked
+- Score **7.13** · 3 backers · net $2,239 staked
 - Backers' average entry 0.84 → current price **0.84** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-16
 
@@ -32,13 +32,13 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. LoL: Weibo Gaming vs Invictus Gaming - Game 2 Winner — **Invictus Gaming**
 
-- Score **6.60** · 4 backers · net $27,394 staked
+- Score **6.61** · 4 backers · net $27,464 staked
 - Backers' average entry 0.69 → current price **0.80** (already moved +0.10 since entry)
 - Resolves by 2026-08-16
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
 | zb8 | 0.66 | $434 | 0.61 | 10.0× |
-| 0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616 | 0.55 | $10,068 | 0.66 | 10.0× |
+| 0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616 | 0.55 | $10,139 | 0.6559 | 10.0× |
 | fkigedgjdgwbg | 0.51 | $7,585 | 0.6931 | 10.0× |
 | BajaBlaster | 0.40 | $9,307 | 0.806 | 10.0× |
