@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-16 12:42 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 12:43 UTC · started with $20.00 (virtual)
 
-**Equity $17.38 (-13.1%)** · cash $11.32 · 5 open · 16 settled
+**Equity $17.36 (-13.2%)** · cash $9.51 · 6 open · 16 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -11,6 +11,7 @@ Updated 2026-08-16 12:42 UTC · started with $20.00 (virtual)
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.19 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
 | Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.85 | $1.37 |
+| LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 3.18 | 0.57 | 0.56 | $1.79 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

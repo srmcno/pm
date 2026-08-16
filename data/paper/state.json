@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 11.3226,
+ "cash": 9.5126,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -72,6 +72,20 @@
    "signalScore": 7.5907,
    "markPrice": 0.855,
    "valueUsd": 1.3701
+  },
+  {
+   "conditionId": "0x9a0db7182e5ba1e12e49c93c30d528aa8a84bf96db18a61f42ada346755b1cec",
+   "outcomeIndex": 0,
+   "tokenId": "46591016893876288996230672462963813568127985119248859915586998121748451905008",
+   "question": "LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group",
+   "outcome": "Kiwoom DRX",
+   "shares": 3.1754,
+   "entryPrice": 0.5700000000000001,
+   "costUsd": 1.81,
+   "openedAt": 1786884223,
+   "signalScore": 8.2912,
+   "markPrice": 0.565,
+   "valueUsd": 1.7941
   }
  ],
  "closed": [
@@ -1963,6 +1977,11 @@
    "t": 1786884129,
    "equity": 17.3755,
    "cash": 11.3226
+  },
+  {
+   "t": 1786884224,
+   "equity": 17.3596,
+   "cash": 9.5126
   }
  ],
  "log": [
@@ -2245,6 +2264,14 @@
    "question": "LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend",
    "price": 1.0,
    "pnl": 4.3434
+  },
+  {
+   "t": 1786884223,
+   "action": "BUY",
+   "question": "LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group",
+   "outcome": "Kiwoom DRX",
+   "stake": 1.81,
+   "price": 0.5700000000000001
   }
  ]
 }
