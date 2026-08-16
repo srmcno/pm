@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 5.8592,
+ "cash": 11.3226,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -28,8 +28,8 @@
    "costUsd": 1.25,
    "openedAt": 1786587299,
    "signalScore": 5.0186,
-   "markPrice": 0.855,
-   "valueUsd": 1.2799
+   "markPrice": 0.835,
+   "valueUsd": 1.25
   },
   {
    "conditionId": "0x0ee5fd627d4c25e79e2f16800c012231d507d9175da4987e3c77faa3abc03bfa",
@@ -42,8 +42,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.9625,
-   "valueUsd": 1.1838
+   "markPrice": 0.9635,
+   "valueUsd": 1.185
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -70,22 +70,8 @@
    "costUsd": 1.33,
    "openedAt": 1786867127,
    "signalScore": 7.5907,
-   "markPrice": 0.835,
-   "valueUsd": 1.338
-  },
-  {
-   "conditionId": "0x66b7c275ddc4f9372e69f33753f1067dfaa452a03b7b236d24c5a41cad4aa07f",
-   "outcomeIndex": 0,
-   "tokenId": "90596016317732598930042651202220149760734651475626776107226569633373956684009",
-   "question": "LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend",
-   "outcome": "LGD Gaming",
-   "shares": 5.4634,
-   "entryPrice": 0.20500000000000002,
-   "costUsd": 1.12,
-   "openedAt": 1786871611,
-   "signalScore": 5.2516,
-   "markPrice": 0.9995,
-   "valueUsd": 5.4607
+   "markPrice": 0.86,
+   "valueUsd": 1.3781
   }
  ],
  "closed": [
@@ -343,6 +329,23 @@
    "settledAt": 1786836422,
    "settlePrice": 1.0,
    "pnl": 0.7013
+  },
+  {
+   "conditionId": "0x66b7c275ddc4f9372e69f33753f1067dfaa452a03b7b236d24c5a41cad4aa07f",
+   "outcomeIndex": 0,
+   "tokenId": "90596016317732598930042651202220149760734651475626776107226569633373956684009",
+   "question": "LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend",
+   "outcome": "LGD Gaming",
+   "shares": 5.4634,
+   "entryPrice": 0.20500000000000002,
+   "costUsd": 1.12,
+   "openedAt": 1786871611,
+   "signalScore": 5.2516,
+   "markPrice": 0.9995,
+   "valueUsd": 5.4607,
+   "settledAt": 1786883220,
+   "settlePrice": 1.0,
+   "pnl": 4.3434
   }
  ],
  "equityCurve": [
@@ -1950,6 +1953,11 @@
    "t": 1786882310,
    "equity": 17.3376,
    "cash": 5.8592
+  },
+  {
+   "t": 1786883220,
+   "equity": 17.3517,
+   "cash": 11.3226
   }
  ],
  "log": [
@@ -2225,6 +2233,13 @@
    "outcome": "LGD Gaming",
    "stake": 1.12,
    "price": 0.20500000000000002
+  },
+  {
+   "t": 1786883220,
+   "action": "SETTLE",
+   "question": "LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend",
+   "price": 1.0,
+   "pnl": 4.3434
   }
  ]
 }

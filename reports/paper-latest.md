@@ -1,21 +1,19 @@
 # Paper portfolio
 
-Updated 2026-08-16 12:11 UTC · started with $20.00 (virtual)
+Updated 2026-08-16 12:27 UTC · started with $20.00 (virtual)
 
-**Equity $17.34 (-13.3%)** · cash $5.86 · 6 open · 15 settled
+**Equity $17.35 (-13.2%)** · cash $11.32 · 5 open · 16 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.90 | $1.60 |
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.28 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.18 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.83 | $1.25 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.96 | $1.19 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.14 | $0.62 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.83 | $1.34 |
-| LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend | LGD Gaming | 5.46 | 0.21 | 1.00 | $5.46 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.86 | $1.38 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| Dota 2: Team Liquid vs Vici Gaming - Game 1 Winner | Team Liquid | 0.67 | 1.00 | +0.96 |
 | LoL: Weibo Gaming vs Ninjas in Pyjamas - Game 2 Winner | Ninjas in Pyjamas | 0.68 | 0.00 | -1.63 |
 | LoL: Gen.G vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group | Hanwha Life Esports | 0.06 | 0.00 | -1.83 |
 | Dota 2: TEAM VISION vs Team Falcons (BO3) - The International Group Stage | Team Falcons | 0.21 | 0.00 | -1.29 |
@@ -30,3 +28,4 @@ Updated 2026-08-16 12:11 UTC · started with $20.00 (virtual)
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 0.78 | 1.00 | +0.39 |
 | Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 0.47 | 0.00 | -1.47 |
 | Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A | Spirit | 0.64 | 1.00 | +0.70 |
+| LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend | LGD Gaming | 0.21 | 1.00 | +4.34 |
