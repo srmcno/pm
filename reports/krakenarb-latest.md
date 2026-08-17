@@ -6,9 +6,9 @@ Scanned 2026-08-17 21:43 UTC · 1456 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→SNEK→EUR→USD at 73.0 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→SNEK→EUR→USD at 73.2 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 2 across 9351 scans
+- Edges replayed: 2 across 9383 scans
 - Atomic PnL $0.1075 → one-scan-delay PnL $-2.2046 (capture ratio -20.508)
