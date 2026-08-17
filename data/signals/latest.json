@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786966554,
+  "generatedAt": 1786967463,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 4377.64,
      "avgPrice": 0.2758,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 2.1072575364369754
+     "lastTradeAgoH": 1.2,
+     "score": 2.0851795130151114
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -31,8 +31,8 @@
      "netUsd": 13866.68,
      "avgPrice": 0.5761,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.7556338766048722
+     "lastTradeAgoH": 2.2,
+     "score": 1.7372398620254115
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -41,20 +41,20 @@
      "netUsd": 11309.68,
      "avgPrice": 0.6127,
      "conviction": 10.0,
-     "lastTradeAgoH": 12.2,
-     "score": 0.7994520283228504
+     "lastTradeAgoH": 12.4,
+     "score": 0.7910760608386803
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 29554.0,
-   "score": 4.6623,
+   "score": 4.6135,
    "question": "LoL: T1 vs DN SOOPers (BO5) - KeSPA Cup Playoffs",
    "outcome": "DN SOOPers",
    "tokenId": "43603120704420191020785306569580731207593296012031542418830653682282927543163",
-   "currentPrice": 0.535,
+   "currentPrice": 0.615,
    "backersAvgEntry": 0.4882,
-   "driftSinceEntry": 0.0468,
+   "driftSinceEntry": 0.1268,
    "endDate": "2026-08-17T15:15:00Z",
    "slug": "lol-t1-dnf-2026-08-17",
    "eventSlug": "lol-t1-dnf-2026-08-17"
