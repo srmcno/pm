@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1786981173,
+  "generatedAt": 1786981329,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1189.38,
      "avgPrice": 0.712,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.5015935862402303
+     "lastTradeAgoH": 0.4,
+     "score": 2.4971097967924814
     },
     {
      "wallet": "0xd487f513cfead22d76b6db4567c756b3cf25053e",
@@ -32,7 +32,7 @@
      "avgPrice": 0.9895,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.4636644120791422
+     "score": 1.4610409791274335
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -42,13 +42,13 @@
      "avgPrice": 0.72,
      "conviction": 10.0,
      "lastTradeAgoH": 0.4,
-     "score": 1.4544771678854662
+     "score": 1.45187020190457
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 14359.73,
-   "score": 5.4197,
+   "score": 5.41,
    "question": "LoL: Natus Vincere vs Team Heretics - Game 1 Winner",
    "outcome": "Natus Vincere",
    "tokenId": "10811295927927222894574381093347915325910075948042896845603378528034740699211",
