@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-17 22:14 UTC · started with $20.00 (virtual)
+Updated 2026-08-17 22:39 UTC · started with $20.00 (virtual)
 
-**Equity $11.57 (-42.1%)** · cash $5.64 · 5 open · 20 settled
+**Equity $11.58 (-42.1%)** · cash $5.64 · 5 open · 20 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -10,7 +10,7 @@ Updated 2026-08-17 22:14 UTC · started with $20.00 (virtual)
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.28 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.89 | $1.09 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.10 | $0.44 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.98 | $1.56 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 0.98 | $1.57 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
