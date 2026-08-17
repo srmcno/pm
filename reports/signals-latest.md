@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-17 11:20 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-17 11:35 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: T1 vs DN SOOPers (BO5) - KeSPA Cup Playoffs — **DN SOOPers**
 
-- Score **4.71** · 3 backers · net $29,554 staked
-- Backers' average entry 0.49 → current price **0.47** (moved against them -0.02 since entry)
+- Score **4.66** · 3 backers · net $29,554 staked
+- Backers' average entry 0.49 → current price **0.54** (already moved +0.05 since entry)
 - Resolves by 2026-08-17
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
