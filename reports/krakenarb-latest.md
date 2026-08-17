@@ -6,7 +6,7 @@ Scanned 2026-08-17 10:40 UTC · 1454 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→GST→EUR→USD at 119.0 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→GST→EUR→USD at 228.9 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
