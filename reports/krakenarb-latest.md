@@ -1,12 +1,12 @@
 # Kraken viability trial — latest scan
 
-Scanned 2026-08-17 10:47 UTC · 1454 pairs · 1340 cycles · 0 verified edges · median fee hurdle 99.7 bps
+Scanned 2026-08-17 10:57 UTC · 1454 pairs · 1340 cycles · 0 verified edges · median fee hurdle 99.7 bps
 
 | cycle | screen bps | fee hurdle bps | verified bps | size | profit |
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→GST→EUR→USD at 229.4 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→GST→EUR→USD at 117.9 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
