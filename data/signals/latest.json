@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787087326,
+  "generatedAt": 1787088238,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 3107.99,
      "avgPrice": 0.3569,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.346632223799389
+     "lastTradeAgoH": 2.1,
+     "score": 2.3219924888173638
     },
     {
      "wallet": "0xc72d7dcdb23597d143a83536fb97b1d7db7efc21",
@@ -31,8 +31,8 @@
      "netUsd": 1356.96,
      "avgPrice": 0.44,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 1.9835734796055409
+     "lastTradeAgoH": 1.9,
+     "score": 1.9627458763879724
     },
     {
      "wallet": "0x7ad71d79a3bb90d0a87a06500fa0fe11663842aa",
@@ -41,20 +41,20 @@
      "netUsd": 16633.33,
      "avgPrice": 0.4244,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.7,
-     "score": 1.6572421380411446
+     "lastTradeAgoH": 1.9,
+     "score": 1.639841027348023
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 21098.28,
-   "score": 5.9874,
+   "score": 5.9246,
    "question": "Will Gimnasia y Esgrima La Plata win on 2026-08-18?",
    "outcome": "Yes",
    "tokenId": "68593565360744540533242870945602355288945302262967116300987818246185640617480",
-   "currentPrice": 0.075,
+   "currentPrice": 0.345,
    "backersAvgEntry": 0.4071,
-   "driftSinceEntry": -0.3321,
+   "driftSinceEntry": -0.0621,
    "endDate": "2026-08-18T20:00:00Z",
    "slug": "argcopa-rie-glp-2026-08-18-glp",
    "eventSlug": "argcopa-rie-glp-2026-08-18"
@@ -72,8 +72,8 @@
      "netUsd": 237.16,
      "avgPrice": 0.815,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.6,
-     "score": 1.6161855574143882
+     "lastTradeAgoH": 11.9,
+     "score": 1.5992155425085195
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -82,8 +82,8 @@
      "netUsd": 226.77,
      "avgPrice": 0.816,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.6,
-     "score": 1.3027399635494448
+     "lastTradeAgoH": 11.9,
+     "score": 1.289061140286556
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -92,20 +92,20 @@
      "netUsd": 1295.52,
      "avgPrice": 0.8295,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.6,
-     "score": 1.2255034238975544
+     "lastTradeAgoH": 2.9,
+     "score": 1.212635587481539
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1759.45,
-   "score": 4.1444,
+   "score": 4.1009,
    "question": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
    "outcome": "No",
    "tokenId": "100268596602941774686897328445143323252864675868637226260206096004180596377901",
-   "currentPrice": 0.822,
+   "currentPrice": 0.8225,
    "backersAvgEntry": 0.8202,
-   "driftSinceEntry": 0.0018,
+   "driftSinceEntry": 0.0023,
    "endDate": "2026-08-18T00:00:00Z",
    "slug": "will-megan-degenfelder-win-the-2026-wyoming-governor-republican-primary-election",
    "eventSlug": "wyoming-governor-republican-primary-winner"
