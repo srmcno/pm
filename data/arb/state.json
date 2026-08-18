@@ -1,22 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 83.8388,
+ "cash": 83.8767,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1786960843,
-   "path": "USDT\u2192\u5e01\u6709\u2192USD1\u2192USDT",
-   "sizeUsd": 10.0,
-   "profitUsd": 0.0751,
-   "bps": 75.1
-  },
-  {
-   "t": 1786961686,
-   "path": "USDT\u2192USD1\u2192TCC\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0127,
-   "bps": 25.4
-  },
   {
    "t": 1786961987,
    "path": "USDT\u2192BRIAN\u2192USD1\u2192USDT",
@@ -1402,69 +1388,23 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0055,
    "bps": 11.0
+  },
+  {
+   "t": 1787079518,
+   "path": "USDT\u2192USD1\u2192BULLCOIN\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0199,
+   "bps": 39.8
+  },
+  {
+   "t": 1787079518,
+   "path": "USDT\u2192USD1\u2192DOOM\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.018,
+   "bps": 36.0
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787078481,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078483,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078485,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078487,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078489,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078491,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078493,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078495,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078497,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078499,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078501,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078503,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078505,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078507,
-   "equity": 83.8191
-  },
-  {
-   "t": 1787078509,
-   "equity": 83.8191
-  },
   {
    "t": 1787078511,
    "equity": 83.8191
@@ -3404,18 +3344,80 @@
   {
    "t": 1787079486,
    "equity": 83.8388
+  },
+  {
+   "t": 1787079490,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079492,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079494,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079496,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079498,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079500,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079502,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079504,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079506,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079508,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079510,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079512,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079514,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079516,
+   "equity": 83.8388
+  },
+  {
+   "t": 1787079518,
+   "equity": 83.8767
   }
  ],
  "decay": {
-  "checked": 4464,
+  "checked": 4465,
   "survived": 3362
  },
  "cooldown": {
   "USDT\u2192EYE\u2192USD1\u2192USDT|EYEUSDT|EYEUSD1|USD1USDT": 1787077141,
   "USDT\u2192STONKBROKER\u2192USD1\u2192USDT|STONKBROKERUSDT|STONKBROKERUSD1|USD1USDT": 1787079055,
-  "USDT\u2192BULLCOIN\u2192USD1\u2192USDT|BULLCOINUSDT|BULLCOINUSD1|USD1USDT": 1787079486
+  "USDT\u2192BULLCOIN\u2192USD1\u2192USDT|BULLCOINUSDT|BULLCOINUSD1|USD1USDT": 1787079486,
+  "USDT\u2192USD1\u2192BULLCOIN\u2192USDT|USD1USDT|BULLCOINUSD1|BULLCOINUSDT": 1787079518,
+  "USDT\u2192USD1\u2192DOOM\u2192USDT|USD1USDT|DOOMUSD1|DOOMUSDT": 1787079518
  },
- "tradeCountAll": 1130,
+ "tradeCountAll": 1132,
  "replay": {
   "edges": 4463,
   "refillable": 4462,
