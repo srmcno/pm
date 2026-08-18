@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787048022,
+  "generatedAt": 1787048933,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 237.16,
      "avgPrice": 0.815,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 2.547093838051971
+     "lastTradeAgoH": 0.9,
+     "score": 2.5204075899584986
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +31,8 @@
      "netUsd": 226.77,
      "avgPrice": 0.816,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 2.0531064137520056
+     "lastTradeAgoH": 0.9,
+     "score": 2.031595738997443
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -41,20 +41,20 @@
      "netUsd": 1130.92,
      "avgPrice": 0.8289,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 1.3257294403438238
+     "lastTradeAgoH": 1.0,
+     "score": 1.3118395929336892
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1594.85,
-   "score": 5.9259,
+   "score": 5.8638,
    "question": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
    "outcome": "No",
    "tokenId": "100268596602941774686897328445143323252864675868637226260206096004180596377901",
-   "currentPrice": 0.8165,
+   "currentPrice": 0.8155,
    "backersAvgEntry": 0.82,
-   "driftSinceEntry": -0.0035,
+   "driftSinceEntry": -0.0045,
    "endDate": "2026-08-18T00:00:00Z",
    "slug": "will-megan-degenfelder-win-the-2026-wyoming-governor-republican-primary-election",
    "eventSlug": "wyoming-governor-republican-primary-winner"
@@ -72,8 +72,8 @@
      "netUsd": 5110.96,
      "avgPrice": 0.4885,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.8801877551656487
+     "lastTradeAgoH": 0.5,
+     "score": 1.8604887726833097
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -82,8 +82,8 @@
      "netUsd": 4063.65,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.2903975302724975
+     "lastTradeAgoH": 0.5,
+     "score": 1.2768778600830424
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -92,20 +92,20 @@
      "netUsd": 1038.98,
      "avgPrice": 0.4846,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.2,
-     "score": 1.261767911612531
+     "lastTradeAgoH": 1.5,
+     "score": 1.2485481978263178
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 10213.59,
-   "score": 4.4324,
+   "score": 4.3859,
    "question": "LoL: Nongshim Red Force vs DN SOOPers - Game 2 Winner",
    "outcome": "DN SOOPers",
    "tokenId": "81232239209431312841617853284168242627882007909563964374674078208354985065555",
-   "currentPrice": 0.495,
+   "currentPrice": 0.465,
    "backersAvgEntry": 0.4844,
-   "driftSinceEntry": 0.0106,
+   "driftSinceEntry": -0.0194,
    "endDate": "2026-08-18T15:00:00Z",
    "slug": "lol-ns-dnf-2026-08-18-game2",
    "eventSlug": "lol-ns-dnf-2026-08-18"
