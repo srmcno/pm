@@ -6,9 +6,9 @@ Scanned 2026-08-18 08:39 UTC · 1456 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→COOKIE→EUR→USD at 43.1 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→COOKIE→EUR→USD at 43.4 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 2 across 10462 scans
+- Edges replayed: 2 across 10494 scans
 - Atomic PnL $0.1075 → one-scan-delay PnL $-2.2046 (capture ratio -20.508)
