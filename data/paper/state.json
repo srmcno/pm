@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 7.245,
+ "cash": 6.085,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -58,6 +58,20 @@
    "signalScore": 3.1826,
    "markPrice": 0.11,
    "valueUsd": 0.4823
+  },
+  {
+   "conditionId": "0xa875e0b4802818c2ed51fa4a44eeb303d2a11b1df946de66c0444d80468e78b6",
+   "outcomeIndex": 1,
+   "tokenId": "100268596602941774686897328445143323252864675868637226260206096004180596377901",
+   "question": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
+   "outcome": "No",
+   "shares": 1.4069,
+   "entryPrice": 0.8245,
+   "costUsd": 1.16,
+   "openedAt": 1787047504,
+   "signalScore": 5.9618,
+   "markPrice": 0.8165,
+   "valueUsd": 1.1487
   }
  ],
  "closed": [
@@ -2899,6 +2913,11 @@
    "t": 1787046533,
    "equity": 11.6663,
    "cash": 7.245
+  },
+  {
+   "t": 1787047504,
+   "equity": 11.655,
+   "cash": 6.085
   }
  ],
  "log": [
@@ -3248,6 +3267,14 @@
    "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
    "price": 1.0,
    "pnl": 0.2724
+  },
+  {
+   "t": 1787047504,
+   "action": "BUY",
+   "question": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
+   "outcome": "No",
+   "stake": 1.16,
+   "price": 0.8245
   }
  ]
 }
