@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787069804,
+  "generatedAt": 1787070712,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 237.16,
      "avgPrice": 0.815,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.7,
-     "score": 1.9795044912003967
+     "lastTradeAgoH": 7.0,
+     "score": 1.9588329676379876
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +31,8 @@
      "netUsd": 226.77,
      "avgPrice": 0.816,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.7,
-     "score": 1.5955962462861997
+     "lastTradeAgoH": 7.0,
+     "score": 1.5789337908344339
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -41,20 +41,20 @@
      "netUsd": 1130.92,
      "avgPrice": 0.8289,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.8,
-     "score": 1.0303065172048214
+     "lastTradeAgoH": 7.0,
+     "score": 1.0195472562172458
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1594.85,
-   "score": 4.6054,
+   "score": 4.5573,
    "question": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
    "outcome": "No",
    "tokenId": "100268596602941774686897328445143323252864675868637226260206096004180596377901",
-   "currentPrice": 0.82,
+   "currentPrice": 0.834,
    "backersAvgEntry": 0.82,
-   "driftSinceEntry": 0.0,
+   "driftSinceEntry": 0.014,
    "endDate": "2026-08-18T00:00:00Z",
    "slug": "will-megan-degenfelder-win-the-2026-wyoming-governor-republican-primary-election",
    "eventSlug": "wyoming-governor-republican-primary-winner"
