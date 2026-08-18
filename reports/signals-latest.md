@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-18 20:53 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-18 21:08 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Gimnasia y Esgrima La Plata win on 2026-08-18? — **Yes**
 
-- Score **6.05** · 3 backers · net $21,098 staked
-- Backers' average entry 0.41 → current price **0.10** (moved against them -0.30 since entry)
+- Score **5.99** · 3 backers · net $21,098 staked
+- Backers' average entry 0.41 → current price **0.07** (moved against them -0.33 since entry)
 - Resolves by 2026-08-18
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -18,8 +18,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election? — **No**
 
-- Score **4.19** · 3 backers · net $1,759 staked
-- Backers' average entry 0.82 → current price **0.83** (roughly flat +0.01 since entry)
+- Score **4.14** · 3 backers · net $1,759 staked
+- Backers' average entry 0.82 → current price **0.82** (roughly flat +0.00 since entry)
 - Resolves by 2026-08-18
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
