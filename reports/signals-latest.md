@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-18 10:05 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-18 10:13 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election? — **No**
 
-- Score **5.96** · 3 backers · net $1,595 staked
+- Score **5.93** · 3 backers · net $1,595 staked
 - Backers' average entry 0.82 → current price **0.82** (roughly flat -0.00 since entry)
 - Resolves by 2026-08-18
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. LoL: Nongshim Red Force vs DN SOOPers - Game 2 Winner — **DN SOOPers**
 
-- Score **4.46** · 3 backers · net $10,214 staked
+- Score **4.43** · 3 backers · net $10,214 staked
 - Backers' average entry 0.48 → current price **0.49** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-18
 
