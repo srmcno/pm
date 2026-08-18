@@ -1,20 +1,18 @@
 # Paper portfolio
 
-Updated 2026-08-18 00:49 UTC · started with $20.00 (virtual)
+Updated 2026-08-18 01:05 UTC · started with $20.00 (virtual)
 
-**Equity $11.61 (-42.0%)** · cash $5.64 · 5 open · 20 settled
+**Equity $11.62 (-41.9%)** · cash $7.25 · 4 open · 21 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.88 | $1.56 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.28 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.89 | $1.09 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.10 | $0.44 |
-| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 1.60 | 0.83 | 1.00 | $1.60 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.10 | $0.45 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| Will Count Binface win less than 10% of votes in the Clacton parliamentary by-election? | No | 0.90 | 1.00 | +0.17 |
 | Will Count Binface win 30–40% of votes in the Clacton parliamentary by-election? | No | 0.86 | 1.00 | +0.21 |
 | LoL: Nongshim Red Force vs HANJIN BRION - Game 1 Winner | Nongshim Red Force | 0.62 | 1.00 | +0.83 |
 | LoL: Anyone's Legend vs JD Gaming - Game 1 Winner | Anyone's Legend | 0.64 | 0.00 | -1.16 |
@@ -29,3 +27,4 @@ Updated 2026-08-18 00:49 UTC · started with $20.00 (virtual)
 | LoL: Kiwoom DRX vs HANJIN BRION (BO3) - LCK Round 3-4 Rise Group | Kiwoom DRX | 0.57 | 0.00 | -1.81 |
 | Counter-Strike: 9z vs magic (BO3) - Esports World Cup Group D | 9z | 0.70 | 0.00 | -1.28 |
 | LoL: Movistar KOI vs Natus Vincere - Game 1 Winner | Natus Vincere | 0.06 | 0.00 | -1.07 |
+| Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 0.83 | 1.00 | +0.27 |

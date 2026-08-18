@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 5.6426,
+ "cash": 7.245,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -56,22 +56,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.0995,
-   "valueUsd": 0.4362
-  },
-  {
-   "conditionId": "0x2cdee06270692f6cb227ebf3eb2c934b013ecc65c13763e7a981b29f46150df8",
-   "outcomeIndex": 1,
-   "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
-   "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
-   "outcome": "No",
-   "shares": 1.6024,
-   "entryPrice": 0.83,
-   "costUsd": 1.33,
-   "openedAt": 1786867127,
-   "signalScore": 7.5907,
-   "markPrice": 0.9995,
-   "valueUsd": 1.6016
+   "markPrice": 0.103,
+   "valueUsd": 0.4516
   }
  ],
  "closed": [
@@ -414,6 +400,23 @@
    "settledAt": 1786908543,
    "settlePrice": 0.0,
    "pnl": -1.07
+  },
+  {
+   "conditionId": "0x2cdee06270692f6cb227ebf3eb2c934b013ecc65c13763e7a981b29f46150df8",
+   "outcomeIndex": 1,
+   "tokenId": "21331608114811719437872937453593327970624755004107168721194671762425991196777",
+   "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
+   "outcome": "No",
+   "shares": 1.6024,
+   "entryPrice": 0.83,
+   "costUsd": 1.33,
+   "openedAt": 1786867127,
+   "signalScore": 7.5907,
+   "markPrice": 0.9995,
+   "valueUsd": 1.6016,
+   "settledAt": 1787015107,
+   "settlePrice": 1.0,
+   "pnl": 0.2724
   }
  ],
  "equityCurve": [
@@ -2731,6 +2734,11 @@
    "t": 1787014198,
    "equity": 11.6074,
    "cash": 5.6426
+  },
+  {
+   "t": 1787015107,
+   "equity": 11.6236,
+   "cash": 7.245
   }
  ],
  "log": [
@@ -3073,6 +3081,13 @@
    "question": "LoL: Movistar KOI vs Natus Vincere - Game 1 Winner",
    "price": 0.0,
    "pnl": -1.07
+  },
+  {
+   "t": 1787015107,
+   "action": "SETTLE",
+   "question": "Will \"The End of Oak Street\" Opening Weekend Box Office be between 17m and 20m?",
+   "price": 1.0,
+   "pnl": 0.2724
   }
  ]
 }
