@@ -1,15 +1,15 @@
 # Paper portfolio
 
-Updated 2026-08-19 03:10 UTC · started with $20.00 (virtual)
+Updated 2026-08-19 03:35 UTC · started with $20.00 (virtual)
 
-**Equity $12.11 (-39.5%)** · cash $6.08 · 5 open · 21 settled
+**Equity $12.10 (-39.5%)** · cash $6.08 · 5 open · 21 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.89 | $1.57 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.87 | $1.07 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.16 | $0.71 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.16 | $0.70 |
 | Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election? | No | 1.41 | 0.82 | 1.00 | $1.41 |
 
 | settled market | side | entry | settle | PnL |
