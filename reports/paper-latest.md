@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-19 08:12 UTC · started with $20.00 (virtual)
+Updated 2026-08-19 08:25 UTC · started with $20.00 (virtual)
 
-**Equity $12.17 (-39.1%)** · cash $6.29 · 5 open · 22 settled
+**Equity $12.29 (-38.5%)** · cash $5.28 · 6 open · 22 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -11,6 +11,7 @@ Updated 2026-08-19 08:12 UTC · started with $20.00 (virtual)
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.87 | $1.07 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.75 |
 | Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.83 | $1.21 |
+| LoL: Gen.G vs KT Rolster - Game 1 Winner | KT Rolster | 6.12 | 0.17 | 0.18 | $1.13 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

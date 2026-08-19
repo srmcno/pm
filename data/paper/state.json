@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.2919,
+ "cash": 5.2819,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -72,6 +72,20 @@
    "signalScore": 4.3131,
    "markPrice": 0.835,
    "valueUsd": 1.2145
+  },
+  {
+   "conditionId": "0xdde163e2aa98c43dfa62a0fc27b010494970fcad60f558b9c9dd94d32e6b2611",
+   "outcomeIndex": 1,
+   "tokenId": "64432503875249613648888993161475947484183841019966173708958748059128161485792",
+   "question": "LoL: Gen.G vs KT Rolster - Game 1 Winner",
+   "outcome": "KT Rolster",
+   "shares": 6.1212,
+   "entryPrice": 0.165,
+   "costUsd": 1.01,
+   "openedAt": 1787127956,
+   "signalScore": 5.2576,
+   "markPrice": 0.185,
+   "valueUsd": 1.1324
   }
  ],
  "closed": [
@@ -3355,6 +3369,11 @@
    "t": 1787127137,
    "equity": 12.1721,
    "cash": 6.2919
+  },
+  {
+   "t": 1787127956,
+   "equity": 12.2945,
+   "cash": 5.2819
   }
  ],
  "log": [
@@ -3727,6 +3746,14 @@
    "outcome": "No",
    "stake": 1.2,
    "price": 0.825
+  },
+  {
+   "t": 1787127956,
+   "action": "BUY",
+   "question": "LoL: Gen.G vs KT Rolster - Game 1 Winner",
+   "outcome": "KT Rolster",
+   "stake": 1.01,
+   "price": 0.165
   }
  ]
 }
