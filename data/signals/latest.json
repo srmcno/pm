@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787171779,
+  "generatedAt": 1787173032,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -8,57 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x4432df49b36c20c1a27a604fa8a1e8bc133c0f9d5e0850fc911277ae3c6afc1c",
-   "outcomeIndex": 0,
-   "title": "Counter-Strike: FURIA vs Aurora Gaming (BO3) - Esports World Cup Playoffs",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8021,
-     "netUsd": 1174.72,
-     "avgPrice": 0.6078,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 2.3046693624901007
-    },
-    {
-     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
-     "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
-     "quality": 0.6934,
-     "netUsd": 30451.34,
-     "avgPrice": 0.588,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.171684420447384
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.4668,
-     "netUsd": 4460.48,
-     "avgPrice": 0.6255,
-     "conviction": 10.0,
-     "lastTradeAgoH": 3.1,
-     "score": 1.2953617759169
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 36086.54,
-   "score": 5.7717,
-   "question": "Counter-Strike: FURIA vs Aurora Gaming (BO3) - Esports World Cup Playoffs",
-   "outcome": "FURIA",
-   "tokenId": "57365870645311161625476847082772227369075778390189794046785296687285105052799",
-   "currentPrice": 0.585,
-   "backersAvgEntry": 0.6071,
-   "driftSinceEntry": -0.0221,
-   "endDate": "2026-08-19T23:55:00Z",
-   "slug": "cs2-furia-aur1-2026-08-19",
-   "eventSlug": "cs2-furia-aur1-2026-08-19"
-  },
   {
    "conditionId": "0x2d6945ae1728aaf6891ab0375f77d1dfcadd2c94bc8b3cadcd6a0be5325de01f",
    "outcomeIndex": 1,
@@ -69,43 +18,43 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.8021,
-     "netUsd": 1562.52,
-     "avgPrice": 0.7799,
+     "netUsd": 1476.55,
+     "avgPrice": 0.7789,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.3,
-     "score": 2.212380681098896
+     "lastTradeAgoH": 0.5,
+     "score": 2.479685324884008
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
      "name": "0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740",
      "quality": 0.4297,
-     "netUsd": 2233.53,
-     "avgPrice": 0.6869,
+     "netUsd": 19287.1,
+     "avgPrice": 0.6858,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 1.3561911068612889
+     "lastTradeAgoH": 0.4,
+     "score": 1.338739801685908
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
      "name": "GreenBerry1337",
      "quality": 0.4127,
-     "netUsd": 3998.67,
+     "netUsd": 4201.63,
      "avgPrice": 0.664,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.298082056469855
+     "lastTradeAgoH": 0.4,
+     "score": 1.281586139211135
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 7794.72,
-   "score": 4.8667,
+   "totalNetUsd": 24965.28,
+   "score": 5.1,
    "question": "Counter-Strike: GamerLegion vs MOUZ (BO3) - Esports World Cup Playoffs",
    "outcome": "MOUZ",
    "tokenId": "43299795161953159767131895079870855429253616892003928138860465128550721161419",
-   "currentPrice": 0.6645,
-   "backersAvgEntry": 0.7103,
-   "driftSinceEntry": -0.0458,
+   "currentPrice": 0.568,
+   "backersAvgEntry": 0.7096,
+   "driftSinceEntry": -0.1416,
    "endDate": "2026-08-19T23:55:00Z",
    "slug": "cs2-gl1-mouz-2026-08-19",
    "eventSlug": "cs2-gl1-mouz-2026-08-19"
