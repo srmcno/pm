@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-19 12:41 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-19 12:49 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Anyone's Legend vs Top Esports (BO3) - LPL Group Ascend — **Anyone's Legend**
 
-- Score **5.77** · 3 backers · net $32,123 staked
+- Score **5.74** · 3 backers · net $32,123 staked
 - Backers' average entry 0.59 → current price **0.54** (moved against them -0.06 since entry)
 - Resolves by 2026-08-19
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Ralph Norman be the new Republican nominee for Senate in South Carolina? — **No**
 
-- Score **3.48** · 3 backers · net $6,303 staked
+- Score **3.46** · 3 backers · net $6,303 staked
 - Backers' average entry 0.84 → current price **0.82** (roughly flat -0.02 since entry)
 - Resolves by 2026-08-11
 
