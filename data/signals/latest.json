@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787131352,
+  "generatedAt": 1787132257,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 5005.97,
      "avgPrice": 0.8299,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.8594337940520682
+     "lastTradeAgoH": 3.5,
+     "score": 1.8399948456194808
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +31,8 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.3,
-     "score": 1.8436119342295987
+     "lastTradeAgoH": 3.5,
+     "score": 1.8243383911576003
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -41,14 +41,14 @@
      "netUsd": 1415.62,
      "avgPrice": 0.8719,
      "conviction": 10.0,
-     "lastTradeAgoH": 37.3,
-     "score": 0.2884866074371596
+     "lastTradeAgoH": 37.6,
+     "score": 0.2854707021097414
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 6831.4,
-   "score": 3.9915,
+   "score": 3.9498,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
