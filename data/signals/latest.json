@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787136877,
+  "generatedAt": 1787138305,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 5005.97,
      "avgPrice": 0.8299,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.7,
-     "score": 1.74481641601407
+     "lastTradeAgoH": 5.1,
+     "score": 1.7156196793087435
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,30 +31,30 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.8,
-     "score": 1.7299698316191725
+     "lastTradeAgoH": 5.2,
+     "score": 1.7010215289677515
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
      "name": "merod",
      "quality": 0.4321,
-     "netUsd": 1012.98,
-     "avgPrice": 0.8731,
+     "netUsd": 982.27,
+     "avgPrice": 0.8735,
      "conviction": 10.0,
-     "lastTradeAgoH": 38.9,
-     "score": 0.2707040014367233
+     "lastTradeAgoH": 39.3,
+     "score": 0.26617419911340384
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 6428.76,
-   "score": 3.7455,
+   "totalNetUsd": 6398.05,
+   "score": 3.6828,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
    "currentPrice": 0.83,
-   "backersAvgEntry": 0.841,
-   "driftSinceEntry": -0.011,
+   "backersAvgEntry": 0.8411,
+   "driftSinceEntry": -0.0111,
    "endDate": "2026-08-11T00:00:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
