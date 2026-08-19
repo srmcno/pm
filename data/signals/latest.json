@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787170863,
+  "generatedAt": 1787171564,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,18 +21,18 @@
      "netUsd": 1174.72,
      "avgPrice": 0.6078,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.0,
-     "score": 2.3292061475853507
+     "lastTradeAgoH": 2.2,
+     "score": 2.3104115029649517
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
      "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
      "quality": 0.6934,
-     "netUsd": 16116.02,
-     "avgPrice": 0.5867,
+     "netUsd": 30451.34,
+     "avgPrice": 0.588,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.1842884735066255
+     "lastTradeAgoH": 0.2,
+     "score": 2.1770952256640514
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -41,20 +41,20 @@
      "netUsd": 4460.48,
      "avgPrice": 0.6255,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.9,
-     "score": 1.309152914044381
+     "lastTradeAgoH": 3.1,
+     "score": 1.298589201683098
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 21751.22,
-   "score": 5.8226,
+   "totalNetUsd": 36086.54,
+   "score": 5.7861,
    "question": "Counter-Strike: FURIA vs Aurora Gaming (BO3) - Esports World Cup Playoffs",
    "outcome": "FURIA",
    "tokenId": "57365870645311161625476847082772227369075778390189794046785296687285105052799",
    "currentPrice": 0.585,
-   "backersAvgEntry": 0.6067,
-   "driftSinceEntry": -0.0217,
+   "backersAvgEntry": 0.6071,
+   "driftSinceEntry": -0.0221,
    "endDate": "2026-08-19T23:55:00Z",
    "slug": "cs2-furia-aur1-2026-08-19",
    "eventSlug": "cs2-furia-aur1-2026-08-19"
