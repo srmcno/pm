@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-19 18:22 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-19 18:37 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: FURIA vs Aurora Gaming - Map 1 Winner — **Aurora Gaming**
 
-- Score **6.79** · 3 backers · net $6,178 staked
-- Backers' average entry 0.58 → current price **0.70** (already moved +0.13 since entry)
+- Score **6.72** · 3 backers · net $6,178 staked
+- Backers' average entry 0.58 → current price **0.56** (moved against them -0.02 since entry)
 - Resolves by 2026-08-19
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
