@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787167918,
+  "generatedAt": 1787168826,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
      "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
      "quality": 0.6934,
-     "netUsd": 46645.94,
+     "netUsd": 37891.39,
      "avgPrice": 0.3888,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 2.1860841704988867
+     "score": 2.1881092599053176
     },
     {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
@@ -31,8 +31,8 @@
      "netUsd": 278.25,
      "avgPrice": 0.53,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.101332821409245
+     "lastTradeAgoH": 0.7,
+     "score": 2.0793650049235275
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -41,20 +41,20 @@
      "netUsd": 2428.02,
      "avgPrice": 0.371,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.0,
-     "score": 1.1705021250671195
+     "lastTradeAgoH": 3.3,
+     "score": 1.1582654267118475
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 49352.21,
-   "score": 5.4579,
+   "totalNetUsd": 40597.66,
+   "score": 5.4257,
    "question": "Counter-Strike: FURIA vs Aurora Gaming - Map 2 Winner",
    "outcome": "Aurora Gaming",
    "tokenId": "15081527496537819286935428977346679240323616029052547463473323701147238090121",
-   "currentPrice": 0.32,
+   "currentPrice": 0.19,
    "backersAvgEntry": 0.4299,
-   "driftSinceEntry": -0.1099,
+   "driftSinceEntry": -0.2399,
    "endDate": "2026-08-19T23:55:00Z",
    "slug": "cs2-furia-aur1-2026-08-19-game2",
    "eventSlug": "cs2-furia-aur1-2026-08-19"
