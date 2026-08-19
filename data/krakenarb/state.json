@@ -1,6 +1,6 @@
 {
  "bankrollStart": 40.0,
- "cash": 40.8406,
+ "cash": 40.8698,
  "createdAt": 1786666692,
  "trades": [
   {
@@ -485,49 +485,30 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0107,
    "bps": 21.4
+  },
+  {
+   "t": 1787101600,
+   "path": "USD\u2192EAT\u2192EUR\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0105,
+   "bps": 21.0
+  },
+  {
+   "t": 1787101630,
+   "path": "USD\u2192EAT\u2192EUR\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0107,
+   "bps": 21.4
+  },
+  {
+   "t": 1787101670,
+   "path": "USD\u2192EAT\u2192EUR\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.008,
+   "bps": 16.0
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787096555,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096565,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096575,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096585,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096595,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096605,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096615,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096625,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096635,
-   "equity": 40.3368
-  },
-  {
-   "t": 1787096645,
-   "equity": 40.3368
-  },
   {
    "t": 1787096655,
    "equity": 40.3368
@@ -2487,16 +2468,56 @@
   {
    "t": 1787101570,
    "equity": 40.8406
+  },
+  {
+   "t": 1787101580,
+   "equity": 40.8406
+  },
+  {
+   "t": 1787101590,
+   "equity": 40.8406
+  },
+  {
+   "t": 1787101600,
+   "equity": 40.8511
+  },
+  {
+   "t": 1787101610,
+   "equity": 40.8511
+  },
+  {
+   "t": 1787101620,
+   "equity": 40.8511
+  },
+  {
+   "t": 1787101630,
+   "equity": 40.8618
+  },
+  {
+   "t": 1787101640,
+   "equity": 40.8618
+  },
+  {
+   "t": 1787101650,
+   "equity": 40.8618
+  },
+  {
+   "t": 1787101660,
+   "equity": 40.8618
+  },
+  {
+   "t": 1787101670,
+   "equity": 40.8698
   }
  ],
  "decay": {
-  "checked": 186,
-  "survived": 154
+  "checked": 193,
+  "survived": 160
  },
  "cooldown": {
-  "USD\u2192EAT\u2192EUR\u2192USD|EATUSD|EATEUR|ZEURZUSD": 1787101570
+  "USD\u2192EAT\u2192EUR\u2192USD|EATUSD|EATEUR|ZEURZUSD": 1787101670
  },
- "tradeCountAll": 69,
+ "tradeCountAll": 72,
  "replay": {
   "edges": 186,
   "refillable": 186,
