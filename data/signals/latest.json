@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787155826,
+  "generatedAt": 1787156734,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -18,21 +18,21 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.8021,
-     "netUsd": 307.12,
-     "avgPrice": 0.3493,
+     "netUsd": 715.4,
+     "avgPrice": 0.3456,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.3434566432809096
+     "lastTradeAgoH": 0.3,
+     "score": 2.506694618759197
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
      "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
      "quality": 0.6934,
-     "netUsd": 13795.09,
-     "avgPrice": 0.36,
+     "netUsd": 14165.26,
+     "avgPrice": 0.3573,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.0294637905600093
+     "lastTradeAgoH": 0.2,
+     "score": 2.1778512927603484
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -41,8 +41,8 @@
      "netUsd": 1252.69,
      "avgPrice": 0.31,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 1.2488012987280275
+     "lastTradeAgoH": 1.3,
+     "score": 1.2357460428075564
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -51,8 +51,8 @@
      "netUsd": 6569.52,
      "avgPrice": 0.316,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.226249839788415
+     "lastTradeAgoH": 2.2,
+     "score": 1.213430342005076
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -61,20 +61,20 @@
      "netUsd": 15519.53,
      "avgPrice": 0.3295,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 0.9667311008697754
+     "lastTradeAgoH": 2.6,
+     "score": 0.9566246716556253
     }
    ],
    "backerCount": 5,
    "contested": true,
-   "totalNetUsd": 37443.95,
-   "score": 7.8147,
+   "totalNetUsd": 38222.4,
+   "score": 8.0903,
    "question": "Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs",
    "outcome": "Astralis",
    "tokenId": "104192096067337395309705777015361380085962868630154525422854767287560200699618",
-   "currentPrice": 0.345,
-   "backersAvgEntry": 0.333,
-   "driftSinceEntry": 0.012,
+   "currentPrice": 0.185,
+   "backersAvgEntry": 0.3317,
+   "driftSinceEntry": -0.1467,
    "endDate": "2026-08-19T20:10:00Z",
    "slug": "cs2-g2-ast10-2026-08-19",
    "eventSlug": "cs2-g2-ast10-2026-08-19"
@@ -86,14 +86,14 @@
    "category": "Esports",
    "backers": [
     {
-     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
-     "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
-     "quality": 0.6934,
-     "netUsd": 17807.17,
-     "avgPrice": 0.6276,
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.8021,
+     "netUsd": 540.6,
+     "avgPrice": 0.6439,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 2.1016067498183055
+     "lastTradeAgoH": 0.2,
+     "score": 2.516578360709466
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -102,18 +102,18 @@
      "netUsd": 1611.58,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.370139699342387
+     "lastTradeAgoH": 2.0,
+     "score": 1.3558159438819053
     },
     {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8021,
-     "netUsd": 250.98,
-     "avgPrice": 0.66,
-     "conviction": 9.1,
-     "lastTradeAgoH": 14.1,
-     "score": 1.343554635904261
+     "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
+     "name": "GreenBerry1337",
+     "quality": 0.4127,
+     "netUsd": 4064.04,
+     "avgPrice": 0.63,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 1.294885864990984
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -122,20 +122,20 @@
      "netUsd": 23200.46,
      "avgPrice": 0.6534,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 0.9899772422432093
+     "lastTradeAgoH": 2.0,
+     "score": 0.9796277925220316
     }
    ],
    "backerCount": 4,
    "contested": true,
-   "totalNetUsd": 42870.19,
-   "score": 5.8053,
+   "totalNetUsd": 29416.68,
+   "score": 6.1469,
    "question": "Counter-Strike: FUT Esports vs magic (BO3) - Esports World Cup Playoffs",
    "outcome": "FUT Esports",
    "tokenId": "61064813722602530057788822447442963689212213811494099606598928245856052218036",
    "currentPrice": 0.625,
-   "backersAvgEntry": 0.6478,
-   "driftSinceEntry": -0.0228,
+   "backersAvgEntry": 0.6443,
+   "driftSinceEntry": -0.0193,
    "endDate": "2026-08-19T20:20:00Z",
    "slug": "cs2-fut-mgc-2026-08-19",
    "eventSlug": "cs2-fut-mgc-2026-08-19"
@@ -153,8 +153,8 @@
      "netUsd": 5762.07,
      "avgPrice": 0.8273,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 1.9932195510439303
+     "lastTradeAgoH": 1.8,
+     "score": 1.9723819755456746
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -163,8 +163,8 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.1,
-     "score": 1.3887993795001539
+     "lastTradeAgoH": 10.3,
+     "score": 1.3742805514527827
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -173,14 +173,14 @@
      "netUsd": 622.16,
      "avgPrice": 0.8757,
      "conviction": 10.0,
-     "lastTradeAgoH": 44.1,
-     "score": 0.2173179799740523
+     "lastTradeAgoH": 44.4,
+     "score": 0.21504608784231696
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 6794.04,
-   "score": 3.5993,
+   "score": 3.5617,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
