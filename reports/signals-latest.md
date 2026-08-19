@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-18 23:58 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-19 00:14 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Eric Barlow win the 2026 Wyoming Governor Republican primary election? — **No**
 
-- Score **5.52** · 3 backers · net $1,072 staked
-- Backers' average entry 0.19 → current price **0.18** (roughly flat -0.01 since entry)
+- Score **5.46** · 3 backers · net $1,072 staked
+- Backers' average entry 0.19 → current price **0.20** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-18
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -18,8 +18,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election? — **No**
 
-- Score **5.49** · 3 backers · net $4,542 staked
-- Backers' average entry 0.82 → current price **0.82** (roughly flat +0.01 since entry)
+- Score **5.43** · 3 backers · net $4,542 staked
+- Backers' average entry 0.82 → current price **0.82** (roughly flat +0.00 since entry)
 - Resolves by 2026-08-18
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
