@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-19 13:44 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-19 13:59 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Ralph Norman be the new Republican nominee for Senate in South Carolina? — **No**
 
-- Score **3.33** · 3 backers · net $6,283 staked
+- Score **3.29** · 3 backers · net $6,126 staked
 - Backers' average entry 0.84 → current price **0.82** (roughly flat -0.02 since entry)
 - Resolves by 2026-08-11
 
@@ -14,12 +14,12 @@ Each signal marks an outcome that several qualified wallets have independently n
 |---|---|---|---|---|
 | flawfence | 0.67 | $5,006 | 0.8299 | 10.0× |
 | Mysaria | 0.67 | $410 | 0.82 | 10.0× |
-| merod | 0.43 | $868 | 0.8741 | 10.0× |
+| merod | 0.43 | $710 | 0.875 | 10.0× |
 
 ## 2. Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs — **Astralis**
 
-- Score **3.12** · 3 backers · net $11,992 staked
-- Backers' average entry 0.34 → current price **0.33** (roughly flat -0.01 since entry)
+- Score **3.09** · 3 backers · net $11,992 staked
+- Backers' average entry 0.34 → current price **0.32** (moved against them -0.02 since entry)
 - Resolves by 2026-08-19
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |

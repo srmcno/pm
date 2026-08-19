@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787147062,
+  "generatedAt": 1787147974,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 5005.97,
      "avgPrice": 0.8299,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.6,
-     "score": 1.5502561537028736
+     "lastTradeAgoH": 7.8,
+     "score": 1.5339606459739998
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,30 +31,30 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.6,
-     "score": 1.5370650760580187
+     "lastTradeAgoH": 7.9,
+     "score": 1.520908226258159
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
      "name": "merod",
      "quality": 0.4321,
-     "netUsd": 867.7,
-     "avgPrice": 0.8741,
+     "netUsd": 710.48,
+     "avgPrice": 0.875,
      "conviction": 10.0,
-     "lastTradeAgoH": 41.7,
-     "score": 0.24051845237561517
+     "lastTradeAgoH": 41.9,
+     "score": 0.2379902441886895
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 6283.48,
-   "score": 3.3278,
+   "totalNetUsd": 6126.26,
+   "score": 3.2929,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
    "currentPrice": 0.825,
-   "backersAvgEntry": 0.8413,
-   "driftSinceEntry": -0.0163,
+   "backersAvgEntry": 0.8416,
+   "driftSinceEntry": -0.0166,
    "endDate": "2026-08-11T00:00:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
@@ -72,8 +72,8 @@
      "netUsd": 3849.47,
      "avgPrice": 0.32,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 1.2864530297735455
+     "lastTradeAgoH": 1.0,
+     "score": 1.2729304869089773
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -82,8 +82,8 @@
      "netUsd": 7367.41,
      "avgPrice": 0.34,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 0.9661494470187554
+     "lastTradeAgoH": 2.6,
+     "score": 0.9559937732331449
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -92,20 +92,20 @@
      "netUsd": 775.15,
      "avgPrice": 0.35,
      "conviction": 10.0,
-     "lastTradeAgoH": 25.6,
-     "score": 0.8711468457660095
+     "lastTradeAgoH": 25.9,
+     "score": 0.8619897912210192
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 11992.03,
-   "score": 3.1237,
+   "score": 3.0909,
    "question": "Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs",
    "outcome": "Astralis",
    "tokenId": "104192096067337395309705777015361380085962868630154525422854767287560200699618",
-   "currentPrice": 0.325,
+   "currentPrice": 0.315,
    "backersAvgEntry": 0.3367,
-   "driftSinceEntry": -0.0117,
+   "driftSinceEntry": -0.0217,
    "endDate": "2026-08-19T20:00:00Z",
    "slug": "cs2-g2-ast10-2026-08-19",
    "eventSlug": "cs2-g2-ast10-2026-08-19"
