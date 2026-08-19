@@ -1,17 +1,17 @@
 # Paper portfolio
 
-Updated 2026-08-19 08:42 UTC · started with $20.00 (virtual)
+Updated 2026-08-19 08:57 UTC · started with $20.00 (virtual)
 
-**Equity $11.21 (-43.9%)** · cash $5.28 · 6 open · 22 settled
+**Equity $11.16 (-44.2%)** · cash $5.28 · 6 open · 22 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.89 | $1.57 |
+| Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 0.89 | $1.58 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.87 | $1.07 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.74 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.17 | $0.75 |
 | Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.83 | $1.21 |
-| LoL: Gen.G vs KT Rolster - Game 1 Winner | KT Rolster | 6.12 | 0.17 | 0.01 | $0.06 |
+| LoL: Gen.G vs KT Rolster - Game 1 Winner | KT Rolster | 6.12 | 0.17 | 0.00 | $0.00 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
