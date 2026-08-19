@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-19 15:00 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-19 15:09 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: FUT Esports vs magic (BO3) - Esports World Cup Playoffs — **FUT Esports**
 
-- Score **6.05** · 4 backers · net $40,279 staked
+- Score **6.01** · 4 backers · net $40,279 staked
 - Backers' average entry 0.66 → current price **0.56** (moved against them -0.10 since entry)
 - Resolves by 2026-08-19
 
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. LoL: Team WE vs EDward Gaming - Game 2 Winner — **Team WE**
 
-- Score **5.77** · 4 backers · net $13,664 staked
+- Score **5.74** · 4 backers · net $13,664 staked
 - Backers' average entry 0.58 → current price **0.70** (already moved +0.13 since entry)
 - Resolves by 2026-08-19
 
@@ -32,7 +32,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Counter-Strike: FUT Esports vs magic - Map 1 Winner — **magic**
 
-- Score **3.99** · 3 backers · net $8,425 staked
+- Score **3.97** · 3 backers · net $8,425 staked
 - Backers' average entry 0.54 → current price **0.51** (moved against them -0.04 since entry)
 - Resolves by 2026-08-19
 
@@ -44,7 +44,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 4. Will Ralph Norman be the new Republican nominee for Senate in South Carolina? — **No**
 
-- Score **3.78** · 3 backers · net $6,882 staked
+- Score **3.75** · 3 backers · net $6,882 staked
 - Backers' average entry 0.84 → current price **0.81** (moved against them -0.03 since entry)
 - Resolves by 2026-08-11
 
