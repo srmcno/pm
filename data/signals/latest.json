@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787122927,
+  "generatedAt": 1787124411,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -15,24 +15,24 @@
    "category": "Politics",
    "backers": [
     {
-     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
-     "name": "Mysaria",
-     "quality": 0.6679,
-     "netUsd": 406.88,
-     "avgPrice": 0.82,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 2.03239536686675
-    },
-    {
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
      "name": "flawfence",
      "quality": 0.6723,
-     "netUsd": 1973.06,
-     "avgPrice": 0.83,
+     "netUsd": 5005.97,
+     "avgPrice": 0.8299,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.0,
-     "score": 1.8728682956352378
+     "lastTradeAgoH": 1.3,
+     "score": 2.0149068287752745
+    },
+    {
+     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
+     "name": "Mysaria",
+     "quality": 0.6679,
+     "netUsd": 409.81,
+     "avgPrice": 0.82,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.3,
+     "score": 1.9977620541120436
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -41,20 +41,20 @@
      "netUsd": 1500.96,
      "avgPrice": 0.8718,
      "conviction": 10.0,
-     "lastTradeAgoH": 35.0,
-     "score": 0.3180272558841939
+     "lastTradeAgoH": 35.4,
+     "score": 0.312607868693532
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 3880.9,
-   "score": 4.2233,
+   "totalNetUsd": 6916.74,
+   "score": 4.3253,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
-   "currentPrice": 0.815,
+   "currentPrice": 0.835,
    "backersAvgEntry": 0.8406,
-   "driftSinceEntry": -0.0256,
+   "driftSinceEntry": -0.0056,
    "endDate": "2026-08-11T00:00:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
