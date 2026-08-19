@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787104493,
+  "generatedAt": 1787105406,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -8,57 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0xa875e0b4802818c2ed51fa4a44eeb303d2a11b1df946de66c0444d80468e78b6",
-   "outcomeIndex": 1,
-   "title": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
-   "category": "Politics",
-   "backers": [
-    {
-     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
-     "name": "Bigggggggg",
-     "quality": 0.8286,
-     "netUsd": 1555.18,
-     "avgPrice": 0.8116,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 2.4279797170174273
-    },
-    {
-     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
-     "name": "Mysaria",
-     "quality": 0.6679,
-     "netUsd": 2622.1,
-     "avgPrice": 0.8097,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 2.0327011901025194
-    },
-    {
-     "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
-     "name": "merod",
-     "quality": 0.4321,
-     "netUsd": 1596.24,
-     "avgPrice": 0.8267,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.2661477621569277
-    }
-   ],
-   "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 5773.52,
-   "score": 5.7268,
-   "question": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
-   "outcome": "No",
-   "tokenId": "100268596602941774686897328445143323252864675868637226260206096004180596377901",
-   "currentPrice": 0.87,
-   "backersAvgEntry": 0.816,
-   "driftSinceEntry": 0.054,
-   "endDate": "2026-08-18T00:00:00Z",
-   "slug": "will-megan-degenfelder-win-the-2026-wyoming-governor-republican-primary-election",
-   "eventSlug": "wyoming-governor-republican-primary-winner"
-  },
   {
    "conditionId": "0xfb481845055afdf15febad269fcb534be4c5e79d5789b72659a036660b46e11b",
    "outcomeIndex": 1,
@@ -72,18 +21,18 @@
      "netUsd": 303.55,
      "avgPrice": 0.1887,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 2.3764343357766307
+     "lastTradeAgoH": 2.6,
+     "score": 2.351454461326004
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.6679,
-     "netUsd": 654.25,
-     "avgPrice": 0.1975,
+     "netUsd": 655.25,
+     "avgPrice": 0.1974,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 2.032654137378824
+     "lastTradeAgoH": 0.3,
+     "score": 2.0887958806413334
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -92,20 +41,20 @@
      "netUsd": 406.96,
      "avgPrice": 0.1918,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.2663969129632826
+     "lastTradeAgoH": 2.1,
+     "score": 1.2530851898433815
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 1364.76,
-   "score": 5.6755,
+   "totalNetUsd": 1365.76,
+   "score": 5.6933,
    "question": "Will Eric Barlow win the 2026 Wyoming Governor Republican primary election?",
    "outcome": "No",
    "tokenId": "76826077917909443736273935037749360385543312903095948502446076816516865764874",
-   "currentPrice": 0.28,
-   "backersAvgEntry": 0.1927,
-   "driftSinceEntry": 0.0873,
+   "currentPrice": 0.068,
+   "backersAvgEntry": 0.1926,
+   "driftSinceEntry": -0.1246,
    "endDate": "2026-08-18T00:00:00Z",
    "slug": "will-eric-barlow-win-the-2026-wyoming-governor-republican-primary-election",
    "eventSlug": "wyoming-governor-republican-primary-winner"
