@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-19 15:55 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-19 16:10 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs — **Astralis**
 
-- Score **7.90** · 5 backers · net $37,444 staked
-- Backers' average entry 0.33 → current price **0.35** (already moved +0.02 since entry)
+- Score **7.81** · 5 backers · net $37,444 staked
+- Backers' average entry 0.33 → current price **0.34** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-19
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -20,8 +20,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: FUT Esports vs magic (BO3) - Esports World Cup Playoffs — **FUT Esports**
 
-- Score **5.87** · 4 backers · net $42,870 staked
-- Backers' average entry 0.65 → current price **0.58** (moved against them -0.07 since entry)
+- Score **5.81** · 4 backers · net $42,870 staked
+- Backers' average entry 0.65 → current price **0.62** (moved against them -0.02 since entry)
 - Resolves by 2026-08-19
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -33,8 +33,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Will Ralph Norman be the new Republican nominee for Senate in South Carolina? — **No**
 
-- Score **3.64** · 3 backers · net $6,794 staked
-- Backers' average entry 0.84 → current price **0.78** (moved against them -0.07 since entry)
+- Score **3.60** · 3 backers · net $6,794 staked
+- Backers' average entry 0.84 → current price **0.78** (moved against them -0.06 since entry)
 - Resolves by 2026-08-11
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
