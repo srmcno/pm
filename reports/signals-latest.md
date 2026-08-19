@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-19 20:57 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-19 21:12 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: GamerLegion vs MOUZ (BO3) - Esports World Cup Playoffs — **MOUZ**
 
-- Score **5.10** · 3 backers · net $24,965 staked
-- Backers' average entry 0.71 → current price **0.57** (moved against them -0.14 since entry)
+- Score **5.05** · 3 backers · net $24,965 staked
+- Backers' average entry 0.71 → current price **0.21** (moved against them -0.50 since entry)
 - Resolves by 2026-08-19
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |

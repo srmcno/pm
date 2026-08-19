@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787173032,
+  "generatedAt": 1787173941,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1476.55,
      "avgPrice": 0.7789,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.479685324884008
+     "lastTradeAgoH": 0.8,
+     "score": 2.453733724470113
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -31,8 +31,8 @@
      "netUsd": 19287.1,
      "avgPrice": 0.6858,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.338739801685908
+     "lastTradeAgoH": 0.6,
+     "score": 1.3247289753754545
     },
     {
      "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
@@ -41,20 +41,20 @@
      "netUsd": 4201.63,
      "avgPrice": 0.664,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.281586139211135
+     "lastTradeAgoH": 0.7,
+     "score": 1.2681734650112946
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 24965.28,
-   "score": 5.1,
+   "score": 5.0466,
    "question": "Counter-Strike: GamerLegion vs MOUZ (BO3) - Esports World Cup Playoffs",
    "outcome": "MOUZ",
    "tokenId": "43299795161953159767131895079870855429253616892003928138860465128550721161419",
-   "currentPrice": 0.568,
+   "currentPrice": 0.2115,
    "backersAvgEntry": 0.7096,
-   "driftSinceEntry": -0.1416,
+   "driftSinceEntry": -0.4981,
    "endDate": "2026-08-19T23:55:00Z",
    "slug": "cs2-gl1-mouz-2026-08-19",
    "eventSlug": "cs2-gl1-mouz-2026-08-19"
