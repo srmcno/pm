@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787143760,
+  "generatedAt": 1787144760,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -8,57 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x864f6585e6b90acc5aa3de9bd51b24aef054d0506ca430bd0e1fcd4ff69e898b",
-   "outcomeIndex": 0,
-   "title": "LoL: Anyone's Legend vs Top Esports (BO3) - LPL Group Ascend",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
-     "name": "IMAREALPERSON",
-     "quality": 0.6775,
-     "netUsd": 439.16,
-     "avgPrice": 0.56,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.1265087330843535
-    },
-    {
-     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
-     "name": "jtwyslljy",
-     "quality": 0.7409,
-     "netUsd": 30793.36,
-     "avgPrice": 0.58,
-     "conviction": 10.0,
-     "lastTradeAgoH": 5.6,
-     "score": 1.859147796330149
-    },
-    {
-     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
-     "name": "fkigedgjdgwbg",
-     "quality": 0.5588,
-     "netUsd": 890.93,
-     "avgPrice": 0.63,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.7505107431819833
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 32123.45,
-   "score": 5.7362,
-   "question": "LoL: Anyone's Legend vs Top Esports (BO3) - LPL Group Ascend",
-   "outcome": "Anyone's Legend",
-   "tokenId": "112322683979529218929017371312093499535821839330408701803227089250084829015628",
-   "currentPrice": 0.535,
-   "backersAvgEntry": 0.59,
-   "driftSinceEntry": -0.055,
-   "endDate": "2026-08-19T16:15:00Z",
-   "slug": "lol-al-tes-2026-08-19",
-   "eventSlug": "lol-al-tes-2026-08-19"
-  },
   {
    "conditionId": "0x70831611831c0792bfb971d613ec2db2e06d59a234967b45f8302b3671b515cd",
    "outcomeIndex": 1,
@@ -72,8 +21,8 @@
      "netUsd": 5005.97,
      "avgPrice": 0.8299,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.7,
-     "score": 1.610649913177049
+     "lastTradeAgoH": 6.9,
+     "score": 1.592115597449143
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -82,24 +31,24 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.7,
-     "score": 1.5969449470573216
+     "lastTradeAgoH": 7.0,
+     "score": 1.5785683392006449
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
      "name": "merod",
      "quality": 0.4321,
-     "netUsd": 887.13,
-     "avgPrice": 0.874,
+     "netUsd": 867.7,
+     "avgPrice": 0.8741,
      "conviction": 10.0,
-     "lastTradeAgoH": 40.8,
-     "score": 0.24988839651496159
+     "lastTradeAgoH": 41.1,
+     "score": 0.2470128427401424
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 6302.91,
-   "score": 3.4575,
+   "totalNetUsd": 6283.48,
+   "score": 3.4177,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
@@ -109,6 +58,57 @@
    "endDate": "2026-08-11T00:00:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
+  },
+  {
+   "conditionId": "0x8354996f412fb98c6338f20efcc29c469a08dca04e4aad345da1160bf8e516c9",
+   "outcomeIndex": 1,
+   "title": "Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+     "name": "Lakersfan111",
+     "quality": 0.4201,
+     "netUsd": 3849.47,
+     "avgPrice": 0.32,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.321189359059128
+    },
+    {
+     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
+     "name": "CORGI8",
+     "quality": 0.3373,
+     "netUsd": 7367.41,
+     "avgPrice": 0.34,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.7,
+     "score": 0.9922370573348775
+    },
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.8021,
+     "netUsd": 775.15,
+     "avgPrice": 0.35,
+     "conviction": 10.0,
+     "lastTradeAgoH": 25.0,
+     "score": 0.8946692309524719
+    }
+   ],
+   "backerCount": 3,
+   "contested": false,
+   "totalNetUsd": 11992.03,
+   "score": 3.2081,
+   "question": "Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs",
+   "outcome": "Astralis",
+   "tokenId": "104192096067337395309705777015361380085962868630154525422854767287560200699618",
+   "currentPrice": 0.325,
+   "backersAvgEntry": 0.3367,
+   "driftSinceEntry": -0.0117,
+   "endDate": "2026-08-19T20:00:00Z",
+   "slug": "cs2-g2-ast10-2026-08-19",
+   "eventSlug": "cs2-g2-ast10-2026-08-19"
   }
  ]
 }
