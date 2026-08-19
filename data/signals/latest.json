@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787146153,
+  "generatedAt": 1787147062,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 5005.97,
      "avgPrice": 0.8299,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.3,
-     "score": 1.5666341068807725
+     "lastTradeAgoH": 7.6,
+     "score": 1.5502561537028736
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +31,8 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.4,
-     "score": 1.5533036697813416
+     "lastTradeAgoH": 7.6,
+     "score": 1.5370650760580187
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -41,14 +41,14 @@
      "netUsd": 867.7,
      "avgPrice": 0.8741,
      "conviction": 10.0,
-     "lastTradeAgoH": 41.4,
-     "score": 0.24305945177240487
+     "lastTradeAgoH": 41.7,
+     "score": 0.24051845237561517
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 6283.48,
-   "score": 3.363,
+   "score": 3.3278,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
@@ -72,8 +72,8 @@
      "netUsd": 3849.47,
      "avgPrice": 0.32,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.300043988555984
+     "lastTradeAgoH": 0.8,
+     "score": 1.2864530297735455
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -82,8 +82,8 @@
      "netUsd": 7367.41,
      "avgPrice": 0.34,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 0.9763565023936562
+     "lastTradeAgoH": 2.4,
+     "score": 0.9661494470187554
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -92,14 +92,14 @@
      "netUsd": 775.15,
      "avgPrice": 0.35,
      "conviction": 10.0,
-     "lastTradeAgoH": 25.4,
-     "score": 0.8803502294887261
+     "lastTradeAgoH": 25.6,
+     "score": 0.8711468457660095
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 11992.03,
-   "score": 3.1568,
+   "score": 3.1237,
    "question": "Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs",
    "outcome": "Astralis",
    "tokenId": "104192096067337395309705777015361380085962868630154525422854767287560200699618",
