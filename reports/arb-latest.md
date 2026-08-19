@@ -1,6 +1,6 @@
 # Arb desk — latest scan
 
-Scanned 2026-08-19 00:30 UTC · 2103 pairs · 744 cycles · 0 verified edges
+Scanned 2026-08-19 00:40 UTC · 2103 pairs · 744 cycles · 0 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
