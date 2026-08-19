@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787157641,
+  "generatedAt": 1787159152,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -18,31 +18,31 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.8021,
-     "netUsd": 715.4,
-     "avgPrice": 0.3456,
+     "netUsd": 743.56,
+     "avgPrice": 0.3446,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.4804890568369746
+     "lastTradeAgoH": 1.0,
+     "score": 2.4378248920063377
+    },
+    {
+     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
+     "name": "jtwyslljy",
+     "quality": 0.7409,
+     "netUsd": 508.64,
+     "avgPrice": 0.1981,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.4,
+     "score": 2.30084841484698
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
      "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
      "quality": 0.6934,
-     "netUsd": 14579.38,
-     "avgPrice": 0.3532,
+     "netUsd": 48256.98,
+     "avgPrice": 0.4001,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.18188808732902
-    },
-    {
-     "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
-     "name": "GreenBerry1337",
-     "quality": 0.4127,
-     "netUsd": 1252.69,
-     "avgPrice": 0.31,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 1.2228272695343427
+     "lastTradeAgoH": 0.3,
+     "score": 2.165309445629073
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -51,8 +51,8 @@
      "netUsd": 6569.52,
      "avgPrice": 0.316,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 1.2007448621992203
+     "lastTradeAgoH": 2.8,
+     "score": 1.1799282798016957
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -61,84 +61,23 @@
      "netUsd": 15519.53,
      "avgPrice": 0.3295,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.9,
-     "score": 0.9466238973763053
+     "lastTradeAgoH": 3.3,
+     "score": 0.9302128553809988
     }
    ],
    "backerCount": 5,
    "contested": true,
-   "totalNetUsd": 38636.52,
-   "score": 8.0326,
+   "totalNetUsd": 71598.23,
+   "score": 9.0141,
    "question": "Counter-Strike: G2 vs Astralis (BO3) - Esports World Cup Playoffs",
    "outcome": "Astralis",
    "tokenId": "104192096067337395309705777015361380085962868630154525422854767287560200699618",
-   "currentPrice": 0.295,
-   "backersAvgEntry": 0.3309,
-   "driftSinceEntry": -0.0359,
+   "currentPrice": 0.04,
+   "backersAvgEntry": 0.3177,
+   "driftSinceEntry": -0.2777,
    "endDate": "2026-08-19T20:10:00Z",
    "slug": "cs2-g2-ast10-2026-08-19",
    "eventSlug": "cs2-g2-ast10-2026-08-19"
-  },
-  {
-   "conditionId": "0x10b61b201302ab4b39d1945f3abbbec39a20d9bb40d9ad62aeb4d0c08d594d1c",
-   "outcomeIndex": 0,
-   "title": "Counter-Strike: FUT Esports vs magic (BO3) - Esports World Cup Playoffs",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8021,
-     "netUsd": 540.6,
-     "avgPrice": 0.6439,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.490269471876274
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.4668,
-     "netUsd": 1611.58,
-     "avgPrice": 0.65,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 1.3416419322545454
-    },
-    {
-     "wallet": "0x91667e40b80c447050904b042f3b85d22fc6b479",
-     "name": "GreenBerry1337",
-     "quality": 0.4127,
-     "netUsd": 4064.04,
-     "avgPrice": 0.63,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.281348830418329
-    },
-    {
-     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
-     "name": "CORGI8",
-     "quality": 0.3373,
-     "netUsd": 23200.46,
-     "avgPrice": 0.6534,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 0.9693865383279433
-    }
-   ],
-   "backerCount": 4,
-   "contested": true,
-   "totalNetUsd": 29416.68,
-   "score": 6.0826,
-   "question": "Counter-Strike: FUT Esports vs magic (BO3) - Esports World Cup Playoffs",
-   "outcome": "FUT Esports",
-   "tokenId": "61064813722602530057788822447442963689212213811494099606598928245856052218036",
-   "currentPrice": 0.74,
-   "backersAvgEntry": 0.6443,
-   "driftSinceEntry": 0.0957,
-   "endDate": "2026-08-19T20:20:00Z",
-   "slug": "cs2-fut-mgc-2026-08-19",
-   "eventSlug": "cs2-fut-mgc-2026-08-19"
   },
   {
    "conditionId": "0x70831611831c0792bfb971d613ec2db2e06d59a234967b45f8302b3671b515cd",
@@ -150,11 +89,11 @@
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
      "name": "flawfence",
      "quality": 0.6723,
-     "netUsd": 5762.07,
-     "avgPrice": 0.8273,
+     "netUsd": 9849.77,
+     "avgPrice": 0.8201,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 1.9517622408529731
+     "lastTradeAgoH": 2.0,
+     "score": 1.9531633136191082
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -163,8 +102,8 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.6,
-     "score": 1.3599135065722108
+     "lastTradeAgoH": 11.0,
+     "score": 1.3363375143241838
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -173,20 +112,20 @@
      "netUsd": 352.8,
      "avgPrice": 0.8801,
      "conviction": 10.0,
-     "lastTradeAgoH": 44.6,
-     "score": 0.21279794659331516
+     "lastTradeAgoH": 45.1,
+     "score": 0.20910879819157177
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 6524.68,
-   "score": 3.5245,
+   "totalNetUsd": 10612.38,
+   "score": 3.4986,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
-   "currentPrice": 0.775,
-   "backersAvgEntry": 0.8425,
-   "driftSinceEntry": -0.0675,
+   "currentPrice": 0.77,
+   "backersAvgEntry": 0.8401,
+   "driftSinceEntry": -0.0701,
    "endDate": "2026-08-11T00:00:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
