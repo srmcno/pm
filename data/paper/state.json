@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 7.4919,
+ "cash": 6.2919,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -58,6 +58,20 @@
    "signalScore": 3.1826,
    "markPrice": 0.177,
    "valueUsd": 0.776
+  },
+  {
+   "conditionId": "0x70831611831c0792bfb971d613ec2db2e06d59a234967b45f8302b3671b515cd",
+   "outcomeIndex": 1,
+   "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
+   "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
+   "outcome": "No",
+   "shares": 1.4545,
+   "entryPrice": 0.825,
+   "costUsd": 1.2,
+   "openedAt": 1787121109,
+   "signalScore": 4.3131,
+   "markPrice": 0.815,
+   "valueUsd": 1.1854
   }
  ],
  "closed": [
@@ -3306,6 +3320,11 @@
    "t": 1787120201,
    "equity": 12.1739,
    "cash": 7.4919
+  },
+  {
+   "t": 1787121109,
+   "equity": 12.1593,
+   "cash": 6.2919
   }
  ],
  "log": [
@@ -3670,6 +3689,14 @@
    "question": "Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election?",
    "price": 1.0,
    "pnl": 0.2469
+  },
+  {
+   "t": 1787121109,
+   "action": "BUY",
+   "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
+   "outcome": "No",
+   "stake": 1.2,
+   "price": 0.825
   }
  ]
 }
