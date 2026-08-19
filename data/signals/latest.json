@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787127956,
+  "generatedAt": 1787128051,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 233.26,
      "avgPrice": 0.1805,
      "conviction": 8.46,
-     "lastTradeAgoH": 0.1,
-     "score": 2.3196476175701415
+     "lastTradeAgoH": 0.2,
+     "score": 2.3171252992183717
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -32,7 +32,7 @@
      "avgPrice": 0.18,
      "conviction": 9.17,
      "lastTradeAgoH": 0.1,
-     "score": 1.6868948453225028
+     "score": 1.6850605642042698
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -41,14 +41,14 @@
      "netUsd": 1303.37,
      "avgPrice": 0.24,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 1.2510506889312467
+     "lastTradeAgoH": 1.5,
+     "score": 1.2496903322599213
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1974.56,
-   "score": 5.2576,
+   "score": 5.2519,
    "question": "LoL: Gen.G vs KT Rolster - Game 1 Winner",
    "outcome": "KT Rolster",
    "tokenId": "64432503875249613648888993161475947484183841019966173708958748059128161485792",
@@ -73,7 +73,7 @@
      "avgPrice": 0.8299,
      "conviction": 10.0,
      "lastTradeAgoH": 2.3,
-     "score": 1.9339080712059045
+     "score": 1.9318051949838049
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -83,7 +83,7 @@
      "avgPrice": 0.82,
      "conviction": 10.0,
      "lastTradeAgoH": 2.3,
-     "score": 1.9174525122556267
+     "score": 1.9153675293368093
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -93,13 +93,13 @@
      "avgPrice": 0.8719,
      "conviction": 10.0,
      "lastTradeAgoH": 36.4,
-     "score": 0.3000411094722255
+     "score": 0.29971485336721426
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 6846.41,
-   "score": 4.1514,
+   "score": 4.1469,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
