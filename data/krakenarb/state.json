@@ -1,6 +1,6 @@
 {
  "bankrollStart": 40.0,
- "cash": 40.92,
+ "cash": 40.9414,
  "createdAt": 1786666692,
  "trades": [
   {
@@ -527,53 +527,16 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0209,
    "bps": 41.8
+  },
+  {
+   "t": 1787104550,
+   "path": "USD\u2192ELX\u2192EUR\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0214,
+   "bps": 42.8
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787099425,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099435,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099445,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099455,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099465,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099475,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099485,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099495,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099505,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099515,
-   "equity": 40.7574
-  },
-  {
-   "t": 1787099525,
-   "equity": 40.7574
-  },
   {
    "t": 1787099535,
    "equity": 40.7574
@@ -2529,17 +2492,61 @@
   {
    "t": 1787104440,
    "equity": 40.92
+  },
+  {
+   "t": 1787104450,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104460,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104470,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104480,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104490,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104500,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104510,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104520,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104530,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104540,
+   "equity": 40.92
+  },
+  {
+   "t": 1787104550,
+   "equity": 40.9414
   }
  ],
  "decay": {
-  "checked": 202,
-  "survived": 167
+  "checked": 205,
+  "survived": 169
  },
  "cooldown": {
   "USD\u2192EAT\u2192EUR\u2192USD|EATUSD|EATEUR|ZEURZUSD": 1787101700,
-  "USD\u2192ELX\u2192EUR\u2192USD|ELXUSD|ELXEUR|ZEURZUSD": 1787104440
+  "USD\u2192ELX\u2192EUR\u2192USD|ELXUSD|ELXEUR|ZEURZUSD": 1787104550
  },
- "tradeCountAll": 75,
+ "tradeCountAll": 76,
  "replay": {
   "edges": 199,
   "refillable": 199,
