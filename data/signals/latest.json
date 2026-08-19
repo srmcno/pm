@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787142847,
+  "generatedAt": 1787143274,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -8,6 +8,57 @@
   "source": "watch.py"
  },
  "signals": [
+  {
+   "conditionId": "0x864f6585e6b90acc5aa3de9bd51b24aef054d0506ca430bd0e1fcd4ff69e898b",
+   "outcomeIndex": 0,
+   "title": "LoL: Anyone's Legend vs Top Esports (BO3) - LPL Group Ascend",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
+     "name": "IMAREALPERSON",
+     "quality": 0.6775,
+     "netUsd": 439.16,
+     "avgPrice": 0.56,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.0,
+     "score": 2.1384792988472148
+    },
+    {
+     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
+     "name": "jtwyslljy",
+     "quality": 0.7409,
+     "netUsd": 30793.36,
+     "avgPrice": 0.58,
+     "conviction": 10.0,
+     "lastTradeAgoH": 5.4,
+     "score": 1.869613331040918
+    },
+    {
+     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
+     "name": "fkigedgjdgwbg",
+     "quality": 0.5588,
+     "netUsd": 890.93,
+     "avgPrice": 0.63,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.7603647370282542
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 32123.45,
+   "score": 5.7685,
+   "question": "LoL: Anyone's Legend vs Top Esports (BO3) - LPL Group Ascend",
+   "outcome": "Anyone's Legend",
+   "tokenId": "112322683979529218929017371312093499535821839330408701803227089250084829015628",
+   "currentPrice": 0.535,
+   "backersAvgEntry": 0.59,
+   "driftSinceEntry": -0.055,
+   "endDate": "2026-08-19T16:15:00Z",
+   "slug": "lol-al-tes-2026-08-19",
+   "eventSlug": "lol-al-tes-2026-08-19"
+  },
   {
    "conditionId": "0x70831611831c0792bfb971d613ec2db2e06d59a234967b45f8302b3671b515cd",
    "outcomeIndex": 1,
@@ -21,8 +72,8 @@
      "netUsd": 5005.97,
      "avgPrice": 0.8299,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.4,
-     "score": 1.6277601031793627
+     "lastTradeAgoH": 6.5,
+     "score": 1.6197166009393265
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +82,8 @@
      "netUsd": 409.81,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.5,
-     "score": 1.6139095470264657
+     "lastTradeAgoH": 6.6,
+     "score": 1.6059344866773593
     },
     {
      "wallet": "0x83733b87090cf97aee473b1000beb9bfab7af0bc",
@@ -41,14 +92,14 @@
      "netUsd": 887.13,
      "avgPrice": 0.874,
      "conviction": 10.0,
-     "lastTradeAgoH": 40.5,
-     "score": 0.25254300066497865
+     "lastTradeAgoH": 40.6,
+     "score": 0.25129507095618026
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 6302.91,
-   "score": 3.4942,
+   "score": 3.4769,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
