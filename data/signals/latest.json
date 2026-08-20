@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787233199,
+  "generatedAt": 1787234107,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 30975.33,
      "avgPrice": 0.5219,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 1.3091211572867056
+     "lastTradeAgoH": 1.1,
+     "score": 1.2954353036951942
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -31,8 +31,8 @@
      "netUsd": 6856.92,
      "avgPrice": 0.52,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 1.0170495553961452
+     "lastTradeAgoH": 1.4,
+     "score": 1.0064170854883847
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -41,14 +41,14 @@
      "netUsd": 322.7,
      "avgPrice": 0.5,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.2,
-     "score": 0.834170737350599
+     "lastTradeAgoH": 11.4,
+     "score": 0.8254501246569923
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 38154.95,
-   "score": 3.1603,
+   "score": 3.1273,
    "question": "Map Handicap: VIT (-1.5) vs FaZe (+1.5)",
    "outcome": "FaZe",
    "tokenId": "106320807339771006015517984483453957216555199276354868993934906942527192455228",
