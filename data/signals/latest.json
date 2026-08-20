@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787245268,
+  "generatedAt": 1787246176,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 509.38,
      "avgPrice": 0.3162,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.520746979686548
+     "lastTradeAgoH": 0.4,
+     "score": 2.4943945111520565
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -31,8 +31,8 @@
      "netUsd": 417.85,
      "avgPrice": 0.3809,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.9459500434134276
+     "lastTradeAgoH": 0.4,
+     "score": 1.925606634216872
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -41,20 +41,20 @@
      "netUsd": 6633.61,
      "avgPrice": 0.4352,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.060100989023133
+     "lastTradeAgoH": 0.4,
+     "score": 1.0490184495291894
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 7560.84,
-   "score": 5.5268,
+   "score": 5.469,
    "question": "Dota 2: Nigma Galaxy vs Team Falcons (BO3) - The International Playoffs",
    "outcome": "Nigma Galaxy",
    "tokenId": "43177180688006551303093509072434100821974753295597486243661552218945813704246",
-   "currentPrice": 0.395,
+   "currentPrice": 0.46,
    "backersAvgEntry": 0.3774,
-   "driftSinceEntry": 0.0176,
+   "driftSinceEntry": 0.0826,
    "endDate": "2026-08-20T19:25:00Z",
    "slug": "dota2-ngx-flc-2026-08-20",
    "eventSlug": "dota2-ngx-flc-2026-08-20"
