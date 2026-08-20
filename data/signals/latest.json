@@ -1,114 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1787219304,
+  "generatedAt": 1787220215,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": [
-  {
-   "conditionId": "0xa813d824c347c725eeb781fd0ad00d2f0fe5d3dc2438e408698876b2fe00c216",
-   "outcomeIndex": 0,
-   "title": "LoL: Dplus KIA vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8021,
-     "netUsd": 515.22,
-     "avgPrice": 0.5073,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.3798097699292446
-    },
-    {
-     "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
-     "name": "zb8",
-     "quality": 0.6019,
-     "netUsd": 11247.73,
-     "avgPrice": 0.48,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.7,
-     "score": 1.7750647824245112
-    },
-    {
-     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
-     "name": "Lakersfan111",
-     "quality": 0.4201,
-     "netUsd": 37432.88,
-     "avgPrice": 0.4709,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.2310278737652938
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 49195.83,
-   "score": 5.3859,
-   "question": "LoL: Dplus KIA vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
-   "outcome": "Dplus KIA",
-   "tokenId": "104637413315894005861956877067491820358804894805811712554668860773599445451056",
-   "currentPrice": 0.16,
-   "backersAvgEntry": 0.4861,
-   "driftSinceEntry": -0.3261,
-   "endDate": "2026-08-20T14:00:00Z",
-   "slug": "lol-dk-hle1-2026-08-20",
-   "eventSlug": "lol-dk-hle1-2026-08-20"
-  },
-  {
-   "conditionId": "0xbfa5522abf1fdf7f209f18fb5979cb1147a75035a905f043986093a1136177d4",
-   "outcomeIndex": 0,
-   "title": "Dota 2: TEAM VISION vs BoomBoys (BO3) - The International Playoffs",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8021,
-     "netUsd": 745.74,
-     "avgPrice": 0.8507,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.5,
-     "score": 2.2831904765371047
-    },
-    {
-     "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
-     "name": "zb8",
-     "quality": 0.6019,
-     "netUsd": 29600.0,
-     "avgPrice": 0.74,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.8929832977643903
-    },
-    {
-     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
-     "name": "Lakersfan111",
-     "quality": 0.4201,
-     "netUsd": 9276.27,
-     "avgPrice": 0.735,
-     "conviction": 10.0,
-     "lastTradeAgoH": 20.8,
-     "score": 0.5576748382688386
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 39622.01,
-   "score": 4.7338,
-   "question": "Dota 2: TEAM VISION vs BoomBoys (BO3) - The International Playoffs",
-   "outcome": "TEAM VISION",
-   "tokenId": "101028650168194677069630427574598819381546668487248022828323675030946075448144",
-   "currentPrice": 0.9165,
-   "backersAvgEntry": 0.7752,
-   "driftSinceEntry": 0.1413,
-   "endDate": "2026-08-20T11:50:00Z",
-   "slug": "dota2-vsn2-boombo-2026-08-20",
-   "eventSlug": "dota2-vsn2-boombo-2026-08-20"
-  }
- ]
+ "signals": []
 }
