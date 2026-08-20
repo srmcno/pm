@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787215637,
+  "generatedAt": 1787216546,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -8,67 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x563f81f98d96e35c4758ae8c94dba8f5b26cda94951619f0f7a39209ed8c702e",
-   "outcomeIndex": 0,
-   "title": "LoL: Dplus KIA vs Hanwha Life Esports - Game 1 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x38337de21ff0bb0a11a40761507d51e318d633d1",
-     "name": "SineNooneEI",
-     "quality": 0.6977,
-     "netUsd": 9404.91,
-     "avgPrice": 0.51,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 2.146796951766217
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.6192,
-     "netUsd": 15536.2,
-     "avgPrice": 0.5234,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 1.9072631209827704
-    },
-    {
-     "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
-     "name": "zb8",
-     "quality": 0.6019,
-     "netUsd": 9320.53,
-     "avgPrice": 0.51,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 1.8522168438800524
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.4668,
-     "netUsd": 1691.75,
-     "avgPrice": 0.67,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.449821554130168
-    }
-   ],
-   "backerCount": 4,
-   "contested": true,
-   "totalNetUsd": 35953.39,
-   "score": 7.3561,
-   "question": "LoL: Dplus KIA vs Hanwha Life Esports - Game 1 Winner",
-   "outcome": "Dplus KIA",
-   "tokenId": "13391623520383253791338345386778554933792651754216976350311772905161387592460",
-   "currentPrice": 0.265,
-   "backersAvgEntry": 0.5534,
-   "driftSinceEntry": -0.2883,
-   "endDate": "2026-08-20T12:00:00Z",
-   "slug": "lol-dk-hle1-2026-08-20-game1",
-   "eventSlug": "lol-dk-hle1-2026-08-20"
-  },
   {
    "conditionId": "0xa813d824c347c725eeb781fd0ad00d2f0fe5d3dc2438e408698876b2fe00c216",
    "outcomeIndex": 0,
@@ -82,8 +21,8 @@
      "netUsd": 515.22,
      "avgPrice": 0.5073,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.482988029464414
+     "lastTradeAgoH": 0.8,
+     "score": 2.4570303016776625
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -92,8 +31,8 @@
      "netUsd": 11247.73,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 1.8520239146740523
+     "lastTradeAgoH": 0.9,
+     "score": 1.832662430824276
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -102,20 +41,20 @@
      "netUsd": 37432.88,
      "avgPrice": 0.4709,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 1.2843999184805146
+     "lastTradeAgoH": 1.1,
+     "score": 1.27097250640377
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 49195.83,
-   "score": 5.6194,
+   "score": 5.5607,
    "question": "LoL: Dplus KIA vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
    "outcome": "Dplus KIA",
    "tokenId": "104637413315894005861956877067491820358804894805811712554668860773599445451056",
-   "currentPrice": 0.235,
+   "currentPrice": 0.225,
    "backersAvgEntry": 0.4861,
-   "driftSinceEntry": -0.2511,
+   "driftSinceEntry": -0.2611,
    "endDate": "2026-08-20T14:00:00Z",
    "slug": "lol-dk-hle1-2026-08-20",
    "eventSlug": "lol-dk-hle1-2026-08-20"
