@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-20 06:31 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 06:36 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: TEAM VISION vs BoomBoys - Game 1 Winner — **BoomBoys**
 
-- Score **5.41** · 3 backers · net $30,140 staked
+- Score **5.40** · 3 backers · net $30,140 staked
 - Backers' average entry 0.37 → current price **0.40** (already moved +0.02 since entry)
 - Resolves by 2026-08-20
 

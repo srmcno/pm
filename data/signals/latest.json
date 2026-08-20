@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787207487,
+  "generatedAt": 1787207762,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 664.18,
      "avgPrice": 0.3437,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.486870730830957
+     "lastTradeAgoH": 0.6,
+     "score": 2.478881853357529
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -31,8 +31,8 @@
      "netUsd": 17523.87,
      "avgPrice": 0.39,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.8651889886618043
+     "lastTradeAgoH": 0.6,
+     "score": 1.8591972151005673
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -41,14 +41,14 @@
      "netUsd": 11952.06,
      "avgPrice": 0.379,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.0625823654252509
+     "lastTradeAgoH": 0.2,
+     "score": 1.0591689027882234
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 30140.11,
-   "score": 5.4146,
+   "score": 5.3972,
    "question": "Dota 2: TEAM VISION vs BoomBoys - Game 1 Winner",
    "outcome": "BoomBoys",
    "tokenId": "71421291892325785940137605055835008652821619249260058600017533583905082983644",
