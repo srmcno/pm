@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1787218442,
-   "equity": 107.1481
-  },
-  {
    "t": 1787218444,
    "equity": 107.1481
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1787219452,
    "equity": 107.1792
+  },
+  {
+   "t": 1787219478,
+   "equity": 107.1792
   }
  ],
  "decay": {
@@ -3411,7 +3411,6 @@
   "survived": 3580
  },
  "cooldown": {
-  "USDT\u2192USD1\u2192UTILITY\u2192USDT|USD1USDT|UTILITYUSD1|UTILITYUSDT": 1787215873,
   "USDT\u2192USD1\u2192MARSCOIN1\u2192USDT|USD1USDT|MARSCOIN1USD1|MARSCOIN1USDT": 1787215903,
   "USDT\u2192BTC\u2192BDX\u2192USDT|BTCUSDT|BDXBTC|BDXUSDT": 1787216317,
   "USDT\u2192USDC\u2192XRP\u2192USDT|USDCUSDT|XRPUSDC|XRPUSDT": 1787216507,
@@ -3423,11 +3422,11 @@
  },
  "tradeCountAll": 1369,
  "replay": {
-  "edges": 2847,
-  "refillable": 2846,
-  "atomicUsd": 114.5628,
-  "delayedUsd": 77.7477,
-  "captureRatio": 0.679,
-  "scansReplayed": 35967
+  "edges": 2848,
+  "refillable": 2847,
+  "atomicUsd": 114.5939,
+  "delayedUsd": 77.6411,
+  "captureRatio": 0.678,
+  "scansReplayed": 36037
  }
 }
