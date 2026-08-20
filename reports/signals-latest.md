@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-20 08:32 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 08:47 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Dplus KIA vs Hanwha Life Esports - Game 1 Winner — **Dplus KIA**
 
-- Score **7.43** · 4 backers · net $35,953 staked
-- Backers' average entry 0.55 → current price **0.62** (already moved +0.07 since entry)
+- Score **7.36** · 4 backers · net $35,953 staked
+- Backers' average entry 0.55 → current price **0.27** (moved against them -0.29 since entry)
 - Resolves by 2026-08-20
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -17,15 +17,14 @@ Each signal marks an outcome that several qualified wallets have independently n
 | zb8 | 0.60 | $9,321 | 0.51 | 10.0× |
 | BajaBlaster | 0.47 | $1,692 | 0.67 | 10.0× |
 
-## 2. Dota 2: TEAM VISION vs BoomBoys - Game 2 Winner — **BoomBoys**
+## 2. LoL: Dplus KIA vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group — **Dplus KIA**
 
-- Score **7.17** · 4 backers · net $31,952 staked
-- Backers' average entry 0.31 → current price **0.12** (moved against them -0.18 since entry)
+- Score **5.62** · 3 backers · net $49,196 staked
+- Backers' average entry 0.49 → current price **0.23** (moved against them -0.25 since entry)
 - Resolves by 2026-08-20
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x076daa87 | 0.80 | $2,673 | 0.3137 | 10.0× |
-| IMAREALPERSON | 0.68 | $1,353 | 0.25 | 10.0× |
-| HOG993 | 0.47 | $15,611 | 0.326 | 10.0× |
-| CORGI8 | 0.34 | $12,315 | 0.35 | 10.0× |
+| 0x076daa87 | 0.80 | $515 | 0.5073 | 10.0× |
+| zb8 | 0.60 | $11,248 | 0.48 | 10.0× |
+| Lakersfan111 | 0.42 | $37,433 | 0.4709 | 10.0× |
