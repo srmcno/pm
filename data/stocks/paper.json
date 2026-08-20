@@ -1,8 +1,21 @@
 {
  "bankrollStart": 1000.0,
- "cash": 966.8993,
+ "cash": 773.8485,
  "createdAt": 1786622317,
- "positions": [],
+ "positions": [
+  {
+   "symbol": "MSTR",
+   "side": "long",
+   "shares": 1.7718,
+   "entry": 109.1896,
+   "cost": 193.46,
+   "openedAt": 1787237483,
+   "entryDislocationBps": -131.6,
+   "driverMoveBps": 59.9,
+   "beta": 1.815,
+   "reason": "lagging a +60bps driver move by 132bps"
+  }
+ ],
  "closed": [
   {
    "symbol": "COIN",
@@ -3017,201 +3030,58 @@
    "closedAt": 1787235430,
    "pnl": -1.99,
    "exitReason": "stop"
+  },
+  {
+   "symbol": "COIN",
+   "side": "short",
+   "shares": 1.0,
+   "entry": 169.5402,
+   "cost": 169.54,
+   "openedAt": 1787237180,
+   "entryDislocationBps": 79.6,
+   "driverMoveBps": -36.5,
+   "beta": 1.478,
+   "reason": "lagging a -36bps driver move by 80bps",
+   "openFee": 0.0049,
+   "exit": 169.3446,
+   "closedAt": 1787237370,
+   "pnl": 0.19,
+   "exitReason": "reverted"
+  },
+  {
+   "symbol": "MSTR",
+   "side": "long",
+   "shares": 1.7788,
+   "entry": 108.7343,
+   "cost": 193.42,
+   "openedAt": 1787237395,
+   "entryDislocationBps": -123.1,
+   "driverMoveBps": 35.2,
+   "beta": 1.815,
+   "reason": "lagging a +35bps driver move by 123bps",
+   "exit": 108.8605,
+   "closedAt": 1787237446,
+   "pnl": 0.22,
+   "exitReason": "stop"
+  },
+  {
+   "symbol": "MSTR",
+   "side": "long",
+   "shares": 1.7729,
+   "entry": 109.1195,
+   "cost": 193.46,
+   "openedAt": 1787237458,
+   "entryDislocationBps": -147.7,
+   "driverMoveBps": 61.9,
+   "beta": 1.815,
+   "reason": "lagging a +62bps driver move by 148bps",
+   "exit": 109.1254,
+   "closedAt": 1787237471,
+   "pnl": 0.0,
+   "exitReason": "stop"
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787080646,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080658,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080671,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080684,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080696,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080709,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080722,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080734,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080747,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080764,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080776,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080789,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080801,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080814,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080827,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080839,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080852,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080864,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080877,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080889,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080902,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080915,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080927,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080940,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080952,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080965,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080978,
-   "equity": 996.96
-  },
-  {
-   "t": 1787080990,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081003,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081016,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081028,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081041,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081053,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081066,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081078,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081092,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081104,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081117,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081129,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081142,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081155,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081167,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081181,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081193,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081206,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081218,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081231,
-   "equity": 996.96
-  },
-  {
-   "t": 1787081244,
-   "equity": 996.96
-  },
   {
    "t": 1787081256,
    "equity": 996.96
@@ -11019,88 +10889,201 @@
   {
    "t": 1787237113,
    "equity": 966.9
+  },
+  {
+   "t": 1787237129,
+   "equity": 966.9
+  },
+  {
+   "t": 1787237142,
+   "equity": 966.9
+  },
+  {
+   "t": 1787237154,
+   "equity": 966.9
+  },
+  {
+   "t": 1787237167,
+   "equity": 966.9
+  },
+  {
+   "t": 1787237180,
+   "equity": 966.81
+  },
+  {
+   "t": 1787237192,
+   "equity": 966.66
+  },
+  {
+   "t": 1787237205,
+   "equity": 966.38
+  },
+  {
+   "t": 1787237217,
+   "equity": 966.56
+  },
+  {
+   "t": 1787237231,
+   "equity": 966.43
+  },
+  {
+   "t": 1787237243,
+   "equity": 966.54
+  },
+  {
+   "t": 1787237256,
+   "equity": 966.5
+  },
+  {
+   "t": 1787237269,
+   "equity": 966.67
+  },
+  {
+   "t": 1787237281,
+   "equity": 966.69
+  },
+  {
+   "t": 1787237294,
+   "equity": 966.62
+  },
+  {
+   "t": 1787237307,
+   "equity": 966.96
+  },
+  {
+   "t": 1787237319,
+   "equity": 966.93
+  },
+  {
+   "t": 1787237332,
+   "equity": 967.0
+  },
+  {
+   "t": 1787237344,
+   "equity": 966.83
+  },
+  {
+   "t": 1787237357,
+   "equity": 966.93
+  },
+  {
+   "t": 1787237370,
+   "equity": 967.09
+  },
+  {
+   "t": 1787237382,
+   "equity": 967.09
+  },
+  {
+   "t": 1787237395,
+   "equity": 966.99
+  },
+  {
+   "t": 1787237408,
+   "equity": 967.08
+  },
+  {
+   "t": 1787237420,
+   "equity": 967.38
+  },
+  {
+   "t": 1787237433,
+   "equity": 967.27
+  },
+  {
+   "t": 1787237446,
+   "equity": 967.31
+  },
+  {
+   "t": 1787237458,
+   "equity": 967.21
+  },
+  {
+   "t": 1787237471,
+   "equity": 967.31
+  },
+  {
+   "t": 1787237483,
+   "equity": 967.21
+  },
+  {
+   "t": 1787237496,
+   "equity": 967.28
+  },
+  {
+   "t": 1787237509,
+   "equity": 967.29
+  },
+  {
+   "t": 1787237521,
+   "equity": 967.31
+  },
+  {
+   "t": 1787237534,
+   "equity": 967.21
+  },
+  {
+   "t": 1787237546,
+   "equity": 967.1
+  },
+  {
+   "t": 1787237559,
+   "equity": 967.35
+  },
+  {
+   "t": 1787237572,
+   "equity": 967.4
+  },
+  {
+   "t": 1787237585,
+   "equity": 967.36
+  },
+  {
+   "t": 1787237598,
+   "equity": 967.54
+  },
+  {
+   "t": 1787237611,
+   "equity": 967.68
+  },
+  {
+   "t": 1787237623,
+   "equity": 967.8
+  },
+  {
+   "t": 1787237636,
+   "equity": 967.86
+  },
+  {
+   "t": 1787237649,
+   "equity": 967.82
+  },
+  {
+   "t": 1787237661,
+   "equity": 967.78
+  },
+  {
+   "t": 1787237674,
+   "equity": 967.64
+  },
+  {
+   "t": 1787237686,
+   "equity": 967.49
+  },
+  {
+   "t": 1787237699,
+   "equity": 967.75
+  },
+  {
+   "t": 1787237712,
+   "equity": 967.71
+  },
+  {
+   "t": 1787237725,
+   "equity": 967.91
   }
  ],
  "log": [
-  {
-   "t": 1787152747,
-   "action": "OPEN",
-   "symbol": "MSTR",
-   "side": "long",
-   "shares": 1.9211,
-   "entry": 102.8564,
-   "cost": 197.6,
-   "reason": "lagging a +188bps driver move by 230bps"
-  },
-  {
-   "t": 1787152747,
-   "action": "OPEN",
-   "symbol": "COIN",
-   "side": "long",
-   "shares": 1.2365,
-   "entry": 159.8099,
-   "cost": 197.6,
-   "reason": "lagging a +155bps driver move by 212bps"
-  },
-  {
-   "t": 1787152759,
-   "action": "CLOSE",
-   "symbol": "MSTR",
-   "side": "long",
-   "exit": 102.7236,
-   "pnl": -0.26,
-   "reason": "stop"
-  },
-  {
-   "t": 1787152759,
-   "action": "CLOSE",
-   "symbol": "COIN",
-   "side": "long",
-   "exit": 159.4632,
-   "pnl": -0.43,
-   "reason": "stop"
-  },
-  {
-   "t": 1787152759,
-   "action": "SKIP",
-   "symbol": "COIN",
-   "reason": "closed this cycle; no same-cycle re-entry"
-  },
-  {
-   "t": 1787152759,
-   "action": "SKIP",
-   "symbol": "MSTR",
-   "reason": "closed this cycle; no same-cycle re-entry"
-  },
-  {
-   "t": 1787152772,
-   "action": "OPEN",
-   "symbol": "MSTR",
-   "side": "long",
-   "shares": 1.9232,
-   "entry": 102.6713,
-   "cost": 197.46,
-   "reason": "lagging a +191bps driver move by 225bps"
-  },
-  {
-   "t": 1787152772,
-   "action": "OPEN",
-   "symbol": "COIN",
-   "side": "long",
-   "shares": 1.2369,
-   "entry": 159.6348,
-   "cost": 197.45,
-   "reason": "lagging a +158bps driver move by 214bps"
-  },
-  {
-   "t": 1787152784,
-   "action": "CLOSE",
-   "symbol": "MSTR",
-   "side": "long",
-   "exit": 102.5687,
-   "pnl": -0.21,
-   "reason": "stop"
-  },
   {
    "t": 1787152784,
    "action": "CLOSE",
@@ -14387,12 +14370,91 @@
    "exit": 110.2548,
    "pnl": -1.99,
    "reason": "stop"
+  },
+  {
+   "t": 1787237180,
+   "action": "OPEN",
+   "symbol": "COIN",
+   "side": "short",
+   "shares": 1.0,
+   "entry": 169.5402,
+   "cost": 169.54,
+   "reason": "lagging a -36bps driver move by 80bps"
+  },
+  {
+   "t": 1787237370,
+   "action": "CLOSE",
+   "symbol": "COIN",
+   "side": "short",
+   "exit": 169.3446,
+   "pnl": 0.19,
+   "reason": "reverted"
+  },
+  {
+   "t": 1787237395,
+   "action": "OPEN",
+   "symbol": "MSTR",
+   "side": "long",
+   "shares": 1.7788,
+   "entry": 108.7343,
+   "cost": 193.42,
+   "reason": "lagging a +35bps driver move by 123bps"
+  },
+  {
+   "t": 1787237446,
+   "action": "CLOSE",
+   "symbol": "MSTR",
+   "side": "long",
+   "exit": 108.8605,
+   "pnl": 0.22,
+   "reason": "stop"
+  },
+  {
+   "t": 1787237446,
+   "action": "SKIP",
+   "symbol": "MSTR",
+   "reason": "closed this cycle; no same-cycle re-entry"
+  },
+  {
+   "t": 1787237458,
+   "action": "OPEN",
+   "symbol": "MSTR",
+   "side": "long",
+   "shares": 1.7729,
+   "entry": 109.1195,
+   "cost": 193.46,
+   "reason": "lagging a +62bps driver move by 148bps"
+  },
+  {
+   "t": 1787237471,
+   "action": "CLOSE",
+   "symbol": "MSTR",
+   "side": "long",
+   "exit": 109.1254,
+   "pnl": 0.0,
+   "reason": "stop"
+  },
+  {
+   "t": 1787237471,
+   "action": "SKIP",
+   "symbol": "MSTR",
+   "reason": "closed this cycle; no same-cycle re-entry"
+  },
+  {
+   "t": 1787237483,
+   "action": "OPEN",
+   "symbol": "MSTR",
+   "side": "long",
+   "shares": 1.7718,
+   "entry": 109.1896,
+   "cost": 193.46,
+   "reason": "lagging a +60bps driver move by 132bps"
   }
  ],
  "day": {
   "date": "2026-08-20",
-  "trades": 3,
-  "pnl": -2.93,
+  "trades": 6,
+  "pnl": -2.52,
   "halted": false,
   "startEquity": 969.83
  }
