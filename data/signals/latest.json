@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787245023,
+  "generatedAt": 1787245268,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.3162,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 2.5279050753152927
+     "score": 2.520746979686548
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -32,7 +32,7 @@
      "avgPrice": 0.3809,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.9514759040459155
+     "score": 1.9459500434134276
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -42,13 +42,13 @@
      "avgPrice": 0.4352,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.0631113285441975
+     "score": 1.060100989023133
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 7560.84,
-   "score": 5.5425,
+   "score": 5.5268,
    "question": "Dota 2: Nigma Galaxy vs Team Falcons (BO3) - The International Playoffs",
    "outcome": "Nigma Galaxy",
    "tokenId": "43177180688006551303093509072434100821974753295597486243661552218945813704246",

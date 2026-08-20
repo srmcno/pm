@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-20 16:57 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 17:01 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Nigma Galaxy vs Team Falcons (BO3) - The International Playoffs — **Nigma Galaxy**
 
-- Score **5.54** · 3 backers · net $7,561 staked
+- Score **5.53** · 3 backers · net $7,561 staked
 - Backers' average entry 0.38 → current price **0.40** (roughly flat +0.02 since entry)
 - Resolves by 2026-08-20
 
