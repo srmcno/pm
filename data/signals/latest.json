@@ -1,11 +1,73 @@
 {
  "meta": {
-  "generatedAt": 1787247083,
+  "generatedAt": 1787247992,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": []
+ "signals": [
+  {
+   "conditionId": "0xa6ef696ebfa8e63a4931093b899cf1726948b7a6034e14949fef3d0f98d4359c",
+   "outcomeIndex": 1,
+   "title": "Counter-Strike: G2 vs FURIA (BO3) - Esports World Cup Playoffs",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
+     "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
+     "quality": 0.6934,
+     "netUsd": 15857.11,
+     "avgPrice": 0.58,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.0,
+     "score": 2.0203704280825177
+    },
+    {
+     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
+     "name": "BajaBlaster",
+     "quality": 0.4668,
+     "netUsd": 3166.29,
+     "avgPrice": 0.57,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.8,
+     "score": 1.3706155248973704
+    },
+    {
+     "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
+     "name": "0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740",
+     "quality": 0.4297,
+     "netUsd": 50308.43,
+     "avgPrice": 0.5742,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.1,
+     "score": 1.2432727826012693
+    },
+    {
+     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+     "name": "Lakersfan111",
+     "quality": 0.4201,
+     "netUsd": 81851.14,
+     "avgPrice": 0.55,
+     "conviction": 10.0,
+     "lastTradeAgoH": 4.6,
+     "score": 1.0969791100166293
+    }
+   ],
+   "backerCount": 4,
+   "contested": true,
+   "totalNetUsd": 151182.97,
+   "score": 5.7312,
+   "question": "Counter-Strike: G2 vs FURIA (BO3) - Esports World Cup Playoffs",
+   "outcome": "FURIA",
+   "tokenId": "39130126425858927553414740852390790469013370250426290486364058216232197741620",
+   "currentPrice": 0.635,
+   "backersAvgEntry": 0.5685,
+   "driftSinceEntry": 0.0665,
+   "endDate": "2026-08-20T22:20:00Z",
+   "slug": "cs2-g2-furia-2026-08-20",
+   "eventSlug": "cs2-g2-furia-2026-08-20"
+  }
+ ]
 }
