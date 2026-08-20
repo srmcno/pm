@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-20 12:16 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 12:24 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Liquid vs Team Yandex - Game 2 Winner — **Team Liquid**
 
-- Score **6.59** · 4 backers · net $40,800 staked
+- Score **6.56** · 4 backers · net $40,800 staked
 - Backers' average entry 0.52 → current price **0.53** (roughly flat +0.00 since entry)
 - Resolves by 2026-08-20
 
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: Natus Vincere vs Legacy (BO3) - Esports World Cup Playoffs — **Natus Vincere**
 
-- Score **5.39** · 3 backers · net $84,006 staked
+- Score **5.36** · 3 backers · net $84,006 staked
 - Backers' average entry 0.61 → current price **0.47** (moved against them -0.13 since entry)
 - Resolves by 2026-08-20
 
@@ -31,7 +31,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Counter-Strike: Team Falcons vs TheMongolz (BO3) - Esports World Cup Playoffs — **TheMongolz**
 
-- Score **3.99** · 3 backers · net $32,219 staked
+- Score **3.97** · 3 backers · net $32,219 staked
 - Backers' average entry 0.17 → current price **0.07** (moved against them -0.09 since entry)
 - Resolves by 2026-08-20
 
