@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-20 09:46 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 09:48 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Dplus KIA vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group — **Dplus KIA**
 
 - Score **5.39** · 3 backers · net $49,196 staked
-- Backers' average entry 0.49 → current price **0.14** (moved against them -0.34 since entry)
+- Backers' average entry 0.49 → current price **0.16** (moved against them -0.33 since entry)
 - Resolves by 2026-08-20
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Dota 2: TEAM VISION vs BoomBoys (BO3) - The International Playoffs — **TEAM VISION**
 
-- Score **4.74** · 3 backers · net $39,622 staked
+- Score **4.73** · 3 backers · net $39,622 staked
 - Backers' average entry 0.78 → current price **0.92** (already moved +0.14 since entry)
 - Resolves by 2026-08-20
 

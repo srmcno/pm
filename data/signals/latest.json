@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787219209,
+  "generatedAt": 1787219304,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.5073,
      "conviction": 10.0,
      "lastTradeAgoH": 1.5,
-     "score": 2.38242789801301
+     "score": 2.3798097699292446
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -31,8 +31,8 @@
      "netUsd": 11247.73,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 1.777017605299722
+     "lastTradeAgoH": 1.7,
+     "score": 1.7750647824245112
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -42,19 +42,19 @@
      "avgPrice": 0.4709,
      "conviction": 10.0,
      "lastTradeAgoH": 1.8,
-     "score": 1.2323821789240204
+     "score": 1.2310278737652938
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 49195.83,
-   "score": 5.3918,
+   "score": 5.3859,
    "question": "LoL: Dplus KIA vs Hanwha Life Esports (BO3) - LCK Round 3-4 Legend Group",
    "outcome": "Dplus KIA",
    "tokenId": "104637413315894005861956877067491820358804894805811712554668860773599445451056",
-   "currentPrice": 0.145,
+   "currentPrice": 0.16,
    "backersAvgEntry": 0.4861,
-   "driftSinceEntry": -0.3411,
+   "driftSinceEntry": -0.3261,
    "endDate": "2026-08-20T14:00:00Z",
    "slug": "lol-dk-hle1-2026-08-20",
    "eventSlug": "lol-dk-hle1-2026-08-20"
@@ -73,7 +73,7 @@
      "avgPrice": 0.8507,
      "conviction": 10.0,
      "lastTradeAgoH": 2.5,
-     "score": 2.285702309702402
+     "score": 2.2831904765371047
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -83,7 +83,7 @@
      "avgPrice": 0.74,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.8950658477213658
+     "score": 1.8929832977643903
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -93,13 +93,13 @@
      "avgPrice": 0.735,
      "conviction": 10.0,
      "lastTradeAgoH": 20.8,
-     "score": 0.5582883596410634
+     "score": 0.5576748382688386
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 39622.01,
-   "score": 4.7391,
+   "score": 4.7338,
    "question": "Dota 2: TEAM VISION vs BoomBoys (BO3) - The International Playoffs",
    "outcome": "TEAM VISION",
    "tokenId": "101028650168194677069630427574598819381546668487248022828323675030946075448144",
