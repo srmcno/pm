@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787225202,
+  "generatedAt": 1787225296,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.3,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 2.134745174245378
+     "score": 2.132423913512253
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -32,7 +32,7 @@
      "avgPrice": 0.3401,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.9491283184547141
+     "score": 1.9470088921718798
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -42,13 +42,13 @@
      "avgPrice": 0.4917,
      "conviction": 10.0,
      "lastTradeAgoH": 0.8,
-     "score": 1.2874659144909952
+     "score": 1.2860659609468443
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 24417.09,
-   "score": 5.3713,
+   "score": 5.3655,
    "question": "Dota 2: Team Liquid vs Team Yandex - Game 1 Winner",
    "outcome": "Team Liquid",
    "tokenId": "13512201678655055511029654090895643631025514179214371222957700352255502678820",
@@ -73,7 +73,7 @@
      "avgPrice": 0.5322,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 2.5272614777252116
+     "score": 2.524513406010912
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -83,7 +83,7 @@
      "avgPrice": 0.7,
      "conviction": 10.0,
      "lastTradeAgoH": 9.2,
-     "score": 1.4965713246840293
+     "score": 1.4949439959085762
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -92,14 +92,14 @@
      "netUsd": 42086.78,
      "avgPrice": 0.7,
      "conviction": 10.0,
-     "lastTradeAgoH": 15.1,
-     "score": 0.7230741543670752
+     "lastTradeAgoH": 15.2,
+     "score": 0.7222879042507058
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 81181.17,
-   "score": 4.7469,
+   "score": 4.7417,
    "question": "Counter-Strike: Natus Vincere vs Legacy (BO3) - Esports World Cup Playoffs",
    "outcome": "Natus Vincere",
    "tokenId": "75573231508665122668338602881894160793363453666729673795940306462324320385481",

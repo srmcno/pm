@@ -1,6 +1,6 @@
 # Smart-money signals
 
-Generated 2026-08-20 11:26 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 11:28 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: Natus Vincere vs Legacy (BO3) - Esports World Cup Playoffs — **Natus Vincere**
 
-- Score **4.75** · 3 backers · net $81,181 staked
+- Score **4.74** · 3 backers · net $81,181 staked
 - Backers' average entry 0.64 → current price **0.51** (moved against them -0.13 since entry)
 - Resolves by 2026-08-20
 
