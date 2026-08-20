@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787242539,
+  "generatedAt": 1787243447,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 15857.11,
      "avgPrice": 0.58,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.152017716499748
+     "lastTradeAgoH": 0.7,
+     "score": 2.129520028466505
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -31,8 +31,8 @@
      "netUsd": 3166.29,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.4599247994775504
+     "lastTradeAgoH": 0.5,
+     "score": 1.444662409935487
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,8 +41,8 @@
      "netUsd": 50308.43,
      "avgPrice": 0.5742,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 1.3242844071614943
+     "lastTradeAgoH": 0.9,
+     "score": 1.3104400334692243
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -51,21 +51,21 @@
      "netUsd": 81851.14,
      "avgPrice": 0.55,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.1,
-     "score": 1.1684582423958811
+     "lastTradeAgoH": 3.3,
+     "score": 1.1562429112600154
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 151182.97,
-   "score": 6.1047,
+   "score": 6.0409,
    "question": "Counter-Strike: G2 vs FURIA (BO3) - Esports World Cup Playoffs",
    "outcome": "FURIA",
    "tokenId": "39130126425858927553414740852390790469013370250426290486364058216232197741620",
-   "currentPrice": 0.575,
+   "currentPrice": 0.625,
    "backersAvgEntry": 0.5685,
-   "driftSinceEntry": 0.0064,
-   "endDate": "2026-08-20T22:10:00Z",
+   "driftSinceEntry": 0.0565,
+   "endDate": "2026-08-20T22:20:00Z",
    "slug": "cs2-g2-furia-2026-08-20",
    "eventSlug": "cs2-g2-furia-2026-08-20"
   }
