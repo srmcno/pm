@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-20 14:19 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 14:35 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Map Handicap: VIT (-1.5) vs FaZe (+1.5) — **FaZe**
 
-- Score **3.10** · 3 backers · net $42,880 staked
-- Backers' average entry 0.51 → current price **0.57** (already moved +0.06 since entry)
+- Score **3.07** · 3 backers · net $42,880 staked
+- Backers' average entry 0.51 → current price **0.42** (moved against them -0.09 since entry)
 - Resolves by 2026-08-20
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
