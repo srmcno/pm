@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-20 12:24 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-20 12:36 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Liquid vs Team Yandex - Game 2 Winner — **Team Liquid**
 
-- Score **6.56** · 4 backers · net $40,800 staked
-- Backers' average entry 0.52 → current price **0.53** (roughly flat +0.00 since entry)
+- Score **6.50** · 4 backers · net $40,800 staked
+- Backers' average entry 0.52 → current price **0.12** (moved against them -0.41 since entry)
 - Resolves by 2026-08-20
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -19,24 +19,24 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: Natus Vincere vs Legacy (BO3) - Esports World Cup Playoffs — **Natus Vincere**
 
-- Score **5.36** · 3 backers · net $84,006 staked
-- Backers' average entry 0.61 → current price **0.47** (moved against them -0.13 since entry)
+- Score **5.35** · 3 backers · net $84,153 staked
+- Backers' average entry 0.61 → current price **0.14** (moved against them -0.46 since entry)
 - Resolves by 2026-08-20
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
 | 0x076daa87 | 0.80 | $3,314 | 0.4944 | 10.0× |
-| 0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261 | 0.69 | $38,605 | 0.6254 | 10.0× |
+| 0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261 | 0.69 | $38,752 | 0.6243 | 10.0× |
 | 0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740 | 0.43 | $42,087 | 0.7 | 10.0× |
 
-## 3. Counter-Strike: Team Falcons vs TheMongolz (BO3) - Esports World Cup Playoffs — **TheMongolz**
+## 3. Map Handicap: VIT (-1.5) vs FaZe (+1.5) — **FaZe**
 
-- Score **3.97** · 3 backers · net $32,219 staked
-- Backers' average entry 0.17 → current price **0.07** (moved against them -0.09 since entry)
+- Score **2.72** · 3 backers · net $24,155 staked
+- Backers' average entry 0.51 → current price **0.52** (roughly flat +0.00 since entry)
 - Resolves by 2026-08-20
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261 | 0.69 | $17,116 | 0.08 | 10.0× |
-| CORGI8 | 0.34 | $6,409 | 0.2279 | 10.0× |
-| Lakersfan111 | 0.42 | $8,693 | 0.1958 | 10.0× |
+| CORGI8 | 0.34 | $6,857 | 0.52 | 10.0× |
+| Lakersfan111 | 0.42 | $323 | 0.5 | 10.0× |
+| 0xf5592765133941c40C77e52Bc56bbe7EC167F462-1755612447740 | 0.43 | $16,975 | 0.5152 | 10.0× |
