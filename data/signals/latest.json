@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787226201,
+  "generatedAt": 1787227107,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 738.32,
      "avgPrice": 0.5322,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.4982083042275445
+     "lastTradeAgoH": 0.6,
+     "score": 2.4721772981880084
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -31,8 +31,8 @@
      "netUsd": 38818.36,
      "avgPrice": 0.6979,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.165785665575724
+     "lastTradeAgoH": 0.5,
+     "score": 2.1432184602527977
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -41,20 +41,20 @@
      "netUsd": 42086.78,
      "avgPrice": 0.7,
      "conviction": 10.0,
-     "lastTradeAgoH": 15.4,
-     "score": 0.71476175810588
+     "lastTradeAgoH": 15.7,
+     "score": 0.7073140334263175
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 81643.46,
-   "score": 5.3788,
+   "score": 5.3227,
    "question": "Counter-Strike: Natus Vincere vs Legacy (BO3) - Esports World Cup Playoffs",
    "outcome": "Natus Vincere",
    "tokenId": "75573231508665122668338602881894160793363453666729673795940306462324320385481",
-   "currentPrice": 0.525,
+   "currentPrice": 0.465,
    "backersAvgEntry": 0.6434,
-   "driftSinceEntry": -0.1184,
+   "driftSinceEntry": -0.1784,
    "endDate": "2026-08-20T17:00:00Z",
    "slug": "cs2-navi-lgc-2026-08-20",
    "eventSlug": "cs2-navi-lgc-2026-08-20"
