@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787311649,
+  "generatedAt": 1787312015,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 700.42,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 2.4614421247194898
+     "lastTradeAgoH": 0.8,
+     "score": 2.45086703106792
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -31,8 +31,8 @@
      "netUsd": 19448.27,
      "avgPrice": 0.7393,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 1.2921982792599551
+     "lastTradeAgoH": 0.8,
+     "score": 1.2866466078709198
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -41,14 +41,14 @@
      "netUsd": 3623.33,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.2,
-     "score": 1.0929017512369796
+     "lastTradeAgoH": 7.3,
+     "score": 1.0882063175092362
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 23772.02,
-   "score": 4.8465,
+   "score": 4.8257,
    "question": "Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs",
    "outcome": "Team Falcons",
    "tokenId": "38235859376364554553021925068034262152505573447644969482372166106578675685392",
