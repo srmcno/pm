@@ -1,6 +1,6 @@
 # Smart-money signals
 
-Generated 2026-08-21 11:47 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 11:48 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. LoL: KT Rolster vs T1 - Game 1 Winner — **KT Rolster**
 
-- Score **3.90** · 3 backers · net $8,840 staked
+- Score **3.89** · 3 backers · net $8,840 staked
 - Backers' average entry 0.30 → current price **0.17** (moved against them -0.13 since entry)
 - Resolves by 2026-08-21
 
