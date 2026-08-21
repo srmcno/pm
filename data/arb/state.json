@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1787323455,
-   "equity": 123.1324
-  },
-  {
    "t": 1787323457,
    "equity": 123.1324
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1787324493,
    "equity": 123.1653
+  },
+  {
+   "t": 1787324528,
+   "equity": 123.1653
   }
  ],
  "decay": {
@@ -3411,18 +3411,17 @@
   "survived": 3733
  },
  "cooldown": {
-  "USDT\u2192HYPE\u2192USDC\u2192USDT|HYPEUSDT|HYPEUSDC|USDCUSDT": 1787320928,
   "USDT\u2192ALLO\u2192USDC\u2192USDT|ALLOUSDT|ALLOUSDC|USDCUSDT": 1787320958,
   "USDT\u2192JOTCHUA\u2192USD1\u2192USDT|JOTCHUAUSDT|JOTCHUAUSD1|USD1USDT": 1787321046,
   "USDT\u2192USD1\u2192PLUMBER\u2192USDT|USD1USDT|PLUMBERUSD1|PLUMBERUSDT": 1787323986
  },
  "tradeCountAll": 1573,
  "replay": {
-  "edges": 2633,
-  "refillable": 2632,
-  "atomicUsd": 126.2498,
-  "delayedUsd": 47.4051,
-  "captureRatio": 0.375,
-  "scansReplayed": 36859
+  "edges": 2634,
+  "refillable": 2633,
+  "atomicUsd": 126.2827,
+  "delayedUsd": 47.2906,
+  "captureRatio": 0.374,
+  "scansReplayed": 36929
  }
 }
