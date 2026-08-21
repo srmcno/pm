@@ -1,15 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 117.9015,
+ "cash": 117.9122,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1787172786,
-   "path": "USDT\u2192ETH\u2192MX\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0162,
-   "bps": 8.1
-  },
   {
    "t": 1787172796,
    "path": "USDT\u2192ETH\u2192XRP\u2192USDT",
@@ -1402,17 +1395,16 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0051,
    "bps": 10.2
+  },
+  {
+   "t": 1787289520,
+   "path": "USDT\u2192ULTIMA\u2192USDC\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0107,
+   "bps": 5.3
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787288505,
-   "equity": 117.8837
-  },
-  {
-   "t": 1787288507,
-   "equity": 117.8837
-  },
   {
    "t": 1787288509,
    "equity": 117.8837
@@ -3404,10 +3396,18 @@
   {
    "t": 1787289516,
    "equity": 117.9015
+  },
+  {
+   "t": 1787289518,
+   "equity": 117.9015
+  },
+  {
+   "t": 1787289520,
+   "equity": 117.9122
   }
  ],
  "decay": {
-  "checked": 5216,
+  "checked": 5217,
   "survived": 3702
  },
  "cooldown": {
@@ -3415,9 +3415,10 @@
   "USDT\u2192HOODRAT\u2192USD1\u2192USDT|HOODRATUSDT|HOODRATUSD1|USD1USDT": 1787287729,
   "USDT\u2192BRODIE\u2192USD1\u2192USDT|BRODIEUSDT|BRODIEUSD1|USD1USDT": 1787288009,
   "USDT\u2192USDC\u2192HYPE\u2192USDT|USDCUSDT|HYPEUSDC|HYPEUSDT": 1787289132,
-  "USDT\u2192AIINU\u2192USD1\u2192USDT|AIINUUSDT|AIINUUSD1|USD1USDT": 1787289516
+  "USDT\u2192AIINU\u2192USD1\u2192USDT|AIINUUSDT|AIINUUSD1|USD1USDT": 1787289516,
+  "USDT\u2192ULTIMA\u2192USDC\u2192USDT|ULTIMAUSDT|ULTIMAUSDC|USDCUSDT": 1787289520
  },
- "tradeCountAll": 1499,
+ "tradeCountAll": 1500,
  "replay": {
   "edges": 2509,
   "refillable": 2508,

@@ -4,7 +4,7 @@ Scanned 2026-08-21 05:18 UTC · 2109 pairs · 746 cycles · 1 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→AIINU→USD1→USDT | 129.9 | 10.2 | $5.0 | $0.0051 |
+| USDT→ULTIMA→USDC→USDT | 6.8 | 5.3 | $20.0 | $0.0107 |
 
 ## Latency replay (own recorded ticks)
 
