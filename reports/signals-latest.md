@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-21 02:09 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 02:24 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Iron Wing vs BoomBoys (BO3) - The International Playoffs — **Iron Wing**
 
-- Score **5.20** · 4 backers · net $228,323 staked
+- Score **5.14** · 4 backers · net $228,323 staked
 - Backers' average entry 0.41 → current price **0.41** (roughly flat -0.00 since entry)
 - Resolves by 2026-08-21
 
