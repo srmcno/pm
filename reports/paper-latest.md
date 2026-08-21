@@ -1,16 +1,16 @@
 # Paper portfolio
 
-Updated 2026-08-21 15:25 UTC · started with $20.00 (virtual)
+Updated 2026-08-21 15:37 UTC · started with $20.00 (virtual)
 
-**Equity $12.51 (-37.4%)** · cash $6.01 · 5 open · 25 settled
+**Equity $13.14 (-34.3%)** · cash $6.01 · 5 open · 25 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.84 | $1.26 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.32 | $1.42 |
-| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.69 | $1.01 |
-| Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 1.52 | 0.74 | 0.52 | $0.78 |
-| Counter-Strike: Legacy vs Team Falcons - Map 2 Winner | Team Falcons | 3.24 | 0.35 | 0.62 | $2.02 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.85 | $1.28 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.33 | $1.43 |
+| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.69 | $1.00 |
+| Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 1.52 | 0.74 | 0.56 | $0.85 |
+| Counter-Strike: Legacy vs Team Falcons - Map 2 Winner | Team Falcons | 3.24 | 0.35 | 0.80 | $2.58 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
