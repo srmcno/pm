@@ -1,21 +1,8 @@
 {
  "bankrollStart": 1000.0,
- "cash": 767.7394,
+ "cash": 959.3001,
  "createdAt": 1786622317,
- "positions": [
-  {
-   "symbol": "COIN",
-   "side": "long",
-   "shares": 1.0132,
-   "entry": 189.4447,
-   "cost": 191.95,
-   "openedAt": 1787325087,
-   "entryDislocationBps": -78.7,
-   "driverMoveBps": 48.9,
-   "beta": 1.489,
-   "reason": "lagging a +49bps driver move by 79bps"
-  }
- ],
+ "positions": [],
  "closed": [
   {
    "symbol": "COIN",
@@ -3572,13 +3559,25 @@
    "closedAt": 1787323473,
    "pnl": -1.08,
    "exitReason": "reverted"
+  },
+  {
+   "symbol": "COIN",
+   "side": "long",
+   "shares": 1.0132,
+   "entry": 189.4447,
+   "cost": 191.95,
+   "openedAt": 1787325087,
+   "entryDislocationBps": -78.7,
+   "driverMoveBps": 48.9,
+   "beta": 1.489,
+   "reason": "lagging a +49bps driver move by 79bps",
+   "exit": 189.0704,
+   "closedAt": 1787328017,
+   "pnl": -0.39,
+   "exitReason": "time"
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787168760,
-   "equity": 969.83
-  },
   {
    "t": 1787168773,
    "equity": 969.83
@@ -11574,19 +11573,13 @@
   {
    "t": 1787325225,
    "equity": 959.12
+  },
+  {
+   "t": 1787328017,
+   "equity": 959.3
   }
  ],
  "log": [
-  {
-   "t": 1787153098,
-   "action": "OPEN",
-   "symbol": "COIN",
-   "side": "long",
-   "shares": 1.2281,
-   "entry": 160.4302,
-   "cost": 197.02,
-   "reason": "lagging a +252bps driver move by 218bps"
-  },
   {
    "t": 1787153110,
    "action": "CLOSE",
@@ -14977,12 +14970,21 @@
    "entry": 189.4447,
    "cost": 191.95,
    "reason": "lagging a +49bps driver move by 79bps"
+  },
+  {
+   "t": 1787328017,
+   "action": "CLOSE",
+   "symbol": "COIN",
+   "side": "long",
+   "exit": 189.0704,
+   "pnl": -0.39,
+   "reason": "time"
   }
  ],
  "day": {
   "date": "2026-08-21",
-  "trades": 19,
-  "pnl": -2.06,
+  "trades": 20,
+  "pnl": -2.45,
   "halted": false,
   "startEquity": 961.75
  }
