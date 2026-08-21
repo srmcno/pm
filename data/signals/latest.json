@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787310432,
+  "generatedAt": 1787310526,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.39,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 2.1841367920738537
+     "score": 2.1817618243107786
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -32,7 +32,7 @@
      "avgPrice": 0.3969,
      "conviction": 8.08,
      "lastTradeAgoH": 3.3,
-     "score": 1.9866945520353985
+     "score": 1.9845342773065977
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -42,13 +42,13 @@
      "avgPrice": 0.4,
      "conviction": 10.0,
      "lastTradeAgoH": 0.4,
-     "score": 1.3358145090750115
+     "score": 1.3343619826544988
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 15740.73,
-   "score": 5.5066,
+   "score": 5.5007,
    "question": "Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Playoffs",
    "outcome": "FUT Esports",
    "tokenId": "103238394091052255519248914120508414915537434037167949690299319481916132288862",
@@ -73,7 +73,7 @@
      "avgPrice": 0.3535,
      "conviction": 10.0,
      "lastTradeAgoH": 0.7,
-     "score": 2.4624394386799193
+     "score": 2.459761852593456
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -83,7 +83,7 @@
      "avgPrice": 0.35,
      "conviction": 10.0,
      "lastTradeAgoH": 2.1,
-     "score": 1.2187930480813065
+     "score": 1.2174677674443255
     },
     {
      "wallet": "0xf49614e63fb15383d4a9b717a1be03ad2410fe79",
@@ -93,13 +93,13 @@
      "avgPrice": 0.5495,
      "conviction": 10.0,
      "lastTradeAgoH": 0.2,
-     "score": 1.0806744749829418
+     "score": 1.0794993805246749
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 5728.65,
-   "score": 4.7619,
+   "score": 4.7567,
    "question": "LoL: Anyone's Legend vs Team WE - Game 2 Winner",
    "outcome": "Team WE",
    "tokenId": "569470510026780134797987389494257302793260998653443726406735192615846803486",

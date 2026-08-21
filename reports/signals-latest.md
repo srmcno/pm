@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-21 11:07 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 11:08 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Playoffs — **FUT Esports**
 
-- Score **5.51** · 3 backers · net $15,741 staked
+- Score **5.50** · 3 backers · net $15,741 staked
 - Backers' average entry 0.40 → current price **0.41** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-21
 
