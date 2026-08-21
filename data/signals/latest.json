@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787335576,
+  "generatedAt": 1787336488,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.8021,
-     "netUsd": 1711.56,
-     "avgPrice": 0.6388,
+     "netUsd": 2887.45,
+     "avgPrice": 0.6433,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 2.4264243287701897
+     "lastTradeAgoH": 0.3,
+     "score": 2.5041138206592293
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -31,8 +31,8 @@
      "netUsd": 318919.92,
      "avgPrice": 0.5837,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.5,
-     "score": 1.9623868884971396
+     "lastTradeAgoH": 3.8,
+     "score": 1.9418042198144698
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -41,8 +41,8 @@
      "netUsd": 14959.71,
      "avgPrice": 0.58,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.5,
-     "score": 1.803795544029808
+     "lastTradeAgoH": 3.7,
+     "score": 1.784876274709539
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -51,74 +51,23 @@
      "netUsd": 52958.9,
      "avgPrice": 0.6468,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.2,
-     "score": 1.1154927654520872
+     "lastTradeAgoH": 4.4,
+     "score": 1.1037928207858247
     }
    ],
    "backerCount": 4,
    "contested": true,
-   "totalNetUsd": 388550.09,
-   "score": 7.3081,
+   "totalNetUsd": 389725.98,
+   "score": 7.3346,
    "question": "Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs",
    "outcome": "Team Yandex",
    "tokenId": "79398349303157546860681782615629916893281918072923596421112505130812724228254",
-   "currentPrice": 0.585,
-   "backersAvgEntry": 0.6123,
-   "driftSinceEntry": -0.0273,
+   "currentPrice": 0.515,
+   "backersAvgEntry": 0.6135,
+   "driftSinceEntry": -0.0985,
    "endDate": "2026-08-21T20:20:00Z",
    "slug": "dota2-ty-ngx-2026-08-21",
    "eventSlug": "dota2-ty-ngx-2026-08-21"
-  },
-  {
-   "conditionId": "0x01b6446fed72d5a53b0742497059411650e6bae26c894e765aee3700479aff41",
-   "outcomeIndex": 0,
-   "title": "Counter-Strike: Vitality vs Spirit - Map 2 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8021,
-     "netUsd": 261.28,
-     "avgPrice": 0.57,
-     "conviction": 9.48,
-     "lastTradeAgoH": 0.5,
-     "score": 2.421915360373614
-    },
-    {
-     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
-     "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
-     "quality": 0.6934,
-     "netUsd": 8364.26,
-     "avgPrice": 0.59,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.160828089484374
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.4668,
-     "netUsd": 6247.54,
-     "avgPrice": 0.6454,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.4681600163080082
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 14873.08,
-   "score": 6.0509,
-   "question": "Counter-Strike: Vitality vs Spirit - Map 2 Winner",
-   "outcome": "Vitality",
-   "tokenId": "43176151302757665029665594060580257243234491021727702938995851359845300767844",
-   "currentPrice": 0.625,
-   "backersAvgEntry": 0.6018,
-   "driftSinceEntry": 0.0232,
-   "endDate": "2026-08-21T22:30:00Z",
-   "slug": "cs2-vit-ts7-2026-08-21-game2",
-   "eventSlug": "cs2-vit-ts7-2026-08-21"
   },
   {
    "conditionId": "0x9b10fcaf654960bc777ddc653d289331cd4719cc120bfb75e5efbba68d48c540",
@@ -133,8 +82,8 @@
      "netUsd": 1064.29,
      "avgPrice": 0.5643,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.486813165045128
+     "lastTradeAgoH": 0.7,
+     "score": 2.4607300049140366
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -143,8 +92,8 @@
      "netUsd": 3458.37,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 1.6216019895263485
+     "lastTradeAgoH": 2.3,
+     "score": 1.604593673438821
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -153,20 +102,20 @@
      "netUsd": 30615.39,
      "avgPrice": 0.5897,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 1.2974610035230787
+     "lastTradeAgoH": 1.4,
+     "score": 1.2838524688754327
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 35138.05,
-   "score": 5.4059,
+   "score": 5.3492,
    "question": "Counter-Strike: Vitality vs Spirit (BO3) - Esports World Cup Playoffs",
    "outcome": "Vitality",
    "tokenId": "99349301025396837291883188730091178488113028037528470067767769758707830878323",
-   "currentPrice": 0.435,
+   "currentPrice": 0.505,
    "backersAvgEntry": 0.5747,
-   "driftSinceEntry": -0.1397,
+   "driftSinceEntry": -0.0697,
    "endDate": "2026-08-21T22:30:00Z",
    "slug": "cs2-vit-ts7-2026-08-21",
    "eventSlug": "cs2-vit-ts7-2026-08-21"
