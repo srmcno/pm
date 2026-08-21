@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-21 15:37 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 15:40 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs — **Team Falcons**
 
-- Score **9.25** · 5 backers · net $248,301 staked
+- Score **9.23** · 5 backers · net $248,301 staked
 - Backers' average entry 0.71 → current price **0.56** (moved against them -0.15 since entry)
 - Resolves by 2026-08-21
 
@@ -20,7 +20,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs — **Team Yandex**
 
-- Score **7.87** · 4 backers · net $388,269 staked
+- Score **7.86** · 4 backers · net $388,269 staked
 - Backers' average entry 0.62 → current price **0.59** (moved against them -0.02 since entry)
 - Resolves by 2026-08-21
 
@@ -33,7 +33,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Dota 2: Team Yandex vs Nigma Galaxy - Game 1 Winner — **Team Yandex**
 
-- Score **7.09** · 4 backers · net $46,207 staked
+- Score **7.08** · 4 backers · net $46,207 staked
 - Backers' average entry 0.58 → current price **0.54** (moved against them -0.05 since entry)
 - Resolves by 2026-08-21
 
@@ -46,7 +46,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 4. Counter-Strike: Legacy vs Team Falcons - Map 2 Winner — **Team Falcons**
 
-- Score **6.76** · 4 backers · net $19,046 staked
+- Score **6.75** · 4 backers · net $19,046 staked
 - Backers' average entry 0.69 → current price **0.80** (already moved +0.10 since entry)
 - Resolves by 2026-08-21
 
