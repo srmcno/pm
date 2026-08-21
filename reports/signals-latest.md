@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-21 23:23 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 23:38 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Spirit vs Team Liquid (BO3) - The International Playoffs — **Team Liquid**
 
-- Score **7.33** · 4 backers · net $263,425 staked
+- Score **7.25** · 4 backers · net $263,425 staked
 - Backers' average entry 0.38 → current price **0.36** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-22
 
