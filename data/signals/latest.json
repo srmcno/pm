@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787317469,
+  "generatedAt": 1787317654,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -8,6 +8,57 @@
   "source": "watch.py"
  },
  "signals": [
+  {
+   "conditionId": "0x24b29f470d936697df0e599b794761fbe5c6b2ad9b2cce40f7d50a1e6dd5617d",
+   "outcomeIndex": 0,
+   "title": "Dota 2: Team Spirit vs TEAM VISION (BO3) - The International Playoffs",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.8021,
+     "netUsd": 604.48,
+     "avgPrice": 0.3278,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.9,
+     "score": 2.2448290070844616
+    },
+    {
+     "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
+     "name": "IMAREALPERSON",
+     "quality": 0.6775,
+     "netUsd": 7640.36,
+     "avgPrice": 0.2793,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 2.13481929862858
+    },
+    {
+     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
+     "name": "CORGI8",
+     "quality": 0.3373,
+     "netUsd": 1814.35,
+     "avgPrice": 0.35,
+     "conviction": 10.0,
+     "lastTradeAgoH": 3.0,
+     "score": 0.9405844145421269
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 10059.19,
+   "score": 5.3202,
+   "question": "Dota 2: Team Spirit vs TEAM VISION (BO3) - The International Playoffs",
+   "outcome": "Team Spirit",
+   "tokenId": "98775739121719585831097248464599459686616150297831110545770721453040870821423",
+   "currentPrice": 0.315,
+   "backersAvgEntry": 0.319,
+   "driftSinceEntry": -0.004,
+   "endDate": "2026-08-21T16:20:00Z",
+   "slug": "dota2-ts8-vsn2-2026-08-21",
+   "eventSlug": "dota2-ts8-vsn2-2026-08-21"
+  },
   {
    "conditionId": "0x329a1dee06774af488a67454c5ea30885063037552d2ec562241051b5b0e921c",
    "outcomeIndex": 1,
@@ -21,8 +72,8 @@
      "netUsd": 700.42,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 2.3009379684781988
+     "lastTradeAgoH": 2.4,
+     "score": 2.2960430368503104
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -32,7 +83,7 @@
      "avgPrice": 0.7393,
      "conviction": 10.0,
      "lastTradeAgoH": 2.3,
-     "score": 1.2079374337880335
+     "score": 1.205367711687672
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -41,14 +92,14 @@
      "netUsd": 3623.33,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.8,
-     "score": 1.021636507307301
+     "lastTradeAgoH": 8.9,
+     "score": 1.0194631150123614
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 23772.02,
-   "score": 4.5305,
+   "score": 4.5209,
    "question": "Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs",
    "outcome": "Team Falcons",
    "tokenId": "38235859376364554553021925068034262152505573447644969482372166106578675685392",
