@@ -1,20 +1,18 @@
 # Paper portfolio
 
-Updated 2026-08-21 15:55 UTC · started with $20.00 (virtual)
+Updated 2026-08-21 16:10 UTC · started with $20.00 (virtual)
 
-**Equity $9.59 (-52.0%)** · cash $6.01 · 5 open · 25 settled
+**Equity $9.60 (-52.0%)** · cash $6.01 · 4 open · 26 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.79 | $1.18 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.33 | $1.44 |
-| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.66 | $0.96 |
-| Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 1.52 | 0.74 | 0.00 | $0.00 |
+| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.67 | $0.97 |
 | Counter-Strike: Legacy vs Team Falcons - Map 2 Winner | Team Falcons | 3.24 | 0.35 | 0.00 | $0.00 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| LoL: Shifters vs SK Gaming - Game 2 Winner | Shifters | 0.42 | 0.00 | -1.12 |
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 0.47 | 0.00 | -1.05 |
 | Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 0.78 | 1.00 | +0.39 |
 | Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 0.47 | 0.00 | -1.47 |
@@ -29,3 +27,4 @@ Updated 2026-08-21 15:55 UTC · started with $20.00 (virtual)
 | LoL: Gen.G vs KT Rolster - Game 1 Winner | KT Rolster | 0.17 | 0.00 | -1.01 |
 | Will Team Falcons Win The International 2026? | No | 0.90 | 1.00 | +0.18 |
 | Will MOUZ Win the CS2 EWC 2026? | No | 0.94 | 1.00 | +0.08 |
+| Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 0.74 | 0.00 | -1.13 |
