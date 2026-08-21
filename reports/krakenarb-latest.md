@@ -6,7 +6,7 @@ Scanned 2026-08-21 13:44 UTC · 1455 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→EUR→FXS→USD at 24.7 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→EUR→FXS→USD at 24.4 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
