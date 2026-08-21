@@ -1,6 +1,6 @@
 {
  "bankrollStart": 20.0,
- "cash": 7.1596,
+ "cash": 6.0096,
  "createdAt": 1786587299,
  "positions": [
   {
@@ -58,6 +58,20 @@
    "signalScore": 4.6757,
    "markPrice": 0.515,
    "valueUsd": 0.7812
+  },
+  {
+   "conditionId": "0x578636a5a4268f7d60028c4906b459e10d7b9a118b2d34a1543f766de614f4fb",
+   "outcomeIndex": 1,
+   "tokenId": "77710543186367374746696817414202911626084178587103009794787854379305805464916",
+   "question": "Counter-Strike: Legacy vs Team Falcons - Map 2 Winner",
+   "outcome": "Team Falcons",
+   "shares": 3.2394,
+   "entryPrice": 0.355,
+   "costUsd": 1.15,
+   "openedAt": 1787325901,
+   "signalScore": 6.8172,
+   "markPrice": 0.625,
+   "valueUsd": 2.0246
   }
  ],
  "closed": [
@@ -4532,6 +4546,11 @@
    "t": 1787325444,
    "equity": 11.6371,
    "cash": 7.1596
+  },
+  {
+   "t": 1787325901,
+   "equity": 12.5117,
+   "cash": 6.0096
   }
  ],
  "log": [
@@ -4941,6 +4960,14 @@
    "question": "Will MOUZ Win the CS2 EWC 2026?",
    "price": 1.0,
    "pnl": 0.0799
+  },
+  {
+   "t": 1787325901,
+   "action": "BUY",
+   "question": "Counter-Strike: Legacy vs Team Falcons - Map 2 Winner",
+   "outcome": "Team Falcons",
+   "stake": 1.15,
+   "price": 0.355
   }
  ]
 }

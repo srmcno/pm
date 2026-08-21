@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-21 15:17 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 15:25 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs — **Team Falcons**
 
-- Score **9.29** · 5 backers · net $248,247 staked
+- Score **9.24** · 5 backers · net $248,247 staked
 - Backers' average entry 0.71 → current price **0.52** (moved against them -0.19 since entry)
 - Resolves by 2026-08-21
 
@@ -20,7 +20,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: Legacy vs Team Falcons - Map 2 Winner — **Team Falcons**
 
-- Score **6.85** · 4 backers · net $19,046 staked
+- Score **6.82** · 4 backers · net $19,046 staked
 - Backers' average entry 0.69 → current price **0.62** (moved against them -0.07 since entry)
 - Resolves by 2026-08-21
 

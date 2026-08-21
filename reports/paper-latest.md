@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-21 15:17 UTC · started with $20.00 (virtual)
+Updated 2026-08-21 15:25 UTC · started with $20.00 (virtual)
 
-**Equity $11.64 (-41.8%)** · cash $7.16 · 4 open · 25 settled
+**Equity $12.51 (-37.4%)** · cash $6.01 · 5 open · 25 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -10,6 +10,7 @@ Updated 2026-08-21 15:17 UTC · started with $20.00 (virtual)
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.32 | $1.42 |
 | Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.69 | $1.01 |
 | Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 1.52 | 0.74 | 0.52 | $0.78 |
+| Counter-Strike: Legacy vs Team Falcons - Map 2 Winner | Team Falcons | 3.24 | 0.35 | 0.62 | $2.02 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
