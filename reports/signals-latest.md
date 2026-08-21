@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-21 08:42 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 08:57 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Liquid vs Team Falcons (BO3) - The International Playoffs — **Team Liquid**
 
-- Score **5.52** · 3 backers · net $20,082 staked
-- Backers' average entry 0.47 → current price **0.43** (moved against them -0.04 since entry)
+- Score **5.46** · 3 backers · net $20,082 staked
+- Backers' average entry 0.47 → current price **0.54** (already moved +0.06 since entry)
 - Resolves by 2026-08-21
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
