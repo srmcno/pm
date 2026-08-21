@@ -1,35 +1,8 @@
 {
  "bankrollStart": 1000.0,
- "cash": 649.2258,
+ "cash": 962.5487,
  "createdAt": 1786622317,
- "positions": [
-  {
-   "symbol": "COIN",
-   "side": "short",
-   "shares": 1.0,
-   "entry": 189.845,
-   "cost": 189.85,
-   "openedAt": 1787321463,
-   "entryDislocationBps": 132.8,
-   "driverMoveBps": -114.1,
-   "beta": 1.489,
-   "reason": "lagging a -114bps driver move by 133bps",
-   "openFee": 0.0054
-  },
-  {
-   "symbol": "MSTR",
-   "side": "short",
-   "shares": 1.0,
-   "entry": 119.6701,
-   "cost": 119.67,
-   "openedAt": 1787321538,
-   "entryDislocationBps": 91.4,
-   "driverMoveBps": -84.8,
-   "beta": 1.725,
-   "reason": "lagging a -85bps driver move by 91bps",
-   "openFee": 0.0035
-  }
- ],
+ "positions": [],
  "closed": [
   {
    "symbol": "COIN",
@@ -3424,201 +3397,59 @@
    "closedAt": 1787321451,
    "pnl": -0.75,
    "exitReason": "stop"
+  },
+  {
+   "symbol": "COIN",
+   "side": "short",
+   "shares": 1.0,
+   "entry": 189.845,
+   "cost": 189.85,
+   "openedAt": 1787321463,
+   "entryDislocationBps": 132.8,
+   "driverMoveBps": -114.1,
+   "beta": 1.489,
+   "reason": "lagging a -114bps driver move by 133bps",
+   "openFee": 0.0054,
+   "exit": 187.6338,
+   "closedAt": 1787321890,
+   "pnl": 2.2,
+   "exitReason": "reverted"
+  },
+  {
+   "symbol": "MSTR",
+   "side": "short",
+   "shares": 1.0,
+   "entry": 119.6701,
+   "cost": 119.67,
+   "openedAt": 1787321538,
+   "entryDislocationBps": 91.4,
+   "driverMoveBps": -84.8,
+   "beta": 1.725,
+   "reason": "lagging a -85bps driver move by 91bps",
+   "openFee": 0.0035,
+   "exit": 117.5988,
+   "closedAt": 1787322064,
+   "pnl": 2.07,
+   "exitReason": "reverted"
+  },
+  {
+   "symbol": "COIN",
+   "side": "long",
+   "shares": 1.0293,
+   "entry": 187.1135,
+   "cost": 192.6,
+   "openedAt": 1787322176,
+   "entryDislocationBps": -137.9,
+   "driverMoveBps": 25.7,
+   "beta": 1.489,
+   "reason": "lagging a +26bps driver move by 138bps",
+   "exit": 186.6616,
+   "closedAt": 1787322189,
+   "pnl": -0.47,
+   "exitReason": "stop"
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787164588,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164604,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164616,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164633,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164649,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164664,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164677,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164690,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164706,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164718,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164731,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164743,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164756,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164768,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164780,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164793,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164805,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164818,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164831,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164843,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164856,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164868,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164881,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164893,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164906,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164918,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164931,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164943,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164955,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164968,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164980,
-   "equity": 969.83
-  },
-  {
-   "t": 1787164993,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165005,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165018,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165030,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165043,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165055,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165068,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165080,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165093,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165105,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165118,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165130,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165143,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165156,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165169,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165181,
-   "equity": 969.83
-  },
-  {
-   "t": 1787165194,
-   "equity": 969.83
-  },
   {
    "t": 1787165210,
    "equity": 969.83
@@ -11426,43 +11257,201 @@
   {
    "t": 1787321613,
    "equity": 961.17
+  },
+  {
+   "t": 1787321628,
+   "equity": 961.43
+  },
+  {
+   "t": 1787321641,
+   "equity": 962.29
+  },
+  {
+   "t": 1787321653,
+   "equity": 962.49
+  },
+  {
+   "t": 1787321666,
+   "equity": 962.17
+  },
+  {
+   "t": 1787321678,
+   "equity": 962.32
+  },
+  {
+   "t": 1787321691,
+   "equity": 962.24
+  },
+  {
+   "t": 1787321703,
+   "equity": 962.12
+  },
+  {
+   "t": 1787321716,
+   "equity": 962.34
+  },
+  {
+   "t": 1787321728,
+   "equity": 961.38
+  },
+  {
+   "t": 1787321741,
+   "equity": 961.28
+  },
+  {
+   "t": 1787321753,
+   "equity": 961.06
+  },
+  {
+   "t": 1787321766,
+   "equity": 960.93
+  },
+  {
+   "t": 1787321778,
+   "equity": 961.28
+  },
+  {
+   "t": 1787321791,
+   "equity": 962.12
+  },
+  {
+   "t": 1787321803,
+   "equity": 961.59
+  },
+  {
+   "t": 1787321815,
+   "equity": 961.36
+  },
+  {
+   "t": 1787321828,
+   "equity": 961.14
+  },
+  {
+   "t": 1787321840,
+   "equity": 961.59
+  },
+  {
+   "t": 1787321853,
+   "equity": 962.32
+  },
+  {
+   "t": 1787321865,
+   "equity": 961.95
+  },
+  {
+   "t": 1787321877,
+   "equity": 962.42
+  },
+  {
+   "t": 1787321890,
+   "equity": 962.13
+  },
+  {
+   "t": 1787321902,
+   "equity": 962.24
+  },
+  {
+   "t": 1787321915,
+   "equity": 962.32
+  },
+  {
+   "t": 1787321927,
+   "equity": 962.4
+  },
+  {
+   "t": 1787321940,
+   "equity": 962.55
+  },
+  {
+   "t": 1787321952,
+   "equity": 962.71
+  },
+  {
+   "t": 1787321964,
+   "equity": 962.92
+  },
+  {
+   "t": 1787321977,
+   "equity": 962.81
+  },
+  {
+   "t": 1787321989,
+   "equity": 962.67
+  },
+  {
+   "t": 1787322002,
+   "equity": 962.8
+  },
+  {
+   "t": 1787322014,
+   "equity": 962.75
+  },
+  {
+   "t": 1787322027,
+   "equity": 963.03
+  },
+  {
+   "t": 1787322039,
+   "equity": 962.91
+  },
+  {
+   "t": 1787322051,
+   "equity": 962.82
+  },
+  {
+   "t": 1787322064,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322076,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322089,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322101,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322114,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322126,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322139,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322151,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322164,
+   "equity": 963.02
+  },
+  {
+   "t": 1787322176,
+   "equity": 962.92
+  },
+  {
+   "t": 1787322189,
+   "equity": 962.55
+  },
+  {
+   "t": 1787322201,
+   "equity": 962.55
+  },
+  {
+   "t": 1787322214,
+   "equity": 962.55
   }
  ],
  "log": [
-  {
-   "t": 1787152999,
-   "action": "OPEN",
-   "symbol": "MSTR",
-   "side": "long",
-   "shares": 1.9089,
-   "entry": 103.2416,
-   "cost": 197.08,
-   "reason": "lagging a +237bps driver move by 191bps"
-  },
-  {
-   "t": 1787153011,
-   "action": "CLOSE",
-   "symbol": "COIN",
-   "side": "long",
-   "exit": 160.1499,
-   "pnl": 0.2,
-   "reason": "stop"
-  },
-  {
-   "t": 1787153011,
-   "action": "CLOSE",
-   "symbol": "MSTR",
-   "side": "long",
-   "exit": 103.3133,
-   "pnl": 0.13,
-   "reason": "stop"
-  },
-  {
-   "t": 1787153011,
-   "action": "SKIP",
-   "symbol": "COIN",
-   "reason": "closed this cycle; no same-cycle re-entry"
-  },
   {
    "t": 1787153011,
    "action": "SKIP",
@@ -14819,12 +14808,49 @@
    "entry": 119.6701,
    "cost": 119.67,
    "reason": "lagging a -85bps driver move by 91bps"
+  },
+  {
+   "t": 1787321890,
+   "action": "CLOSE",
+   "symbol": "COIN",
+   "side": "short",
+   "exit": 187.6338,
+   "pnl": 2.2,
+   "reason": "reverted"
+  },
+  {
+   "t": 1787322064,
+   "action": "CLOSE",
+   "symbol": "MSTR",
+   "side": "short",
+   "exit": 117.5988,
+   "pnl": 2.07,
+   "reason": "reverted"
+  },
+  {
+   "t": 1787322176,
+   "action": "OPEN",
+   "symbol": "COIN",
+   "side": "long",
+   "shares": 1.0293,
+   "entry": 187.1135,
+   "cost": 192.6,
+   "reason": "lagging a +26bps driver move by 138bps"
+  },
+  {
+   "t": 1787322189,
+   "action": "CLOSE",
+   "symbol": "COIN",
+   "side": "long",
+   "exit": 186.6616,
+   "pnl": -0.47,
+   "reason": "stop"
   }
  ],
  "day": {
   "date": "2026-08-21",
-  "trades": 9,
-  "pnl": -2.99,
+  "trades": 12,
+  "pnl": 0.81,
   "halted": false,
   "startEquity": 961.75
  }
