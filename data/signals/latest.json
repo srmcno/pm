@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787303827,
+  "generatedAt": 1787304737,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -10,54 +10,135 @@
  "signals": [
   {
    "conditionId": "0xc2c6815711d9c3e04754da74166a1d4869b5f78fc660f3275041bb082f3efbae",
-   "outcomeIndex": 1,
+   "outcomeIndex": 0,
    "title": "Dota 2: Team Liquid vs Team Falcons (BO3) - The International Playoffs",
    "category": "Esports",
    "backers": [
     {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.8021,
+     "netUsd": 2194.37,
+     "avgPrice": 0.3846,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.6,
+     "score": 2.47655899063204
+    },
+    {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
      "name": "IMAREALPERSON",
      "quality": 0.6775,
-     "netUsd": 5383.63,
-     "avgPrice": 0.33,
+     "netUsd": 8486.8,
+     "avgPrice": 0.5345,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 2.139519090101831
+     "lastTradeAgoH": 0.2,
+     "score": 2.125130886959427
+    },
+    {
+     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
+     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+     "quality": 0.6192,
+     "netUsd": 13582.89,
+     "avgPrice": 0.4681,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.9529671843196497
+    },
+    {
+     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+     "name": "Lakersfan111",
+     "quality": 0.4201,
+     "netUsd": 14054.54,
+     "avgPrice": 0.52,
+     "conviction": 10.0,
+     "lastTradeAgoH": 5.5,
+     "score": 1.0550643970779467
+    },
+    {
+     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
+     "name": "CORGI8",
+     "quality": 0.3373,
+     "netUsd": 2447.44,
+     "avgPrice": 0.62,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.0535813760153385
+    }
+   ],
+   "backerCount": 5,
+   "contested": true,
+   "totalNetUsd": 40766.04,
+   "score": 8.6633,
+   "question": "Dota 2: Team Liquid vs Team Falcons (BO3) - The International Playoffs",
+   "outcome": "Team Liquid",
+   "tokenId": "4049895104609711288737144352047435266796318342609701121176261363538907943447",
+   "currentPrice": 0.6,
+   "backersAvgEntry": 0.5054,
+   "driftSinceEntry": 0.0946,
+   "endDate": "2026-08-21T12:10:00Z",
+   "slug": "dota2-liquid-flc-2026-08-21",
+   "eventSlug": "dota2-liquid-flc-2026-08-21"
+  },
+  {
+   "conditionId": "0xbea92adb6ff3c3808dcb6918c0ecd7e009d54eb9b881fcb5104855ef9c0dfa9b",
+   "outcomeIndex": 0,
+   "title": "LoL: HANJIN BRION vs BNK FEARX - Game 2 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
+     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+     "quality": 0.6192,
+     "netUsd": 6804.49,
+     "avgPrice": 0.347,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.9357292102035362
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
      "name": "zb8",
      "quality": 0.6019,
-     "netUsd": 2110.76,
-     "avgPrice": 0.45,
+     "netUsd": 11696.86,
+     "avgPrice": 0.34,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 1.7016580905556586
+     "lastTradeAgoH": 0.2,
+     "score": 1.8849813706756782
     },
     {
-     "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
-     "name": "aenews2",
-     "quality": 0.5058,
-     "netUsd": 14579.63,
-     "avgPrice": 0.45,
+     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
+     "name": "fkigedgjdgwbg",
+     "quality": 0.5588,
+     "netUsd": 5076.99,
+     "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.1,
-     "score": 1.4083866162576713
+     "lastTradeAgoH": 0.3,
+     "score": 1.7420219651209543
+    },
+    {
+     "wallet": "0xf49614e63fb15383d4a9b717a1be03ad2410fe79",
+     "name": "Arisham",
+     "quality": 0.3443,
+     "netUsd": 926.76,
+     "avgPrice": 0.33,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.0860285276393098
     }
    ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 22074.02,
-   "score": 5.2496,
-   "question": "Dota 2: Team Liquid vs Team Falcons (BO3) - The International Playoffs",
-   "outcome": "Team Falcons",
-   "tokenId": "72887443630665337353841715728950958113092214232971228918097715649689025110826",
-   "currentPrice": 0.415,
-   "backersAvgEntry": 0.41,
-   "driftSinceEntry": 0.005,
-   "endDate": "2026-08-21T12:10:00Z",
-   "slug": "dota2-liquid-flc-2026-08-21",
-   "eventSlug": "dota2-liquid-flc-2026-08-21"
+   "backerCount": 4,
+   "contested": false,
+   "totalNetUsd": 24505.1,
+   "score": 6.6488,
+   "question": "LoL: HANJIN BRION vs BNK FEARX - Game 2 Winner",
+   "outcome": "HANJIN BRION",
+   "tokenId": "51664513646804253824866751788424224525647128353132516278792054356387205455344",
+   "currentPrice": 0.345,
+   "backersAvgEntry": 0.3742,
+   "driftSinceEntry": -0.0292,
+   "endDate": "2026-08-21T12:00:00Z",
+   "slug": "lol-bro2-fox1-2026-08-21-game2",
+   "eventSlug": "lol-bro2-fox1-2026-08-21"
   }
  ]
 }
