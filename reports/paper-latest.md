@@ -1,14 +1,14 @@
 # Paper portfolio
 
-Updated 2026-08-21 19:31 UTC · started with $20.00 (virtual)
+Updated 2026-08-21 19:46 UTC · started with $20.00 (virtual)
 
-**Equity $9.46 (-52.7%)** · cash $6.01 · 3 open · 27 settled
+**Equity $9.38 (-53.1%)** · cash $6.01 · 3 open · 27 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.73 | $1.10 |
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.31 | $1.34 |
-| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.69 | $1.00 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.69 | $1.04 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.30 | $1.32 |
+| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.69 | $1.01 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
