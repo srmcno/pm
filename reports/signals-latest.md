@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-21 06:36 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 06:47 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Liquid vs Team Falcons - Game 1 Winner — **Team Liquid**
 
-- Score **5.07** · 3 backers · net $10,627 staked
+- Score **5.03** · 3 backers · net $10,627 staked
 - Backers' average entry 0.51 → current price **0.54** (already moved +0.02 since entry)
 - Resolves by 2026-08-21
 
