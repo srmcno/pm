@@ -1,73 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1787279098,
+  "generatedAt": 1787280005,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": [
-  {
-   "conditionId": "0xbee7d58b8a5ca59c228423923d1025e808e1d91d1c1d126cc1c575234cd517aa",
-   "outcomeIndex": 0,
-   "title": "Dota 2: Iron Wing vs BoomBoys (BO3) - The International Playoffs",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
-     "name": "zb8",
-     "quality": 0.6019,
-     "netUsd": 30250.0,
-     "avgPrice": 0.4037,
-     "conviction": 10.0,
-     "lastTradeAgoH": 6.4,
-     "score": 1.460365075885721
-    },
-    {
-     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
-     "name": "Lakersfan111",
-     "quality": 0.4201,
-     "netUsd": 167666.2,
-     "avgPrice": 0.4259,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 1.2749062395299724
-    },
-    {
-     "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
-     "name": "aenews2",
-     "quality": 0.5058,
-     "netUsd": 28941.9,
-     "avgPrice": 0.41,
-     "conviction": 10.0,
-     "lastTradeAgoH": 5.5,
-     "score": 1.2728573432958747
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.4668,
-     "netUsd": 1464.45,
-     "avgPrice": 0.39,
-     "conviction": 10.0,
-     "lastTradeAgoH": 6.4,
-     "score": 1.1325775335162893
-    }
-   ],
-   "backerCount": 4,
-   "contested": true,
-   "totalNetUsd": 228322.55,
-   "score": 5.1407,
-   "question": "Dota 2: Iron Wing vs BoomBoys (BO3) - The International Playoffs",
-   "outcome": "Iron Wing",
-   "tokenId": "74605762335712603601684740789250965755209635304166117043544347219731646094186",
-   "currentPrice": 0.405,
-   "backersAvgEntry": 0.4074,
-   "driftSinceEntry": -0.0024,
-   "endDate": "2026-08-21T08:00:00Z",
-   "slug": "dota2-ironwi-boombo-2026-08-20",
-   "eventSlug": "dota2-ironwi-boombo-2026-08-20"
-  }
- ]
+ "signals": []
 }
