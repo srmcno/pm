@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787323501,
+  "generatedAt": 1787324408,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 983.8,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.3779099860998563
+     "lastTradeAgoH": 1.8,
+     "score": 2.3530780028810945
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -31,8 +31,18 @@
      "netUsd": 13087.46,
      "avgPrice": 0.73,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.1272066364069633
+     "lastTradeAgoH": 1.8,
+     "score": 2.10499269231031
+    },
+    {
+     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
+     "name": "BajaBlaster",
+     "quality": 0.4668,
+     "netUsd": 5175.33,
+     "avgPrice": 0.668,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.4608037223858397
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -41,31 +51,21 @@
      "netUsd": 41381.75,
      "avgPrice": 0.7344,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.232096938286728
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "BajaBlaster",
-     "quality": 0.4668,
-     "netUsd": 3623.33,
-     "avgPrice": 0.74,
-     "conviction": 10.0,
-     "lastTradeAgoH": 10.5,
-     "score": 0.9527550105323861
+     "lastTradeAgoH": 2.1,
+     "score": 1.2192304249728219
     }
    ],
    "backerCount": 4,
    "contested": true,
-   "totalNetUsd": 59076.34,
-   "score": 6.69,
+   "totalNetUsd": 60628.34,
+   "score": 7.1381,
    "question": "Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs",
    "outcome": "Team Falcons",
    "tokenId": "38235859376364554553021925068034262152505573447644969482372166106578675685392",
-   "currentPrice": 0.495,
-   "backersAvgEntry": 0.7361,
-   "driftSinceEntry": -0.2411,
-   "endDate": "2026-08-21T20:00:00Z",
+   "currentPrice": 0.505,
+   "backersAvgEntry": 0.7181,
+   "driftSinceEntry": -0.2131,
+   "endDate": "2026-08-21T19:55:00Z",
    "slug": "cs2-lgc-fal2-2026-08-21",
    "eventSlug": "cs2-lgc-fal2-2026-08-21"
   }
