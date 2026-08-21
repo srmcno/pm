@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-21 17:12 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 17:20 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs — **Team Yandex**
 
-- Score **7.59** · 4 backers · net $388,550 staked
+- Score **7.54** · 4 backers · net $388,550 staked
 - Backers' average entry 0.61 → current price **0.59** (moved against them -0.02 since entry)
 - Resolves by 2026-08-21
 
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: Vitality vs Spirit (BO3) - Esports World Cup Playoffs — **Vitality**
 
-- Score **5.52** · 3 backers · net $35,389 staked
+- Score **5.49** · 3 backers · net $35,389 staked
 - Backers' average entry 0.58 → current price **0.43** (moved against them -0.15 since entry)
 - Resolves by 2026-08-21
 
