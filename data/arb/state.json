@@ -1406,30 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1787316894,
-   "equity": 118.9585
-  },
-  {
-   "t": 1787316896,
-   "equity": 118.9585
-  },
-  {
-   "t": 1787316898,
-   "equity": 118.9585
-  },
-  {
-   "t": 1787316900,
-   "equity": 118.9585
-  },
-  {
-   "t": 1787316902,
-   "equity": 118.9585
-  },
-  {
-   "t": 1787316904,
-   "equity": 118.9585
-  },
-  {
    "t": 1787316906,
    "equity": 118.9585
   },
@@ -3404,14 +3380,37 @@
   {
    "t": 1787317908,
    "equity": 118.9791
+  },
+  {
+   "t": 1787317914,
+   "equity": 118.9791
+  },
+  {
+   "t": 1787317919,
+   "equity": 118.9791
+  },
+  {
+   "t": 1787317921,
+   "equity": 118.9791
+  },
+  {
+   "t": 1787317923,
+   "equity": 118.9791
+  },
+  {
+   "t": 1787317925,
+   "equity": 118.9791
+  },
+  {
+   "t": 1787317927,
+   "equity": 118.9791
   }
  ],
  "decay": {
-  "checked": 5304,
+  "checked": 5305,
   "survived": 3724
  },
  "cooldown": {
-  "USDT\u2192USD1\u2192CATE\u2192USDT|USD1USDT|CATEUSD1|CATEUSDT": 1787314315,
   "USDT\u2192TAO\u2192USDC\u2192USDT|TAOUSDT|TAOUSDC|USDCUSDT": 1787314418,
   "USDT\u2192TOAD\u2192USD1\u2192USDT|TOADUSDT|TOADUSD1|USD1USDT": 1787314952,
   "USDT\u2192USD1\u2192HOODRAT\u2192USDT|USD1USDT|HOODRATUSD1|HOODRATUSDT": 1787316236,
