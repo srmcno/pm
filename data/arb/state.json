@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1787297225,
-   "equity": 118.095
-  },
-  {
    "t": 1787297227,
    "equity": 118.095
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1787298230,
    "equity": 118.1418
+  },
+  {
+   "t": 1787298258,
+   "equity": 118.1418
   }
  ],
  "decay": {
@@ -3421,11 +3421,11 @@
  },
  "tradeCountAll": 1512,
  "replay": {
-  "edges": 2534,
-  "refillable": 2533,
-  "atomicUsd": 116.0534,
-  "delayedUsd": 48.7058,
-  "captureRatio": 0.42,
-  "scansReplayed": 35208
+  "edges": 2536,
+  "refillable": 2535,
+  "atomicUsd": 116.1002,
+  "delayedUsd": 48.2882,
+  "captureRatio": 0.416,
+  "scansReplayed": 35279
  }
 }
