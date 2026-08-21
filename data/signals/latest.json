@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787334662,
+  "generatedAt": 1787335058,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1711.56,
      "avgPrice": 0.6388,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 2.452229002153229
+     "lastTradeAgoH": 0.9,
+     "score": 2.4410153368400995
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -31,8 +31,8 @@
      "netUsd": 318919.92,
      "avgPrice": 0.5837,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.9832565905143844
+     "lastTradeAgoH": 3.4,
+     "score": 1.9741874637662058
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -41,8 +41,8 @@
      "netUsd": 14959.71,
      "avgPrice": 0.58,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.8229786499324188
+     "lastTradeAgoH": 3.3,
+     "score": 1.8146424495060423
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -51,14 +51,14 @@
      "netUsd": 52958.9,
      "avgPrice": 0.6468,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.9,
-     "score": 1.1273558704054665
+     "lastTradeAgoH": 4.0,
+     "score": 1.12220064574724
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 388550.09,
-   "score": 7.3858,
+   "score": 7.352,
    "question": "Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs",
    "outcome": "Team Yandex",
    "tokenId": "79398349303157546860681782615629916893281918072923596421112505130812724228254",
@@ -68,6 +68,57 @@
    "endDate": "2026-08-21T20:20:00Z",
    "slug": "dota2-ty-ngx-2026-08-21",
    "eventSlug": "dota2-ty-ngx-2026-08-21"
+  },
+  {
+   "conditionId": "0x01b6446fed72d5a53b0742497059411650e6bae26c894e765aee3700479aff41",
+   "outcomeIndex": 0,
+   "title": "Counter-Strike: Vitality vs Spirit - Map 2 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.8021,
+     "netUsd": 261.28,
+     "avgPrice": 0.57,
+     "conviction": 9.48,
+     "lastTradeAgoH": 0.3,
+     "score": 2.436479254309577
+    },
+    {
+     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
+     "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
+     "quality": 0.6934,
+     "netUsd": 9496.73,
+     "avgPrice": 0.59,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 2.1738219668196437
+    },
+    {
+     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
+     "name": "BajaBlaster",
+     "quality": 0.4668,
+     "netUsd": 4666.2,
+     "avgPrice": 0.6,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.4709153987023393
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 14424.21,
+   "score": 6.0812,
+   "question": "Counter-Strike: Vitality vs Spirit - Map 2 Winner",
+   "outcome": "Vitality",
+   "tokenId": "43176151302757665029665594060580257243234491021727702938995851359845300767844",
+   "currentPrice": 0.625,
+   "backersAvgEntry": 0.5867,
+   "driftSinceEntry": 0.0383,
+   "endDate": "2026-08-21T22:30:00Z",
+   "slug": "cs2-vit-ts7-2026-08-21-game2",
+   "eventSlug": "cs2-vit-ts7-2026-08-21"
   },
   {
    "conditionId": "0x9b10fcaf654960bc777ddc653d289331cd4719cc120bfb75e5efbba68d48c540",
@@ -82,8 +133,8 @@
      "netUsd": 1064.29,
      "avgPrice": 0.5643,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.5132600650072447
+     "lastTradeAgoH": 0.3,
+     "score": 2.5017673140491983
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -92,8 +143,8 @@
      "netUsd": 3458.37,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.6388474932088073
+     "lastTradeAgoH": 1.9,
+     "score": 1.631353296185622
     },
     {
      "wallet": "0xf5592765133941c40c77e52bc56bbe7ec167f462",
@@ -102,14 +153,14 @@
      "netUsd": 30615.39,
      "avgPrice": 0.5897,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 1.311259314488792
+     "lastTradeAgoH": 1.0,
+     "score": 1.3052631277221851
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 35138.05,
-   "score": 5.4634,
+   "score": 5.4384,
    "question": "Counter-Strike: Vitality vs Spirit (BO3) - Esports World Cup Playoffs",
    "outcome": "Vitality",
    "tokenId": "99349301025396837291883188730091178488113028037528470067767769758707830878323",
