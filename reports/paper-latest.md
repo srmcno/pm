@@ -1,20 +1,18 @@
 # Paper portfolio
 
-Updated 2026-08-21 11:48 UTC · started with $20.00 (virtual)
+Updated 2026-08-21 12:03 UTC · started with $20.00 (virtual)
 
-**Equity $11.83 (-40.9%)** · cash $5.28 · 5 open · 23 settled
+**Equity $11.81 (-41.0%)** · cash $7.06 · 4 open · 24 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Team Falcons Win The International 2026? | No | 1.78 | 0.90 | 1.00 | $1.78 |
 | Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.89 | $1.33 |
-| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.90 | $1.11 |
+| Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 0.89 | $1.09 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.30 | $1.30 |
 | Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.70 | $1.03 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| LoL: Anyone's Legend vs JD Gaming - Game 1 Winner | Anyone's Legend | 0.64 | 0.00 | -1.16 |
 | Counter-Strike: FUT Esports vs MOUZ (BO3) - Esports World Cup Group C | MOUZ | 0.49 | 0.00 | -1.33 |
 | LoL: Shifters vs SK Gaming - Game 2 Winner | Shifters | 0.42 | 0.00 | -1.12 |
 | Counter-Strike: PARIVISION vs 100 Thieves (BO3) - Esports World Cup Group C | 100 Thieves | 0.47 | 0.00 | -1.05 |
@@ -29,3 +27,4 @@ Updated 2026-08-21 11:48 UTC · started with $20.00 (virtual)
 | Will "The End of Oak Street" Opening Weekend Box Office be between 17m and 20m? | No | 0.83 | 1.00 | +0.27 |
 | Will Megan Degenfelder win the 2026 Wyoming Governor Republican primary election? | No | 0.82 | 1.00 | +0.25 |
 | LoL: Gen.G vs KT Rolster - Game 1 Winner | KT Rolster | 0.17 | 0.00 | -1.01 |
+| Will Team Falcons Win The International 2026? | No | 0.90 | 1.00 | +0.18 |

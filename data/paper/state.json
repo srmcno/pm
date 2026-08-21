@@ -1,22 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 5.2819,
+ "cash": 7.0597,
  "createdAt": 1786587299,
  "positions": [
-  {
-   "conditionId": "0xb7da3878391b4ed1f1a4a4d6c11afd740b2730e3251c4ffddaf910f56348b6d5",
-   "outcomeIndex": 1,
-   "tokenId": "104921559757967622795634820444980902727988756064112315776695453325703597702109",
-   "question": "Will Team Falcons Win The International 2026?",
-   "outcome": "No",
-   "shares": 1.7778,
-   "entryPrice": 0.9,
-   "costUsd": 1.6,
-   "openedAt": 1786587299,
-   "signalScore": 5.3524,
-   "markPrice": 0.9995,
-   "valueUsd": 1.7769
-  },
   {
    "conditionId": "0x92a7633ebba21b6e816bb0af38a51a17fbb56afa99df148074f6aebc6d5d222d",
    "outcomeIndex": 1,
@@ -42,8 +28,8 @@
    "costUsd": 1.15,
    "openedAt": 1786587299,
    "signalScore": 4.3417,
-   "markPrice": 0.9025,
-   "valueUsd": 1.11
+   "markPrice": 0.885,
+   "valueUsd": 1.0885
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -56,8 +42,8 @@
    "costUsd": 1.05,
    "openedAt": 1786587299,
    "signalScore": 3.1826,
-   "markPrice": 0.2965,
-   "valueUsd": 1.2999
+   "markPrice": 0.297,
+   "valueUsd": 1.3021
   },
   {
    "conditionId": "0x70831611831c0792bfb971d613ec2db2e06d59a234967b45f8302b3671b515cd",
@@ -465,6 +451,23 @@
    "settledAt": 1787143760,
    "settlePrice": 0.0,
    "pnl": -1.01
+  },
+  {
+   "conditionId": "0xb7da3878391b4ed1f1a4a4d6c11afd740b2730e3251c4ffddaf910f56348b6d5",
+   "outcomeIndex": 1,
+   "tokenId": "104921559757967622795634820444980902727988756064112315776695453325703597702109",
+   "question": "Will Team Falcons Win The International 2026?",
+   "outcome": "No",
+   "shares": 1.7778,
+   "entryPrice": 0.9,
+   "costUsd": 1.6,
+   "openedAt": 1786587299,
+   "signalScore": 5.3524,
+   "markPrice": 0.9995,
+   "valueUsd": 1.7769,
+   "settledAt": 1787313835,
+   "settlePrice": 1.0,
+   "pnl": 0.1778
   }
  ],
  "equityCurve": [
@@ -4437,6 +4440,11 @@
    "t": 1787312928,
    "equity": 11.8264,
    "cash": 5.2819
+  },
+  {
+   "t": 1787313835,
+   "equity": 11.808,
+   "cash": 7.0597
   }
  ],
  "log": [
@@ -4824,6 +4832,13 @@
    "question": "LoL: Gen.G vs KT Rolster - Game 1 Winner",
    "price": 0.0,
    "pnl": -1.01
+  },
+  {
+   "t": 1787313835,
+   "action": "SETTLE",
+   "question": "Will Team Falcons Win The International 2026?",
+   "price": 1.0,
+   "pnl": 0.1778
   }
  ]
 }
