@@ -14,8 +14,8 @@
    "costUsd": 1.25,
    "openedAt": 1786587299,
    "signalScore": 5.0186,
-   "markPrice": 0.785,
-   "valueUsd": 1.1751
+   "markPrice": 0.78,
+   "valueUsd": 1.1677
   },
   {
    "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
@@ -42,22 +42,8 @@
    "costUsd": 1.2,
    "openedAt": 1787121109,
    "signalScore": 4.3131,
-   "markPrice": 0.665,
-   "valueUsd": 0.9672
-  },
-  {
-   "conditionId": "0x578636a5a4268f7d60028c4906b459e10d7b9a118b2d34a1543f766de614f4fb",
-   "outcomeIndex": 1,
-   "tokenId": "77710543186367374746696817414202911626084178587103009794787854379305805464916",
-   "question": "Counter-Strike: Legacy vs Team Falcons - Map 2 Winner",
-   "outcome": "Team Falcons",
-   "shares": 3.2394,
-   "entryPrice": 0.355,
-   "costUsd": 1.15,
-   "openedAt": 1787325901,
-   "signalScore": 6.8172,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0016
+   "markPrice": 0.675,
+   "valueUsd": 0.9818
   }
  ],
  "closed": [
@@ -502,6 +488,23 @@
    "settledAt": 1787328637,
    "settlePrice": 0.0,
    "pnl": -1.13
+  },
+  {
+   "conditionId": "0x578636a5a4268f7d60028c4906b459e10d7b9a118b2d34a1543f766de614f4fb",
+   "outcomeIndex": 1,
+   "tokenId": "77710543186367374746696817414202911626084178587103009794787854379305805464916",
+   "question": "Counter-Strike: Legacy vs Team Falcons - Map 2 Winner",
+   "outcome": "Team Falcons",
+   "shares": 3.2394,
+   "entryPrice": 0.355,
+   "costUsd": 1.15,
+   "openedAt": 1787325901,
+   "signalScore": 6.8172,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0016,
+   "settledAt": 1787329550,
+   "settlePrice": 0.0,
+   "pnl": -1.15
   }
  ],
  "equityCurve": [
@@ -4574,6 +4577,11 @@
    "t": 1787328637,
    "equity": 9.5981,
    "cash": 6.0096
+  },
+  {
+   "t": 1787329550,
+   "equity": 9.6037,
+   "cash": 6.0096
   }
  ],
  "log": [
@@ -4998,6 +5006,13 @@
    "question": "Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs",
    "price": 0.0,
    "pnl": -1.13
+  },
+  {
+   "t": 1787329550,
+   "action": "SETTLE",
+   "question": "Counter-Strike: Legacy vs Team Falcons - Map 2 Winner",
+   "price": 0.0,
+   "pnl": -1.15
   }
  ]
 }
