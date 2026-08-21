@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787329945,
+  "generatedAt": 1787330462,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1381.49,
      "avgPrice": 0.6646,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.3686531010742957
+     "lastTradeAgoH": 1.8,
+     "score": 2.3545218847457963
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -31,8 +31,8 @@
      "netUsd": 318919.92,
      "avgPrice": 0.5837,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.094542481676667
+     "lastTradeAgoH": 2.1,
+     "score": 2.082046589853427
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -41,8 +41,8 @@
      "netUsd": 14959.71,
      "avgPrice": 0.58,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.9252709123647482
+     "lastTradeAgoH": 2.1,
+     "score": 1.913784882713021
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -51,20 +51,20 @@
      "netUsd": 53008.3,
      "avgPrice": 0.6468,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.6,
-     "score": 1.1906148573137434
+     "lastTradeAgoH": 2.8,
+     "score": 1.1835117335574636
     }
    ],
    "backerCount": 4,
    "contested": false,
    "totalNetUsd": 388269.42,
-   "score": 7.5791,
+   "score": 7.5339,
    "question": "Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs",
    "outcome": "Team Yandex",
    "tokenId": "79398349303157546860681782615629916893281918072923596421112505130812724228254",
-   "currentPrice": 0.365,
+   "currentPrice": 0.475,
    "backersAvgEntry": 0.6188,
-   "driftSinceEntry": -0.2538,
+   "driftSinceEntry": -0.1438,
    "endDate": "2026-08-21T20:20:00Z",
    "slug": "dota2-ty-ngx-2026-08-21",
    "eventSlug": "dota2-ty-ngx-2026-08-21"
@@ -82,8 +82,8 @@
      "netUsd": 13420.0,
      "avgPrice": 0.61,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.1998953956310214
+     "lastTradeAgoH": 0.2,
+     "score": 2.186770975798656
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -92,8 +92,8 @@
      "netUsd": 9000.0,
      "avgPrice": 0.6,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.951972870901152
+     "lastTradeAgoH": 0.2,
+     "score": 1.9403275392594874
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -102,14 +102,14 @@
      "netUsd": 253.04,
      "avgPrice": 0.6003,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.9,
-     "score": 0.8782092242939625
+     "lastTradeAgoH": 10.1,
+     "score": 0.8729698903769134
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 22673.04,
-   "score": 5.0301,
+   "score": 5.0001,
    "question": "Dota 2: Team Yandex vs Nigma Galaxy - Game 2 Winner",
    "outcome": "Team Yandex",
    "tokenId": "51124183793824905411033406772669532369224853381002823083153857842950702627475",

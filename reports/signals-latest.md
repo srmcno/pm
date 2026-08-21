@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-21 16:32 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 16:41 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs — **Team Yandex**
 
-- Score **7.58** · 4 backers · net $388,269 staked
-- Backers' average entry 0.62 → current price **0.36** (moved against them -0.25 since entry)
+- Score **7.53** · 4 backers · net $388,269 staked
+- Backers' average entry 0.62 → current price **0.47** (moved against them -0.14 since entry)
 - Resolves by 2026-08-21
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Dota 2: Team Yandex vs Nigma Galaxy - Game 2 Winner — **Team Yandex**
 
-- Score **5.03** · 3 backers · net $22,673 staked
+- Score **5.00** · 3 backers · net $22,673 staked
 - Backers' average entry 0.60 → current price **0.59** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-21
 
