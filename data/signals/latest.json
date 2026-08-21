@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787299617,
+  "generatedAt": 1787299952,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 446.28,
      "avgPrice": 0.49,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 2.476501663541138
+     "lastTradeAgoH": 0.7,
+     "score": 2.466918078247085
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -31,8 +31,8 @@
      "netUsd": 456.75,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.9512952201976999
+     "lastTradeAgoH": 0.2,
+     "score": 1.9437440828607266
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -41,14 +41,14 @@
      "netUsd": 5165.15,
      "avgPrice": 0.45,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.8966018241247855
+     "lastTradeAgoH": 0.2,
+     "score": 1.8892623397150048
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 6068.18,
-   "score": 6.3244,
+   "score": 6.2999,
    "question": "Dota 2: Team Liquid vs Team Falcons - Game 2 Winner",
    "outcome": "Team Falcons",
    "tokenId": "97613058714942726394347111329412559890837851475263091742612496950297533319264",
