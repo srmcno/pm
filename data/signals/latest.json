@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787318958,
+  "generatedAt": 1787319145,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.74,
      "conviction": 10.0,
      "lastTradeAgoH": 0.3,
-     "score": 2.506259466495945
+     "score": 2.5008409051303104
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -31,8 +31,8 @@
      "netUsd": 13087.46,
      "avgPrice": 0.73,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.2420242148998106
+     "lastTradeAgoH": 0.4,
+     "score": 2.2371769331422446
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -41,8 +41,8 @@
      "netUsd": 41381.75,
      "avgPrice": 0.7344,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.2986002974345172
+     "lastTradeAgoH": 0.6,
+     "score": 1.29579270887669
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -51,14 +51,14 @@
      "netUsd": 3623.33,
      "avgPrice": 0.74,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.2,
-     "score": 1.004180678981329
+     "lastTradeAgoH": 9.3,
+     "score": 1.002009628974742
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 59076.34,
-   "score": 7.0511,
+   "score": 7.0358,
    "question": "Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs",
    "outcome": "Team Falcons",
    "tokenId": "38235859376364554553021925068034262152505573447644969482372166106578675685392",
@@ -68,6 +68,57 @@
    "endDate": "2026-08-21T20:00:00Z",
    "slug": "cs2-lgc-fal2-2026-08-21",
    "eventSlug": "cs2-lgc-fal2-2026-08-21"
+  },
+  {
+   "conditionId": "0xa05862606d887ed25719559a79356af1622917172cb1eeb07dec0916ccbdb027",
+   "outcomeIndex": 0,
+   "title": "LoL: KT Rolster vs T1 (BO3) - LCK Round 3-4 Legend Group",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
+     "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
+     "quality": 0.6934,
+     "netUsd": 517.82,
+     "avgPrice": 0.3119,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 2.1860841704988867
+    },
+    {
+     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
+     "name": "jtwyslljy",
+     "quality": 0.7409,
+     "netUsd": 600.59,
+     "avgPrice": 0.29,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.9,
+     "score": 2.075902474280055
+    },
+    {
+     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+     "name": "Lakersfan111",
+     "quality": 0.4201,
+     "netUsd": 30725.07,
+     "avgPrice": 0.2873,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.9,
+     "score": 1.176519070157804
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 31843.48,
+   "score": 5.4385,
+   "question": "LoL: KT Rolster vs T1 (BO3) - LCK Round 3-4 Legend Group",
+   "outcome": "KT Rolster",
+   "tokenId": "58553509037633931763239231673662582020087629820842186962996633033005756337300",
+   "currentPrice": 0.305,
+   "backersAvgEntry": 0.2964,
+   "driftSinceEntry": 0.0086,
+   "endDate": "2026-08-21T17:15:00Z",
+   "slug": "lol-kt-t1-2026-08-21",
+   "eventSlug": "lol-kt-t1-2026-08-21"
   }
  ]
 }
