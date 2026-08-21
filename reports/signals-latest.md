@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-21 17:57 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-21 18:06 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs — **Team Yandex**
 
-- Score **7.35** · 4 backers · net $388,550 staked
-- Backers' average entry 0.61 → current price **0.64** (already moved +0.02 since entry)
+- Score **7.31** · 4 backers · net $388,550 staked
+- Backers' average entry 0.61 → current price **0.58** (moved against them -0.03 since entry)
 - Resolves by 2026-08-21
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -19,20 +19,20 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: Vitality vs Spirit - Map 2 Winner — **Vitality**
 
-- Score **6.08** · 3 backers · net $14,424 staked
-- Backers' average entry 0.59 → current price **0.62** (already moved +0.04 since entry)
+- Score **6.05** · 3 backers · net $14,873 staked
+- Backers' average entry 0.60 → current price **0.62** (already moved +0.02 since entry)
 - Resolves by 2026-08-21
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
 | 0x076daa87 | 0.80 | $261 | 0.57 | 9.48× |
-| 0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261 | 0.69 | $9,497 | 0.59 | 10.0× |
-| BajaBlaster | 0.47 | $4,666 | 0.6 | 10.0× |
+| 0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261 | 0.69 | $8,364 | 0.59 | 10.0× |
+| BajaBlaster | 0.47 | $6,248 | 0.6454 | 10.0× |
 
 ## 3. Counter-Strike: Vitality vs Spirit (BO3) - Esports World Cup Playoffs — **Vitality**
 
-- Score **5.44** · 3 backers · net $35,138 staked
-- Backers' average entry 0.57 → current price **0.34** (moved against them -0.24 since entry)
+- Score **5.41** · 3 backers · net $35,138 staked
+- Backers' average entry 0.57 → current price **0.43** (moved against them -0.14 since entry)
 - Resolves by 2026-08-21
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
