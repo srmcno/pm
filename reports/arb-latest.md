@@ -1,9 +1,10 @@
 # Arb desk — latest scan
 
-Scanned 2026-08-21 04:15 UTC · 2109 pairs · 746 cycles · 0 verified edges
+Scanned 2026-08-21 04:20 UTC · 2109 pairs · 746 cycles · 1 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
+| USDT→USD1→VEXAI→USDT | 28.7 | 23.1 | $5.0 | $0.0116 |
 
 ## Latency replay (own recorded ticks)
 
