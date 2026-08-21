@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-21 13:44 UTC · started with $20.00 (virtual)
+Updated 2026-08-21 13:59 UTC · started with $20.00 (virtual)
 
-**Equity $11.92 (-40.4%)** · cash $5.93 · 5 open · 24 settled
+**Equity $11.91 (-40.4%)** · cash $5.93 · 5 open · 24 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
@@ -10,7 +10,7 @@ Updated 2026-08-21 13:44 UTC · started with $20.00 (virtual)
 | Will MOUZ Win the CS2 EWC 2026? | No | 1.23 | 0.94 | 1.00 | $1.23 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.30 | $1.30 |
 | Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.70 | $1.03 |
-| Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 1.52 | 0.74 | 0.73 | $1.11 |
+| Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 1.52 | 0.74 | 0.72 | $1.10 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
