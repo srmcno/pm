@@ -1,63 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1787439801,
+  "generatedAt": 1787440710,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": [
-  {
-   "conditionId": "0x66868baa6b557986fcdaf8798a8b72dacda714611226dd3ca1b8c809f681892b",
-   "outcomeIndex": 1,
-   "title": "LoL: Disguised vs Dignitas - Game 2 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
-     "name": "IMAREALPERSON",
-     "quality": 0.6775,
-     "netUsd": 3772.46,
-     "avgPrice": 0.4658,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.1212727550823827
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.6192,
-     "netUsd": 868.31,
-     "avgPrice": 0.4067,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.9421699279655953
-    },
-    {
-     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
-     "name": "Lakersfan111",
-     "quality": 0.4201,
-     "netUsd": 1229.24,
-     "avgPrice": 0.49,
-     "conviction": 10.0,
-     "lastTradeAgoH": 14.0,
-     "score": 0.7426484806858207
-    }
-   ],
-   "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 5870.01,
-   "score": 4.8061,
-   "question": "LoL: Disguised vs Dignitas - Game 2 Winner",
-   "outcome": "Dignitas",
-   "tokenId": "95697325168324051572978938730559881750253702452972464162484761182437505958186",
-   "currentPrice": 0.305,
-   "backersAvgEntry": 0.4542,
-   "driftSinceEntry": -0.1492,
-   "endDate": "2026-08-23T05:00:00Z",
-   "slug": "lol-dsg-dig-2026-08-22-game2",
-   "eventSlug": "lol-dsg-dig-2026-08-22"
-  }
- ]
+ "signals": []
 }
