@@ -1,11 +1,63 @@
 {
  "meta": {
-  "generatedAt": 1787383306,
+  "generatedAt": 1787383676,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": []
+ "signals": [
+  {
+   "conditionId": "0x73a35aca42a6a24b96b20ed2062734fb8c20216ef2f9544e71e77456ad3a7593",
+   "outcomeIndex": 0,
+   "title": "LoL: Team WE vs LGD Gaming - Game 1 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.8021,
+     "netUsd": 321.11,
+     "avgPrice": 0.5291,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 2.527788045381964
+    },
+    {
+     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
+     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+     "quality": 0.6192,
+     "netUsd": 2036.64,
+     "avgPrice": 0.1698,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.9534871406214032
+    },
+    {
+     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
+     "name": "fkigedgjdgwbg",
+     "quality": 0.5588,
+     "netUsd": 636.29,
+     "avgPrice": 0.22,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.7606907606845181
+    }
+   ],
+   "backerCount": 3,
+   "contested": false,
+   "totalNetUsd": 2994.04,
+   "score": 6.242,
+   "question": "LoL: Team WE vs LGD Gaming - Game 1 Winner",
+   "outcome": "Team WE",
+   "tokenId": "15829617765416095893634091304377496320709804194312655759177260771961128322133",
+   "currentPrice": 0.235,
+   "backersAvgEntry": 0.3063,
+   "driftSinceEntry": -0.0713,
+   "endDate": "2026-08-22T13:00:00Z",
+   "slug": "lol-we-lgd-2026-08-22-game1",
+   "eventSlug": "lol-we-lgd-2026-08-22"
+  }
+ ]
 }
