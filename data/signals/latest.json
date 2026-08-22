@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787439224,
+  "generatedAt": 1787439801,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 3772.46,
      "avgPrice": 0.4658,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.135486533909484
+     "lastTradeAgoH": 0.2,
+     "score": 2.1212727550823827
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -31,8 +31,8 @@
      "netUsd": 868.31,
      "avgPrice": 0.4067,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 1.9551836121957864
+     "lastTradeAgoH": 0.2,
+     "score": 1.9421699279655953
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -41,14 +41,14 @@
      "netUsd": 1229.24,
      "avgPrice": 0.49,
      "conviction": 10.0,
-     "lastTradeAgoH": 13.8,
-     "score": 0.747624663604995
+     "lastTradeAgoH": 14.0,
+     "score": 0.7426484806858207
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 5870.01,
-   "score": 4.8383,
+   "score": 4.8061,
    "question": "LoL: Disguised vs Dignitas - Game 2 Winner",
    "outcome": "Dignitas",
    "tokenId": "95697325168324051572978938730559881750253702452972464162484761182437505958186",
