@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787412929,
+  "generatedAt": 1787413838,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1787.95,
      "avgPrice": 0.6065,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.386153351356134
+     "lastTradeAgoH": 1.7,
+     "score": 2.3611806269224127
     },
     {
      "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
@@ -31,8 +31,8 @@
      "netUsd": 3220.0,
      "avgPrice": 0.46,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.316721248043266
+     "lastTradeAgoH": 0.5,
+     "score": 2.2924751779890293
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -41,8 +41,8 @@
      "netUsd": 336000.0,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.1356682345574973
+     "lastTradeAgoH": 1.7,
+     "score": 2.113317007938661
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -51,20 +51,20 @@
      "netUsd": 28000.0,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 1.9622325776767313
+     "lastTradeAgoH": 1.7,
+     "score": 1.941696473654187
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 369007.95,
-   "score": 8.8008,
+   "score": 8.7087,
    "question": "Counter-Strike: FURIA vs FUT Esports (BO3) - Esports World Cup Playoffs",
    "outcome": "FURIA",
    "tokenId": "97986244429993405301006613239860350847262749399039648046285499627250726259070",
-   "currentPrice": 0.575,
+   "currentPrice": 0.645,
    "backersAvgEntry": 0.5466,
-   "driftSinceEntry": 0.0284,
+   "driftSinceEntry": 0.0984,
    "endDate": "2026-08-22T20:10:00Z",
    "slug": "cs2-furia-fut-2026-08-22",
    "eventSlug": "cs2-furia-fut-2026-08-22"
