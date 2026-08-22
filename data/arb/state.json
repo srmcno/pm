@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1787362805,
-   "equity": 130.439
-  },
-  {
    "t": 1787362807,
    "equity": 130.439
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1787363885,
    "equity": 130.4707
+  },
+  {
+   "t": 1787363910,
+   "equity": 130.4707
   }
  ],
  "decay": {
@@ -3411,7 +3411,6 @@
   "survived": 3765
  },
  "cooldown": {
-  "USDT\u2192PLUMBER\u2192USD1\u2192USDT|PLUMBERUSDT|PLUMBERUSD1|USD1USDT": 1787360295,
   "USDT\u2192FEFER\u2192USD1\u2192USDT|FEFERUSDT|FEFERUSD1|USD1USDT": 1787361609,
   "USDT\u2192XDC\u2192USDC\u2192USDT|XDCUSDT|XDCUSDC|USDCUSDT": 1787361606,
   "USDT\u2192SOL\u2192BTC\u2192USDT|SOLUSDT|SOLBTC|BTCUSDT": 1787361837,
@@ -3421,11 +3420,11 @@
  },
  "tradeCountAll": 1640,
  "replay": {
-  "edges": 2164,
-  "refillable": 2164,
-  "atomicUsd": 116.1828,
-  "delayedUsd": 12.8083,
-  "captureRatio": 0.11,
-  "scansReplayed": 33613
+  "edges": 2166,
+  "refillable": 2166,
+  "atomicUsd": 116.2145,
+  "delayedUsd": 12.6103,
+  "captureRatio": 0.109,
+  "scansReplayed": 33681
  }
 }
