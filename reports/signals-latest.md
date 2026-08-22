@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-22 15:05 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-22 15:20 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: FURIA vs FUT Esports (BO3) - Esports World Cup Playoffs — **FURIA**
 
-- Score **6.62** · 3 backers · net $365,788 staked
-- Backers' average entry 0.58 → current price **0.40** (moved against them -0.18 since entry)
+- Score **6.55** · 3 backers · net $365,788 staked
+- Backers' average entry 0.58 → current price **0.42** (moved against them -0.15 since entry)
 - Resolves by 2026-08-22
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
