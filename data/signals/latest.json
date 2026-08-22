@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787367564,
+  "generatedAt": 1787368476,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 58730.17,
      "avgPrice": 0.37,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.6,
-     "score": 2.0458817450351208
+     "lastTradeAgoH": 4.9,
+     "score": 2.0244233331547656
     },
     {
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
@@ -31,8 +31,8 @@
      "netUsd": 40353.34,
      "avgPrice": 0.38,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 1.9974688936151022
+     "lastTradeAgoH": 1.7,
+     "score": 1.9765182642146457
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -41,8 +41,8 @@
      "netUsd": 76000.0,
      "avgPrice": 0.3803,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.7,
-     "score": 1.7181087105404478
+     "lastTradeAgoH": 4.9,
+     "score": 1.7000881751622559
     },
     {
      "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
@@ -51,8 +51,8 @@
      "netUsd": 116000.0,
      "avgPrice": 0.3867,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.0,
-     "score": 1.2977293737585736
+     "lastTradeAgoH": 5.3,
+     "score": 1.2841180242859438
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -61,20 +61,20 @@
      "netUsd": 12695.0,
      "avgPrice": 0.368,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.1,
-     "score": 1.2432309936843322
+     "lastTradeAgoH": 4.4,
+     "score": 1.2301912552978678
     }
    ],
    "backerCount": 5,
    "contested": true,
    "totalNetUsd": 303778.51,
-   "score": 8.3024,
+   "score": 8.2153,
    "question": "Dota 2: Team Spirit vs Team Liquid (BO3) - The International Playoffs",
    "outcome": "Team Liquid",
    "tokenId": "78605143595326382769291409739715115181750361139001836889673908894208797817740",
-   "currentPrice": 0.395,
+   "currentPrice": 0.24,
    "backersAvgEntry": 0.377,
-   "driftSinceEntry": 0.018,
+   "driftSinceEntry": -0.137,
    "endDate": "2026-08-22T08:15:00Z",
    "slug": "dota2-ts8-liquid-2026-08-21",
    "eventSlug": "dota2-ts8-liquid-2026-08-21"
