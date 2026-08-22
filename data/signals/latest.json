@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787398113,
+  "generatedAt": 1787399024,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 402.0,
      "avgPrice": 0.2519,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 2.393815679408285
+     "lastTradeAgoH": 1.6,
+     "score": 2.3686805161993956
     },
     {
      "wallet": "0x38337de21ff0bb0a11a40761507d51e318d633d1",
@@ -31,8 +31,8 @@
      "netUsd": 8209.77,
      "avgPrice": 0.26,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.5,
-     "score": 1.9067726991282232
+     "lastTradeAgoH": 3.8,
+     "score": 1.886751507268251
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -41,20 +41,20 @@
      "netUsd": 14437.28,
      "avgPrice": 0.2712,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 0.963848640203797
+     "lastTradeAgoH": 2.7,
+     "score": 0.9537281897912668
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 23049.05,
-   "score": 5.2644,
+   "score": 5.2092,
    "question": "Dota 2: TEAM VISION vs Team Yandex (BO3) - The International Playoffs",
    "outcome": "Team Yandex",
    "tokenId": "25112576883867894161294487118156327644660972722273495129579023183574850994813",
-   "currentPrice": 0.325,
+   "currentPrice": 0.295,
    "backersAvgEntry": 0.261,
-   "driftSinceEntry": 0.064,
+   "driftSinceEntry": 0.034,
    "endDate": "2026-08-22T14:45:00Z",
    "slug": "dota2-vsn2-ty-2026-08-22",
    "eventSlug": "dota2-vsn2-ty-2026-08-22"
