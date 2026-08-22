@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787394780,
+  "generatedAt": 1787395387,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 402.0,
      "avgPrice": 0.2519,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.488108717589444
+     "lastTradeAgoH": 0.6,
+     "score": 2.4705182916287276
     },
     {
      "wallet": "0x38337de21ff0bb0a11a40761507d51e318d633d1",
@@ -31,8 +31,8 @@
      "netUsd": 8209.77,
      "avgPrice": 0.26,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.6,
-     "score": 1.981880984393583
+     "lastTradeAgoH": 2.7,
+     "score": 1.9678694862333648
     },
     {
      "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
@@ -41,14 +41,14 @@
      "netUsd": 14437.28,
      "avgPrice": 0.2712,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 1.001814895255673
+     "lastTradeAgoH": 1.7,
+     "score": 0.9947322663428934
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 23049.05,
-   "score": 5.4718,
+   "score": 5.4331,
    "question": "Dota 2: TEAM VISION vs Team Yandex (BO3) - The International Playoffs",
    "outcome": "Team Yandex",
    "tokenId": "25112576883867894161294487118156327644660972722273495129579023183574850994813",
@@ -72,8 +72,8 @@
      "netUsd": 1395.9,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.338552457301288
+     "lastTradeAgoH": 2.1,
+     "score": 2.3220193638859556
     },
     {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
@@ -82,8 +82,8 @@
      "netUsd": 5400.0,
      "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.8723199965034218
+     "lastTradeAgoH": 3.4,
+     "score": 1.859083072392979
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -92,14 +92,14 @@
      "netUsd": 2910.3,
      "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 1.2038619433493374
+     "lastTradeAgoH": 2.5,
+     "score": 1.1953508826261037
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9706.2,
-   "score": 5.4147,
+   "score": 5.3765,
    "question": "Game Handicap: VSN (-1.5) vs Team Yandex (+1.5)",
    "outcome": "Team Yandex",
    "tokenId": "71918256524175056995085113108521052138671275883391737209664091152220188994859",

@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-22 10:33 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-22 10:43 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: TEAM VISION vs Team Yandex (BO3) - The International Playoffs — **Team Yandex**
 
-- Score **5.47** · 3 backers · net $23,049 staked
+- Score **5.43** · 3 backers · net $23,049 staked
 - Backers' average entry 0.26 → current price **0.15** (moved against them -0.11 since entry)
 - Resolves by 2026-08-22
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Game Handicap: VSN (-1.5) vs Team Yandex (+1.5) — **Team Yandex**
 
-- Score **5.41** · 3 backers · net $9,706 staked
+- Score **5.38** · 3 backers · net $9,706 staked
 - Backers' average entry 0.55 → current price **0.47** (moved against them -0.09 since entry)
 - Resolves by 2026-08-22
 
