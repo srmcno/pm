@@ -1,27 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-22 08:47 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-22 09:02 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. LoL: Team WE vs LGD Gaming - Game 2 Winner — **LGD Gaming**
+## 1. Game Handicap: VSN (-1.5) vs Team Yandex (+1.5) — **Team Yandex**
 
-- Score **8.76** · 5 backers · net $15,208 staked
-- Backers' average entry 0.60 → current price **0.49** (moved against them -0.11 since entry)
-- Resolves by 2026-08-22
-
-| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
-|---|---|---|---|---|
-| IMAREALPERSON | 0.68 | $328 | 0.5744 | 10.0× |
-| 0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616 | 0.62 | $4,157 | 0.4948 | 10.0× |
-| zb8 | 0.60 | $477 | 0.64 | 10.0× |
-| fkigedgjdgwbg | 0.56 | $9,606 | 0.7667 | 10.0× |
-| Arisham | 0.34 | $640 | 0.5007 | 10.0× |
-
-## 2. Game Handicap: VSN (-1.5) vs Team Yandex (+1.5) — **Team Yandex**
-
-- Score **5.83** · 3 backers · net $10,917 staked
-- Backers' average entry 0.55 → current price **0.56** (roughly flat +0.01 since entry)
+- Score **5.77** · 3 backers · net $10,917 staked
+- Backers' average entry 0.55 → current price **0.57** (already moved +0.03 since entry)
 - Resolves by 2026-08-22
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -30,10 +16,10 @@ Each signal marks an outcome that several qualified wallets have independently n
 | IMAREALPERSON | 0.68 | $5,400 | 0.54 | 10.0× |
 | Lakersfan111 | 0.42 | $4,150 | 0.54 | 10.0× |
 
-## 3. LoL: Dplus KIA vs Gen.G (BO3) - LCK Round 3-4 Legend Group — **Gen.G**
+## 2. LoL: Dplus KIA vs Gen.G (BO3) - LCK Round 3-4 Legend Group — **Gen.G**
 
-- Score **5.12** · 3 backers · net $41,238 staked
-- Backers' average entry 0.68 → current price **0.76** (already moved +0.08 since entry)
+- Score **5.07** · 3 backers · net $41,238 staked
+- Backers' average entry 0.68 → current price **0.82** (already moved +0.14 since entry)
 - Resolves by 2026-08-22
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |

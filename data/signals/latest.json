@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787388444,
+  "generatedAt": 1787389356,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -8,77 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0x6ea7f0313c819fc14e8669ab6bc762119fc1e1714db8be44d53d80a5a411d28c",
-   "outcomeIndex": 1,
-   "title": "LoL: Team WE vs LGD Gaming - Game 2 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
-     "name": "IMAREALPERSON",
-     "quality": 0.6775,
-     "netUsd": 327.74,
-     "avgPrice": 0.5744,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.1244177104075366
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.6192,
-     "netUsd": 4157.31,
-     "avgPrice": 0.4948,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.934452587781753
-    },
-    {
-     "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
-     "name": "zb8",
-     "quality": 0.6019,
-     "netUsd": 476.78,
-     "avgPrice": 0.64,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.870507163619201
-    },
-    {
-     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
-     "name": "fkigedgjdgwbg",
-     "quality": 0.5588,
-     "netUsd": 9605.86,
-     "avgPrice": 0.7667,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.7556035329063642
-    },
-    {
-     "wallet": "0xf49614e63fb15383d4a9b717a1be03ad2410fe79",
-     "name": "Arisham",
-     "quality": 0.3443,
-     "netUsd": 640.28,
-     "avgPrice": 0.5007,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.075633116881876
-    }
-   ],
-   "backerCount": 5,
-   "contested": true,
-   "totalNetUsd": 15207.97,
-   "score": 8.7606,
-   "question": "LoL: Team WE vs LGD Gaming - Game 2 Winner",
-   "outcome": "LGD Gaming",
-   "tokenId": "105052147545219235703104586478595420038539947037864810636460567924609337232421",
-   "currentPrice": 0.49,
-   "backersAvgEntry": 0.5953,
-   "driftSinceEntry": -0.1053,
-   "endDate": "2026-08-22T13:00:00Z",
-   "slug": "lol-we-lgd-2026-08-22-game2",
-   "eventSlug": "lol-we-lgd-2026-08-22"
-  },
   {
    "conditionId": "0x2bf4640df9efd751b72794257c1b92ca02aa4a4dad73fa11860b4cd6b929bab8",
    "outcomeIndex": 1,
@@ -92,8 +21,8 @@
      "netUsd": 1366.52,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.5163162307830627
+     "lastTradeAgoH": 0.4,
+     "score": 2.4898948067402795
     },
     {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
@@ -102,8 +31,8 @@
      "netUsd": 5400.0,
      "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.014643366973341
+     "lastTradeAgoH": 1.7,
+     "score": 1.9934895286589818
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -112,20 +41,20 @@
      "netUsd": 4150.23,
      "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 1.2953728440916892
+     "lastTradeAgoH": 0.9,
+     "score": 1.281771375886478
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 10916.75,
-   "score": 5.8263,
+   "score": 5.7652,
    "question": "Game Handicap: VSN (-1.5) vs Team Yandex (+1.5)",
    "outcome": "Team Yandex",
    "tokenId": "71918256524175056995085113108521052138671275883391737209664091152220188994859",
-   "currentPrice": 0.565,
+   "currentPrice": 0.575,
    "backersAvgEntry": 0.55,
-   "driftSinceEntry": 0.015,
+   "driftSinceEntry": 0.025,
    "endDate": "2026-08-22T14:45:00Z",
    "slug": "dota2-vsn2-ty-2026-08-22-game-handicap-away-1pt5",
    "eventSlug": "dota2-vsn2-ty-2026-08-22"
@@ -143,8 +72,8 @@
      "netUsd": 1931.51,
      "avgPrice": 0.7491,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.4823845987660373
+     "lastTradeAgoH": 0.8,
+     "score": 2.4563194582567056
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -153,8 +82,8 @@
      "netUsd": 23795.29,
      "avgPrice": 0.6636,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.2,
-     "score": 1.3728542763675156
+     "lastTradeAgoH": 11.5,
+     "score": 1.3584392499327946
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -163,20 +92,20 @@
      "netUsd": 15511.61,
      "avgPrice": 0.6332,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 1.2697815280373554
+     "lastTradeAgoH": 1.3,
+     "score": 1.2564487697045412
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 41238.41,
-   "score": 5.125,
+   "score": 5.0712,
    "question": "LoL: Dplus KIA vs Gen.G (BO3) - LCK Round 3-4 Legend Group",
    "outcome": "Gen.G",
    "tokenId": "17590972557638034882605801437090702284259204426979460505756663023934339549036",
-   "currentPrice": 0.76,
+   "currentPrice": 0.825,
    "backersAvgEntry": 0.682,
-   "driftSinceEntry": 0.078,
+   "driftSinceEntry": 0.143,
    "endDate": "2026-08-22T14:00:00Z",
    "slug": "lol-dk-gen-2026-08-22",
    "eventSlug": "lol-dk-gen-2026-08-22"
