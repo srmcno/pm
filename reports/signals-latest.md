@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-22 09:38 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-22 09:48 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Dplus KIA vs Gen.G - Game 2 Winner — **Dplus KIA**
 
-- Score **8.52** · 5 backers · net $71,004 staked
+- Score **8.46** · 5 backers · net $71,004 staked
 - Backers' average entry 0.81 → current price **0.63** (moved against them -0.18 since entry)
 - Resolves by 2026-08-22
 
@@ -20,8 +20,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Game Handicap: VSN (-1.5) vs Team Yandex (+1.5) — **Team Yandex**
 
-- Score **5.62** · 3 backers · net $10,917 staked
-- Backers' average entry 0.55 → current price **0.55** (roughly flat +0.00 since entry)
+- Score **5.58** · 3 backers · net $10,917 staked
+- Backers' average entry 0.55 → current price **0.30** (moved against them -0.24 since entry)
 - Resolves by 2026-08-22
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -32,7 +32,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Dota 2: TEAM VISION vs Team Yandex - Game 1 Winner — **Team Yandex**
 
-- Score **5.62** · 3 backers · net $5,312 staked
+- Score **5.58** · 3 backers · net $5,312 staked
 - Backers' average entry 0.35 → current price **0.23** (moved against them -0.11 since entry)
 - Resolves by 2026-08-22
 
@@ -44,8 +44,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 4. LoL: Dplus KIA vs Gen.G (BO3) - LCK Round 3-4 Legend Group — **Gen.G**
 
-- Score **4.95** · 3 backers · net $41,238 staked
-- Backers' average entry 0.68 → current price **0.77** (already moved +0.09 since entry)
+- Score **4.91** · 3 backers · net $41,238 staked
+- Backers' average entry 0.68 → current price **0.59** (moved against them -0.09 since entry)
 - Resolves by 2026-08-22
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
