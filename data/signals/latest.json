@@ -1,11 +1,114 @@
 {
  "meta": {
-  "generatedAt": 1787407795,
+  "generatedAt": 1787408895,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": []
+ "signals": [
+  {
+   "conditionId": "0xaea50c46b138456d358138b2c1737f22cc692ac199e2cfa0c1e86e2babf9e37b",
+   "outcomeIndex": 0,
+   "title": "Counter-Strike: FURIA vs FUT Esports (BO3) - Esports World Cup Playoffs",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.8021,
+     "netUsd": 1787.95,
+     "avgPrice": 0.6065,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 2.500377829322888
+    },
+    {
+     "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
+     "name": "S-Works",
+     "quality": 0.7179,
+     "netUsd": 336000.0,
+     "avgPrice": 0.56,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 2.237902061676725
+    },
+    {
+     "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
+     "name": "coali10",
+     "quality": 0.6596,
+     "netUsd": 28000.0,
+     "avgPrice": 0.56,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 2.0561640895416744
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 365787.95,
+   "score": 6.7944,
+   "question": "Counter-Strike: FURIA vs FUT Esports (BO3) - Esports World Cup Playoffs",
+   "outcome": "FURIA",
+   "tokenId": "97986244429993405301006613239860350847262749399039648046285499627250726259070",
+   "currentPrice": 0.485,
+   "backersAvgEntry": 0.5755,
+   "driftSinceEntry": -0.0905,
+   "endDate": "2026-08-22T20:10:00Z",
+   "slug": "cs2-furia-fut-2026-08-22",
+   "eventSlug": "cs2-furia-fut-2026-08-22"
+  },
+  {
+   "conditionId": "0xce6a73e6ef72feb0c753c5cf651754e03d57217ff6cdc8f354227c5c46b38508",
+   "outcomeIndex": 1,
+   "title": "Counter-Strike: FURIA vs FUT Esports - Map 1 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
+     "name": "0x1610DB79f753a80207E1d66716be9E91E627AE49-1778875286261",
+     "quality": 0.6934,
+     "netUsd": 24175.33,
+     "avgPrice": 0.5285,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 2.175332089695245
+    },
+    {
+     "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+     "name": "Lakersfan111",
+     "quality": 0.4201,
+     "netUsd": 728.58,
+     "avgPrice": 0.45,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.9,
+     "score": 1.1796688333609004
+    },
+    {
+     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
+     "name": "CORGI8",
+     "quality": 0.3373,
+     "netUsd": 8220.33,
+     "avgPrice": 0.5063,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.4,
+     "score": 1.0501117464073813
+    }
+   ],
+   "backerCount": 3,
+   "contested": false,
+   "totalNetUsd": 33124.24,
+   "score": 4.4051,
+   "question": "Counter-Strike: FURIA vs FUT Esports - Map 1 Winner",
+   "outcome": "FUT Esports",
+   "tokenId": "69338608502004749323138978039347585197205608118534197323111772301613479996063",
+   "currentPrice": 0.635,
+   "backersAvgEntry": 0.4949,
+   "driftSinceEntry": 0.1401,
+   "endDate": "2026-08-22T20:10:00Z",
+   "slug": "cs2-furia-fut-2026-08-22-game1",
+   "eventSlug": "cs2-furia-fut-2026-08-22"
+  }
+ ]
 }
