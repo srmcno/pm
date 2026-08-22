@@ -1,10 +1,10 @@
 # Arb desk — latest scan
 
-Scanned 2026-08-22 04:50 UTC · 2106 pairs · 746 cycles · 1 verified edges
+Scanned 2026-08-22 05:00 UTC · 2106 pairs · 746 cycles · 1 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→SOL→BTC→USDT | 14.5 | 13.7 | $10.0 | $0.0137 |
+| USDT→BTC→XRP→USDT | 2.2 | 5.6 | $20.0 | $0.0113 |
 
 ## Latency replay (own recorded ticks)
 
