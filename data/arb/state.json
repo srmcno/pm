@@ -1,155 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 148.967,
+ "cash": 149.5028,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1787359798,
-   "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0106,
-   "bps": 5.3
-  },
-  {
-   "t": 1787360295,
-   "path": "USDT\u2192PLUMBER\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0224,
-   "bps": 44.8
-  },
-  {
-   "t": 1787361008,
-   "path": "USDT\u2192FEFER\u2192USD1\u2192USDT",
-   "sizeUsd": 10.0,
-   "profitUsd": 0.0249,
-   "bps": 24.9
-  },
-  {
-   "t": 1787361606,
-   "path": "USDT\u2192XDC\u2192USDC\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0059,
-   "bps": 3.0
-  },
-  {
-   "t": 1787361609,
-   "path": "USDT\u2192FEFER\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0356,
-   "bps": 71.2
-  },
-  {
-   "t": 1787361837,
-   "path": "USDT\u2192SOL\u2192BTC\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0102,
-   "bps": 5.1
-  },
-  {
-   "t": 1787361988,
-   "path": "USDT\u2192USD1\u2192FEFER\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0107,
-   "bps": 21.4
-  },
-  {
-   "t": 1787362618,
-   "path": "USDT\u2192TOAD\u2192USD1\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0174,
-   "bps": 8.7
-  },
-  {
-   "t": 1787362847,
-   "path": "USDT\u2192TOAD\u2192USD1\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0232,
-   "bps": 11.6
-  },
-  {
-   "t": 1787363242,
-   "path": "USDT\u2192BTC\u2192XRP\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0085,
-   "bps": 4.2
-  },
-  {
-   "t": 1787364564,
-   "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0134,
-   "bps": 6.7
-  },
-  {
-   "t": 1787365051,
-   "path": "USDT\u2192USD1\u2192GPUBSC\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0257,
-   "bps": 51.4
-  },
-  {
-   "t": 1787365885,
-   "path": "USDT\u2192USDC\u2192TAO\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0466,
-   "bps": 23.3
-  },
-  {
-   "t": 1787366550,
-   "path": "USDT\u2192USDC\u2192ADA\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0064,
-   "bps": 3.2
-  },
-  {
-   "t": 1787366645,
-   "path": "USDT\u2192HYPE\u2192USDC\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0081,
-   "bps": 4.0
-  },
-  {
-   "t": 1787367124,
-   "path": "USDT\u2192USD1\u2192GMEROBINHOOD\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0086,
-   "bps": 17.2
-  },
-  {
-   "t": 1787367181,
-   "path": "USDT\u2192BTC\u2192XRP\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0059,
-   "bps": 3.0
-  },
-  {
-   "t": 1787367245,
-   "path": "USDT\u2192BTC\u2192XRP\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.006,
-   "bps": 3.0
-  },
-  {
-   "t": 1787367448,
-   "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0052,
-   "bps": 2.6
-  },
-  {
-   "t": 1787367941,
-   "path": "USDT\u2192USD1\u2192EYE\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0248,
-   "bps": 49.6
-  },
-  {
-   "t": 1787367958,
-   "path": "USDT\u2192USD1\u2192FRONG\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0103,
-   "bps": 20.6
-  },
   {
    "t": 1787368763,
    "path": "USDT\u2192BTC\u2192XRP\u2192USDT",
@@ -1402,145 +1255,156 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0068,
    "bps": 13.6
+  },
+  {
+   "t": 1787375812,
+   "path": "USDT\u2192STONKBROKER\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0098,
+   "bps": 19.6
+  },
+  {
+   "t": 1787375818,
+   "path": "USDT\u2192USDF\u2192ETH\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.037,
+   "bps": 18.5
+  },
+  {
+   "t": 1787375827,
+   "path": "USDT\u2192TOAD\u2192USD1\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0952,
+   "bps": 47.6
+  },
+  {
+   "t": 1787375827,
+   "path": "USDT\u2192QUBIC\u2192USDC\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0061,
+   "bps": 6.1
+  },
+  {
+   "t": 1787375829,
+   "path": "USDT\u2192XRP\u2192BTC\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0824,
+   "bps": 41.2
+  },
+  {
+   "t": 1787375831,
+   "path": "USDT\u2192CATE\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0127,
+   "bps": 25.4
+  },
+  {
+   "t": 1787375840,
+   "path": "USDT\u2192BTC\u2192SOL\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0149,
+   "bps": 29.8
+  },
+  {
+   "t": 1787375842,
+   "path": "USDT\u2192STONKBROKER\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0098,
+   "bps": 19.6
+  },
+  {
+   "t": 1787375851,
+   "path": "USDT\u2192BRODIE\u2192USD1\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0155,
+   "bps": 15.5
+  },
+  {
+   "t": 1787375857,
+   "path": "USDT\u2192USDC\u2192ZEC\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0453,
+   "bps": 45.3
+  },
+  {
+   "t": 1787375857,
+   "path": "USDT\u2192TOAD\u2192USD1\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0363,
+   "bps": 36.3
+  },
+  {
+   "t": 1787375862,
+   "path": "USDT\u2192XCN\u2192USDC\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0191,
+   "bps": 9.5
+  },
+  {
+   "t": 1787375877,
+   "path": "USDT\u2192USDF\u2192ETH\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0237,
+   "bps": 11.8
+  },
+  {
+   "t": 1787375882,
+   "path": "USDT\u2192BRODIE\u2192USD1\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0155,
+   "bps": 15.5
+  },
+  {
+   "t": 1787375884,
+   "path": "USDT\u2192ETH\u2192LINK\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0185,
+   "bps": 37.0
+  },
+  {
+   "t": 1787375888,
+   "path": "USDT\u2192USDC\u2192ZEC\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0076,
+   "bps": 15.2
+  },
+  {
+   "t": 1787375888,
+   "path": "USDT\u2192BTC\u2192SOL\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0161,
+   "bps": 32.2
+  },
+  {
+   "t": 1787375891,
+   "path": "USDT\u2192XRP\u2192BTC\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0106,
+   "bps": 21.2
+  },
+  {
+   "t": 1787375893,
+   "path": "USDT\u2192XCN\u2192USDC\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0485,
+   "bps": 24.2
+  },
+  {
+   "t": 1787375895,
+   "path": "USDT\u2192QUBIC\u2192USDC\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0061,
+   "bps": 6.1
+  },
+  {
+   "t": 1787375911,
+   "path": "USDT\u2192USDC\u2192ADA\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0051,
+   "bps": 5.1
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787374638,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374640,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374642,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374644,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374646,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374648,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374650,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374652,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374654,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374656,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374658,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374660,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374662,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374664,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374666,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374668,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374671,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374673,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374675,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374677,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374679,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374681,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374683,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374685,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374687,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374689,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374691,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374693,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374695,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374697,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374699,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374701,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374703,
-   "equity": 131.6606
-  },
-  {
-   "t": 1787374705,
-   "equity": 131.6606
-  },
   {
    "t": 1787374707,
    "equity": 131.6606
@@ -3404,11 +3268,147 @@
   {
    "t": 1787375806,
    "equity": 148.967
+  },
+  {
+   "t": 1787375812,
+   "equity": 148.9768
+  },
+  {
+   "t": 1787375814,
+   "equity": 148.9768
+  },
+  {
+   "t": 1787375816,
+   "equity": 148.9768
+  },
+  {
+   "t": 1787375818,
+   "equity": 149.0138
+  },
+  {
+   "t": 1787375827,
+   "equity": 149.1151
+  },
+  {
+   "t": 1787375829,
+   "equity": 149.1975
+  },
+  {
+   "t": 1787375831,
+   "equity": 149.2102
+  },
+  {
+   "t": 1787375833,
+   "equity": 149.2102
+  },
+  {
+   "t": 1787375837,
+   "equity": 149.2102
+  },
+  {
+   "t": 1787375840,
+   "equity": 149.2251
+  },
+  {
+   "t": 1787375842,
+   "equity": 149.2349
+  },
+  {
+   "t": 1787375846,
+   "equity": 149.2349
+  },
+  {
+   "t": 1787375848,
+   "equity": 149.2349
+  },
+  {
+   "t": 1787375851,
+   "equity": 149.2504
+  },
+  {
+   "t": 1787375853,
+   "equity": 149.2504
+  },
+  {
+   "t": 1787375857,
+   "equity": 149.332
+  },
+  {
+   "t": 1787375859,
+   "equity": 149.332
+  },
+  {
+   "t": 1787375862,
+   "equity": 149.3511
+  },
+  {
+   "t": 1787375864,
+   "equity": 149.3511
+  },
+  {
+   "t": 1787375868,
+   "equity": 149.3511
+  },
+  {
+   "t": 1787375871,
+   "equity": 149.3511
+  },
+  {
+   "t": 1787375873,
+   "equity": 149.3511
+  },
+  {
+   "t": 1787375877,
+   "equity": 149.3748
+  },
+  {
+   "t": 1787375879,
+   "equity": 149.3748
+  },
+  {
+   "t": 1787375882,
+   "equity": 149.3903
+  },
+  {
+   "t": 1787375884,
+   "equity": 149.4088
+  },
+  {
+   "t": 1787375888,
+   "equity": 149.4325
+  },
+  {
+   "t": 1787375891,
+   "equity": 149.4431
+  },
+  {
+   "t": 1787375893,
+   "equity": 149.4916
+  },
+  {
+   "t": 1787375895,
+   "equity": 149.4977
+  },
+  {
+   "t": 1787375900,
+   "equity": 149.4977
+  },
+  {
+   "t": 1787375902,
+   "equity": 149.4977
+  },
+  {
+   "t": 1787375909,
+   "equity": 149.4977
+  },
+  {
+   "t": 1787375911,
+   "equity": 149.5028
   }
  ],
  "decay": {
-  "checked": 6088,
-  "survived": 4165
+  "checked": 6203,
+  "survived": 4255
  },
  "cooldown": {
   "USDT\u2192BTC\u2192XRP\u2192USDT|BTCUSDT|XRPBTC|XRPUSDT": 1787375681,
@@ -3418,7 +3418,7 @@
   "USDT\u2192USDC\u2192WLFI\u2192USDT|USDCUSDT|WLFIUSDC|WLFIUSDT": 1787375067,
   "USDT\u2192USD1\u2192WLFI\u2192USDT|USD1USDT|WLFIUSD1|WLFIUSDT": 1787375174,
   "USDT\u2192NPC\u2192USDC\u2192USDT|NPCUSDT|NPCUSDC|USDCUSDT": 1787375199,
-  "USDT\u2192XRP\u2192BTC\u2192USDT|XRPUSDT|XRPBTC|BTCUSDT": 1787375798,
+  "USDT\u2192XRP\u2192BTC\u2192USDT|XRPUSDT|XRPBTC|BTCUSDT": 1787375891,
   "USDT\u2192WLFI\u2192USDC\u2192USDT|WLFIUSDT|WLFIUSDC|USDCUSDT": 1787375321,
   "USDT\u2192CUPSEY\u2192USD1\u2192USDT|CUPSEYUSDT|CUPSEYUSD1|USD1USDT": 1787375539,
   "USDT\u2192RUNE\u2192USDC\u2192USDT|RUNEUSDT|RUNEUSDC|USDCUSDT": 1787375379,
@@ -3432,7 +3432,7 @@
   "USDT\u2192DOGE\u2192USDC\u2192USDT|DOGEUSDT|DOGEUSDC|USDCUSDT": 1787375409,
   "USDT\u2192WIF\u2192USDC\u2192USDT|WIFUSDT|WIFUSDC|USDCUSDT": 1787375472,
   "USDT\u2192CKB\u2192USDC\u2192USDT|CKBUSDT|CKBUSDC|USDCUSDT": 1787375411,
-  "USDT\u2192TOAD\u2192USD1\u2192USDT|TOADUSDT|TOADUSD1|USD1USDT": 1787375516,
+  "USDT\u2192TOAD\u2192USD1\u2192USDT|TOADUSDT|TOADUSD1|USD1USDT": 1787375857,
   "USDT\u2192UNI\u2192USDC\u2192USDT|UNIUSDT|UNIUSDC|USDCUSDT": 1787375806,
   "USDT\u2192LTC\u2192BTC\u2192USDT|LTCUSDT|LTCBTC|BTCUSDT": 1787375413,
   "USDT\u2192IRYS\u2192USDC\u2192USDT|IRYSUSDT|IRYSUSDC|USDCUSDT": 1787375421,
@@ -3457,7 +3457,7 @@
   "USDT\u2192BULLCOIN\u2192USD1\u2192USDT|BULLCOINUSDT|BULLCOINUSD1|USD1USDT": 1787375544,
   "USDT\u2192BTC\u2192A\u2192USDT|BTCUSDT|ABTC|AUSDT": 1787375466,
   "USDT\u2192ADA\u2192BTC\u2192USDT|ADAUSDT|ADABTC|BTCUSDT": 1787375468,
-  "USDT\u2192CATE\u2192USD1\u2192USDT|CATEUSDT|CATEUSD1|USD1USDT": 1787375468,
+  "USDT\u2192CATE\u2192USD1\u2192USDT|CATEUSDT|CATEUSD1|USD1USDT": 1787375831,
   "USDT\u2192HOODRAT\u2192USD1\u2192USDT|HOODRATUSDT|HOODRATUSD1|USD1USDT": 1787375468,
   "USDT\u2192WISHBONE\u2192USD1\u2192USDT|WISHBONEUSDT|WISHBONEUSD1|USD1USDT": 1787375470,
   "USDT\u2192MORPHO\u2192USDC\u2192USDT|MORPHOUSDT|MORPHOUSDC|USDCUSDT": 1787375470,
@@ -3475,19 +3475,19 @@
   "USDT\u2192HEMI\u2192USDC\u2192USDT|HEMIUSDT|HEMIUSDC|USDCUSDT": 1787375599,
   "USDT\u2192ZEN\u2192USDC\u2192USDT|ZENUSDT|ZENUSDC|USDCUSDT": 1787375504,
   "USDT\u2192EYE\u2192USD1\u2192USDT|EYEUSDT|EYEUSD1|USD1USDT": 1787375516,
-  "USDT\u2192XCN\u2192USDC\u2192USDT|XCNUSDT|XCNUSDC|USDCUSDT": 1787375798,
+  "USDT\u2192XCN\u2192USDC\u2192USDT|XCNUSDT|XCNUSDC|USDCUSDT": 1787375893,
   "USDT\u2192ONDO\u2192USDC\u2192USDT|ONDOUSDT|ONDOUSDC|USDCUSDT": 1787375518,
   "USDT\u2192NEAR\u2192USDC\u2192USDT|NEARUSDT|NEARUSDC|USDCUSDT": 1787375518,
   "USDT\u2192INJ\u2192USDC\u2192USDT|INJUSDT|INJUSDC|USDCUSDT": 1787375533,
-  "USDT\u2192USDF\u2192ETH\u2192USDT|USDFUSDT|ETHUSDF|ETHUSDT": 1787375533,
+  "USDT\u2192USDF\u2192ETH\u2192USDT|USDFUSDT|ETHUSDF|ETHUSDT": 1787375877,
   "USDT\u2192AZTEC\u2192USDC\u2192USDT|AZTECUSDT|AZTECUSDC|USDCUSDT": 1787375535,
   "USDT\u2192SXT\u2192USDC\u2192USDT|SXTUSDT|SXTUSDC|USDCUSDT": 1787375535,
   "USDT\u2192HOLO\u2192USDC\u2192USDT|HOLOUSDT|HOLOUSDC|USDCUSDT": 1787375535,
   "USDT\u2192ETH\u2192XRP\u2192USDT|ETHUSDT|XRPETH|XRPUSDT": 1787375671,
   "USDT\u2192TENDIES\u2192USD1\u2192USDT|TENDIESUSDT|TENDIESUSD1|USD1USDT": 1787375544,
   "USDT\u2192USDC\u2192LINK\u2192USDT|USDCUSDT|LINKUSDC|LINKUSDT": 1787375648,
-  "USDT\u2192USDC\u2192ZEC\u2192USDT|USDCUSDT|ZECUSDC|ZECUSDT": 1787375689,
-  "USDT\u2192BTC\u2192SOL\u2192USDT|BTCUSDT|SOLBTC|SOLUSDT": 1787375713,
+  "USDT\u2192USDC\u2192ZEC\u2192USDT|USDCUSDT|ZECUSDC|ZECUSDT": 1787375888,
+  "USDT\u2192BTC\u2192SOL\u2192USDT|BTCUSDT|SOLBTC|SOLUSDT": 1787375888,
   "USDT\u2192BTC\u2192LTC\u2192USDT|BTCUSDT|LTCBTC|LTCUSDT": 1787375760,
   "USDT\u2192USDC\u2192IRYS\u2192USDT|USDCUSDT|IRYSUSDC|IRYSUSDT": 1787375697,
   "USDT\u2192USDC\u2192HUMA\u2192USDT|USDCUSDT|HUMAUSDC|HUMAUSDT": 1787375597,
@@ -3495,29 +3495,31 @@
   "USDT\u2192STONK\u2192USD1\u2192USDT|STONKUSDT|STONKUSD1|USD1USDT": 1787375663,
   "USDT\u2192JUP\u2192USDC\u2192USDT|JUPUSDT|JUPUSDC|USDCUSDT": 1787375573,
   "USDT\u2192USDF\u2192BTC\u2192USDT|USDFUSDT|BTCUSDF|BTCUSDT": 1787375573,
-  "USDT\u2192QUBIC\u2192USDC\u2192USDT|QUBICUSDT|QUBICUSDC|USDCUSDT": 1787375577,
+  "USDT\u2192QUBIC\u2192USDC\u2192USDT|QUBICUSDT|QUBICUSDC|USDCUSDT": 1787375895,
   "USDT\u2192USDC\u2192AAVE\u2192USDT|USDCUSDT|AAVEUSDC|AAVEUSDT": 1787375579,
   "USDT\u2192USDC\u2192UNI\u2192USDT|USDCUSDT|UNIUSDC|UNIUSDT": 1787375617,
   "USDT\u2192USD1\u2192SOL\u2192USDT|USD1USDT|SOLUSD1|SOLUSDT": 1787375723,
   "USDT\u2192AVAX\u2192USDC\u2192USDT|AVAXUSDT|AVAXUSDC|USDCUSDT": 1787375791,
   "USDT\u2192BRIAN\u2192USD1\u2192USDT|BRIANUSDT|BRIANUSD1|USD1USDT": 1787375643,
   "USDT\u2192USD1\u2192VEXAI\u2192USDT|USD1USDT|VEXAIUSD1|VEXAIUSDT": 1787375652,
-  "USDT\u2192STONKBROKER\u2192USD1\u2192USDT|STONKBROKERUSDT|STONKBROKERUSD1|USD1USDT": 1787375769,
+  "USDT\u2192STONKBROKER\u2192USD1\u2192USDT|STONKBROKERUSDT|STONKBROKERUSD1|USD1USDT": 1787375842,
   "USDT\u2192USDC\u2192BIRB\u2192USDT|USDCUSDT|BIRBUSDC|BIRBUSDT": 1787375723,
-  "USDT\u2192ETH\u2192LINK\u2192USDT|ETHUSDT|LINKETH|LINKUSDT": 1787375756,
+  "USDT\u2192ETH\u2192LINK\u2192USDT|ETHUSDT|LINKETH|LINKUSDT": 1787375884,
   "USDT\u2192ZEC\u2192USDC\u2192USDT|ZECUSDT|ZECUSDC|USDCUSDT": 1787375784,
   "USDT\u2192USD1\u2192MARSCOIN1\u2192USDT|USD1USDT|MARSCOIN1USD1|MARSCOIN1USDT": 1787375758,
   "USDT\u2192XLM\u2192USDC\u2192USDT|XLMUSDT|XLMUSDC|USDCUSDT": 1787375766,
   "USDT\u2192FUNTOKEN\u2192USDC\u2192USDT|FUNTOKENUSDT|FUNTOKENUSDC|USDCUSDT": 1787375806,
-  "USDT\u2192BASECAT\u2192USD1\u2192USDT|BASECATUSDT|BASECATUSD1|USD1USDT": 1787375791
+  "USDT\u2192BASECAT\u2192USD1\u2192USDT|BASECATUSDT|BASECATUSD1|USD1USDT": 1787375791,
+  "USDT\u2192BRODIE\u2192USD1\u2192USDT|BRODIEUSDT|BRODIEUSD1|USD1USDT": 1787375882,
+  "USDT\u2192USDC\u2192ADA\u2192USDT|USDCUSDT|ADAUSDC|ADAUSDT": 1787375911
  },
- "tradeCountAll": 1830,
+ "tradeCountAll": 1851,
  "replay": {
-  "edges": 2201,
-  "refillable": 2201,
-  "atomicUsd": 117.6864,
-  "delayedUsd": 11.2473,
-  "captureRatio": 0.096,
-  "scansReplayed": 34323
+  "edges": 2887,
+  "refillable": 2887,
+  "atomicUsd": 179.9048,
+  "delayedUsd": 79.7393,
+  "captureRatio": 0.443,
+  "scansReplayed": 34573
  }
 }
