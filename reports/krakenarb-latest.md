@@ -6,9 +6,9 @@ Scanned 2026-08-22 16:34 UTC · 1453 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→SWARMS→EUR→USD at 185.1 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→SWARMS→EUR→USD at 159.0 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 314 across 16458 scans
+- Edges replayed: 314 across 16491 scans
 - Atomic PnL $89.6556 → one-scan-delay PnL $75.0729 (capture ratio 0.837)
