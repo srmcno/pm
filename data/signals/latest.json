@@ -1,73 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1787400841,
+  "generatedAt": 1787402333,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": [
-  {
-   "conditionId": "0x6b354e80ea28a57c40f01a78d2ff066d816e34c3a4f7985c523645b7105f158c",
-   "outcomeIndex": 1,
-   "title": "Dota 2: TEAM VISION vs Team Yandex (BO3) - The International Playoffs",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8021,
-     "netUsd": 402.0,
-     "avgPrice": 0.2519,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 2.319387085047823
-    },
-    {
-     "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
-     "name": "IMAREALPERSON",
-     "quality": 0.6775,
-     "netUsd": 1475.07,
-     "avgPrice": 0.106,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.1298586511673196
-    },
-    {
-     "wallet": "0x38337de21ff0bb0a11a40761507d51e318d633d1",
-     "name": "SineNooneEI",
-     "quality": 0.6977,
-     "netUsd": 8209.77,
-     "avgPrice": 0.26,
-     "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 1.8474872608291064
-    },
-    {
-     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
-     "name": "CORGI8",
-     "quality": 0.3373,
-     "netUsd": 14437.28,
-     "avgPrice": 0.2712,
-     "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 0.933880627176017
-    }
-   ],
-   "backerCount": 4,
-   "contested": true,
-   "totalNetUsd": 24524.12,
-   "score": 7.2306,
-   "question": "Dota 2: TEAM VISION vs Team Yandex (BO3) - The International Playoffs",
-   "outcome": "Team Yandex",
-   "tokenId": "25112576883867894161294487118156327644660972722273495129579023183574850994813",
-   "currentPrice": 0.115,
-   "backersAvgEntry": 0.2223,
-   "driftSinceEntry": -0.1073,
-   "endDate": "2026-08-22T14:45:00Z",
-   "slug": "dota2-vsn2-ty-2026-08-22",
-   "eventSlug": "dota2-vsn2-ty-2026-08-22"
-  }
- ]
+ "signals": []
 }
