@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787393015,
+  "generatedAt": 1787393927,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1877.4,
      "avgPrice": 0.7491,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 2.3545218847457963
+     "lastTradeAgoH": 2.0,
+     "score": 2.3297993079989445
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -31,8 +31,8 @@
      "netUsd": 6614.11,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.8962286868650702
+     "lastTradeAgoH": 0.3,
+     "score": 1.8763182075680538
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -41,8 +41,8 @@
      "netUsd": 23795.29,
      "avgPrice": 0.6636,
      "conviction": 10.0,
-     "lastTradeAgoH": 12.5,
-     "score": 1.302141271695354
+     "lastTradeAgoH": 12.8,
+     "score": 1.2884687347215866
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -51,20 +51,20 @@
      "netUsd": 15511.61,
      "avgPrice": 0.6332,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 1.2043775964836665
+     "lastTradeAgoH": 2.6,
+     "score": 1.1917315821254393
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 47798.41,
-   "score": 6.7573,
+   "score": 6.6863,
    "question": "LoL: Dplus KIA vs Gen.G (BO3) - LCK Round 3-4 Legend Group",
    "outcome": "Gen.G",
    "tokenId": "17590972557638034882605801437090702284259204426979460505756663023934339549036",
-   "currentPrice": 0.625,
+   "currentPrice": 0.235,
    "backersAvgEntry": 0.6715,
-   "driftSinceEntry": -0.0465,
+   "driftSinceEntry": -0.4365,
    "endDate": "2026-08-22T14:00:00Z",
    "slug": "lol-dk-gen-2026-08-22",
    "eventSlug": "lol-dk-gen-2026-08-22"
@@ -82,8 +82,8 @@
      "netUsd": 1366.52,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.386705765603316
+     "lastTradeAgoH": 1.7,
+     "score": 2.361645256782158
     },
     {
      "wallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
@@ -92,8 +92,8 @@
      "netUsd": 5400.0,
      "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 1.9108730773847995
+     "lastTradeAgoH": 3.0,
+     "score": 1.8908088313842835
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -102,20 +102,20 @@
      "netUsd": 4150.23,
      "avgPrice": 0.54,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.2286507545347307
+     "lastTradeAgoH": 2.1,
+     "score": 1.215749871017421
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 10916.75,
-   "score": 5.5262,
+   "score": 5.4682,
    "question": "Game Handicap: VSN (-1.5) vs Team Yandex (+1.5)",
    "outcome": "Team Yandex",
    "tokenId": "71918256524175056995085113108521052138671275883391737209664091152220188994859",
-   "currentPrice": 0.345,
+   "currentPrice": 0.375,
    "backersAvgEntry": 0.55,
-   "driftSinceEntry": -0.205,
+   "driftSinceEntry": -0.175,
    "endDate": "2026-08-22T14:45:00Z",
    "slug": "dota2-vsn2-ty-2026-08-22-game-handicap-away-1pt5",
    "eventSlug": "dota2-vsn2-ty-2026-08-22"
