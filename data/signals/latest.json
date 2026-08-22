@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787383676,
+  "generatedAt": 1787384224,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 321.11,
      "avgPrice": 0.5291,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.527788045381964
+     "lastTradeAgoH": 0.2,
+     "score": 2.5118641971925357
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -31,8 +31,8 @@
      "netUsd": 2036.64,
      "avgPrice": 0.1698,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.9534871406214032
+     "lastTradeAgoH": 0.2,
+     "score": 1.941181111750001
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -41,14 +41,14 @@
      "netUsd": 636.29,
      "avgPrice": 0.22,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.7606907606845181
+     "lastTradeAgoH": 0.2,
+     "score": 1.7495992562235763
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 2994.04,
-   "score": 6.242,
+   "score": 6.2026,
    "question": "LoL: Team WE vs LGD Gaming - Game 1 Winner",
    "outcome": "Team WE",
    "tokenId": "15829617765416095893634091304377496320709804194312655759177260771961128322133",
