@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787472712,
+  "generatedAt": 1787473620,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 127272.72,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.0,
-     "score": 2.188720865833503
+     "lastTradeAgoH": 3.3,
+     "score": 2.1658394746377736
     },
     {
      "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
@@ -31,8 +31,8 @@
      "netUsd": 2850.0,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.0,
-     "score": 2.064019397837655
+     "lastTradeAgoH": 3.3,
+     "score": 2.0424416644616294
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -41,8 +41,8 @@
      "netUsd": 335999.88,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.8,
-     "score": 2.018712927411975
+     "lastTradeAgoH": 3.1,
+     "score": 1.9976088382953394
     },
     {
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
@@ -51,8 +51,8 @@
      "netUsd": 56000.0,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.8,
-     "score": 1.890487116728055
+     "lastTradeAgoH": 3.1,
+     "score": 1.8707235297199563
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -61,8 +61,8 @@
      "netUsd": 17600.0,
      "avgPrice": 0.5753,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 1.8860998696763782
+     "lastTradeAgoH": 2.7,
+     "score": 1.8663821479577407
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -71,20 +71,20 @@
      "netUsd": 75066.93,
      "avgPrice": 0.5697,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.4,
-     "score": 1.1538232248149103
+     "lastTradeAgoH": 3.6,
+     "score": 1.141760891517944
     }
    ],
    "backerCount": 6,
    "contested": true,
    "totalNetUsd": 614789.53,
-   "score": 11.2019,
+   "score": 11.0848,
    "question": "Dota 2: TEAM VISION vs Team Spirit (BO5) - The International Playoffs",
    "outcome": "TEAM VISION",
    "tokenId": "105717336415824188396323710698848701902178478068973000541904427172521007243289",
-   "currentPrice": 0.23,
+   "currentPrice": 0.315,
    "backersAvgEntry": 0.5658,
-   "driftSinceEntry": -0.3358,
+   "driftSinceEntry": -0.2508,
    "endDate": "2026-08-23T11:00:00Z",
    "slug": "dota2-vsn2-ts8-2026-08-23",
    "eventSlug": "dota2-vsn2-ts8-2026-08-23"
