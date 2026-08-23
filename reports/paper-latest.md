@@ -1,18 +1,16 @@
 # Paper portfolio
 
-Updated 2026-08-23 18:50 UTC · started with $20.00 (virtual)
+Updated 2026-08-23 19:05 UTC · started with $20.00 (virtual)
 
-**Equity $8.47 (-57.6%)** · cash $6.01 · 3 open · 27 settled
+**Equity $8.47 (-57.6%)** · cash $6.01 · 2 open · 28 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Team Spirit Win the CS2 EWC 2026? | No | 1.50 | 0.83 | 0.00 | $0.00 |
 | Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.34 | $1.50 |
 | Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.67 | $0.97 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
-| Will Elon Musk post 65-89 tweets from August 13 to August 15, 2026? | No | 0.78 | 1.00 | +0.39 |
 | Will Elon Musk post 40-64 tweets from August 13 to August 15, 2026? | No | 0.47 | 0.00 | -1.47 |
 | Counter-Strike: BIG vs Spirit (BO3) - Esports World Cup Group A | Spirit | 0.64 | 1.00 | +0.70 |
 | LoL: LGD Gaming vs JD Gaming (BO3) - LPL Group Ascend | LGD Gaming | 0.21 | 1.00 | +4.34 |
@@ -27,3 +25,4 @@ Updated 2026-08-23 18:50 UTC · started with $20.00 (virtual)
 | Will MOUZ Win the CS2 EWC 2026? | No | 0.94 | 1.00 | +0.08 |
 | Counter-Strike: Legacy vs Team Falcons (BO3) - Esports World Cup Playoffs | Team Falcons | 0.74 | 0.00 | -1.13 |
 | Counter-Strike: Legacy vs Team Falcons - Map 2 Winner | Team Falcons | 0.35 | 0.00 | -1.15 |
+| Will Team Spirit Win the CS2 EWC 2026? | No | 0.83 | 0.00 | -1.25 |
