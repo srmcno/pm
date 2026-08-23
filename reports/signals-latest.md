@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-23 11:58 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-23 12:03 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: TEAM VISION vs Team Spirit (BO5) - The International Playoffs — **TEAM VISION**
 
-- Score **10.00** · 6 backers · net $616,241 staked
+- Score **9.97** · 6 backers · net $616,241 staked
 - Backers' average entry 0.55 → current price **0.56** (roughly flat +0.01 since entry)
 - Resolves by 2026-08-23
 
@@ -21,7 +21,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: FUT Esports vs Spirit (BO5) - Esports World Cup Playoffs — **Spirit**
 
-- Score **6.13** · 3 backers · net $28,017 staked
+- Score **6.11** · 3 backers · net $28,017 staked
 - Backers' average entry 0.75 → current price **0.74** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-23
 
