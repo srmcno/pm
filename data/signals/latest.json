@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787477258,
+  "generatedAt": 1787478752,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -15,24 +15,24 @@
    "category": "Esports",
    "backers": [
     {
+     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
+     "name": "jtwyslljy",
+     "quality": 0.7409,
+     "netUsd": 4187.63,
+     "avgPrice": 0.4798,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.5,
+     "score": 2.2007002740957278
+    },
+    {
      "wallet": "0xfea31bc088000ff909be1dfd8d0e3f2c7ef2d227",
      "name": "ndb1",
      "quality": 0.7843,
      "netUsd": 127272.72,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 2.076560931434301
-    },
-    {
-     "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
-     "name": "jtwyslljy",
-     "quality": 0.7409,
-     "netUsd": 2850.0,
-     "avgPrice": 0.57,
-     "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 1.9582497294098844
+     "lastTradeAgoH": 4.7,
+     "score": 2.040938775866324
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -41,8 +41,8 @@
      "netUsd": 335999.88,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.1,
-     "score": 1.9152649669873258
+     "lastTradeAgoH": 4.5,
+     "score": 1.8824097468128838
     },
     {
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
@@ -51,8 +51,8 @@
      "netUsd": 56000.0,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.1,
-     "score": 1.793610025498787
+     "lastTradeAgoH": 4.5,
+     "score": 1.762841722777966
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -61,8 +61,8 @@
      "netUsd": 17600.0,
      "avgPrice": 0.5753,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.7,
-     "score": 1.7894476007847548
+     "lastTradeAgoH": 4.1,
+     "score": 1.7587507019598942
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -71,74 +71,23 @@
      "netUsd": 75066.93,
      "avgPrice": 0.5697,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.6,
-     "score": 1.0946961158154567
+     "lastTradeAgoH": 5.1,
+     "score": 1.0759172614380397
     }
    ],
    "backerCount": 6,
    "contested": true,
-   "totalNetUsd": 614789.53,
-   "score": 10.6278,
+   "totalNetUsd": 616127.16,
+   "score": 10.7216,
    "question": "Dota 2: TEAM VISION vs Team Spirit (BO5) - The International Playoffs",
    "outcome": "TEAM VISION",
    "tokenId": "105717336415824188396323710698848701902178478068973000541904427172521007243289",
-   "currentPrice": 0.565,
-   "backersAvgEntry": 0.5658,
-   "driftSinceEntry": -0.0008,
+   "currentPrice": 0.485,
+   "backersAvgEntry": 0.5508,
+   "driftSinceEntry": -0.0658,
    "endDate": "2026-08-23T12:15:00Z",
    "slug": "dota2-vsn2-ts8-2026-08-23",
    "eventSlug": "dota2-vsn2-ts8-2026-08-23"
-  },
-  {
-   "conditionId": "0xc18a137fbede3409423f704a9f0e4e5221cf36022cec04bb34a051389c8888c3",
-   "outcomeIndex": 1,
-   "title": "LoL: Hanwha Life Esports vs T1 - Game 2 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x38337de21ff0bb0a11a40761507d51e318d633d1",
-     "name": "SineNooneEI",
-     "quality": 0.6977,
-     "netUsd": 8971.53,
-     "avgPrice": 0.4486,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.164811786221032
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.6192,
-     "netUsd": 5232.8,
-     "avgPrice": 0.3592,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.9335572151581761
-    },
-    {
-     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
-     "name": "fkigedgjdgwbg",
-     "quality": 0.5588,
-     "netUsd": 768.4,
-     "avgPrice": 0.2176,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.7564978179532282
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 14972.73,
-   "score": 5.8549,
-   "question": "LoL: Hanwha Life Esports vs T1 - Game 2 Winner",
-   "outcome": "T1",
-   "tokenId": "95296335683055342677001883734753104804049711984654374190688841393861044322885",
-   "currentPrice": 0.405,
-   "backersAvgEntry": 0.3418,
-   "driftSinceEntry": 0.0632,
-   "endDate": "2026-08-23T12:00:00Z",
-   "slug": "lol-hle1-t1-2026-08-23-game2",
-   "eventSlug": "lol-hle1-t1-2026-08-23"
   }
  ]
 }
