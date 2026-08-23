@@ -6,7 +6,7 @@ Scanned 2026-08-23 15:08 UTC · 1454 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→BKS→EUR→USD at 271.4 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→BKS→EUR→USD at 271.3 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
