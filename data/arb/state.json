@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1787520377,
-   "equity": 167.5438
-  },
-  {
    "t": 1787520379,
    "equity": 167.5438
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1787521395,
    "equity": 167.5736
+  },
+  {
+   "t": 1787521423,
+   "equity": 167.5736
   }
  ],
  "decay": {
@@ -3411,8 +3411,6 @@
   "survived": 4570
  },
  "cooldown": {
-  "USDT\u2192GMEROBINHOOD\u2192USD1\u2192USDT|GMEROBINHOODUSDT|GMEROBINHOODUSD1|USD1USDT": 1787517823,
-  "USDT\u2192USD1\u2192VEXAI\u2192USDT|USD1USDT|VEXAIUSD1|VEXAIUSDT": 1787517813,
   "USDT\u2192USDC\u2192HYPE\u2192USDT|USDCUSDT|HYPEUSDC|HYPEUSDT": 1787519938,
   "USDT\u2192USD1\u2192QENIS\u2192USDT|USD1USDT|QENISUSD1|QENISUSDT": 1787519959,
   "USDT\u2192BTC\u2192XRP\u2192USDT|BTCUSDT|XRPBTC|XRPUSDT": 1787520700,
@@ -3420,11 +3418,11 @@
  },
  "tradeCountAll": 2102,
  "replay": {
-  "edges": 3206,
-  "refillable": 3206,
-  "atomicUsd": 188.2765,
-  "delayedUsd": 85.8885,
+  "edges": 3209,
+  "refillable": 3209,
+  "atomicUsd": 188.314,
+  "delayedUsd": 85.8323,
   "captureRatio": 0.456,
-  "scansReplayed": 38226
+  "scansReplayed": 38297
  }
 }
