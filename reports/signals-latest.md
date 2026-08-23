@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-23 07:17 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-23 07:32 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Dota 2: TEAM VISION vs Team Spirit (BO5) - The International Playoffs — **TEAM VISION**
 
-- Score **11.63** · 6 backers · net $644,461 staked
-- Backers' average entry 0.57 → current price **0.41** (moved against them -0.15 since entry)
+- Score **11.51** · 6 backers · net $644,461 staked
+- Backers' average entry 0.57 → current price **0.38** (moved against them -0.19 since entry)
 - Resolves by 2026-08-23
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
