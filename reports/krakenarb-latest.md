@@ -4,9 +4,9 @@ Scanned 2026-08-23 05:20 UTC · 1453 pairs · 1340 cycles · 1 verified edges ·
 
 | cycle | screen bps | fee hurdle bps | verified bps | size | profit |
 |---|---|---|---|---|---|
-| USD→ALEO→USDT→USD | 34.3 | 99.7 | 17.2 | $5.0 | $0.0086 |
+| USD→ALEO→USDT→USD | 40.6 | 99.7 | 23.3 | $5.0 | $0.0117 |
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 343 across 15323 scans
-- Atomic PnL $93.1142 → one-scan-delay PnL $79.8499 (capture ratio 0.858)
+- Edges replayed: 350 across 15362 scans
+- Atomic PnL $93.1676 → one-scan-delay PnL $79.9638 (capture ratio 0.858)
