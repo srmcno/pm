@@ -1,6 +1,6 @@
 {
  "bankrollStart": 40.0,
- "cash": 71.8433,
+ "cash": 71.8784,
  "createdAt": 1786666692,
  "trades": [
   {
@@ -982,49 +982,30 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0117,
    "bps": 23.4
+  },
+  {
+   "t": 1787462473,
+   "path": "USD\u2192ALEO\u2192USDT\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0117,
+   "bps": 23.4
+  },
+  {
+   "t": 1787462503,
+   "path": "USD\u2192ALEO\u2192USDT\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0117,
+   "bps": 23.4
+  },
+  {
+   "t": 1787462533,
+   "path": "USD\u2192ALEO\u2192USDT\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0117,
+   "bps": 23.4
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787457425,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457435,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457445,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457455,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457465,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457475,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457485,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457495,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457505,
-   "equity": 71.8092
-  },
-  {
-   "t": 1787457515,
-   "equity": 71.8092
-  },
   {
    "t": 1787457525,
    "equity": 71.8092
@@ -2984,16 +2965,56 @@
   {
    "t": 1787462434,
    "equity": 71.8433
+  },
+  {
+   "t": 1787462443,
+   "equity": 71.8433
+  },
+  {
+   "t": 1787462453,
+   "equity": 71.8433
+  },
+  {
+   "t": 1787462463,
+   "equity": 71.8433
+  },
+  {
+   "t": 1787462473,
+   "equity": 71.855
+  },
+  {
+   "t": 1787462483,
+   "equity": 71.855
+  },
+  {
+   "t": 1787462493,
+   "equity": 71.855
+  },
+  {
+   "t": 1787462503,
+   "equity": 71.8667
+  },
+  {
+   "t": 1787462513,
+   "equity": 71.8667
+  },
+  {
+   "t": 1787462523,
+   "equity": 71.8667
+  },
+  {
+   "t": 1787462533,
+   "equity": 71.8784
   }
  ],
  "decay": {
-  "checked": 352,
-  "survived": 276
+  "checked": 362,
+  "survived": 286
  },
  "cooldown": {
-  "USD\u2192ALEO\u2192USDT\u2192USD|ALEOUSD|ALEOUSDT|USDTZUSD": 1787462434
+  "USD\u2192ALEO\u2192USDT\u2192USD|ALEOUSD|ALEOUSDT|USDTZUSD": 1787462533
  },
- "tradeCountAll": 140,
+ "tradeCountAll": 143,
  "replay": {
   "edges": 350,
   "refillable": 350,
