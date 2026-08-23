@@ -1,15 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 166.5143,
+ "cash": 166.53,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1787376478,
-   "path": "USDT\u2192BTC\u2192XRP\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0073,
-   "bps": 14.6
-  },
   {
    "t": 1787376512,
    "path": "USDT\u2192USDC\u2192TAO\u2192USDT",
@@ -1402,69 +1395,16 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0157,
    "bps": 31.4
+  },
+  {
+   "t": 1787501163,
+   "path": "USDT\u2192QENIS\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0157,
+   "bps": 31.4
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787500089,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500091,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500093,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500095,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500097,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500099,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500101,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500103,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500105,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500107,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500109,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500111,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500113,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500115,
-   "equity": 166.493
-  },
-  {
-   "t": 1787500117,
-   "equity": 166.493
-  },
   {
    "t": 1787500119,
    "equity": 166.493
@@ -3404,20 +3344,80 @@
   {
    "t": 1787501133,
    "equity": 166.5143
+  },
+  {
+   "t": 1787501135,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501137,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501139,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501141,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501143,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501145,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501147,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501149,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501151,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501153,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501155,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501157,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501159,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501161,
+   "equity": 166.5143
+  },
+  {
+   "t": 1787501163,
+   "equity": 166.53
   }
  ],
  "decay": {
-  "checked": 6700,
-  "survived": 4493
+  "checked": 6715,
+  "survived": 4508
  },
  "cooldown": {
   "USDT\u2192XRP\u2192BTC\u2192USDT|XRPUSDT|XRPBTC|BTCUSDT": 1787497920,
   "USDT\u2192UTILITY\u2192USD1\u2192USDT|UTILITYUSDT|UTILITYUSD1|USD1USDT": 1787497691,
   "USDT\u2192HYPE\u2192USDC\u2192USDT|HYPEUSDT|HYPEUSDC|USDCUSDT": 1787500206,
   "USDT\u2192CATE\u2192USD1\u2192USDT|CATEUSDT|CATEUSD1|USD1USDT": 1787499974,
-  "USDT\u2192QENIS\u2192USD1\u2192USDT|QENISUSDT|QENISUSD1|USD1USDT": 1787501133
+  "USDT\u2192QENIS\u2192USD1\u2192USDT|QENISUSDT|QENISUSD1|USD1USDT": 1787501163
  },
- "tradeCountAll": 2078,
+ "tradeCountAll": 2079,
  "replay": {
   "edges": 3108,
   "refillable": 3108,
