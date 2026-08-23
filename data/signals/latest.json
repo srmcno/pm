@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787470346,
+  "generatedAt": 1787471804,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 127272.72,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 2.2495116022618444
+     "lastTradeAgoH": 2.7,
+     "score": 2.211843991501793
     },
     {
      "wallet": "0x9cb990f1862568a63d8601efeebe0304225c32f2",
@@ -31,8 +31,8 @@
      "netUsd": 2850.0,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 2.1213466071477147
+     "lastTradeAgoH": 2.8,
+     "score": 2.085825092964435
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -41,8 +41,8 @@
      "netUsd": 335999.88,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.2,
-     "score": 2.0747817699082765
+     "lastTradeAgoH": 2.6,
+     "score": 2.0400399743814717
     },
     {
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
@@ -51,18 +51,18 @@
      "netUsd": 56000.0,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.2,
-     "score": 1.9429945450749884
+     "lastTradeAgoH": 2.6,
+     "score": 1.9104594996192554
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
      "name": "coali10",
      "quality": 0.6596,
-     "netUsd": 47271.82,
+     "netUsd": 17600.0,
      "avgPrice": 0.5753,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.9370500607573804
+     "lastTradeAgoH": 2.2,
+     "score": 1.906025902726218
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -71,20 +71,20 @@
      "netUsd": 75066.93,
      "avgPrice": 0.5697,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 1.185870145296893
+     "lastTradeAgoH": 3.1,
+     "score": 1.166012992748715
     }
    ],
    "backerCount": 6,
-   "contested": false,
-   "totalNetUsd": 644461.35,
-   "score": 11.5116,
+   "contested": true,
+   "totalNetUsd": 614789.53,
+   "score": 11.3202,
    "question": "Dota 2: TEAM VISION vs Team Spirit (BO5) - The International Playoffs",
    "outcome": "TEAM VISION",
    "tokenId": "105717336415824188396323710698848701902178478068973000541904427172521007243289",
-   "currentPrice": 0.375,
+   "currentPrice": 0.395,
    "backersAvgEntry": 0.5658,
-   "driftSinceEntry": -0.1908,
+   "driftSinceEntry": -0.1708,
    "endDate": "2026-08-23T11:00:00Z",
    "slug": "dota2-vsn2-ts8-2026-08-23",
    "eventSlug": "dota2-vsn2-ts8-2026-08-23"
