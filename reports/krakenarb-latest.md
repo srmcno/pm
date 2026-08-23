@@ -6,7 +6,7 @@ Scanned 2026-08-23 05:52 UTC · 1453 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→IP→EUR→USD at 177.0 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→IP→EUR→USD at 188.0 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
