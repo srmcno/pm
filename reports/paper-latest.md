@@ -1,13 +1,13 @@
 # Paper portfolio
 
-Updated 2026-08-23 22:42 UTC · started with $20.00 (virtual)
+Updated 2026-08-23 22:57 UTC · started with $20.00 (virtual)
 
-**Equity $8.39 (-58.1%)** · cash $6.01 · 2 open · 28 settled
+**Equity $8.40 (-58.0%)** · cash $6.01 · 2 open · 28 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.32 | $1.38 |
-| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.69 | $1.00 |
+| Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? | No | 4.38 | 0.24 | 0.31 | $1.38 |
+| Will Ralph Norman be the new Republican nominee for Senate in South Carolina? | No | 1.45 | 0.82 | 0.69 | $1.01 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
