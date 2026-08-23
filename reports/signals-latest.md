@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-23 14:29 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-23 14:44 UTC · window 48h · 56 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: FUT Esports vs Spirit (BO5) - Esports World Cup Playoffs — **Spirit**
 
-- Score **5.68** · 3 backers · net $46,503 staked
-- Backers' average entry 0.75 → current price **0.65** (moved against them -0.10 since entry)
+- Score **5.62** · 3 backers · net $46,503 staked
+- Backers' average entry 0.75 → current price **0.72** (moved against them -0.02 since entry)
 - Resolves by 2026-08-23
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
