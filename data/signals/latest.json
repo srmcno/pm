@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787487530,
+  "generatedAt": 1787488440,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,8 +21,18 @@
      "netUsd": 4301.31,
      "avgPrice": 0.4748,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.1648019016240134
+     "lastTradeAgoH": 2.2,
+     "score": 2.1421209780722754
+    },
+    {
+     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
+     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+     "quality": 0.6192,
+     "netUsd": 3030.01,
+     "avgPrice": 0.51,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.9493313632296185
     },
     {
      "wallet": "0xfea31bc088000ff909be1dfd8d0e3f2c7ef2d227",
@@ -31,8 +41,8 @@
      "netUsd": 127272.72,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.1,
-     "score": 1.843770508004829
+     "lastTradeAgoH": 7.4,
+     "score": 1.824453073967269
     },
     {
      "wallet": "0xee00ba338c59557141789b127927a55f5cc5cea1",
@@ -41,8 +51,8 @@
      "netUsd": 335999.88,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.9,
-     "score": 1.7005564381426381
+     "lastTradeAgoH": 7.2,
+     "score": 1.6827394773666917
     },
     {
      "wallet": "0x23d81ba9371e576015c1e562db09c689f56b0288",
@@ -51,8 +61,8 @@
      "netUsd": 56000.0,
      "avgPrice": 0.56,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.9,
-     "score": 1.5925394809350824
+     "lastTradeAgoH": 7.2,
+     "score": 1.5758542284909136
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -61,8 +71,8 @@
      "netUsd": 17600.0,
      "avgPrice": 0.5753,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.5,
-     "score": 1.588843679953109
+     "lastTradeAgoH": 6.8,
+     "score": 1.5721971489178006
     },
     {
      "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
@@ -71,20 +81,20 @@
      "netUsd": 75066.93,
      "avgPrice": 0.5697,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.5,
-     "score": 0.9719764939302171
+     "lastTradeAgoH": 7.8,
+     "score": 0.9617929641872048
     }
    ],
-   "backerCount": 6,
+   "backerCount": 7,
    "contested": true,
-   "totalNetUsd": 616240.84,
-   "score": 9.8625,
+   "totalNetUsd": 619270.85,
+   "score": 11.7085,
    "question": "Dota 2: TEAM VISION vs Team Spirit (BO5) - The International Playoffs",
    "outcome": "TEAM VISION",
    "tokenId": "105717336415824188396323710698848701902178478068973000541904427172521007243289",
-   "currentPrice": 0.535,
-   "backersAvgEntry": 0.55,
-   "driftSinceEntry": -0.015,
+   "currentPrice": 0.615,
+   "backersAvgEntry": 0.5443,
+   "driftSinceEntry": 0.0707,
    "endDate": "2026-08-23T12:15:00Z",
    "slug": "dota2-vsn2-ts8-2026-08-23",
    "eventSlug": "dota2-vsn2-ts8-2026-08-23"
@@ -102,8 +112,8 @@
      "netUsd": 902.09,
      "avgPrice": 0.7525,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 2.4530806183982405
+     "lastTradeAgoH": 1.1,
+     "score": 2.4273793595761743
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -112,8 +122,8 @@
      "netUsd": 2628.05,
      "avgPrice": 0.75,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.1610781998017616
+     "lastTradeAgoH": 0.6,
+     "score": 2.1384362899797775
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -122,21 +132,21 @@
      "netUsd": 24487.22,
      "avgPrice": 0.7498,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 1.4299070815499826
+     "lastTradeAgoH": 1.0,
+     "score": 1.4149257508432818
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 28017.36,
-   "score": 6.0441,
+   "score": 5.9807,
    "question": "Counter-Strike: FUT Esports vs Spirit (BO5) - Esports World Cup Playoffs",
    "outcome": "Spirit",
    "tokenId": "50126043796244171148630370660825339215195896706873456174579896498610092792556",
-   "currentPrice": 0.755,
+   "currentPrice": 0.745,
    "backersAvgEntry": 0.7508,
-   "driftSinceEntry": 0.0042,
-   "endDate": "2026-08-23T18:05:00Z",
+   "driftSinceEntry": -0.0058,
+   "endDate": "2026-08-23T18:15:00Z",
    "slug": "cs2-fut-ts7-2026-08-23",
    "eventSlug": "cs2-fut-ts7-2026-08-23"
   }
