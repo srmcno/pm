@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787500496,
+  "generatedAt": 1787501403,
   "hours": 48,
   "watchlistSize": 56,
   "minBackers": 3,
@@ -21,18 +21,18 @@
      "netUsd": 36864.97,
      "avgPrice": 0.7199,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 2.13942653598662
+     "lastTradeAgoH": 0.8,
+     "score": 2.11710948564643
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.8021,
-     "netUsd": 902.09,
+     "netUsd": 874.28,
      "avgPrice": 0.7525,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.4,
-     "score": 2.1112394361284714
+     "lastTradeAgoH": 4.7,
+     "score": 2.0892164145459406
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -41,20 +41,20 @@
      "netUsd": 25518.1,
      "avgPrice": 0.7494,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 1.2324572333023913
+     "lastTradeAgoH": 4.6,
+     "score": 1.2196010731795308
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 63285.16,
-   "score": 5.4831,
+   "totalNetUsd": 63257.35,
+   "score": 5.4259,
    "question": "Counter-Strike: FUT Esports vs Spirit (BO5) - Esports World Cup Playoffs",
    "outcome": "Spirit",
    "tokenId": "50126043796244171148630370660825339215195896706873456174579896498610092792556",
-   "currentPrice": 0.665,
+   "currentPrice": 0.885,
    "backersAvgEntry": 0.7406,
-   "driftSinceEntry": -0.0756,
+   "driftSinceEntry": 0.1444,
    "endDate": "2026-08-23T18:15:00Z",
    "slug": "cs2-fut-ts7-2026-08-23",
    "eventSlug": "cs2-fut-ts7-2026-08-23"
