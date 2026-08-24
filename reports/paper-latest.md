@@ -1,8 +1,8 @@
 # Paper portfolio
 
-Updated 2026-08-24 02:19 UTC · started with $20.00 (virtual)
+Updated 2026-08-24 02:34 UTC · started with $20.00 (virtual)
 
-**Equity $8.37 (-58.2%)** · cash $6.01 · 2 open · 28 settled
+**Equity $8.37 (-58.1%)** · cash $6.01 · 2 open · 28 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
