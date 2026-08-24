@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787599553,
+  "generatedAt": 1787600468,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 7788.55,
      "avgPrice": 0.77,
      "conviction": 8.7,
-     "lastTradeAgoH": 2.3,
-     "score": 1.17517337348389
+     "lastTradeAgoH": 2.6,
+     "score": 1.1627936291900125
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -31,8 +31,8 @@
      "netUsd": 1350.96,
      "avgPrice": 0.77,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.5,
-     "score": 0.9723318350907943
+     "lastTradeAgoH": 8.8,
+     "score": 0.962088904337917
     },
     {
      "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
@@ -41,20 +41,20 @@
      "netUsd": 267.15,
      "avgPrice": 0.77,
      "conviction": 0.85,
-     "lastTradeAgoH": 10.3,
-     "score": 0.3698206200340483
+     "lastTradeAgoH": 10.6,
+     "score": 0.3659247823526242
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9406.66,
-   "score": 2.5173,
+   "score": 2.4908,
    "question": "Will Fulham FC win on 2026-08-24?",
    "outcome": "No",
    "tokenId": "49376703247336485554631896397462891200609539551937653279545654091232074619244",
-   "currentPrice": 0.885,
+   "currentPrice": 0.755,
    "backersAvgEntry": 0.77,
-   "driftSinceEntry": 0.115,
+   "driftSinceEntry": -0.015,
    "endDate": "2026-08-24T19:00:00Z",
    "slug": "epl-ful-che-2026-08-24-ful",
    "eventSlug": "epl-ful-che-2026-08-24"
