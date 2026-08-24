@@ -1,11 +1,73 @@
 {
  "meta": {
-  "generatedAt": 1787588379,
+  "generatedAt": 1787589268,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": []
+ "signals": [
+  {
+   "conditionId": "0xca4c733cec7d79cf7a761c1bf3ec445804fa2d6f87f6c383f38fbac74ff29990",
+   "outcomeIndex": 1,
+   "title": "LoL: Natus Vincere vs Fnatic - Game 2 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7964,
+     "netUsd": 419.38,
+     "avgPrice": 0.5429,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.0,
+     "score": 2.513254820961864
+    },
+    {
+     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
+     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+     "quality": 0.726,
+     "netUsd": 45955.5,
+     "avgPrice": 0.5404,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.0,
+     "score": 2.291062131866858
+    },
+    {
+     "wallet": "0xf23c5bc7b547867eb6532920144562718aa49f81",
+     "name": "DoNotTailMe",
+     "quality": 0.5932,
+     "netUsd": 4399.99,
+     "avgPrice": 0.55,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.8530325391603888
+    },
+    {
+     "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
+     "name": "zb8",
+     "quality": 0.5188,
+     "netUsd": 11026.79,
+     "avgPrice": 0.5445,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.62019116583311
+    }
+   ],
+   "backerCount": 4,
+   "contested": false,
+   "totalNetUsd": 61801.66,
+   "score": 8.2775,
+   "question": "LoL: Natus Vincere vs Fnatic - Game 2 Winner",
+   "outcome": "Fnatic",
+   "tokenId": "30348746774352553711643199653562860536606222284433517885373380890009521119124",
+   "currentPrice": 0.6,
+   "backersAvgEntry": 0.5444,
+   "driftSinceEntry": 0.0555,
+   "endDate": "2026-08-24T19:00:00Z",
+   "slug": "lol-navi-fnc-2026-08-24-game2",
+   "eventSlug": "lol-navi-fnc-2026-08-24"
+  }
+ ]
 }
