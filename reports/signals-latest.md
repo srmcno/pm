@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-24 16:34 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-24 16:44 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Natus Vincere vs Fnatic - Game 2 Winner — **Fnatic**
 
-- Score **8.28** · 4 backers · net $61,802 staked
+- Score **8.22** · 4 backers · net $61,802 staked
 - Backers' average entry 0.54 → current price **0.60** (already moved +0.06 since entry)
 - Resolves by 2026-08-24
 
