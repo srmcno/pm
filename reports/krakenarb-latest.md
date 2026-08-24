@@ -10,5 +10,5 @@ Closest approach: USD→CXT→EUR→USD at 177.8 bps against a 99.7 bps fee hurd
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 394 across 17150 scans
+- Edges replayed: 394 across 17183 scans
 - Atomic PnL $94.157 → one-scan-delay PnL $80.6757 (capture ratio 0.857)
