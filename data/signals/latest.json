@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787596810,
+  "generatedAt": 1787597722,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -8,57 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0xad5123db7bc0ef6d5a0e0a6004ddaaa09408706319105bb94e0619932c254882",
-   "outcomeIndex": 0,
-   "title": "LoL: GIANTX vs G2 Esports - Game 2 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.726,
-     "netUsd": 3046.34,
-     "avgPrice": 0.3219,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.2685544849731594
-    },
-    {
-     "wallet": "0xf23c5bc7b547867eb6532920144562718aa49f81",
-     "name": "DoNotTailMe",
-     "quality": 0.5932,
-     "netUsd": 781.56,
-     "avgPrice": 0.26,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 1.8327693647855179
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "JustADonk",
-     "quality": 0.5212,
-     "netUsd": 5586.51,
-     "avgPrice": 0.4505,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.62616102679504
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 9414.41,
-   "score": 5.7275,
-   "question": "LoL: GIANTX vs G2 Esports - Game 2 Winner",
-   "outcome": "GIANTX",
-   "tokenId": "22910545725109944843663466941171537663499425758340245884735017206713189182732",
-   "currentPrice": 0.415,
-   "backersAvgEntry": 0.3441,
-   "driftSinceEntry": 0.0709,
-   "endDate": "2026-08-24T21:15:00Z",
-   "slug": "lol-gx-g2-2026-08-24-game2",
-   "eventSlug": "lol-gx-g2-2026-08-24"
-  },
   {
    "conditionId": "0xb8cf56da2b654e41e0124076d9e5d30e9bc8bce8c9d6e41a5165e13f25375558",
    "outcomeIndex": 1,
@@ -72,8 +21,8 @@
      "netUsd": 7788.55,
      "avgPrice": 0.77,
      "conviction": 8.7,
-     "lastTradeAgoH": 1.6,
-     "score": 1.2130107635614016
+     "lastTradeAgoH": 1.8,
+     "score": 1.2003296701250719
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -82,8 +31,8 @@
      "netUsd": 1350.96,
      "avgPrice": 0.77,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.7,
-     "score": 1.0036382786839169
+     "lastTradeAgoH": 8.0,
+     "score": 0.9931460133466328
     },
     {
      "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
@@ -92,14 +41,14 @@
      "netUsd": 267.15,
      "avgPrice": 0.77,
      "conviction": 0.85,
-     "lastTradeAgoH": 9.5,
-     "score": 0.3817278393215752
+     "lastTradeAgoH": 9.8,
+     "score": 0.37773716871658175
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9406.66,
-   "score": 2.5984,
+   "score": 2.5712,
    "question": "Will Fulham FC win on 2026-08-24?",
    "outcome": "No",
    "tokenId": "49376703247336485554631896397462891200609539551937653279545654091232074619244",
