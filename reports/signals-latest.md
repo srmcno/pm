@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-24 18:35 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-24 18:40 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: GIANTX vs G2 Esports - Game 2 Winner — **GIANTX**
 
-- Score **5.75** · 3 backers · net $9,414 staked
+- Score **5.73** · 3 backers · net $9,414 staked
 - Backers' average entry 0.34 → current price **0.41** (already moved +0.07 since entry)
 - Resolves by 2026-08-24
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Fulham FC win on 2026-08-24? — **No**
 
-- Score **2.61** · 3 backers · net $9,407 staked
+- Score **2.60** · 3 backers · net $9,407 staked
 - Backers' average entry 0.77 → current price **0.74** (moved against them -0.03 since entry)
 - Resolves by 2026-08-24
 
