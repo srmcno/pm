@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-24 17:59 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-24 18:15 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Fulham FC win on 2026-08-24? — **No**
 
-- Score **2.67** · 3 backers · net $9,318 staked
-- Backers' average entry 0.77 → current price **0.76** (roughly flat -0.01 since entry)
+- Score **2.64** · 3 backers · net $9,318 staked
+- Backers' average entry 0.77 → current price **0.74** (moved against them -0.03 since entry)
 - Resolves by 2026-08-24
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
