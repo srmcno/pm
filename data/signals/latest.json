@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787685638,
+  "generatedAt": 1787686527,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.7254,
-     "netUsd": 1079.14,
+     "netUsd": 1079.28,
      "avgPrice": 0.6603,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.2517229518423263
+     "lastTradeAgoH": 0.7,
+     "score": 2.228827744493642
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -31,8 +31,18 @@
      "netUsd": 15017.31,
      "avgPrice": 0.67,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.8890499899414692
+     "lastTradeAgoH": 2.1,
+     "score": 1.869842391077518
+    },
+    {
+     "wallet": "0xd32ce89f16509d3c8f8b5e9750305a5b2bc2a4c2",
+     "name": "0xd32ce89f",
+     "quality": 0.4508,
+     "netUsd": 213.47,
+     "avgPrice": 0.6813,
+     "conviction": 6.68,
+     "lastTradeAgoH": 0.5,
+     "score": 1.1406042900092115
     },
     {
      "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
@@ -41,23 +51,74 @@
      "netUsd": 3504.09,
      "avgPrice": 0.6583,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.3,
-     "score": 0.7309451503588783
+     "lastTradeAgoH": 14.5,
+     "score": 0.7235130012286805
     }
    ],
-   "backerCount": 3,
+   "backerCount": 4,
    "contested": false,
-   "totalNetUsd": 19600.54,
-   "score": 4.8717,
+   "totalNetUsd": 19814.15,
+   "score": 5.9628,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
-   "currentPrice": 0.695,
-   "backersAvgEntry": 0.6629,
-   "driftSinceEntry": 0.0321,
+   "currentPrice": 0.685,
+   "backersAvgEntry": 0.6675,
+   "driftSinceEntry": 0.0175,
    "endDate": "2026-08-25T23:59:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
+  },
+  {
+   "conditionId": "0x0df392412bb06b1b758809de55310ed5b6cdcc666e65d6a4c22f17b968690456",
+   "outcomeIndex": 0,
+   "title": "Will LASK Linz win on 2026-08-25?",
+   "category": "Sports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7964,
+     "netUsd": 26169.78,
+     "avgPrice": 0.5081,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 2.4947646479132364
+    },
+    {
+     "wallet": "0xf1ef8705e9f63c790c6fffd6329aea7011718cd6",
+     "name": "Outsid3rTrading",
+     "quality": 0.3717,
+     "netUsd": 4259.84,
+     "avgPrice": 0.52,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.9,
+     "score": 1.132707127769009
+    },
+    {
+     "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
+     "name": "ic4cream",
+     "quality": 0.4382,
+     "netUsd": 530.0,
+     "avgPrice": 0.5,
+     "conviction": 7.56,
+     "lastTradeAgoH": 16.4,
+     "score": 0.6092632385641698
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 30959.62,
+   "score": 4.2367,
+   "question": "Will LASK Linz win on 2026-08-25?",
+   "outcome": "Yes",
+   "tokenId": "5200569049793909919354052913401166934225925082588297289708635822979081853643",
+   "currentPrice": 0.245,
+   "backersAvgEntry": 0.5094,
+   "driftSinceEntry": -0.2644,
+   "endDate": "2026-08-25T19:00:00Z",
+   "slug": "ucl-lin2-cel-2026-08-25-lin2",
+   "eventSlug": "ucl-lin2-cel-2026-08-25"
   }
  ]
 }
