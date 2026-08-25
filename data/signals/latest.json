@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787692627,
+  "generatedAt": 1787694062,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -18,43 +18,53 @@
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.7254,
-     "netUsd": 876.57,
-     "avgPrice": 0.3331,
+     "netUsd": 885.5,
+     "avgPrice": 0.3332,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.142748172814721
+     "lastTradeAgoH": 2.0,
+     "score": 2.1073316606917083
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
      "name": "coali10",
      "quality": 0.6455,
-     "netUsd": 4738.89,
-     "avgPrice": 0.3406,
+     "netUsd": 5382.77,
+     "avgPrice": 0.3439,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 1.9132984341491603
+     "lastTradeAgoH": 0.5,
+     "score": 1.995950440499508
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
      "name": "e46m3",
      "quality": 0.58,
-     "netUsd": 312.67,
-     "avgPrice": 0.3251,
+     "netUsd": 456.12,
+     "avgPrice": 0.3329,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.2,
-     "score": 1.6735658252203436
+     "lastTradeAgoH": 1.5,
+     "score": 1.7238150865243989
+    },
+    {
+     "wallet": "0xf1ef8705e9f63c790c6fffd6329aea7011718cd6",
+     "name": "Outsid3rTrading",
+     "quality": 0.3717,
+     "netUsd": 723.99,
+     "avgPrice": 0.362,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.7,
+     "score": 1.1419742971165652
     }
    ],
-   "backerCount": 3,
+   "backerCount": 4,
    "contested": true,
-   "totalNetUsd": 5928.13,
-   "score": 5.7296,
+   "totalNetUsd": 7448.38,
+   "score": 6.9691,
    "question": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "39652532623602170846456682951463932352134896182641898905432425437612057868317",
-   "currentPrice": 0.3855,
-   "backersAvgEntry": 0.3329,
-   "driftSinceEntry": 0.0526,
+   "currentPrice": 0.3845,
+   "backersAvgEntry": 0.343,
+   "driftSinceEntry": 0.0415,
    "endDate": "2026-08-25T23:59:00Z",
    "slug": "will-person-f-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628838",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
@@ -69,31 +79,31 @@
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
      "name": "Mysaria",
      "quality": 0.7254,
-     "netUsd": 1079.28,
-     "avgPrice": 0.6603,
+     "netUsd": 1729.28,
+     "avgPrice": 0.6565,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 2.0767987050443355
+     "lastTradeAgoH": 2.0,
+     "score": 2.1073316606917083
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
      "name": "coali10",
      "quality": 0.6455,
-     "netUsd": 11102.07,
+     "netUsd": 10997.14,
      "avgPrice": 0.67,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.8,
-     "score": 1.742299855168494
+     "lastTradeAgoH": 4.2,
+     "score": 1.7135021715557526
     },
     {
      "wallet": "0xd32ce89f16509d3c8f8b5e9750305a5b2bc2a4c2",
      "name": "0xd32ce89f",
      "quality": 0.4508,
-     "netUsd": 213.47,
-     "avgPrice": 0.6813,
-     "conviction": 6.68,
-     "lastTradeAgoH": 2.2,
-     "score": 1.0628033136752355
+     "netUsd": 243.37,
+     "avgPrice": 0.6775,
+     "conviction": 7.61,
+     "lastTradeAgoH": 2.0,
+     "score": 1.1426243777534728
     },
     {
      "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
@@ -102,20 +112,20 @@
      "netUsd": 3504.09,
      "avgPrice": 0.6583,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.2,
-     "score": 0.6741619525091795
+     "lastTradeAgoH": 16.6,
+     "score": 0.6630190355454231
     }
    ],
    "backerCount": 4,
    "contested": false,
-   "totalNetUsd": 15898.91,
-   "score": 5.5561,
+   "totalNetUsd": 16473.88,
+   "score": 5.6265,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
-   "currentPrice": 0.61,
-   "backersAvgEntry": 0.6675,
-   "driftSinceEntry": -0.0575,
+   "currentPrice": 0.615,
+   "backersAvgEntry": 0.6656,
+   "driftSinceEntry": -0.0506,
    "endDate": "2026-08-25T23:59:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"

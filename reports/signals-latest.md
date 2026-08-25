@@ -1,30 +1,31 @@
 # Smart-money signals
 
-Generated 2026-08-25 21:17 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-25 21:41 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? — **No**
 
-- Score **5.73** · 3 backers · net $5,928 staked
-- Backers' average entry 0.33 → current price **0.39** (already moved +0.05 since entry)
+- Score **6.97** · 4 backers · net $7,448 staked
+- Backers' average entry 0.34 → current price **0.38** (already moved +0.04 since entry)
 - Resolves by 2026-08-25
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| Mysaria | 0.73 | $877 | 0.3331 | 10.0× |
-| coali10 | 0.65 | $4,739 | 0.3406 | 10.0× |
-| e46m3 | 0.58 | $313 | 0.3251 | 10.0× |
+| Mysaria | 0.73 | $886 | 0.3332 | 10.0× |
+| coali10 | 0.65 | $5,383 | 0.3439 | 10.0× |
+| e46m3 | 0.58 | $456 | 0.3329 | 10.0× |
+| Outsid3rTrading | 0.37 | $724 | 0.362 | 10.0× |
 
 ## 2. Will Ralph Norman be the new Republican nominee for Senate in South Carolina? — **No**
 
-- Score **5.56** · 4 backers · net $15,899 staked
-- Backers' average entry 0.67 → current price **0.61** (moved against them -0.06 since entry)
+- Score **5.63** · 4 backers · net $16,474 staked
+- Backers' average entry 0.67 → current price **0.61** (moved against them -0.05 since entry)
 - Resolves by 2026-08-25
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| Mysaria | 0.73 | $1,079 | 0.6603 | 10.0× |
-| coali10 | 0.65 | $11,102 | 0.67 | 10.0× |
-| 0xd32ce89f | 0.45 | $213 | 0.6813 | 6.68× |
+| Mysaria | 0.73 | $1,729 | 0.6565 | 10.0× |
+| coali10 | 0.65 | $10,997 | 0.67 | 10.0× |
+| 0xd32ce89f | 0.45 | $243 | 0.6775 | 7.61× |
 | aenews2 | 0.42 | $3,504 | 0.6583 | 10.0× |
