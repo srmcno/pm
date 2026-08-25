@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787684721,
+  "generatedAt": 1787685638,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1079.14,
      "avgPrice": 0.6603,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.2757223793840944
+     "lastTradeAgoH": 0.4,
+     "score": 2.2517229518423263
     },
     {
      "wallet": "0x7bc14171ccb0d3e6bac219ec6a76211826e28db4",
@@ -31,8 +31,8 @@
      "netUsd": 15017.31,
      "avgPrice": 0.67,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 1.9091839581631302
+     "lastTradeAgoH": 1.9,
+     "score": 1.8890499899414692
     },
     {
      "wallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
@@ -41,20 +41,20 @@
      "netUsd": 3504.09,
      "avgPrice": 0.6583,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.0,
-     "score": 0.7387357469590027
+     "lastTradeAgoH": 14.3,
+     "score": 0.7309451503588783
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 19600.54,
-   "score": 4.9236,
+   "score": 4.8717,
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "outcome": "No",
    "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
-   "currentPrice": 0.755,
+   "currentPrice": 0.695,
    "backersAvgEntry": 0.6629,
-   "driftSinceEntry": 0.0921,
+   "driftSinceEntry": 0.0321,
    "endDate": "2026-08-25T23:59:00Z",
    "slug": "will-ralph-norman-be-the-new-republican-nominee-for-senate-in-south-carolina-20260712140628829",
    "eventSlug": "south-carolina-republican-senate-special-primary-winner-20260712135206676"
