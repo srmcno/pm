@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-25 21:41 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-25 21:56 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina? — **No**
 
-- Score **6.97** · 4 backers · net $7,448 staked
+- Score **6.90** · 4 backers · net $7,448 staked
 - Backers' average entry 0.34 → current price **0.38** (already moved +0.04 since entry)
 - Resolves by 2026-08-25
 
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Ralph Norman be the new Republican nominee for Senate in South Carolina? — **No**
 
-- Score **5.63** · 4 backers · net $16,474 staked
+- Score **5.57** · 4 backers · net $16,474 staked
 - Backers' average entry 0.67 → current price **0.61** (moved against them -0.05 since entry)
 - Resolves by 2026-08-25
 
