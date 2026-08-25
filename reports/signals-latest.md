@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-25 18:34 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-25 18:50 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Ralph Norman be the new Republican nominee for Senate in South Carolina? — **No**
 
-- Score **4.90** · 3 backers · net $19,586 staked
-- Backers' average entry 0.66 → current price **0.68** (roughly flat +0.01 since entry)
+- Score **4.84** · 3 backers · net $19,586 staked
+- Backers' average entry 0.66 → current price **0.69** (already moved +0.02 since entry)
 - Resolves by 2026-08-25
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
