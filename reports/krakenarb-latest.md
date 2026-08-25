@@ -6,7 +6,7 @@ Scanned 2026-08-25 21:09 UTC · 1459 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→ANON→EUR→USD at 218.8 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→MOCA→EUR→USD at 200.5 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
