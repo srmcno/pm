@@ -1,6 +1,6 @@
 # Kraken viability trial — latest scan
 
-Scanned 2026-08-25 16:52 UTC · 1459 pairs · 1340 cycles · 0 verified edges · median fee hurdle 99.7 bps
+Scanned 2026-08-25 17:02 UTC · 1459 pairs · 1340 cycles · 0 verified edges · median fee hurdle 99.7 bps
 
 | cycle | screen bps | fee hurdle bps | verified bps | size | profit |
 |---|---|---|---|---|---|
