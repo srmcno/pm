@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-26 16:58 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-26 17:13 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Real Madrid CF win on 2026-08-26? — **Yes**
 
-- Score **3.78** · 3 backers · net $49,754 staked
-- Backers' average entry 0.78 → current price **0.80** (roughly flat +0.01 since entry)
+- Score **3.74** · 3 backers · net $49,754 staked
+- Backers' average entry 0.78 → current price **0.81** (already moved +0.02 since entry)
 - Resolves by 2026-08-26
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
