@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-26 09:05 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-26 09:15 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A — **Aurora Gaming**
 
-- Score **5.07** · 3 backers · net $13,435 staked
+- Score **5.04** · 3 backers · net $13,435 staked
 - Backers' average entry 0.48 → current price **0.47** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-26
 
