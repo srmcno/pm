@@ -2,22 +2,7 @@
  "bankrollStart": 20.0,
  "cash": 5.2741,
  "createdAt": 1786587299,
- "positions": [
-  {
-   "conditionId": "0xdfedeb263f90a2e086d3aa0424ecba37a5a9eb2dcf1865a90e23ace6d5f22681",
-   "outcomeIndex": 0,
-   "tokenId": "28599544096706751891088465368161070780779896972360086359781196036216961348347",
-   "question": "Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A",
-   "outcome": "Aurora Gaming",
-   "shares": 2.0202,
-   "entryPrice": 0.495,
-   "costUsd": 1.0,
-   "openedAt": 1787735149,
-   "signalScore": 5.0706,
-   "markPrice": 0.0005,
-   "valueUsd": 0.001
-  }
- ],
+ "positions": [],
  "closed": [
   {
    "conditionId": "0x56270a01cc2b77707caafe33e13370fef8510d588f932546f93aeddd42b5a044",
@@ -545,6 +530,23 @@
    "settledAt": 1787743586,
    "settlePrice": 0.0,
    "pnl": -1.19
+  },
+  {
+   "conditionId": "0xdfedeb263f90a2e086d3aa0424ecba37a5a9eb2dcf1865a90e23ace6d5f22681",
+   "outcomeIndex": 0,
+   "tokenId": "28599544096706751891088465368161070780779896972360086359781196036216961348347",
+   "question": "Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A",
+   "outcome": "Aurora Gaming",
+   "shares": 2.0202,
+   "entryPrice": 0.495,
+   "costUsd": 1.0,
+   "openedAt": 1787735149,
+   "signalScore": 5.0706,
+   "markPrice": 0.0005,
+   "valueUsd": 0.001,
+   "settledAt": 1787750534,
+   "settlePrice": 0.0,
+   "pnl": -1.0
   }
  ],
  "equityCurve": [
@@ -6852,6 +6854,11 @@
    "t": 1787749621,
    "equity": 5.2751,
    "cash": 5.2741
+  },
+  {
+   "t": 1787750534,
+   "equity": 5.2741,
+   "cash": 5.2741
   }
  ],
  "log": [
@@ -7327,6 +7334,13 @@
    "question": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
    "price": 0.0,
    "pnl": -1.19
+  },
+  {
+   "t": 1787750534,
+   "action": "SETTLE",
+   "question": "Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A",
+   "price": 0.0,
+   "pnl": -1.0
   }
  ]
 }
