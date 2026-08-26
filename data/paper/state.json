@@ -1,37 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 6.0096,
+ "cash": 7.4641,
  "createdAt": 1786587299,
- "positions": [
-  {
-   "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
-   "outcomeIndex": 1,
-   "tokenId": "39652532623602170846456682951463932352134896182641898905432425437612057868317",
-   "question": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
-   "outcome": "No",
-   "shares": 4.3841,
-   "entryPrice": 0.23950000000000002,
-   "costUsd": 1.05,
-   "openedAt": 1786587299,
-   "signalScore": 3.1826,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0022
-  },
-  {
-   "conditionId": "0x70831611831c0792bfb971d613ec2db2e06d59a234967b45f8302b3671b515cd",
-   "outcomeIndex": 1,
-   "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
-   "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
-   "outcome": "No",
-   "shares": 1.4545,
-   "entryPrice": 0.825,
-   "costUsd": 1.2,
-   "openedAt": 1787121109,
-   "signalScore": 4.3131,
-   "markPrice": 0.9995,
-   "valueUsd": 1.4538
-  }
- ],
+ "positions": [],
  "closed": [
   {
    "conditionId": "0x56270a01cc2b77707caafe33e13370fef8510d588f932546f93aeddd42b5a044",
@@ -508,6 +479,40 @@
    "settledAt": 1787511958,
    "settlePrice": 0.0,
    "pnl": -1.25
+  },
+  {
+   "conditionId": "0x26a6c7e4a905dfc13f23c44a8e41d0b96ad60569ef49869c46c237dfd8f3c003",
+   "outcomeIndex": 1,
+   "tokenId": "39652532623602170846456682951463932352134896182641898905432425437612057868317",
+   "question": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
+   "outcome": "No",
+   "shares": 4.3841,
+   "entryPrice": 0.23950000000000002,
+   "costUsd": 1.05,
+   "openedAt": 1786587299,
+   "signalScore": 3.1826,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0022,
+   "settledAt": 1787716708,
+   "settlePrice": 0.0,
+   "pnl": -1.05
+  },
+  {
+   "conditionId": "0x70831611831c0792bfb971d613ec2db2e06d59a234967b45f8302b3671b515cd",
+   "outcomeIndex": 1,
+   "tokenId": "77003823152235207360024992572659870715371331416954628896644821575491638935501",
+   "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
+   "outcome": "No",
+   "shares": 1.4545,
+   "entryPrice": 0.825,
+   "costUsd": 1.2,
+   "openedAt": 1787121109,
+   "signalScore": 4.3131,
+   "markPrice": 0.9995,
+   "valueUsd": 1.4538,
+   "settledAt": 1787716708,
+   "settlePrice": 1.0,
+   "pnl": 0.2545
   }
  ],
  "equityCurve": [
@@ -6635,6 +6640,11 @@
    "t": 1787715793,
    "equity": 7.4656,
    "cash": 6.0096
+  },
+  {
+   "t": 1787716708,
+   "equity": 7.4641,
+   "cash": 7.4641
   }
  ],
  "log": [
@@ -7073,6 +7083,20 @@
    "question": "Will Team Spirit Win the CS2 EWC 2026?",
    "price": 0.0,
    "pnl": -1.25
+  },
+  {
+   "t": 1787716708,
+   "action": "SETTLE",
+   "question": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
+   "price": 0.0,
+   "pnl": -1.05
+  },
+  {
+   "t": 1787716708,
+   "action": "SETTLE",
+   "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
+   "price": 1.0,
+   "pnl": 0.2545
   }
  ]
 }
