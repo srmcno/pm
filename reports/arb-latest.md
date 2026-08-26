@@ -1,12 +1,11 @@
 # Arb desk — latest scan
 
-Scanned 2026-08-26 02:12 UTC · 2121 pairs · 764 cycles · 1 verified edges
+Scanned 2026-08-26 02:22 UTC · 2121 pairs · 764 cycles · 0 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→V4→USD1→USDT | 103.2 | 26.4 | $5.0 | $0.0132 |
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 3024 across 33537 scans
-- Atomic PnL $169.8763 → one-scan-delay PnL $47.213 (capture ratio 0.278)
+- Edges replayed: 3034 across 33655 scans
+- Atomic PnL $170.0115 → one-scan-delay PnL $47.3839 (capture ratio 0.279)
