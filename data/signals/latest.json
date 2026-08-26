@@ -1,11 +1,63 @@
 {
  "meta": {
-  "generatedAt": 1787757478,
+  "generatedAt": 1787758235,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": []
+ "signals": [
+  {
+   "conditionId": "0x244594c21b55f9f07af5a288ff9f41ff77324aa24b6fcc6f8341337c23c62806",
+   "outcomeIndex": 0,
+   "title": "Will Real Madrid CF win on 2026-08-26?",
+   "category": "Other",
+   "backers": [
+    {
+     "wallet": "0x5c3a1a602848565bb16165fcd460b00c3d43020b",
+     "name": "RegardedMoney",
+     "quality": 0.5296,
+     "netUsd": 37072.24,
+     "avgPrice": 0.79,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.6710053910359037
+    },
+    {
+     "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
+     "name": "ic4cream",
+     "quality": 0.4382,
+     "netUsd": 1101.26,
+     "avgPrice": 0.79,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 1.3825701245886293
+    },
+    {
+     "wallet": "0xf1ef8705e9f63c790c6fffd6329aea7011718cd6",
+     "name": "Outsid3rTrading",
+     "quality": 0.3717,
+     "netUsd": 6152.96,
+     "avgPrice": 0.76,
+     "conviction": 10.0,
+     "lastTradeAgoH": 7.3,
+     "score": 0.8679842812016704
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 44326.46,
+   "score": 3.9216,
+   "question": "Will Real Madrid CF win on 2026-08-26?",
+   "outcome": "Yes",
+   "tokenId": "26559765249952923865879350951475742913326516766941369247601657393449196813794",
+   "currentPrice": 0.785,
+   "backersAvgEntry": 0.78,
+   "driftSinceEntry": 0.005,
+   "endDate": "2026-08-26T19:00:00Z",
+   "slug": "lal-rea-rso-2026-08-26-rea",
+   "eventSlug": "lal-rea-rso-2026-08-26"
+  }
+ ]
 }
