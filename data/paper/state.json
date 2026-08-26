@@ -1,8 +1,23 @@
 {
  "bankrollStart": 20.0,
- "cash": 7.4641,
+ "cash": 6.2741,
  "createdAt": 1786587299,
- "positions": [],
+ "positions": [
+  {
+   "conditionId": "0x92e34965260e77474f65ff5455fb876fec37b23c67dfafcba1dd475b967fc7dc",
+   "outcomeIndex": 1,
+   "tokenId": "22385014297523457877256394782404427591830063483600069341568198504300564622755",
+   "question": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
+   "outcome": "HANJIN BRION",
+   "shares": 14.875,
+   "entryPrice": 0.08,
+   "costUsd": 1.19,
+   "openedAt": 1787733624,
+   "signalScore": 6.4871,
+   "markPrice": 0.195,
+   "valueUsd": 2.9006
+  }
+ ],
  "closed": [
   {
    "conditionId": "0x56270a01cc2b77707caafe33e13370fef8510d588f932546f93aeddd42b5a044",
@@ -6730,6 +6745,11 @@
    "t": 1787733380,
    "equity": 7.4641,
    "cash": 7.4641
+  },
+  {
+   "t": 1787733625,
+   "equity": 9.1747,
+   "cash": 6.2741
   }
  ],
  "log": [
@@ -7182,6 +7202,14 @@
    "question": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
    "price": 1.0,
    "pnl": 0.2545
+  },
+  {
+   "t": 1787733624,
+   "action": "BUY",
+   "question": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
+   "outcome": "HANJIN BRION",
+   "stake": 1.19,
+   "price": 0.08
   }
  ]
 }

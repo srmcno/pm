@@ -1,11 +1,12 @@
 # Paper portfolio
 
-Updated 2026-08-26 08:36 UTC · started with $20.00 (virtual)
+Updated 2026-08-26 08:40 UTC · started with $20.00 (virtual)
 
-**Equity $7.46 (-62.7%)** · cash $7.46 · 0 open · 30 settled
+**Equity $9.17 (-54.1%)** · cash $6.27 · 1 open · 30 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
+| LoL: KT Rolster vs HANJIN BRION - Game 1 Winner | HANJIN BRION | 14.88 | 0.08 | 0.20 | $2.90 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
