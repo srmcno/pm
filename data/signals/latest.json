@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787736633,
+  "generatedAt": 1787737540,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 542.13,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 2.4265877731007914
+     "lastTradeAgoH": 1.1,
+     "score": 2.4012474586176
     },
     {
      "wallet": "0xf377b9fb12a4b7507a4f997461a73eb30b564159",
@@ -31,8 +31,8 @@
      "netUsd": 4019.96,
      "avgPrice": 0.49,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.3454724052033182
+     "lastTradeAgoH": 0.8,
+     "score": 1.3314219371945966
     },
     {
      "wallet": "0x5c3a1a602848565bb16165fcd460b00c3d43020b",
@@ -41,20 +41,20 @@
      "netUsd": 8873.26,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.8,
-     "score": 1.2121777452570797
+     "lastTradeAgoH": 8.0,
+     "score": 1.1995192436298798
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 13435.35,
-   "score": 4.9842,
+   "score": 4.9322,
    "question": "Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A",
    "outcome": "Aurora Gaming",
    "tokenId": "28599544096706751891088465368161070780779896972360086359781196036216961348347",
-   "currentPrice": 0.505,
+   "currentPrice": 0.315,
    "backersAvgEntry": 0.4833,
-   "driftSinceEntry": 0.0217,
+   "driftSinceEntry": -0.1683,
    "endDate": "2026-08-26T15:00:00Z",
    "slug": "cs2-aur1-g2-2026-08-26",
    "eventSlug": "cs2-aur1-g2-2026-08-26"
