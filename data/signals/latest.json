@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787707948,
+  "generatedAt": 1787708855,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 31242.51,
      "avgPrice": 0.515,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 1.4392689530399447
+     "lastTradeAgoH": 2.7,
+     "score": 1.4242225044660495
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
@@ -31,8 +31,8 @@
      "netUsd": 1475.71,
      "avgPrice": 0.5,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.8,
-     "score": 1.1473496376328507
+     "lastTradeAgoH": 3.0,
+     "score": 1.135354980704792
     },
     {
      "wallet": "0xe6bff499390d0988f81967d095925b44aad38380",
@@ -41,20 +41,20 @@
      "netUsd": 2879.99,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 0.872504375165405
+     "lastTradeAgoH": 1.9,
+     "score": 0.863383013807824
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 35598.21,
-   "score": 3.4591,
+   "score": 3.423,
    "question": "Spread: Dallas Wings (-8.5)",
    "outcome": "Portland Fire",
    "tokenId": "7764972889107814311763301005852277863031393461107263739509089004039605958820",
-   "currentPrice": 0.105,
+   "currentPrice": 0.046,
    "backersAvgEntry": 0.4983,
-   "driftSinceEntry": -0.3933,
+   "driftSinceEntry": -0.4523,
    "endDate": "2026-08-26T00:00:00Z",
    "slug": "wnba-por-dal-2026-08-25-spread-home-8pt5",
    "eventSlug": "wnba-por-dal-2026-08-25"
