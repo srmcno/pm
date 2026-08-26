@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787774147,
+  "generatedAt": 1787775063,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 219.87,
      "avgPrice": 0.0603,
      "conviction": 8.32,
-     "lastTradeAgoH": 2.4,
-     "score": 2.0754381895900336
+     "lastTradeAgoH": 2.7,
+     "score": 2.0535271613186565
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -31,8 +31,8 @@
      "netUsd": 254.62,
      "avgPrice": 0.07,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.6975612900559638
+     "lastTradeAgoH": 2.1,
+     "score": 1.6796396224267491
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
@@ -41,20 +41,20 @@
      "netUsd": 215.33,
      "avgPrice": 0.09,
      "conviction": 9.5,
-     "lastTradeAgoH": 26.3,
-     "score": 0.41953027560427963
+     "lastTradeAgoH": 26.5,
+     "score": 0.4151011676811572
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 689.82,
-   "score": 4.1925,
+   "score": 4.1483,
    "question": "Will Real Sociedad de F\u00fatbol win on 2026-08-26?",
    "outcome": "Yes",
    "tokenId": "53308615677744126358482353061911688319968121743294611304992084452359113531102",
-   "currentPrice": 0.0785,
+   "currentPrice": 0.0825,
    "backersAvgEntry": 0.0734,
-   "driftSinceEntry": 0.0051,
+   "driftSinceEntry": 0.0091,
    "endDate": "2026-08-26T19:00:00Z",
    "slug": "lal-rea-rso-2026-08-26-rso",
    "eventSlug": "lal-rea-rso-2026-08-26"
@@ -72,8 +72,8 @@
      "netUsd": 41695.98,
      "avgPrice": 0.79,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.5,
-     "score": 1.4453230827470738
+     "lastTradeAgoH": 3.8,
+     "score": 1.4300643701117433
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -82,8 +82,8 @@
      "netUsd": 1904.66,
      "avgPrice": 0.7942,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.0,
-     "score": 1.1741463798924472
+     "lastTradeAgoH": 4.2,
+     "score": 1.161750561672662
     },
     {
      "wallet": "0xf1ef8705e9f63c790c6fffd6329aea7011718cd6",
@@ -92,14 +92,14 @@
      "netUsd": 6152.96,
      "avgPrice": 0.76,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.7,
-     "score": 0.7220202856103385
+     "lastTradeAgoH": 12.0,
+     "score": 0.7143976992235856
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 49753.6,
-   "score": 3.3415,
+   "score": 3.3062,
    "question": "Will Real Madrid CF win on 2026-08-26?",
    "outcome": "Yes",
    "tokenId": "26559765249952923865879350951475742913326516766941369247601657393449196813794",
