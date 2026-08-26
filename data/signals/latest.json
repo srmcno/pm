@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787758235,
+  "generatedAt": 1787758393,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -22,7 +22,7 @@
      "avgPrice": 0.79,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.6710053910359037
+     "score": 1.6680103256581102
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -32,7 +32,7 @@
      "avgPrice": 0.79,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.3825701245886293
+     "score": 1.38009204286924
     },
     {
      "wallet": "0xf1ef8705e9f63c790c6fffd6329aea7011718cd6",
@@ -42,13 +42,13 @@
      "avgPrice": 0.76,
      "conviction": 10.0,
      "lastTradeAgoH": 7.3,
-     "score": 0.8679842812016704
+     "score": 0.8664285293871987
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 44326.46,
-   "score": 3.9216,
+   "score": 3.9145,
    "question": "Will Real Madrid CF win on 2026-08-26?",
    "outcome": "Yes",
    "tokenId": "26559765249952923865879350951475742913326516766941369247601657393449196813794",
