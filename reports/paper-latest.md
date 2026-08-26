@@ -1,12 +1,13 @@
 # Paper portfolio
 
-Updated 2026-08-26 08:51 UTC · started with $20.00 (virtual)
+Updated 2026-08-26 09:05 UTC · started with $20.00 (virtual)
 
-**Equity $9.17 (-54.1%)** · cash $6.27 · 1 open · 30 settled
+**Equity $6.24 (-68.8%)** · cash $5.27 · 2 open · 30 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| LoL: KT Rolster vs HANJIN BRION - Game 1 Winner | HANJIN BRION | 14.88 | 0.08 | 0.20 | $2.90 |
+| LoL: KT Rolster vs HANJIN BRION - Game 1 Winner | HANJIN BRION | 14.88 | 0.08 | 0.00 | $0.01 |
+| Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A | Aurora Gaming | 2.02 | 0.49 | 0.47 | $0.96 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

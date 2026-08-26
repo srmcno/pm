@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787734296,
+  "generatedAt": 1787735149,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -9,55 +9,55 @@
  },
  "signals": [
   {
-   "conditionId": "0x92e34965260e77474f65ff5455fb876fec37b23c67dfafcba1dd475b967fc7dc",
-   "outcomeIndex": 1,
-   "title": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
+   "conditionId": "0xdfedeb263f90a2e086d3aa0424ecba37a5a9eb2dcf1865a90e23ace6d5f22681",
+   "outcomeIndex": 0,
+   "title": "Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A",
    "category": "Esports",
    "backers": [
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.7964,
-     "netUsd": 455.73,
-     "avgPrice": 0.1954,
+     "netUsd": 542.13,
+     "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.491503951897828
+     "lastTradeAgoH": 0.5,
+     "score": 2.46865523208549
     },
     {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.726,
-     "netUsd": 5898.33,
-     "avgPrice": 0.3553,
+     "wallet": "0xf377b9fb12a4b7507a4f997461a73eb30b564159",
+     "name": "danielwolfmorales3pddb6dl6",
+     "quality": 0.4348,
+     "netUsd": 4019.96,
+     "avgPrice": 0.49,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.2763660594668553
+     "lastTradeAgoH": 0.1,
+     "score": 1.368797588758747
     },
     {
-     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
-     "name": "fkigedgjdgwbg",
-     "quality": 0.5443,
-     "netUsd": 600.2,
-     "avgPrice": 0.3923,
+     "wallet": "0x5c3a1a602848565bb16165fcd460b00c3d43020b",
+     "name": "RegardedMoney",
+     "quality": 0.5296,
+     "netUsd": 8873.26,
+     "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 1.6730278275291484
+     "lastTradeAgoH": 7.3,
+     "score": 1.233192125262632
     }
    ],
    "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 6954.26,
-   "score": 6.4409,
-   "question": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
-   "outcome": "HANJIN BRION",
-   "tokenId": "22385014297523457877256394782404427591830063483600069341568198504300564622755",
-   "currentPrice": 0.195,
-   "backersAvgEntry": 0.3143,
-   "driftSinceEntry": -0.1193,
-   "endDate": "2026-08-26T12:00:00Z",
-   "slug": "lol-kt-bro2-2026-08-26-game1",
-   "eventSlug": "lol-kt-bro2-2026-08-26"
+   "contested": true,
+   "totalNetUsd": 13435.35,
+   "score": 5.0706,
+   "question": "Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A",
+   "outcome": "Aurora Gaming",
+   "tokenId": "28599544096706751891088465368161070780779896972360086359781196036216961348347",
+   "currentPrice": 0.475,
+   "backersAvgEntry": 0.4833,
+   "driftSinceEntry": -0.0083,
+   "endDate": "2026-08-26T15:00:00Z",
+   "slug": "cs2-aur1-g2-2026-08-26",
+   "eventSlug": "cs2-aur1-g2-2026-08-26"
   }
  ]
 }

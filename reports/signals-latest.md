@@ -1,17 +1,17 @@
 # Smart-money signals
 
-Generated 2026-08-26 08:51 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-26 09:05 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. LoL: KT Rolster vs HANJIN BRION - Game 1 Winner — **HANJIN BRION**
+## 1. Counter-Strike: Aurora Gaming vs G2 (BO3) - BLAST Open Porto Group A — **Aurora Gaming**
 
-- Score **6.44** · 3 backers · net $6,954 staked
-- Backers' average entry 0.31 → current price **0.20** (moved against them -0.12 since entry)
+- Score **5.07** · 3 backers · net $13,435 staked
+- Backers' average entry 0.48 → current price **0.47** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-26
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x076daa87 | 0.80 | $456 | 0.1954 | 10.0× |
-| 0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616 | 0.73 | $5,898 | 0.3553 | 10.0× |
-| fkigedgjdgwbg | 0.54 | $600 | 0.3923 | 10.0× |
+| 0x076daa87 | 0.80 | $542 | 0.48 | 10.0× |
+| danielwolfmorales3pddb6dl6 | 0.43 | $4,020 | 0.49 | 10.0× |
+| RegardedMoney | 0.53 | $8,873 | 0.48 | 10.0× |
