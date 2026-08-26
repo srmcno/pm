@@ -4,20 +4,6 @@
  "createdAt": 1786587299,
  "positions": [
   {
-   "conditionId": "0x92e34965260e77474f65ff5455fb876fec37b23c67dfafcba1dd475b967fc7dc",
-   "outcomeIndex": 1,
-   "tokenId": "22385014297523457877256394782404427591830063483600069341568198504300564622755",
-   "question": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
-   "outcome": "HANJIN BRION",
-   "shares": 14.875,
-   "entryPrice": 0.08,
-   "costUsd": 1.19,
-   "openedAt": 1787733624,
-   "signalScore": 6.4871,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0074
-  },
-  {
    "conditionId": "0xdfedeb263f90a2e086d3aa0424ecba37a5a9eb2dcf1865a90e23ace6d5f22681",
    "outcomeIndex": 0,
    "tokenId": "28599544096706751891088465368161070780779896972360086359781196036216961348347",
@@ -28,8 +14,8 @@
    "costUsd": 1.0,
    "openedAt": 1787735149,
    "signalScore": 5.0706,
-   "markPrice": 0.395,
-   "valueUsd": 0.798
+   "markPrice": 0.0005,
+   "valueUsd": 0.001
   }
  ],
  "closed": [
@@ -542,6 +528,23 @@
    "settledAt": 1787716708,
    "settlePrice": 1.0,
    "pnl": 0.2545
+  },
+  {
+   "conditionId": "0x92e34965260e77474f65ff5455fb876fec37b23c67dfafcba1dd475b967fc7dc",
+   "outcomeIndex": 1,
+   "tokenId": "22385014297523457877256394782404427591830063483600069341568198504300564622755",
+   "question": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
+   "outcome": "HANJIN BRION",
+   "shares": 14.875,
+   "entryPrice": 0.08,
+   "costUsd": 1.19,
+   "openedAt": 1787733624,
+   "signalScore": 6.4871,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0074,
+   "settledAt": 1787743586,
+   "settlePrice": 0.0,
+   "pnl": -1.19
   }
  ],
  "equityCurve": [
@@ -6814,6 +6817,11 @@
    "t": 1787742678,
    "equity": 6.0795,
    "cash": 5.2741
+  },
+  {
+   "t": 1787743586,
+   "equity": 5.2751,
+   "cash": 5.2741
   }
  ],
  "log": [
@@ -7282,6 +7290,13 @@
    "outcome": "Aurora Gaming",
    "stake": 1.0,
    "price": 0.495
+  },
+  {
+   "t": 1787743586,
+   "action": "SETTLE",
+   "question": "LoL: KT Rolster vs HANJIN BRION - Game 1 Winner",
+   "price": 0.0,
+   "pnl": -1.19
   }
  ]
 }
