@@ -1,11 +1,63 @@
 {
  "meta": {
-  "generatedAt": 1787852391,
+  "generatedAt": 1787853404,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": []
+ "signals": [
+  {
+   "conditionId": "0xff6ac01855e49f6460744cd89ed9623b974430af6affcc700ed93356642356e3",
+   "outcomeIndex": 1,
+   "title": "Will Ferencv\u00e1rosi TC win on 2026-08-27?",
+   "category": "Sports",
+   "backers": [
+    {
+     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
+     "name": "Bigggggggg",
+     "quality": 0.7507,
+     "netUsd": 7488.39,
+     "avgPrice": 0.6795,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.6,
+     "score": 2.3147468199807357
+    },
+    {
+     "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
+     "name": "ic4cream",
+     "quality": 0.4382,
+     "netUsd": 1253.83,
+     "avgPrice": 0.7106,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.5,
+     "score": 1.3022062181212217
+    },
+    {
+     "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
+     "name": "hi774c",
+     "quality": 0.407,
+     "netUsd": 1022.76,
+     "avgPrice": 0.65,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.0,
+     "score": 1.1844693843697616
+    }
+   ],
+   "backerCount": 3,
+   "contested": false,
+   "totalNetUsd": 9764.98,
+   "score": 4.8014,
+   "question": "Will Ferencv\u00e1rosi TC win on 2026-08-27?",
+   "outcome": "No",
+   "tokenId": "16754878893930228322937524648547517791441770197124911294571415802476077748891",
+   "currentPrice": 0.715,
+   "backersAvgEntry": 0.68,
+   "driftSinceEntry": 0.035,
+   "endDate": "2026-08-27T18:30:00Z",
+   "slug": "uel-ftc-tra1-2026-08-27-ftc",
+   "eventSlug": "uel-ftc-tra1-2026-08-27"
+  }
+ ]
 }
