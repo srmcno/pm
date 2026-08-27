@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-27 10:11 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-27 10:20 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Nongshim Red Force vs BNK FEARX - Game 3 Winner — **BNK FEARX**
 
-- Score **6.42** · 3 backers · net $42,956 staked
+- Score **6.38** · 3 backers · net $42,956 staked
 - Backers' average entry 0.58 → current price **0.72** (already moved +0.14 since entry)
 - Resolves by 2026-08-27
 
