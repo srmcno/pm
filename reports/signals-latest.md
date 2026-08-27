@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-27 20:45 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-27 21:01 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
 
-- Score **4.44** · 3 backers · net $9,584 staked
+- Score **4.39** · 3 backers · net $9,584 staked
 - Backers' average entry 0.44 → current price **0.45** (roughly flat +0.00 since entry)
 - Resolves by 2026-08-28
 
