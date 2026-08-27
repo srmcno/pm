@@ -1,63 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1787793139,
+  "generatedAt": 1787794048,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": [
-  {
-   "conditionId": "0x1d4d25371e69540df022c0cd73be2900a5a08000912e8ef9425636cfbc60cf6b",
-   "outcomeIndex": 0,
-   "title": "Kansas City Royals vs. Toronto Blue Jays: O/U 8.5",
-   "category": "Sports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.7964,
-     "netUsd": 215.36,
-     "avgPrice": 0.5,
-     "conviction": 8.15,
-     "lastTradeAgoH": 4.0,
-     "score": 1.9215300364476098
-    },
-    {
-     "wallet": "0xf1ef8705e9f63c790c6fffd6329aea7011718cd6",
-     "name": "Outsid3rTrading",
-     "quality": 0.3717,
-     "netUsd": 3920.0,
-     "avgPrice": 0.49,
-     "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 1.0507035558413247
-    },
-    {
-     "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
-     "name": "hi774c",
-     "quality": 0.407,
-     "netUsd": 1610.91,
-     "avgPrice": 0.5,
-     "conviction": 10.0,
-     "lastTradeAgoH": 5.1,
-     "score": 1.0401614234042043
-    }
-   ],
-   "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 5746.27,
-   "score": 4.0124,
-   "question": "Kansas City Royals vs. Toronto Blue Jays: O/U 8.5",
-   "outcome": "Over",
-   "tokenId": "47402192093407466045624251794196400300102119264558150093440753272205774207869",
-   "currentPrice": 0.03,
-   "backersAvgEntry": 0.4967,
-   "driftSinceEntry": -0.4667,
-   "endDate": "2026-08-26T23:07:00Z",
-   "slug": "mlb-kc-tor-2026-08-26-total-8pt5",
-   "eventSlug": "mlb-kc-tor-2026-08-26"
-  }
- ]
+ "signals": []
 }
