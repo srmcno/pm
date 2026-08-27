@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787857902,
+  "generatedAt": 1787858458,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 7488.39,
      "avgPrice": 0.6795,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.1970694201668595
+     "lastTradeAgoH": 2.0,
+     "score": 2.1831025995465008
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -31,8 +31,8 @@
      "netUsd": 1253.83,
      "avgPrice": 0.7106,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 1.236004489082345
+     "lastTradeAgoH": 2.9,
+     "score": 1.2281471802387942
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
@@ -41,20 +41,20 @@
      "netUsd": 1022.76,
      "avgPrice": 0.65,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.1242531757941145
+     "lastTradeAgoH": 3.4,
+     "score": 1.1171062726084187
     }
    ],
    "backerCount": 3,
-   "contested": true,
+   "contested": false,
    "totalNetUsd": 9764.98,
-   "score": 4.5573,
+   "score": 4.5284,
    "question": "Will Ferencv\u00e1rosi TC win on 2026-08-27?",
    "outcome": "No",
    "tokenId": "16754878893930228322937524648547517791441770197124911294571415802476077748891",
-   "currentPrice": 0.155,
+   "currentPrice": 0.165,
    "backersAvgEntry": 0.68,
-   "driftSinceEntry": -0.525,
+   "driftSinceEntry": -0.515,
    "endDate": "2026-08-27T18:30:00Z",
    "slug": "uel-ftc-tra1-2026-08-27-ftc",
    "eventSlug": "uel-ftc-tra1-2026-08-27"
@@ -69,11 +69,11 @@
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
      "name": "JustADonk",
      "quality": 0.5212,
-     "netUsd": 3310.78,
-     "avgPrice": 0.745,
+     "netUsd": 8452.03,
+     "avgPrice": 0.7468,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.6443112042827446
+     "lastTradeAgoH": 0.2,
+     "score": 1.634652710038749
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -82,8 +82,8 @@
      "netUsd": 7420.0,
      "avgPrice": 0.742,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.6329551814880972
+     "lastTradeAgoH": 0.3,
+     "score": 1.6225744480021258
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -92,20 +92,20 @@
      "netUsd": 356.12,
      "avgPrice": 0.89,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.4,
-     "score": 1.1421316554527035
+     "lastTradeAgoH": 11.5,
+     "score": 1.1348710983623724
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 11086.9,
-   "score": 4.4194,
+   "totalNetUsd": 16228.15,
+   "score": 4.3921,
    "question": "Counter-Strike: Team Falcons vs Lynn Vision (BO3) - BLAST Open Porto Group B",
    "outcome": "Team Falcons",
    "tokenId": "99110697037331886214849854496910055453578754451629514291638787871278678427714",
    "currentPrice": 0.7595,
-   "backersAvgEntry": 0.7923,
-   "driftSinceEntry": -0.0328,
+   "backersAvgEntry": 0.7929,
+   "driftSinceEntry": -0.0334,
    "endDate": "2026-08-27T23:10:00Z",
    "slug": "cs2-fal2-lvg-2026-08-27",
    "eventSlug": "cs2-fal2-lvg-2026-08-27"
