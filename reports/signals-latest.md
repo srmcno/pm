@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-27 20:06 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-27 20:15 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Team Falcons vs Lynn Vision (BO3) - BLAST Open Porto Group B — **Lynn Vision**
 
-- Score **7.32** · 3 backers · net $575,000 staked
+- Score **7.28** · 3 backers · net $575,000 staked
 - Backers' average entry 0.36 → current price **0.09** (moved against them -0.27 since entry)
 - Resolves by 2026-08-27
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
 
-- Score **4.56** · 3 backers · net $9,584 staked
+- Score **4.54** · 3 backers · net $9,584 staked
 - Backers' average entry 0.44 → current price **0.45** (roughly flat +0.00 since entry)
 - Resolves by 2026-08-28
 
