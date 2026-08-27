@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-27 00:41 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-27 00:57 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Kansas City Royals vs. Toronto Blue Jays: O/U 8.5 — **Over**
 
-- Score **4.10** · 3 backers · net $5,746 staked
-- Backers' average entry 0.50 → current price **0.30** (moved against them -0.19 since entry)
+- Score **4.05** · 3 backers · net $5,746 staked
+- Backers' average entry 0.50 → current price **0.12** (moved against them -0.38 since entry)
 - Resolves by 2026-08-26
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
