@@ -1,15 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 205.1189,
+ "cash": 205.1392,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1787741645,
-   "path": "USDT\u2192USD1\u2192EGG\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0246,
-   "bps": 49.2
-  },
   {
    "t": 1787742207,
    "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
@@ -1402,13 +1395,16 @@
    "sizeUsd": 10.0,
    "profitUsd": 0.2457,
    "bps": 245.7
+  },
+  {
+   "t": 1787820458,
+   "path": "USDT\u2192FONE\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0203,
+   "bps": 40.6
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787819412,
-   "equity": 204.6584
-  },
   {
    "t": 1787819414,
    "equity": 204.6584
@@ -3404,6 +3400,10 @@
   {
    "t": 1787820431,
    "equity": 205.1189
+  },
+  {
+   "t": 1787820458,
+   "equity": 205.1392
   }
  ],
  "decay": {
@@ -3428,15 +3428,15 @@
   "USDT\u2192GMEROBINHOOD\u2192USD1\u2192USDT|GMEROBINHOODUSDT|GMEROBINHOODUSD1|USD1USDT": 1787820051,
   "USDT\u2192USDC\u2192TAO\u2192USDT|USDCUSDT|TAOUSDC|TAOUSDT": 1787820154,
   "USDT\u2192USDC\u2192XRP\u2192USDT|USDCUSDT|XRPUSDC|XRPUSDT": 1787820325,
-  "USDT\u2192FONE\u2192USD1\u2192USDT|FONEUSDT|FONEUSD1|USD1USDT": 1787820415
+  "USDT\u2192FONE\u2192USD1\u2192USDT|FONEUSDT|FONEUSD1|USD1USDT": 1787820458
  },
- "tradeCountAll": 2784,
+ "tradeCountAll": 2785,
  "replay": {
-  "edges": 3259,
-  "refillable": 3257,
-  "atomicUsd": 164.8714,
-  "delayedUsd": 57.6902,
-  "captureRatio": 0.35,
-  "scansReplayed": 35181
+  "edges": 3300,
+  "refillable": 3298,
+  "atomicUsd": 165.6771,
+  "delayedUsd": 60.6832,
+  "captureRatio": 0.366,
+  "scansReplayed": 35284
  }
 }
