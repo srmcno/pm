@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-27 17:56 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-27 18:04 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Ferencvárosi TC win on 2026-08-27? — **No**
 
-- Score **4.80** · 3 backers · net $9,765 staked
+- Score **4.78** · 3 backers · net $9,765 staked
 - Backers' average entry 0.68 → current price **0.71** (already moved +0.04 since entry)
 - Resolves by 2026-08-27
 
