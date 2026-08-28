@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787948778,
+  "generatedAt": 1787949688,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1393.4,
      "avgPrice": 0.7979,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.262616910571629
+     "lastTradeAgoH": 0.6,
+     "score": 2.2389370793593266
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 429.53,
      "avgPrice": 0.6127,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.5,
-     "score": 2.227410429631749
+     "lastTradeAgoH": 1.8,
+     "score": 2.2040990582865767
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,20 +41,20 @@
      "netUsd": 551.98,
      "avgPrice": 0.79,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 1.6417565897601554
+     "lastTradeAgoH": 2.9,
+     "score": 1.624574485818669
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 2374.91,
-   "score": 6.1318,
+   "score": 6.0676,
    "question": "Will \"Grand Theft Auto VI Extended Look\" get less than 10 million views on day 1?",
    "outcome": "No",
    "tokenId": "73667225528216872813564354047844518231741886455465998975705288987932432906189",
-   "currentPrice": 0.5975,
+   "currentPrice": 0.6945,
    "backersAvgEntry": 0.7335,
-   "driftSinceEntry": -0.136,
+   "driftSinceEntry": -0.039,
    "endDate": "2026-08-28T23:59:00Z",
    "slug": "will-grand-theft-auto-vi-extended-look-get-less-than-10-million-views-on-day-1",
    "eventSlug": "of-views-of-grand-theft-auto-vi-extended-look-on-day-1-lower-strikes"
