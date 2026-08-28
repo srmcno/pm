@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787908006,
+  "generatedAt": 1787908922,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -8,6 +8,57 @@
   "source": "watch.py"
  },
  "signals": [
+  {
+   "conditionId": "0x295b43d34ec5d7174331ce6ccd9a43fe78bef9c71840115b63397ff6a6b179bb",
+   "outcomeIndex": 1,
+   "title": "LoL: HANJIN BRION vs BNK FEARX - Game 2 Winner",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7964,
+     "netUsd": 587.46,
+     "avgPrice": 0.5259,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 2.5058481639473666
+    },
+    {
+     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
+     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
+     "quality": 0.726,
+     "netUsd": 17079.33,
+     "avgPrice": 0.5114,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 2.2856061525846076
+    },
+    {
+     "wallet": "0xf23c5bc7b547867eb6532920144562718aa49f81",
+     "name": "DoNotTailMe",
+     "quality": 0.5932,
+     "netUsd": 2429.82,
+     "avgPrice": 0.4,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.2,
+     "score": 1.8620622656964179
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 20096.61,
+   "score": 6.6535,
+   "question": "LoL: HANJIN BRION vs BNK FEARX - Game 2 Winner",
+   "outcome": "BNK FEARX",
+   "tokenId": "72460629388169514454524160204544653367278181834270286845843955121213639688428",
+   "currentPrice": 0.055,
+   "backersAvgEntry": 0.4791,
+   "driftSinceEntry": -0.4241,
+   "endDate": "2026-08-28T12:00:00Z",
+   "slug": "lol-bro2-fox1-2026-08-28-game2",
+   "eventSlug": "lol-bro2-fox1-2026-08-28"
+  },
   {
    "conditionId": "0x55f15a07ca814afba4aa6e83a20856b48abaffc7da37e0f95a1b1452042a53da",
    "outcomeIndex": 1,
@@ -21,8 +72,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 15.0,
-     "score": 1.3483971860336323
+     "lastTradeAgoH": 15.2,
+     "score": 1.3342080752508896
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
@@ -31,8 +82,8 @@
      "netUsd": 1674.16,
      "avgPrice": 0.44,
      "conviction": 10.0,
-     "lastTradeAgoH": 13.4,
-     "score": 0.7374568542505232
+     "lastTradeAgoH": 13.6,
+     "score": 0.7296966355917811
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -41,14 +92,14 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 13.4,
-     "score": 0.5689793143964376
+     "lastTradeAgoH": 13.6,
+     "score": 0.5629919757927372
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9584.07,
-   "score": 2.6548,
+   "score": 2.6269,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",
