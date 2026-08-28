@@ -10,5 +10,5 @@ Closest approach: USD→EUR→EAT→USD at 22.1 bps against a 99.7 bps fee hurdl
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 117 across 15005 scans
+- Edges replayed: 117 across 15038 scans
 - Atomic PnL $5.8935 → one-scan-delay PnL $4.4062 (capture ratio 0.748)
