@@ -1,24 +1,24 @@
 # Smart-money signals
 
-Generated 2026-08-28 14:53 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-28 15:12 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. Will Elon Musk post 200-219 tweets from August 21 to August 28, 2026? — **No**
+## 1. Will "Grand Theft Auto VI Extended Look" get less than 10 million views on day 1? — **No**
 
-- Score **4.97** · 3 backers · net $1,307 staked
-- Backers' average entry 0.79 → current price **0.92** (already moved +0.13 since entry)
+- Score **6.19** · 3 backers · net $1,874 staked
+- Backers' average entry 0.77 → current price **0.52** (moved against them -0.25 since entry)
 - Resolves by 2026-08-28
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| Mysaria | 0.73 | $841 | 0.8357 | 10.0× |
-| korda77 | 0.56 | $261 | 0.8699 | 10.0× |
-| Bigggggggg | 0.75 | $206 | 0.6765 | 10.0× |
+| Bigggggggg | 0.75 | $223 | 0.5975 | 10.0× |
+| Mysaria | 0.73 | $1,225 | 0.8436 | 10.0× |
+| e46m3 | 0.58 | $426 | 0.8561 | 10.0× |
 
 ## 2. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
 
-- Score **2.69** · 3 backers · net $9,878 staked
+- Score **2.65** · 3 backers · net $9,878 staked
 - Backers' average entry 0.44 → current price **0.41** (moved against them -0.03 since entry)
 - Resolves by 2026-08-28
 

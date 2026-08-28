@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787928815,
+  "generatedAt": 1787929953,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -9,55 +9,55 @@
  },
  "signals": [
   {
-   "conditionId": "0x5b9b6af30c78a6c2be8e681d7014ca48942593e9a6eadd415defd2b1ef2ee05f",
+   "conditionId": "0x3a3a786beddc604094c71493485b24ad89aaabfc86b03607e61b6933a96d049f",
    "outcomeIndex": 1,
-   "title": "Will Elon Musk post 200-219 tweets from August 21 to August 28, 2026?",
-   "category": "Mentions",
+   "title": "Will \"Grand Theft Auto VI Extended Look\" get less than 10 million views on day 1?",
+   "category": "Other",
    "backers": [
-    {
-     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
-     "name": "Mysaria",
-     "quality": 0.7254,
-     "netUsd": 840.71,
-     "avgPrice": 0.8357,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 2.1993581921382095
-    },
-    {
-     "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
-     "name": "korda77",
-     "quality": 0.5627,
-     "netUsd": 260.87,
-     "avgPrice": 0.8699,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.8,
-     "score": 1.7238486130278463
-    },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
      "name": "Bigggggggg",
      "quality": 0.7507,
-     "netUsd": 205.91,
-     "avgPrice": 0.6765,
+     "netUsd": 223.04,
+     "avgPrice": 0.5975,
      "conviction": 10.0,
-     "lastTradeAgoH": 19.6,
-     "score": 1.0505844336870012
+     "lastTradeAgoH": 0.4,
+     "score": 2.333360669450926
+    },
+    {
+     "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
+     "name": "Mysaria",
+     "quality": 0.7254,
+     "netUsd": 1224.9,
+     "avgPrice": 0.8436,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.8,
+     "score": 2.2178140939437405
+    },
+    {
+     "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
+     "name": "e46m3",
+     "quality": 0.58,
+     "netUsd": 425.95,
+     "avgPrice": 0.8561,
+     "conviction": 10.0,
+     "lastTradeAgoH": 2.7,
+     "score": 1.6380743736746441
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 1307.49,
-   "score": 4.9738,
-   "question": "Will Elon Musk post 200-219 tweets from August 21 to August 28, 2026?",
+   "totalNetUsd": 1873.89,
+   "score": 6.1892,
+   "question": "Will \"Grand Theft Auto VI Extended Look\" get less than 10 million views on day 1?",
    "outcome": "No",
-   "tokenId": "79597575599215404446803992145580456008735611942602488010724285434152638796865",
-   "currentPrice": 0.92,
-   "backersAvgEntry": 0.794,
-   "driftSinceEntry": 0.126,
-   "endDate": "2026-08-28T16:00:00Z",
-   "slug": "elon-musk-of-tweets-august-21-august-28-2026-200-219",
-   "eventSlug": "elon-musk-of-tweets-august-21-august-28-2026"
+   "tokenId": "73667225528216872813564354047844518231741886455465998975705288987932432906189",
+   "currentPrice": 0.518,
+   "backersAvgEntry": 0.7657,
+   "driftSinceEntry": -0.2477,
+   "endDate": "2026-08-28T23:59:00Z",
+   "slug": "will-grand-theft-auto-vi-extended-look-get-less-than-10-million-views-on-day-1",
+   "eventSlug": "of-views-of-grand-theft-auto-vi-extended-look-on-day-1-lower-strikes"
   },
   {
    "conditionId": "0x55f15a07ca814afba4aa6e83a20856b48abaffc7da37e0f95a1b1452042a53da",
@@ -72,8 +72,8 @@
      "netUsd": 1967.82,
      "avgPrice": 0.437,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 1.1790256958365934
+     "lastTradeAgoH": 2.4,
+     "score": 1.1636924988265114
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -82,8 +82,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 20.8,
-     "score": 1.0597787246487487
+     "lastTradeAgoH": 21.1,
+     "score": 1.0459963312458613
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -92,14 +92,14 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 19.1,
-     "score": 0.4471918055067313
+     "lastTradeAgoH": 19.5,
+     "score": 0.4413760882756801
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9877.73,
-   "score": 2.686,
+   "score": 2.6511,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",
