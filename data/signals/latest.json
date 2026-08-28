@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787944220,
+  "generatedAt": 1787945133,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 429.53,
      "avgPrice": 0.6127,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.347989842178795
+     "lastTradeAgoH": 0.5,
+     "score": 2.3233358521478804
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -31,8 +31,8 @@
      "netUsd": 1376.8,
      "avgPrice": 0.7975,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.268858174392564
+     "lastTradeAgoH": 0.5,
+     "score": 2.2450350701319732
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,20 +41,20 @@
      "netUsd": 551.98,
      "avgPrice": 0.79,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.4,
-     "score": 1.7306320132137707
+     "lastTradeAgoH": 1.6,
+     "score": 1.7124603058092098
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 2358.31,
-   "score": 6.3475,
+   "score": 6.2808,
    "question": "Will \"Grand Theft Auto VI Extended Look\" get less than 10 million views on day 1?",
    "outcome": "No",
    "tokenId": "73667225528216872813564354047844518231741886455465998975705288987932432906189",
-   "currentPrice": 0.764,
+   "currentPrice": 0.6415,
    "backersAvgEntry": 0.7334,
-   "driftSinceEntry": 0.0306,
+   "driftSinceEntry": -0.0919,
    "endDate": "2026-08-28T23:59:00Z",
    "slug": "will-grand-theft-auto-vi-extended-look-get-less-than-10-million-views-on-day-1",
    "eventSlug": "of-views-of-grand-theft-auto-vi-extended-look-on-day-1-lower-strikes"
@@ -72,8 +72,8 @@
      "netUsd": 1967.82,
      "avgPrice": 0.437,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.4,
-     "score": 0.9864477525027663
+     "lastTradeAgoH": 6.6,
+     "score": 0.9760900104804864
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -82,8 +82,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 25.1,
-     "score": 0.8866781655154826
+     "lastTradeAgoH": 25.3,
+     "score": 0.877368008264988
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -92,20 +92,20 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 23.4,
-     "score": 0.3741490563246449
+     "lastTradeAgoH": 23.7,
+     "score": 0.37022047582612605
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9877.73,
-   "score": 2.2473,
+   "score": 2.2237,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",
-   "currentPrice": 0.445,
+   "currentPrice": 0.465,
    "backersAvgEntry": 0.4432,
-   "driftSinceEntry": 0.0018,
+   "driftSinceEntry": 0.0218,
    "endDate": "2026-08-28T18:45:00Z",
    "slug": "fl1-lil-psg-2026-08-28-psg",
    "eventSlug": "fl1-lil-psg-2026-08-28"
