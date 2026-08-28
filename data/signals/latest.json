@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787881680,
+  "generatedAt": 1787882595,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.7,
-     "score": 1.8286342838509644
+     "lastTradeAgoH": 7.9,
+     "score": 1.8094963772136095
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
@@ -31,8 +31,8 @@
      "netUsd": 1674.16,
      "avgPrice": 0.44,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.1,
-     "score": 1.0001050881084788
+     "lastTradeAgoH": 6.3,
+     "score": 0.9896383053445372
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -41,14 +41,14 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 6.1,
-     "score": 0.7716235927248448
+     "lastTradeAgoH": 6.3,
+     "score": 0.7635480248504146
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9584.07,
-   "score": 3.6004,
+   "score": 3.5627,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",
