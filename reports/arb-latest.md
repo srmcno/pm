@@ -1,10 +1,10 @@
 # Arb desk — latest scan
 
-Scanned 2026-08-28 23:41 UTC · 2099 pairs · 764 cycles · 1 verified edges
+Scanned 2026-08-28 23:43 UTC · 2099 pairs · 764 cycles · 1 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→USD1→CLAN→USDT | 31.7 | 50.4 | $5.0 | $0.0252 |
+| USDT→CLAN→USD1→USDT | 561.5 | 158.2 | $10.0 | $0.1582 |
 
 ## Latency replay (own recorded ticks)
 
