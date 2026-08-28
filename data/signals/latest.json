@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787937276,
+  "generatedAt": 1787938185,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1311.29,
      "avgPrice": 0.8107,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 2.256314469850779
+     "lastTradeAgoH": 0.6,
+     "score": 2.23275228146724
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 232.92,
      "avgPrice": 0.5877,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.7,
-     "score": 2.212379946716794
+     "lastTradeAgoH": 1.9,
+     "score": 2.1892765567518513
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,20 +41,20 @@
      "netUsd": 453.21,
      "avgPrice": 0.8335,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.8093466875541186
+     "lastTradeAgoH": 0.6,
+     "score": 1.79045208395478
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1997.42,
-   "score": 6.278,
+   "score": 6.2125,
    "question": "Will \"Grand Theft Auto VI Extended Look\" get less than 10 million views on day 1?",
    "outcome": "No",
    "tokenId": "73667225528216872813564354047844518231741886455465998975705288987932432906189",
-   "currentPrice": 0.7655,
+   "currentPrice": 0.509,
    "backersAvgEntry": 0.744,
-   "driftSinceEntry": 0.0215,
+   "driftSinceEntry": -0.235,
    "endDate": "2026-08-28T23:59:00Z",
    "slug": "will-grand-theft-auto-vi-extended-look-get-less-than-10-million-views-on-day-1",
    "eventSlug": "of-views-of-grand-theft-auto-vi-extended-look-on-day-1-lower-strikes"
@@ -72,8 +72,8 @@
      "netUsd": 4493.0,
      "avgPrice": 0.5675,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.270761096540362
+     "lastTradeAgoH": 0.5,
+     "score": 2.2470480452588917
     },
     {
      "wallet": "0xf23c5bc7b547867eb6532920144562718aa49f81",
@@ -82,8 +82,8 @@
      "netUsd": 18931.74,
      "avgPrice": 0.6011,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.8538047969275677
+     "lastTradeAgoH": 0.5,
+     "score": 1.834445927215402
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -92,20 +92,20 @@
      "netUsd": 251.63,
      "avgPrice": 0.57,
      "conviction": 5.17,
-     "lastTradeAgoH": 0.3,
-     "score": 1.2229625636991122
+     "lastTradeAgoH": 0.5,
+     "score": 1.2101914386201686
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 23676.37,
-   "score": 5.3475,
+   "score": 5.2917,
    "question": "LoL: Team Vitality vs Fnatic - Game 1 Winner",
    "outcome": "Team Vitality",
    "tokenId": "30612850545797317669939087566312303969197695256284290562153618459071264392482",
-   "currentPrice": 0.545,
+   "currentPrice": 0.0415,
    "backersAvgEntry": 0.5795,
-   "driftSinceEntry": -0.0345,
+   "driftSinceEntry": -0.538,
    "endDate": "2026-08-28T22:45:00Z",
    "slug": "lol-vit-fnc-2026-08-28-game1",
    "eventSlug": "lol-vit-fnc-2026-08-28"
@@ -123,8 +123,8 @@
      "netUsd": 1967.82,
      "avgPrice": 0.437,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.5,
-     "score": 1.0690019465594502
+     "lastTradeAgoH": 4.7,
+     "score": 1.0578385978402136
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -133,8 +133,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 23.1,
-     "score": 0.9608828065175761
+     "lastTradeAgoH": 23.4,
+     "score": 0.9508485218448511
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -143,14 +143,14 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 21.5,
-     "score": 0.40546097702554723
+     "lastTradeAgoH": 21.7,
+     "score": 0.40122683854418495
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9877.73,
-   "score": 2.4353,
+   "score": 2.4099,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",

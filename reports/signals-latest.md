@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-28 17:14 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-28 17:29 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will "Grand Theft Auto VI Extended Look" get less than 10 million views on day 1? — **No**
 
-- Score **6.28** · 3 backers · net $1,997 staked
-- Backers' average entry 0.74 → current price **0.77** (already moved +0.02 since entry)
+- Score **6.21** · 3 backers · net $1,997 staked
+- Backers' average entry 0.74 → current price **0.51** (moved against them -0.23 since entry)
 - Resolves by 2026-08-28
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -18,8 +18,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. LoL: Team Vitality vs Fnatic - Game 1 Winner — **Team Vitality**
 
-- Score **5.35** · 3 backers · net $23,676 staked
-- Backers' average entry 0.58 → current price **0.55** (moved against them -0.03 since entry)
+- Score **5.29** · 3 backers · net $23,676 staked
+- Backers' average entry 0.58 → current price **0.04** (moved against them -0.54 since entry)
 - Resolves by 2026-08-28
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -30,7 +30,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
 
-- Score **2.44** · 3 backers · net $9,878 staked
+- Score **2.41** · 3 backers · net $9,878 staked
 - Backers' average entry 0.44 → current price **0.41** (moved against them -0.03 since entry)
 - Resolves by 2026-08-28
 
