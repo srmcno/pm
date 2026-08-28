@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-28 02:52 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-28 03:04 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Washington Mystics vs. Phoenix Mercury — **Phoenix Mercury**
 
-- Score **4.95** · 3 backers · net $2,053 staked
+- Score **4.91** · 3 backers · net $2,053 staked
 - Backers' average entry 0.27 → current price **0.09** (moved against them -0.19 since entry)
 - Resolves by 2026-08-28
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
 
-- Score **3.44** · 3 backers · net $9,584 staked
+- Score **3.42** · 3 backers · net $9,584 staked
 - Backers' average entry 0.44 → current price **0.43** (roughly flat -0.01 since entry)
 - Resolves by 2026-08-28
 
