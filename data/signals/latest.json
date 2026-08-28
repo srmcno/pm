@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787936849,
+  "generatedAt": 1787937276,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1311.29,
      "avgPrice": 0.8107,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.267703031517876
+     "lastTradeAgoH": 0.4,
+     "score": 2.256314469850779
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 232.92,
      "avgPrice": 0.5877,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.2235467524927195
+     "lastTradeAgoH": 1.7,
+     "score": 2.212379946716794
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,14 +41,14 @@
      "netUsd": 453.21,
      "avgPrice": 0.8335,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.8184792161106238
+     "lastTradeAgoH": 0.3,
+     "score": 1.8093466875541186
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1997.42,
-   "score": 6.3097,
+   "score": 6.278,
    "question": "Will \"Grand Theft Auto VI Extended Look\" get less than 10 million views on day 1?",
    "outcome": "No",
    "tokenId": "73667225528216872813564354047844518231741886455465998975705288987932432906189",
@@ -72,8 +72,8 @@
      "netUsd": 4493.0,
      "avgPrice": 0.5675,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.2822225763671993
+     "lastTradeAgoH": 0.3,
+     "score": 2.270761096540362
     },
     {
      "wallet": "0xf23c5bc7b547867eb6532920144562718aa49f81",
@@ -82,8 +82,8 @@
      "netUsd": 18931.74,
      "avgPrice": 0.6011,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.8631617241337148
+     "lastTradeAgoH": 0.3,
+     "score": 1.8538047969275677
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -92,14 +92,14 @@
      "netUsd": 251.63,
      "avgPrice": 0.57,
      "conviction": 5.17,
-     "lastTradeAgoH": 0.2,
-     "score": 1.2291353666303275
+     "lastTradeAgoH": 0.3,
+     "score": 1.2229625636991122
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 23676.37,
-   "score": 5.3745,
+   "score": 5.3475,
    "question": "LoL: Team Vitality vs Fnatic - Game 1 Winner",
    "outcome": "Team Vitality",
    "tokenId": "30612850545797317669939087566312303969197695256284290562153618459071264392482",
@@ -123,8 +123,8 @@
      "netUsd": 1967.82,
      "avgPrice": 0.437,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.3,
-     "score": 1.0743976459414804
+     "lastTradeAgoH": 4.5,
+     "score": 1.0690019465594502
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -133,8 +133,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 23.0,
-     "score": 0.9657327834348461
+     "lastTradeAgoH": 23.1,
+     "score": 0.9608828065175761
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -143,14 +143,14 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 21.4,
-     "score": 0.40750750795115986
+     "lastTradeAgoH": 21.5,
+     "score": 0.40546097702554723
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9877.73,
-   "score": 2.4476,
+   "score": 2.4353,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",
