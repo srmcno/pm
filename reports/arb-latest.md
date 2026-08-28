@@ -4,7 +4,7 @@ Scanned 2026-08-28 08:29 UTC · 2095 pairs · 760 cycles · 1 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→HYPE→USDC→USDT | 3.7 | 2.5 | $20.0 | $0.005 |
+| USDT→HYPE→USDC→USDT | 7.3 | 6.1 | $20.0 | $0.0122 |
 
 ## Latency replay (own recorded ticks)
 
