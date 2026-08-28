@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787938185,
+  "generatedAt": 1787939094,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1311.29,
      "avgPrice": 0.8107,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 2.23275228146724
+     "lastTradeAgoH": 0.9,
+     "score": 2.209410575728096
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 232.92,
      "avgPrice": 0.5877,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 2.1892765567518513
+     "lastTradeAgoH": 2.2,
+     "score": 2.1663893562354883
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,74 +41,23 @@
      "netUsd": 453.21,
      "avgPrice": 0.8335,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 1.79045208395478
+     "lastTradeAgoH": 0.8,
+     "score": 1.7717342861808836
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1997.42,
-   "score": 6.2125,
+   "score": 6.1475,
    "question": "Will \"Grand Theft Auto VI Extended Look\" get less than 10 million views on day 1?",
    "outcome": "No",
    "tokenId": "73667225528216872813564354047844518231741886455465998975705288987932432906189",
-   "currentPrice": 0.509,
+   "currentPrice": 0.4005,
    "backersAvgEntry": 0.744,
-   "driftSinceEntry": -0.235,
+   "driftSinceEntry": -0.3435,
    "endDate": "2026-08-28T23:59:00Z",
    "slug": "will-grand-theft-auto-vi-extended-look-get-less-than-10-million-views-on-day-1",
    "eventSlug": "of-views-of-grand-theft-auto-vi-extended-look-on-day-1-lower-strikes"
-  },
-  {
-   "conditionId": "0x9dc1091aab0b5c3fd23af3ff8289bfd5c3b573e57005b9ebc95c7a4ef8a2377e",
-   "outcomeIndex": 0,
-   "title": "LoL: Team Vitality vs Fnatic - Game 1 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.726,
-     "netUsd": 4493.0,
-     "avgPrice": 0.5675,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 2.2470480452588917
-    },
-    {
-     "wallet": "0xf23c5bc7b547867eb6532920144562718aa49f81",
-     "name": "DoNotTailMe",
-     "quality": 0.5932,
-     "netUsd": 18931.74,
-     "avgPrice": 0.6011,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.5,
-     "score": 1.834445927215402
-    },
-    {
-     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
-     "name": "fkigedgjdgwbg",
-     "quality": 0.5443,
-     "netUsd": 251.63,
-     "avgPrice": 0.57,
-     "conviction": 5.17,
-     "lastTradeAgoH": 0.5,
-     "score": 1.2101914386201686
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 23676.37,
-   "score": 5.2917,
-   "question": "LoL: Team Vitality vs Fnatic - Game 1 Winner",
-   "outcome": "Team Vitality",
-   "tokenId": "30612850545797317669939087566312303969197695256284290562153618459071264392482",
-   "currentPrice": 0.0415,
-   "backersAvgEntry": 0.5795,
-   "driftSinceEntry": -0.538,
-   "endDate": "2026-08-28T22:45:00Z",
-   "slug": "lol-vit-fnc-2026-08-28-game1",
-   "eventSlug": "lol-vit-fnc-2026-08-28"
   },
   {
    "conditionId": "0x55f15a07ca814afba4aa6e83a20856b48abaffc7da37e0f95a1b1452042a53da",
@@ -123,8 +72,8 @@
      "netUsd": 1967.82,
      "avgPrice": 0.437,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.7,
-     "score": 1.0578385978402136
+     "lastTradeAgoH": 5.0,
+     "score": 1.0467797099039
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -133,8 +82,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 23.4,
-     "score": 0.9508485218448511
+     "lastTradeAgoH": 23.6,
+     "score": 0.940908132763794
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -143,14 +92,14 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 21.7,
-     "score": 0.40122683854418495
+     "lastTradeAgoH": 22.0,
+     "score": 0.397032320917809
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9877.73,
-   "score": 2.4099,
+   "score": 2.3847,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",
