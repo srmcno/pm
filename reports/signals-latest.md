@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-28 16:34 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-28 16:50 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will "Grand Theft Auto VI Extended Look" get less than 10 million views on day 1? — **No**
 
-- Score **5.84** · 3 backers · net $1,874 staked
-- Backers' average entry 0.77 → current price **0.38** (moved against them -0.39 since entry)
+- Score **5.78** · 3 backers · net $1,874 staked
+- Backers' average entry 0.77 → current price **0.65** (moved against them -0.12 since entry)
 - Resolves by 2026-08-28
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
 
-- Score **2.50** · 3 backers · net $9,878 staked
+- Score **2.48** · 3 backers · net $9,878 staked
 - Backers' average entry 0.44 → current price **0.41** (moved against them -0.03 since entry)
 - Resolves by 2026-08-28
 
