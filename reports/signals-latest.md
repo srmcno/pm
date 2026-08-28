@@ -1,25 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-28 14:23 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-28 14:38 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. Will Elon Musk post 200-219 tweets from August 21 to August 28, 2026? — **No**
+## 1. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
 
-- Score **5.08** · 3 backers · net $1,307 staked
-- Backers' average entry 0.79 → current price **0.92** (already moved +0.12 since entry)
-- Resolves by 2026-08-28
-
-| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
-|---|---|---|---|---|
-| Mysaria | 0.73 | $841 | 0.8357 | 10.0× |
-| korda77 | 0.56 | $261 | 0.8699 | 10.0× |
-| Bigggggggg | 0.75 | $206 | 0.6765 | 10.0× |
-
-## 2. Will Paris Saint-Germain FC win on 2026-08-28? — **No**
-
-- Score **2.74** · 3 backers · net $9,878 staked
-- Backers' average entry 0.44 → current price **0.42** (roughly flat -0.02 since entry)
+- Score **2.71** · 3 backers · net $9,878 staked
+- Backers' average entry 0.44 → current price **0.41** (moved against them -0.03 since entry)
 - Resolves by 2026-08-28
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
