@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1787887169,
+  "generatedAt": 1787888633,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -12,49 +12,59 @@
    "conditionId": "0x18b66dc6b00be1a260e0a1de3fde6b9bef9f7aca8ce70624deed3a68a88059e3",
    "outcomeIndex": 1,
    "title": "Washington Mystics vs. Phoenix Mercury",
-   "category": "Other",
+   "category": "Sports",
    "backers": [
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.7964,
-     "netUsd": 220.39,
-     "avgPrice": 0.132,
-     "conviction": 8.34,
-     "lastTradeAgoH": 0.5,
-     "score": 2.254400429307927
+     "netUsd": 570.63,
+     "avgPrice": 0.4052,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.1,
+     "score": 2.503760826988605
     },
     {
      "wallet": "0x684baa57c338c2549aec0aa3f034f695d72a8409",
      "name": "monkeymashingkeyboard",
      "quality": 0.5034,
-     "netUsd": 1230.21,
+     "netUsd": 2978.87,
      "avgPrice": 0.33,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.4685480653957592
+     "lastTradeAgoH": 1.8,
+     "score": 1.4756529812129249
+    },
+    {
+     "wallet": "0x161a7f666ca49d592848cf415b42f49a84714103",
+     "name": "torta.tech",
+     "quality": 0.4092,
+     "netUsd": 1295.16,
+     "avgPrice": 0.4961,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.5,
+     "score": 1.2170120422677329
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
      "name": "hi774c",
      "quality": 0.407,
-     "netUsd": 602.34,
-     "avgPrice": 0.3503,
+     "netUsd": 1772.22,
+     "avgPrice": 0.3314,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.1,
-     "score": 1.1303201553568751
+     "lastTradeAgoH": 1.8,
+     "score": 1.1955291358462778
     }
    ],
-   "backerCount": 3,
+   "backerCount": 4,
    "contested": false,
-   "totalNetUsd": 2052.94,
-   "score": 4.8533,
+   "totalNetUsd": 6616.88,
+   "score": 6.392,
    "question": "Washington Mystics vs. Phoenix Mercury",
    "outcome": "Phoenix Mercury",
    "tokenId": "57242292161754874506663785988145879384314754534451754289401112306917409144572",
-   "currentPrice": 0.285,
-   "backersAvgEntry": 0.2708,
-   "driftSinceEntry": 0.0142,
+   "currentPrice": 0.455,
+   "backersAvgEntry": 0.3907,
+   "driftSinceEntry": 0.0643,
    "endDate": "2026-08-28T02:00:00Z",
    "slug": "wnba-wsh-phx-2026-08-27",
    "eventSlug": "wnba-wsh-phx-2026-08-27"
@@ -72,8 +82,8 @@
      "netUsd": 7550.13,
      "avgPrice": 0.4525,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.2,
-     "score": 1.7161736198873778
+     "lastTradeAgoH": 9.6,
+     "score": 1.6872413504735126
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
@@ -82,8 +92,8 @@
      "netUsd": 1674.16,
      "avgPrice": 0.44,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.6,
-     "score": 0.9385988135978739
+     "lastTradeAgoH": 8.0,
+     "score": 0.9227753599380222
     },
     {
      "wallet": "0x27f738fe203827445690339104aae35b20bc44b0",
@@ -92,14 +102,14 @@
      "netUsd": 359.78,
      "avgPrice": 0.44,
      "conviction": 5.14,
-     "lastTradeAgoH": 7.6,
-     "score": 0.7241688871370999
+     "lastTradeAgoH": 8.0,
+     "score": 0.7119604199394953
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 9584.07,
-   "score": 3.3789,
+   "score": 3.322,
    "question": "Will Paris Saint-Germain FC win on 2026-08-28?",
    "outcome": "No",
    "tokenId": "6159246493123556026714577215185404892923117031024971615426917107351377921725",
