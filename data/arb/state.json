@@ -1,15 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 217.0255,
+ "cash": 217.0377,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1787821890,
-   "path": "USDT\u2192USD1\u2192CLAN\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0096,
-   "bps": 19.2
-  },
   {
    "t": 1787822023,
    "path": "USDT\u2192SUE\u2192USD1\u2192USDT",
@@ -1402,13 +1395,16 @@
    "sizeUsd": 20.0,
    "profitUsd": 0.0122,
    "bps": 6.1
+  },
+  {
+   "t": 1787905802,
+   "path": "USDT\u2192HYPE\u2192USDC\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0122,
+   "bps": 6.1
   }
  ],
  "equityCurve": [
-  {
-   "t": 1787904759,
-   "equity": 216.974
-  },
   {
    "t": 1787904761,
    "equity": 216.974
@@ -3404,6 +3400,10 @@
   {
    "t": 1787905772,
    "equity": 217.0255
+  },
+  {
+   "t": 1787905802,
+   "equity": 217.0377
   }
  ],
  "decay": {
@@ -3418,15 +3418,15 @@
   "USDT\u2192USD1\u2192MARSCOIN1\u2192USDT|USD1USDT|MARSCOIN1USD1|MARSCOIN1USDT": 1787904380,
   "USDT\u2192USD1\u2192SUE\u2192USDT|USD1USDT|SUEUSD1|SUEUSDT": 1787904887,
   "USDT\u2192NPC\u2192USDC\u2192USDT|NPCUSDT|NPCUSDC|USDCUSDT": 1787905161,
-  "USDT\u2192HYPE\u2192USDC\u2192USDT|HYPEUSDT|HYPEUSDC|USDCUSDT": 1787905772
+  "USDT\u2192HYPE\u2192USDC\u2192USDT|HYPEUSDT|HYPEUSDC|USDCUSDT": 1787905802
  },
- "tradeCountAll": 2994,
+ "tradeCountAll": 2995,
  "replay": {
-  "edges": 3500,
-  "refillable": 3498,
-  "atomicUsd": 162.523,
-  "delayedUsd": 64.0575,
-  "captureRatio": 0.394,
-  "scansReplayed": 35293
+  "edges": 3516,
+  "refillable": 3514,
+  "atomicUsd": 162.6712,
+  "delayedUsd": 63.9736,
+  "captureRatio": 0.393,
+  "scansReplayed": 35377
  }
 }
