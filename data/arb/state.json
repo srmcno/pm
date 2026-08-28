@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1787950694,
-   "equity": 231.6701
-  },
-  {
    "t": 1787950696,
    "equity": 231.6701
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1787951716,
    "equity": 232.0263
+  },
+  {
+   "t": 1787951741,
+   "equity": 232.0263
   }
  ],
  "decay": {
@@ -3411,7 +3411,6 @@
   "survived": 6518
  },
  "cooldown": {
-  "USDT\u2192USD1\u2192BASELINE\u2192USDT|USD1USDT|BASELINEUSD1|BASELINEUSDT": 1787948134,
   "USDT\u2192DOOM\u2192USD1\u2192USDT|DOOMUSDT|DOOMUSD1|USD1USDT": 1787950615,
   "USDT\u2192USDC\u2192HYPE\u2192USDT|USDCUSDT|HYPEUSDC|HYPEUSDT": 1787950841,
   "USDT\u2192USD1\u2192UTILITY\u2192USDT|USD1USDT|UTILITYUSD1|UTILITYUSDT": 1787950889,
@@ -3419,11 +3418,11 @@
  },
  "tradeCountAll": 3171,
  "replay": {
-  "edges": 4411,
-  "refillable": 4409,
-  "atomicUsd": 189.9832,
-  "delayedUsd": 72.0525,
-  "captureRatio": 0.379,
-  "scansReplayed": 38834
+  "edges": 4420,
+  "refillable": 4418,
+  "atomicUsd": 190.5782,
+  "delayedUsd": 71.8121,
+  "captureRatio": 0.377,
+  "scansReplayed": 38911
  }
 }
