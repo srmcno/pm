@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-29 09:42 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-29 09:57 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Luke Herdegen win the 2026 Secret Harbour state by-election? — **No**
 
-- Score **4.26** · 3 backers · net $1,716 staked
+- Score **4.21** · 3 backers · net $1,716 staked
 - Backers' average entry 0.66 → current price **0.64** (moved against them -0.03 since entry)
 - Resolves by 2026-08-29
 
