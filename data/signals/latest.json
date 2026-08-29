@@ -1,63 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1788030774,
+  "generatedAt": 1788031292,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": [
-  {
-   "conditionId": "0x0630bac8a889d87e8f3ff312fda3efc0233af1b6339054abfedd19fa041f3236",
-   "outcomeIndex": 1,
-   "title": "LoL: Natus Vincere vs GIANTX (BO3) - LEC Regular Season",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.7964,
-     "netUsd": 899.55,
-     "avgPrice": 0.451,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 2.5143604307794947
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.726,
-     "netUsd": 924.45,
-     "avgPrice": 0.4445,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.2,
-     "score": 2.1802087207321827
-    },
-    {
-     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
-     "name": "fkigedgjdgwbg",
-     "quality": 0.5443,
-     "netUsd": 999.02,
-     "avgPrice": 0.451,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 1.7182023066403096
-    }
-   ],
-   "backerCount": 3,
-   "contested": false,
-   "totalNetUsd": 2823.02,
-   "score": 6.4128,
-   "question": "LoL: Natus Vincere vs GIANTX (BO3) - LEC Regular Season",
-   "outcome": "GIANTX",
-   "tokenId": "63737681922471516953777917528490106162988461249513167698869498252171842122790",
-   "currentPrice": 0.3905,
-   "backersAvgEntry": 0.4488,
-   "driftSinceEntry": -0.0583,
-   "endDate": "2026-08-29T23:15:00Z",
-   "slug": "lol-navi-gx-2026-08-29",
-   "eventSlug": "lol-navi-gx-2026-08-29"
-  }
- ]
+ "signals": []
 }
