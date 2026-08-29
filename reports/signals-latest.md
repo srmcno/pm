@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-29 12:22 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-29 12:33 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. LoL: Top Esports vs LGD Gaming - Game 4 Winner — **LGD Gaming**
 
-- Score **5.82** · 3 backers · net $27,228 staked
+- Score **5.78** · 3 backers · net $27,228 staked
 - Backers' average entry 0.33 → current price **0.41** (already moved +0.08 since entry)
 - Resolves by 2026-08-29
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Luke Herdegen win the 2026 Secret Harbour state by-election? — **No**
 
-- Score **4.21** · 3 backers · net $1,781 staked
+- Score **4.18** · 3 backers · net $1,781 staked
 - Backers' average entry 0.63 → current price **0.04** (moved against them -0.58 since entry)
 - Resolves by 2026-08-29
 
