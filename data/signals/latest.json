@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788000791,
+  "generatedAt": 1788001704,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 279.55,
      "avgPrice": 0.6369,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.6,
-     "score": 1.5137617506474392
+     "lastTradeAgoH": 4.9,
+     "score": 1.497832517480025
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -31,8 +31,8 @@
      "netUsd": 842.14,
      "avgPrice": 0.6634,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.6,
-     "score": 1.291889495745557
+     "lastTradeAgoH": 14.9,
+     "score": 1.2782950123366172
     },
     {
      "wallet": "0xe40aaa5ce1dac0b7dc24c9d0284f27e17c3fe4a2",
@@ -41,14 +41,14 @@
      "netUsd": 593.84,
      "avgPrice": 0.6802,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.6,
-     "score": 1.2483503932514013
+     "lastTradeAgoH": 14.9,
+     "score": 1.23521406946714
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 1715.53,
-   "score": 4.054,
+   "score": 4.0113,
    "question": "Will Luke Herdegen win the 2026 Secret Harbour state by-election?",
    "outcome": "No",
    "tokenId": "29669830993989006831068260422940442540481289453759043462908506354696527273308",
