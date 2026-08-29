@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788010366,
+  "generatedAt": 1788010463,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 34058.94,
      "avgPrice": 0.4926,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.2830151523538063
+     "lastTradeAgoH": 0.2,
+     "score": 2.280506272193771
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
@@ -32,7 +32,7 @@
      "avgPrice": 0.2387,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 1.7162346606764003
+     "score": 1.714348634170752
     },
     {
      "wallet": "0x5c3a1a602848565bb16165fcd460b00c3d43020b",
@@ -41,14 +41,14 @@
      "netUsd": 1088.05,
      "avgPrice": 0.32,
      "conviction": 10.0,
-     "lastTradeAgoH": 17.3,
-     "score": 0.8133468161174932
+     "lastTradeAgoH": 17.4,
+     "score": 0.8124530026497722
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 37343.31,
-   "score": 4.8126,
+   "score": 4.8073,
    "question": "LoL: Top Esports vs LGD Gaming (BO5) - LPL Playoffs",
    "outcome": "LGD Gaming",
    "tokenId": "74686986245374141247552998723675023565970181212132643001130235566876581420189",
