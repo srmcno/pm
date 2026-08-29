@@ -1,17 +1,7 @@
 # Smart-money signals
 
-Generated 2026-08-29 00:32 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-29 00:57 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. Will "Grand Theft Auto VI Extended Look" get less than 10 million views on day 1? — **No**
-
-- Score **5.96** · 3 backers · net $5,104 staked
-- Backers' average entry 0.74 → current price **0.09** (moved against them -0.64 since entry)
-- Resolves by 2026-08-28
-
-| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
-|---|---|---|---|---|
-| Mysaria | 0.73 | $2,176 | 0.7874 | 10.0× |
-| Bigggggggg | 0.75 | $755 | 0.6678 | 10.0× |
-| e46m3 | 0.58 | $2,173 | 0.7555 | 10.0× |
+_No qualifying consensus signals in this window._
