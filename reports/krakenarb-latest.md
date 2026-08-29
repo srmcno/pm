@@ -6,7 +6,7 @@ Scanned 2026-08-29 07:25 UTC · 1460 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→EUR→CHILLHOUSE→USD at -22.8 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→EUR→CHILLHOUSE→USD at -22.7 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
