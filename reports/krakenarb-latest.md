@@ -6,9 +6,9 @@ Scanned 2026-08-29 20:00 UTC · 1460 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→USDG→USDC→USD at -22.0 bps against a 22.0 bps fee hurdle.
+Closest approach: USD→FIS→EUR→USD at 187.2 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 92 across 16627 scans
+- Edges replayed: 92 across 16659 scans
 - Atomic PnL $2.9057 → one-scan-delay PnL $0.3095 (capture ratio 0.107)
