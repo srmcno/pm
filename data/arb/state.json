@@ -1,15 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 248.7489,
+ "cash": 248.7658,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1787951058,
-   "path": "USDT\u2192INDEX\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0118,
-   "bps": 23.6
-  },
   {
    "t": 1787951894,
    "path": "USDT\u2192HUMA\u2192USDC\u2192USDT",
@@ -1402,13 +1395,16 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0518,
    "bps": 103.6
+  },
+  {
+   "t": 1788023929,
+   "path": "USDT\u2192MORTY\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0169,
+   "bps": 33.8
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788022717,
-   "equity": 248.5117
-  },
   {
    "t": 1788022719,
    "equity": 248.5117
@@ -3404,6 +3400,10 @@
   {
    "t": 1788023903,
    "equity": 248.7489
+  },
+  {
+   "t": 1788023929,
+   "equity": 248.7658
   }
  ],
  "decay": {
@@ -3418,16 +3418,16 @@
   "USDT\u2192USD1\u2192VYNEX\u2192USDT|USD1USDT|VYNEXUSD1|VYNEXUSDT": 1788022558,
   "USDT\u2192CC1\u2192USD1\u2192USDT|CC1USDT|CC1USD1|USD1USDT": 1788022798,
   "USDT\u2192HMM\u2192USD1\u2192USDT|HMMUSDT|HMMUSD1|USD1USDT": 1788023659,
-  "USDT\u2192MORTY\u2192USD1\u2192USDT|MORTYUSDT|MORTYUSD1|USD1USDT": 1788023897,
+  "USDT\u2192MORTY\u2192USD1\u2192USDT|MORTYUSDT|MORTYUSD1|USD1USDT": 1788023929,
   "USDT\u2192USD1\u2192CLAN\u2192USDT|USD1USDT|CLANUSD1|CLANUSDT": 1788023901
  },
- "tradeCountAll": 3370,
+ "tradeCountAll": 3371,
  "replay": {
-  "edges": 3655,
-  "refillable": 3652,
-  "atomicUsd": 135.1042,
-  "delayedUsd": -22.75,
-  "captureRatio": -0.168,
-  "scansReplayed": 37807
+  "edges": 3694,
+  "refillable": 3691,
+  "atomicUsd": 136.0611,
+  "delayedUsd": -21.577,
+  "captureRatio": -0.159,
+  "scansReplayed": 37904
  }
 }
