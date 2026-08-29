@@ -1,29 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 248.6103,
+ "cash": 248.6716,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1787947885,
-   "path": "USDT\u2192DELTA\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0066,
-   "bps": 13.2
-  },
-  {
-   "t": 1787948134,
-   "path": "USDT\u2192USD1\u2192BASELINE\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0069,
-   "bps": 13.8
-  },
-  {
-   "t": 1787950615,
-   "path": "USDT\u2192DOOM\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0398,
-   "bps": 79.6
-  },
   {
    "t": 1787950841,
    "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
@@ -1402,93 +1381,30 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0106,
    "bps": 21.2
+  },
+  {
+   "t": 1788023785,
+   "path": "USDT\u2192MORTY\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0264,
+   "bps": 52.8
+  },
+  {
+   "t": 1788023823,
+   "path": "USDT\u2192MORTY\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0094,
+   "bps": 18.8
+  },
+  {
+   "t": 1788023867,
+   "path": "USDT\u2192MORTY\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0255,
+   "bps": 51.0
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788022639,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022641,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022643,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022645,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022647,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022649,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022651,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022653,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022655,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022657,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022659,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022661,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022663,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022665,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022667,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022669,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022671,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022673,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022675,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022677,
-   "equity": 248.5117
-  },
-  {
-   "t": 1788022679,
-   "equity": 248.5117
-  },
   {
    "t": 1788022681,
    "equity": 248.5117
@@ -3404,24 +3320,107 @@
   {
    "t": 1788023755,
    "equity": 248.6103
+  },
+  {
+   "t": 1788023762,
+   "equity": 248.6103
+  },
+  {
+   "t": 1788023766,
+   "equity": 248.6103
+  },
+  {
+   "t": 1788023770,
+   "equity": 248.6103
+  },
+  {
+   "t": 1788023773,
+   "equity": 248.6103
+  },
+  {
+   "t": 1788023777,
+   "equity": 248.6103
+  },
+  {
+   "t": 1788023781,
+   "equity": 248.6103
+  },
+  {
+   "t": 1788023785,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023788,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023790,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023792,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023807,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023811,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023814,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023818,
+   "equity": 248.6367
+  },
+  {
+   "t": 1788023823,
+   "equity": 248.6461
+  },
+  {
+   "t": 1788023828,
+   "equity": 248.6461
+  },
+  {
+   "t": 1788023832,
+   "equity": 248.6461
+  },
+  {
+   "t": 1788023839,
+   "equity": 248.6461
+  },
+  {
+   "t": 1788023843,
+   "equity": 248.6461
+  },
+  {
+   "t": 1788023849,
+   "equity": 248.6461
+  },
+  {
+   "t": 1788023867,
+   "equity": 248.6716
   }
  ],
  "decay": {
-  "checked": 10176,
-  "survived": 6644
+  "checked": 10195,
+  "survived": 6661
  },
  "cooldown": {
   "USDT\u2192USD1\u2192FONE\u2192USDT|USD1USDT|FONEUSD1|FONEUSDT": 1788020484,
-  "USDT\u2192CLAN\u2192USD1\u2192USDT|CLANUSDT|CLANUSD1|USD1USDT": 1788020223,
   "USDT\u2192USD1\u2192MORTY\u2192USDT|USD1USDT|MORTYUSD1|MORTYUSDT": 1788022409,
   "USDT\u2192DELTA\u2192USD1\u2192USDT|DELTAUSDT|DELTAUSD1|USD1USDT": 1788022427,
   "USDT\u2192USD1\u2192GMEROBINHOOD\u2192USDT|USD1USDT|GMEROBINHOODUSD1|GMEROBINHOODUSDT": 1788022531,
   "USDT\u2192USD1\u2192VYNEX\u2192USDT|USD1USDT|VYNEXUSD1|VYNEXUSDT": 1788022558,
   "USDT\u2192CC1\u2192USD1\u2192USDT|CC1USDT|CC1USD1|USD1USDT": 1788022798,
   "USDT\u2192HMM\u2192USD1\u2192USDT|HMMUSDT|HMMUSD1|USD1USDT": 1788023659,
-  "USDT\u2192MORTY\u2192USD1\u2192USDT|MORTYUSDT|MORTYUSD1|USD1USDT": 1788023755
+  "USDT\u2192MORTY\u2192USD1\u2192USDT|MORTYUSDT|MORTYUSD1|USD1USDT": 1788023867
  },
- "tradeCountAll": 3365,
+ "tradeCountAll": 3368,
  "replay": {
   "edges": 3655,
   "refillable": 3652,
