@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-08-30 00:23 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-30 00:39 UTC · window 48h · 59 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Boston Red Sox vs. New York Yankees: O/U 8.5 — **Under**
 
-- Score **5.31** · 3 backers · net $14,484 staked
-- Backers' average entry 0.66 → current price **0.45** (moved against them -0.21 since entry)
+- Score **5.25** · 3 backers · net $14,484 staked
+- Backers' average entry 0.66 → current price **0.54** (moved against them -0.13 since entry)
 - Resolves by 2026-08-29
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
