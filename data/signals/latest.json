@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788107778,
+  "generatedAt": 1788108690,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 5255.61,
      "avgPrice": 0.57,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.6,
-     "score": 2.454950092937574
+     "lastTradeAgoH": 0.9,
+     "score": 2.4291730158691682
     },
     {
      "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
@@ -31,8 +31,8 @@
      "netUsd": 838.45,
      "avgPrice": 0.57,
      "conviction": 2.67,
-     "lastTradeAgoH": 2.9,
-     "score": 0.892044970280173
+     "lastTradeAgoH": 3.1,
+     "score": 0.8826784613586494
     },
     {
      "wallet": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
@@ -41,20 +41,20 @@
      "netUsd": 849.0,
      "avgPrice": 0.59,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.9,
-     "score": 0.6375254245379861
+     "lastTradeAgoH": 17.1,
+     "score": 0.6308313813276333
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 6943.06,
-   "score": 3.9845,
+   "score": 3.9427,
    "question": "SSC Napoli vs. Como 1907: O/U 2.5",
    "outcome": "Under",
    "tokenId": "43874436294822721633729644620633311277723755057975192484453890314679343431429",
-   "currentPrice": 0.565,
+   "currentPrice": 0.585,
    "backersAvgEntry": 0.5767,
-   "driftSinceEntry": -0.0117,
+   "driftSinceEntry": 0.0083,
    "endDate": "2026-08-30T16:30:00Z",
    "slug": "sea-nap-com-2026-08-30-total-2pt5",
    "eventSlug": "sea-nap-com-2026-08-30-more-markets"
