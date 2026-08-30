@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788111514,
+  "generatedAt": 1788112000,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
      "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
      "quality": 0.726,
-     "netUsd": 1883.01,
-     "avgPrice": 0.45,
+     "netUsd": 10195.28,
+     "avgPrice": 0.4935,
      "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 2.289021238370525
+     "score": 2.287061573397317
     },
     {
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
@@ -31,8 +31,8 @@
      "netUsd": 431.16,
      "avgPrice": 0.4748,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.3,
-     "score": 2.0210236035205607
+     "lastTradeAgoH": 5.4,
+     "score": 2.009710519513959
     },
     {
      "wallet": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
@@ -41,20 +41,20 @@
      "netUsd": 5433.45,
      "avgPrice": 0.48,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.0,
-     "score": 1.6376680554599556
+     "lastTradeAgoH": 0.2,
+     "score": 1.6285008808390988
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 7747.62,
-   "score": 5.9477,
+   "totalNetUsd": 16059.89,
+   "score": 5.9253,
    "question": "LoL: Fnatic vs GIANTX (BO3) - LEC Regular Season",
    "outcome": "GIANTX",
    "tokenId": "13484132081526851301224824963602690442686256217717594944496027266569687598784",
    "currentPrice": 0.435,
-   "backersAvgEntry": 0.4683,
-   "driftSinceEntry": -0.0333,
+   "backersAvgEntry": 0.4828,
+   "driftSinceEntry": -0.0478,
    "endDate": "2026-08-30T21:45:00Z",
    "slug": "lol-fnc-gx-2026-08-30",
    "eventSlug": "lol-fnc-gx-2026-08-30"
