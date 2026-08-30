@@ -1,6 +1,6 @@
 {
  "bankrollStart": 40.0,
- "cash": 73.6225,
+ "cash": 73.6602,
  "createdAt": 1786666692,
  "trades": [
   {
@@ -1241,49 +1241,30 @@
    "sizeUsd": 10.0,
    "profitUsd": 0.0123,
    "bps": 12.3
+  },
+  {
+   "t": 1788102860,
+   "path": "USD\u2192CAMP\u2192EUR\u2192USD",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0123,
+   "bps": 12.3
+  },
+  {
+   "t": 1788102891,
+   "path": "USD\u2192CAMP\u2192EUR\u2192USD",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0125,
+   "bps": 12.5
+  },
+  {
+   "t": 1788102930,
+   "path": "USD\u2192CAMP\u2192EUR\u2192USD",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.0129,
+   "bps": 12.9
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788097818,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097828,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097838,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097848,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097858,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097868,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097878,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097888,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097898,
-   "equity": 73.6102
-  },
-  {
-   "t": 1788097908,
-   "equity": 73.6102
-  },
   {
    "t": 1788097918,
    "equity": 73.6102
@@ -3243,22 +3224,62 @@
   {
    "t": 1788102830,
    "equity": 73.6225
+  },
+  {
+   "t": 1788102840,
+   "equity": 73.6225
+  },
+  {
+   "t": 1788102850,
+   "equity": 73.6225
+  },
+  {
+   "t": 1788102860,
+   "equity": 73.6348
+  },
+  {
+   "t": 1788102870,
+   "equity": 73.6348
+  },
+  {
+   "t": 1788102880,
+   "equity": 73.6348
+  },
+  {
+   "t": 1788102891,
+   "equity": 73.6473
+  },
+  {
+   "t": 1788102900,
+   "equity": 73.6473
+  },
+  {
+   "t": 1788102910,
+   "equity": 73.6473
+  },
+  {
+   "t": 1788102920,
+   "equity": 73.6473
+  },
+  {
+   "t": 1788102930,
+   "equity": 73.6602
   }
  ],
  "decay": {
-  "checked": 436,
-  "survived": 340
+  "checked": 446,
+  "survived": 350
  },
  "cooldown": {
-  "USD\u2192CAMP\u2192EUR\u2192USD|CAMPUSD|CAMPEUR|ZEURZUSD": 1788102830
+  "USD\u2192CAMP\u2192EUR\u2192USD|CAMPUSD|CAMPEUR|ZEURZUSD": 1788102930
  },
- "tradeCountAll": 177,
+ "tradeCountAll": 180,
  "replay": {
-  "edges": 69,
-  "refillable": 69,
-  "atomicUsd": 2.2121,
-  "delayedUsd": 1.8346,
-  "captureRatio": 0.829,
-  "scansReplayed": 16107
+  "edges": 74,
+  "refillable": 74,
+  "atomicUsd": 2.2736,
+  "delayedUsd": 3.1357,
+  "captureRatio": 1.379,
+  "scansReplayed": 16162
  }
 }
