@@ -6,7 +6,7 @@ Scanned 2026-08-30 23:42 UTC · 1460 pairs · 1340 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→COOKIE→EUR→USD at 34.8 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→COOKIE→EUR→USD at 26.3 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
