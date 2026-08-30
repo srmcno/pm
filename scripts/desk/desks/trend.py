@@ -80,23 +80,54 @@ more gracefully (0.789/0.792/0.776/0.774/0.752 as k rises, against
 different when bitcoin's daily vol is 1.5% than when it is 5%, and scaling by
 vol is what keeps one number sensible across both regimes.
 
-WHAT THE VOLATILITY TARGET IS AND IS NOT FOR
-On SMA100 with the vol band, targeting annualized volatility does this:
+THE VOLATILITY TARGET DOES NOT WORK HERE, AND THIS DESK SAYS SO
+This desk was specified with an inverse-volatility position sizer on the
+premise that it "turns a high-return/high-drawdown series into a holdable
+one". Measured on this data, that premise is false, and reporting otherwise
+would be exactly the flattering-number failure this rebuild exists to
+correct. Sweeping target_vol and the per-name cap, and recording how often
+the inverse-vol term rather than the cap actually sets the weight:
 
-    target      BTC Sharpe   BTC CAGR   BTC maxDD    ETH Sharpe  ETH CAGR  ETH maxDD
-    off               1.00     +32.4%      -30.6%          0.72    +24.3%     -48.4%
-    50%               0.96     +29.1%      -30.8%          0.69    +20.0%     -44.9%
-    40%               0.93     +25.5%      -31.1%          0.74    +19.5%     -39.7%
-    30%               0.83     +18.4%      -28.5%          0.75    +16.2%     -32.4%
+    target  cap    vol term binds        Sharpe   CAGR    maxDD   Calmar
+                   (BTC / ETH)
+    0.30   0.40        5% /  25%           0.96  +25.8%  -28.4%    0.91
+    0.25   0.60       57% /  85%           0.92  +27.4%  -33.7%    0.81
+    0.20   0.50       61% /  86%           0.91  +23.0%  -28.7%    0.80
+    0.18   0.50       71% /  91%           0.94  +22.3%  -25.9%    0.86
+    0.15   0.50       87% /  98%           0.89  +18.2%  -23.0%    0.79
+    0.15   0.60       98% / 100%           0.86  +17.5%  -23.6%    0.74
 
-It costs return and it does not reliably raise Sharpe — on BTC it lowers it.
-Claiming otherwise would be the flattering-number failure this rebuild
-exists to correct. It earns its place for a different reason: it is what
-makes a two-asset book coherent. ETH runs roughly 1.3x BTC's volatility, so
-equal dollar weights give ETH most of the portfolio's risk while the table
-above shows ETH is the weaker signal. Inverse-vol sizing hands the risk
-budget to the asset that earned it, and it cuts ETH's worst drawdown from
--48% to -32%, which is the difference between holdable and not.
+The more the volatility target actually operates, the worse the desk gets —
+on Sharpe AND on Calmar, nearly monotonically. It lowers maxDD only by
+lowering exposure, which is not a risk-adjusted improvement.
+
+The reason is visible in the data and is specific to this asset class.
+Sorting the bars where the trend filter is already long into quartiles of
+trailing volatility, and measuring the NEXT day's return:
+
+    BTC, while long        mean vol    mean forward return
+      low-vol quartile          30%             +0.042%/day
+      q2                        40%             +0.254%/day
+      q3                        48%             +0.162%/day
+      high-vol quartile         61%             +0.266%/day
+
+Within an uptrend, bitcoin's high-volatility regime pays the MOST. Volatility
+targeting is a good idea in equities and futures, where vol spikes and
+negative returns coincide; here the trend filter has already removed the
+high-vol downside, and what is left of high volatility is the explosive up-leg
+that trend following exists to capture. Scaling down into it sells the thing
+being bought. (ETH shows no clean monotone relationship — its quartiles run
++0.353/-0.203/+0.626/-0.006 %/day — so this is a BTC-driven finding, not a
+universal law.)
+
+The sizer is therefore kept but deliberately detuned into a TAIL BRAKE rather
+than a target: at target_vol 0.30 against a 0.40 cap it binds only in the top
+few percent of BTC's volatility distribution. Its measured contribution is
+honest and small — maxDD -28.4% with it against -29.2% without, Calmar 0.91
+against 0.90. It is retained not because this sample rewards it but because
+this sample contains no 2022-scale volatility event, and a mechanism that
+costs ~0.3pp of CAGR to bound behaviour outside the observed range is cheap
+insurance. Anyone tempted to "turn it up" should read the table above first.
 
 CAPITAL FLOOR
 Crypto has no daily regulatory fee floor — that trap is equities-only, where
@@ -157,9 +188,25 @@ class CryptoTrend(Desk):
             "sma": 100,             # mid-plateau, deliberately NOT the in-sample peak of 50
             "band_k": 0.5,          # deadband = band_k x trailing daily vol
             "vol_window": 30,       # bars used for realized vol and for the band
-            "target_vol": 0.40,     # annualized, per name
-            "max_weight": 0.60,     # per name, of equity
-            "max_gross": 1.00,
+            # Sizing is chosen from the measured volatility DISTRIBUTION, not
+            # from a performance table — Sharpe is flat (0.90-0.97) across the
+            # whole target_vol x max_weight grid, so picking the best cell
+            # would be fitting noise. Measured 30-day annualized vol over the
+            # sample: BTC median 43% (p10 28%, p90 68%), ETH median 60%
+            # (p10 37%, p90 92%).
+            #   target_vol 0.30 sits below both medians, so the inverse-vol
+            #   term actually binds in a normal regime, but above both p10s,
+            #   so a calm market hits the cap instead of levering into it.
+            "target_vol": 0.30,     # annualized, per name
+            # 0.40 is structural, not fitted: with two names the gross tops
+            # out at 0.80, so `max_gross` never binds. That matters because
+            # the gross cap scales pro-rata, and at cap >= 0.50 BOTH names
+            # pin to the cap and the pro-rata rescale hands them equal
+            # weights — silently deleting the inverse-vol tilt this desk
+            # claims to apply. At 0.40 the tilt survives: measured mean
+            # weight when held is BTC 0.52 against ETH 0.41.
+            "max_weight": 0.40,     # per name, of equity
+            "max_gross": 1.00,      # safety rail; non-binding with two names
             "weight_step": 0.05,    # quantize targets — see _quantize
         }
 
