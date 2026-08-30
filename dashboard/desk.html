@@ -1,0 +1,303 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moffitt Money — Stocks</title>
+<style>
+  :root {
+    --display: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --surface: #ffffff; --bg: #faf8f2;
+    --ink: #101010; --ink-2: #45433c; --muted: #837d6c;
+    --border: rgba(16, 16, 16, 0.16); --accent: #a9852e;
+    --up: #006300; --down: #d03b3b; --grid: rgba(16,16,16,0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --surface: #101010; --bg: #0a0a0a;
+      --ink: #f7f4ec; --ink-2: #c9c4b4; --muted: #8b8676;
+      --border: rgba(212, 175, 90, 0.30); --accent: #d4af5a;
+      --up: #0ca30c; --down: #e05f5f; --grid: rgba(247,244,236,0.08);
+    }
+  }
+  :root[data-theme="dark"] {
+    --surface: #101010; --bg: #0a0a0a;
+    --ink: #f7f4ec; --ink-2: #c9c4b4; --muted: #8b8676;
+    --border: rgba(212, 175, 90, 0.30); --accent: #d4af5a;
+    --up: #0ca30c; --down: #e05f5f; --grid: rgba(247,244,236,0.08);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .topnav { position: sticky; top: 0; z-index: 40; display: flex;
+    align-items: center; justify-content: space-between; gap: 16px;
+    padding: 10px 22px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  .topnav .brand { font-size: 13px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink); text-decoration: none; }
+  .topnav .navlinks { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+  .topnav .navlinks a { color: var(--muted); text-decoration: none;
+    font-size: 12.5px; padding: 3px 2px;
+    border-bottom: 1px solid transparent; }
+  .topnav .navlinks a:hover { color: var(--accent);
+    border-bottom-color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 20px 60px; }
+  header.page { text-align: center; margin: 10px 0 26px; }
+  h1 { font-size: 30px; letter-spacing: 0.04em; margin: 4px 0 6px; }
+  .kicker { color: var(--muted); font-size: 12px; letter-spacing: 0.2em;
+    text-transform: uppercase; margin: 0; }
+  .lede { color: var(--ink-2); max-width: 74ch; margin: 0 auto; }
+  .asof { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+  .pill { display: inline-block; padding: 2px 9px 1px; margin-right: 7px;
+    border-radius: 999px; font-size: 10.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; vertical-align: 1px; }
+  .pill.live { background: rgba(12,163,12,0.14); color: var(--up); }
+  .pill.stale { background: rgba(224,95,95,0.14); color: var(--down); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; margin: 18px 0 26px; }
+  .tile { background: var(--surface); border: 1px solid var(--border);
+    border-radius: 3px; padding: 12px 14px; }
+  .tile .label { color: var(--muted); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; }
+  .tile .value { font-size: 22px; font-weight: 650; margin-top: 4px;
+    font-variant-numeric: tabular-nums; }
+  .tile .sub { color: var(--muted); font-size: 12px; }
+  .pos { color: var(--up); } .neg { color: var(--down); }
+  h2 { font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-2); border-bottom: 1px solid var(--border);
+    padding-bottom: 6px; margin: 34px 0 12px; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th { color: var(--muted); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; text-align: right; padding: 6px 8px;
+    border-bottom: 1px solid var(--border); }
+  td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--grid); }
+  th.l, td.l { text-align: left; }
+  .empty { color: var(--muted); text-align: center; padding: 16px 0; }
+  .note { color: var(--muted); font-size: 12.5px; max-width: 86ch; }
+  .tablewrap { overflow-x: auto; }
+  .foot { color: var(--muted); font-size: 12.5px; max-width: 86ch;
+    margin: 46px auto 0; text-align: center; }
+  a { color: var(--accent); }
+</style>
+<nav class="topnav" aria-label="Site">
+  <a class="brand" href="./">Moffitt Money</a>
+  <div class="navlinks">
+    <a href="./#desks">Overview</a>
+    <a href="desk.html">Desk System</a>
+    <a href="./#signals">Signals</a>
+    <a href="./#engine">Engine</a>
+    <a href="arb.html">Arb Desk</a>
+    <a href="stocks.html">Stocks</a>
+  </div>
+</nav>
+<div class="wrap">
+<header>
+  <button id="themetoggle" type="button" aria-label="Switch color theme" title="Switch theme">◐</button>
+  <p class="kicker">Moffitt Money</p>
+  <h1>Desk System</h1>
+  <div class="rule"><div class="line"></div><div class="dia"></div><div class="line"></div></div>
+  <p class="lede">Several strategies on US-regulated venues, each one allowed to trade only after it
+    survives walk-forward testing out of sample with every real cost charged — commissions, spreads,
+    regulatory fees, and the per-day fee floor that decides whether a small account is viable at all.
+    <a href="./">← Wallet intelligence</a></p>
+  <p class="asof" id="asof">Loading…</p>
+</header>
+
+<div class="tiles" id="tiles"></div>
+
+<section>
+  <h2>Evidence</h2>
+  <p class="sectionnote">Every registered desk, scored on data it never saw during fitting. Walk-forward
+    figures use fixed parameters, so no result here is the best of a search. A desk trades only when its
+    verdict is <strong>validated</strong>; anything else stays off and says why.</p>
+  <div class="card" id="evidence"></div>
+</section>
+
+<section>
+  <h2>Allocation</h2>
+  <p class="sectionnote">What the account is actually permitted to run right now. A desk is refused when
+    the account sits below its measured capital floor — below that line the per-day regulatory fee floor
+    consumes the edge rather than merely reducing it.</p>
+  <div class="card" id="alloc"></div>
+</section>
+
+<section>
+  <h2>Risk</h2>
+  <p class="sectionnote">Live limits. The turnover budget is the important one: the pattern-day-trader
+    rule was repealed in June 2026, and it had been the main thing stopping a small account from grinding
+    itself away on spread. The brake is now internal.</p>
+  <div class="card" id="risk"></div>
+</section>
+
+<section>
+  <h2>Positions and recent trades</h2>
+  <div class="card" id="book"></div>
+</section>
+
+<p class="foot" id="notes"></p>
+</div>
+<script>
+(function () {
+  let saved = null;
+  try { saved = localStorage.getItem("mm-theme"); } catch (e) { /* private mode */ }
+  if (saved === "dark" || saved === "light") document.documentElement.dataset.theme = saved;
+  const btn = document.getElementById("themetoggle");
+  if (btn) btn.addEventListener("click", () => {
+    const cur = document.documentElement.dataset.theme ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("mm-theme", next); } catch (e) { /* ok */ }
+  });
+})();
+
+let DATA = null;
+
+function ago(ts) {
+  const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
+  return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
+}
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+}
+function table(headers, rows) {
+  const t = el("table");
+  const tr = el("tr");
+  headers.forEach(([txt, left]) => tr.appendChild(el("th", left ? "l" : "", txt)));
+  t.appendChild(el("thead")).appendChild(tr);
+  const tb = el("tbody");
+  rows.forEach(cells => {
+    const r = el("tr");
+    cells.forEach(([txt, cls]) => r.appendChild(el("td", cls || "", txt)));
+    tb.appendChild(r);
+  });
+  t.appendChild(tb);
+  const w = el("div", "tablewrap");
+  w.appendChild(t);
+  return w;
+}
+function fill(id, node, emptyText) {
+  const box = document.getElementById(id);
+  if (box) box.replaceChildren(node || el("p", "empty", emptyText));
+}
+function num(v, d) { return v == null ? "—" : (+v).toFixed(d == null ? 2 : d); }
+function verdictClass(v) {
+  if (v === "validated") return "pos";
+  if (v === "unprofitable" || v === "rejected") return "neg";
+  return "";
+}
+
+function render() {
+  const d = DATA;
+  const asof = document.getElementById("asof");
+  asof.replaceChildren();
+  if (!d) {
+    asof.textContent = "No cycle published yet — run `python3 -m desk.cli validate` then `run`.";
+    return;
+  }
+  const mins = (Date.now() / 1000 - d.updatedAt) / 60;
+  const live = (d.account && d.account.mode || "paper").indexOf("live") === 0;
+  const pill = el("span", "pill " + (mins < 90 ? "live" : "stale"),
+    mins < 90 ? "system live" : "system stale");
+  asof.append(pill, `Updated ${ago(d.updatedAt)} · preset ${d.config.preset} · ` +
+    (live ? "REAL ORDERS ARMED" : "paper only, no orders"));
+
+  const acct = d.account || {};
+  const cfg = d.config || {};
+  const ev = (d.evidence || {}).desks || {};
+  const validated = Object.values(ev).filter(x => x.verdict === "validated").length;
+  const ret = acct.bankrollStart ? ((acct.cash / acct.bankrollStart - 1) * 100) : 0;
+  const risk = ((d.cycle || {}).risk) || {};
+
+  const tiles = document.getElementById("tiles");
+  tiles.replaceChildren();
+  [["Account", `$${num(acct.cash)}`, `${ret >= 0 ? "+" : ""}${num(ret)}% since start`, true],
+   ["Desks validated", `${validated} of ${Object.keys(ev).length}`, "out-of-sample verdicts", false],
+   ["Preset", cfg.preset || "—", `$${num(cfg.equity, 0)} configured`, false],
+   ["Turnover used", `${num((risk.turnover || {}).utilizationPct, 1)}%`, "of the annual budget", false],
+   ["Drawdown", `${num(risk.drawdownPct, 1)}%`, "from peak equity", false]
+  ].forEach(([label, value, sub, hero]) => {
+    const t = el("div", "tile" + (hero ? " hero" : ""));
+    t.appendChild(el("div", "label", label));
+    t.appendChild(el("div", "value" + (hero ? (ret >= 0 ? " pos" : " neg") : ""), value));
+    t.appendChild(el("div", "sub", sub));
+    tiles.appendChild(t);
+  });
+
+  const rows = Object.entries(ev).map(([name, x]) => {
+    const wf = x.walkForward || {};
+    const bm = ((x.benchmark || {}).equalWeightBuyHold) || {};
+    return [[name, "l"],
+            [x.verdict || "—", verdictClass(x.verdict)],
+            [num(wf.sharpe), wf.sharpe > 0 ? "pos" : "neg"],
+            [`${num(wf.cagr_pct, 1)}%`, wf.cagr_pct > 0 ? "pos" : "neg"],
+            [`${num(wf.max_drawdown_pct, 1)}%`, "neg"],
+            [num(bm.sharpe), ""],
+            [`$${num(x.capitalFloor, 0)}`, ""],
+            [`${num(x.turnoverAnn, 1)}x`, ""]];
+  });
+  fill("evidence", rows.length ? table(
+    [["Desk", 1], ["Verdict", 0], ["OOS Sharpe", 0], ["OOS CAGR", 0],
+     ["Max DD", 0], ["Benchmark Sharpe", 0], ["Floor", 0], ["Turnover", 0]], rows) : null,
+    "No evidence file yet — run `python3 -m desk.cli validate`.");
+
+  const allocs = ((d.cycle || {}).allocations) || {};
+  const arows = Object.entries(allocs).map(([name, a]) => [
+    [name, "l"],
+    [a.enabled ? "enabled" : "refused", a.enabled ? "pos" : "neg"],
+    [`${num((a.weight || 0) * 100, 1)}%`, ""],
+    [a.reason || "", "l"]]);
+  fill("alloc", arows.length ? table(
+    [["Desk", 1], ["State", 0], ["Weight", 0], ["Reason", 1]], arows) : null,
+    "No allocation yet.");
+
+  const tb = risk.turnover || {};
+  const lim = risk.limits || {};
+  fill("risk", table([["Limit", 1], ["Value", 0], ["Status", 1]], [
+    [["Can trade", "l"], [risk.canTrade ? "yes" : "no", risk.canTrade ? "pos" : "neg"],
+     [risk.haltReason || "no halt in force", "l"]],
+    [["Turnover budget", "l"], [`$${num(tb.usedUsd, 0)} / $${num(tb.allowanceUsd, 0)}`, ""],
+     [`${num(tb.utilizationPct, 1)}% used · ${tb.refusedTrades || 0} trades refused`, "l"]],
+    [["Daily loss halt", "l"], [`${num((lim.daily_loss_halt || 0) * 100, 1)}%`, ""],
+     [`day P&L $${num((risk.day || {}).pnl)}`, "l"]],
+    [["Drawdown halt", "l"], [`${num((lim.max_drawdown_halt || 0) * 100, 1)}%`, ""],
+     [`now ${num(risk.drawdownPct, 1)}% from peak`, "l"]],
+    [["Max position", "l"], [`${num((lim.max_position_weight || 0) * 100, 1)}%`, ""], ["of equity", "l"]],
+  ]), "No risk telemetry.");
+
+  const pos = acct.positions || [];
+  const recent = acct.recent || [];
+  const box = document.getElementById("book");
+  box.replaceChildren();
+  if (pos.length) {
+    box.appendChild(el("p", "note", "Open positions"));
+    box.appendChild(table([["Symbol", 1], ["Side", 0], ["Shares", 0], ["Entry", 0]],
+      pos.map(p => [[p.symbol, "l"], [p.side || "long", ""],
+                    [num(p.shares, 6), ""], [`$${num(p.entry)}`, ""]])));
+  }
+  if (recent.length) {
+    box.appendChild(el("p", "note", "Recent closed trades"));
+    box.appendChild(table([["Symbol", 1], ["Shares", 0], ["Entry", 0], ["Exit", 0], ["P&L", 0]],
+      recent.map(c => [[c.symbol, "l"], [num(c.shares, 4), ""], [`$${num(c.entry)}`, ""],
+                       [`$${num(c.exit)}`, ""],
+                       [`${c.pnl >= 0 ? "+" : ""}$${num(c.pnl)}`, c.pnl >= 0 ? "pos" : "neg"]])));
+  }
+  if (!pos.length && !recent.length) {
+    box.appendChild(el("p", "empty", "Nothing held and nothing closed yet."));
+  }
+
+  document.getElementById("notes").textContent = d.notes || "";
+}
+
+async function refresh() {
+  try {
+    const r = await fetch("data/desk.json?t=" + Math.floor(Date.now() / 60000), { cache: "no-store" });
+    if (r.ok) DATA = await r.json();
+  } catch (e) { /* keep last */ }
+  render();
+}
+refresh();
+setInterval(refresh, 60000);
+</script>
