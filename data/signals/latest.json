@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788052188,
+  "generatedAt": 1788053094,
   "hours": 48,
   "watchlistSize": 59,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 230.97,
      "avgPrice": 0.72,
      "conviction": 8.74,
-     "lastTradeAgoH": 1.7,
-     "score": 2.1940813642535466
+     "lastTradeAgoH": 1.9,
+     "score": 2.171169062300897
     },
     {
      "wallet": "0x56acab44cfca2e88bb9b3406890aea7bfa0cd77e",
@@ -31,8 +31,8 @@
      "netUsd": 13806.92,
      "avgPrice": 0.62,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.3,
-     "score": 1.7660595168876212
+     "lastTradeAgoH": 2.6,
+     "score": 1.7476169515495545
     },
     {
      "wallet": "0x161a7f666ca49d592848cf415b42f49a84714103",
@@ -41,20 +41,20 @@
      "netUsd": 446.43,
      "avgPrice": 0.65,
      "conviction": 9.65,
-     "lastTradeAgoH": 1.8,
-     "score": 1.179433137161055
+     "lastTradeAgoH": 2.0,
+     "score": 1.1671165801673768
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 14484.32,
-   "score": 5.1396,
+   "score": 5.0859,
    "question": "Boston Red Sox vs. New York Yankees: O/U 8.5",
    "outcome": "Under",
    "tokenId": "3588707956539816737161622084630158719873792939649416646417191894832039479603",
-   "currentPrice": 0.715,
+   "currentPrice": 0.72,
    "backersAvgEntry": 0.6633,
-   "driftSinceEntry": 0.0517,
+   "driftSinceEntry": 0.0567,
    "endDate": "2026-08-29T23:15:00Z",
    "slug": "mlb-bos-nyy-2026-08-29-total-8pt5",
    "eventSlug": "mlb-bos-nyy-2026-08-29"
