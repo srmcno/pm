@@ -1,14 +1,14 @@
 # Kraken viability trial — latest scan
 
-Scanned 2026-08-31 12:58 UTC · 1460 pairs · 1340 cycles · 0 verified edges · median fee hurdle 99.7 bps
+Scanned 2026-08-31 13:08 UTC · 1460 pairs · 1340 cycles · 0 verified edges · median fee hurdle 99.7 bps
 
 | cycle | screen bps | fee hurdle bps | verified bps | size | profit |
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→PEP→EUR→USD at 726.1 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→SYND→EUR→USD at -9.2 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 73 across 15897 scans
+- Edges replayed: 73 across 15948 scans
 - Atomic PnL $2.2704 → one-scan-delay PnL $6.0019 (capture ratio 2.644)
