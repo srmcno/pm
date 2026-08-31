@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-31 16:49 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-31 16:55 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: MOUZ vs Team Falcons (BO3) - BLAST Open Porto Group B — **Team Falcons**
 
-- Score **5.76** · 4 backers · net $52,507 staked
+- Score **5.74** · 4 backers · net $52,507 staked
 - Backers' average entry 0.54 → current price **0.65** (already moved +0.11 since entry)
 - Resolves by 2026-08-31
 
