@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-08-31 18:29 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-08-31 18:35 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: FUT Esports vs Vitality (BO3) - BLAST Open Porto Group B — **Vitality**
 
-- Score **4.02** · 3 backers · net $34,024 staked
+- Score **4.00** · 3 backers · net $34,024 staked
 - Backers' average entry 0.67 → current price **0.69** (roughly flat +0.01 since entry)
 - Resolves by 2026-09-01
 

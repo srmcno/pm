@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788200962,
+  "generatedAt": 1788201358,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 23516.96,
      "avgPrice": 0.68,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.5,
-     "score": 1.654224764280232
+     "lastTradeAgoH": 2.6,
+     "score": 1.6466030746557523
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -31,8 +31,8 @@
      "netUsd": 10206.95,
      "avgPrice": 0.66,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.0,
-     "score": 1.3921609540633986
+     "lastTradeAgoH": 2.1,
+     "score": 1.3857466995265868
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -41,14 +41,14 @@
      "netUsd": 299.78,
      "avgPrice": 0.68,
      "conviction": 9.94,
-     "lastTradeAgoH": 16.5,
-     "score": 0.9733651062101965
+     "lastTradeAgoH": 16.6,
+     "score": 0.9688804153199226
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 34023.69,
-   "score": 4.0198,
+   "score": 4.0012,
    "question": "Counter-Strike: FUT Esports vs Vitality (BO3) - BLAST Open Porto Group B",
    "outcome": "Vitality",
    "tokenId": "65800756267318735940628398375032708648934866296552005231380960057932774983541",
