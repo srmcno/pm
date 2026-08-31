@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788196210,
+  "generatedAt": 1788197117,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 3953.31,
      "avgPrice": 0.5318,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.6,
-     "score": 2.371893697351551
+     "lastTradeAgoH": 1.8,
+     "score": 2.3471517068438175
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -31,8 +31,8 @@
      "netUsd": 42400.0,
      "avgPrice": 0.53,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.9,
-     "score": 1.3403630585479094
+     "lastTradeAgoH": 3.1,
+     "score": 1.3263812978524199
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -41,8 +41,8 @@
      "netUsd": 1237.8,
      "avgPrice": 0.55,
      "conviction": 10.0,
-     "lastTradeAgoH": 15.2,
-     "score": 1.0311910702839564
+     "lastTradeAgoH": 15.5,
+     "score": 1.020434382620798
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -51,20 +51,20 @@
      "netUsd": 4915.73,
      "avgPrice": 0.5373,
      "conviction": 10.0,
-     "lastTradeAgoH": 13.7,
-     "score": 0.9378811173916073
+     "lastTradeAgoH": 13.9,
+     "score": 0.9280977760345319
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 52506.84,
-   "score": 5.6813,
+   "score": 5.6221,
    "question": "Counter-Strike: MOUZ vs Team Falcons (BO3) - BLAST Open Porto Group B",
    "outcome": "Team Falcons",
    "tokenId": "8463027383340394832560152572062456382871461084900761530630324519719905725092",
-   "currentPrice": 0.525,
+   "currentPrice": 0.44,
    "backersAvgEntry": 0.5373,
-   "driftSinceEntry": -0.0123,
+   "driftSinceEntry": -0.0973,
    "endDate": "2026-08-31T21:35:00Z",
    "slug": "cs2-mouz-fal2-2026-08-31",
    "eventSlug": "cs2-mouz-fal2-2026-08-31"
