@@ -138,34 +138,125 @@ def completed_bars(series, interval, now_ts):
 
 # ------------------------------------------------------------------ brokers
 class PaperBroker:
-    """Simulated fills at real quotes with the replay's cost model — and
-    deliberately pessimistic where paper accounts usually flatter: it
-    crosses the spread on every crossing fill and charges every fee."""
+    """Simulated fills with the replay's cost model — and deliberately
+    pessimistic where paper accounts usually flatter: it crosses the spread
+    on every crossing fill and charges every fee.
 
-    def __init__(self, symbol_meta):
+    Auction orders are NOT filled when placed. A market-on-close order
+    placed at 15:40 has no price yet; the official print arrives at 16:00.
+    They stay pending and the runner reconciles them exactly as it would
+    with a venue, filling at the session's actual open or close once the
+    completed bar supplies it. Filling at the quote when the order was
+    placed — yesterday's close, for a pre-open MOO — would erase the very
+    overnight move the flagship desk is built on and make paper P&L a
+    fiction. Orders placed after a print belong to the next session.
+    """
+
+    def __init__(self, symbol_meta, loader=None, clock=None, state=None):
         self.symbol_meta = symbol_meta          # symbol -> DeskMeta
+        self._load = loader
+        self._clock = clock
+        self._state = state                      # durable copy of pending orders
+        self._orders = {}                        # cid -> order facts, this process
+        self._canceled = set()
+        self.venue = self                        # the runner reconciles via .venue
 
     def _meta(self, symbol):
         return self.symbol_meta.get(symbol)
 
-    def execute(self, order):
-        m = self._meta(order.symbol)
+    def _priced(self, symbol, ref, side, style):
+        m = self._meta(symbol)
         cls = m.asset_class if m else "equity"
-        style = (money.AUCTION if order.order_type in ("cls", "opg")
-                 else money.CROSSING)
-        bps = money.execution_cost_bps(order.symbol, cls, style)
-        adj = order.ref_price * bps / 1e4
-        px = order.ref_price + adj if order.side == "buy" else order.ref_price - adj
+        bps = money.execution_cost_bps(symbol, cls, style)
+        adj = ref * bps / 1e4
+        return ref + adj if side == "buy" else ref - adj
+
+    def _fee(self, symbol, shares, px, side):
+        m = self._meta(symbol)
+        cls = m.asset_class if m else "equity"
         if cls == "crypto":
-            fee = money.crypto_fee(m.venue if m else "alpaca", order.shares * px)
-        elif cls == "prediction":
-            fee = money.kalshi_fee(px, order.shares)
-        elif order.side == "sell":
-            fee = money.equity_sell_fees(order.shares, px)
-        else:
-            fee = money.equity_buy_fees(order.shares, px)
+            return money.crypto_fee(m.venue if m else "alpaca", shares * px)
+        if cls == "prediction":
+            return money.kalshi_fee(px, shares)
+        return (money.equity_sell_fees(shares, px) if side == "sell"
+                else money.equity_buy_fees(shares, px))
+
+    def execute(self, order):
+        if order.order_type in ("cls", "opg") and self._load and self._clock:
+            self._orders[order.client_order_id] = {
+                "symbol": order.symbol, "side": order.side, "shares": order.shares,
+                "type": order.order_type, "at": self._clock().timestamp()}
+            return {"status": "accepted", "filled_qty": 0.0, "price": None,
+                    "fees": 0.0, "paper": True}
+        px = self._priced(order.symbol, order.ref_price, order.side, money.CROSSING)
         return {"status": "filled", "filled_qty": order.shares, "price": px,
-                "fees": fee, "paper": True}
+                "fees": self._fee(order.symbol, order.shares, px, order.side),
+                "paper": True}
+
+    # ------------------------------------------------ venue-like surface
+    def _lookup(self, cid):
+        o = self._orders.get(cid)
+        if o or self._state is None:
+            return o
+        for p in self._state.positions:              # after a restart
+            if p.get("liveCid") == cid and not p.get("liveOpen"):
+                return {"symbol": p["symbol"], "side": "buy",
+                        "shares": p.get("targetShares", 0.0),
+                        "type": p.get("orderType", "market"),
+                        "at": p.get("placedAt", p.get("openedAt", 0))}
+            if p.get("closeCid") == cid:
+                return {"symbol": p["symbol"], "side": "sell",
+                        "shares": p.get("closeShares", p.get("shares", 0.0)),
+                        "type": p.get("closeType", "market"), "at": p.get("closeAt", 0)}
+        return None
+
+    @staticmethod
+    def _session_after(day):
+        day = day + _dt.timedelta(days=1)
+        while day.weekday() >= 5:
+            day = day + _dt.timedelta(days=1)
+        return day
+
+    def order_state(self, cid):
+        """(status, filled, price). An auction order fills at the session's
+        official print once the completed bar for that session exists."""
+        o = self._lookup(cid)
+        if o is None:
+            return "not_found", 0.0, None
+        if cid in self._canceled:
+            return "canceled", 0.0, None
+        if o["type"] not in ("cls", "opg"):
+            return "filled", o["shares"], None
+        tz = clock.eastern()
+        placed = _dt.datetime.fromtimestamp(o["at"], tz)
+        print_time = (16, 0) if o["type"] == "cls" else (9, 30)
+        day = placed.date()
+        ready = placed.replace(hour=print_time[0], minute=print_time[1],
+                               second=0, microsecond=0)
+        if placed >= ready or day.weekday() >= 5:
+            day = self._session_after(day)          # too late for this print
+            ready = _dt.datetime.combine(day, _dt.time(*print_time), tzinfo=tz)
+        now = self._clock()
+        if now < ready:
+            return "accepted", 0.0, None
+        m = self._meta(o["symbol"])
+        src = "alpaca" if (m and m.asset_class == "crypto") else "yahoo"
+        series = self._load(o["symbol"], m.interval if m else "1d", src) or []
+        bar = next((b for b in reversed(series)
+                    if _dt.datetime.fromtimestamp(b.t, tz).date() == day), None)
+        if bar is None:
+            if now >= ready + _dt.timedelta(days=1):
+                return "expired", 0.0, None            # no print ever arrived
+            return "accepted", 0.0, None
+        ref = bar.c if o["type"] == "cls" else bar.o
+        return "filled", o["shares"], self._priced(o["symbol"], ref, o["side"], money.AUCTION)
+
+    def positions(self):
+        return None                                  # nothing to verify against
+
+    def cancel_by_client_id(self, cid):
+        self._canceled.add(cid)
+        return True
 
 
 class LiveBroker:
@@ -284,7 +375,7 @@ class Runner:
     def reconcile(self):
         """Chase every pending order to a terminal state. Returns True if
         anything is still pending, in which case this cycle does not trade."""
-        if not self.live:
+        if self.broker is None or not hasattr(self.broker, "venue"):
             return False
         pending = False
         # --- opening orders that have not been confirmed
@@ -446,7 +537,8 @@ class Runner:
         self.st.trade_count += 1
         self.rm.record_trade(take * px)
         p["shares"] = max(0.0, p["shares"] - take)
-        p.pop("closeCid", None)
+        for k in ("closeCid", "closeType", "closeAt", "closeShares"):
+            p.pop(k, None)
         if p["shares"] <= 1e-9:
             self.st.positions.remove(p)
         statemod.journal("close_confirmed", {"symbol": p["symbol"], "shares": take, "price": px})
@@ -531,8 +623,7 @@ class Runner:
     def _holds_any(self, symbols):
         want = set(symbols)
         for p in self.st.positions:
-            if p["symbol"] in want and p.get("shares", 0.0) > 0 \
-                    and (p.get("liveOpen") or not self.live):
+            if p["symbol"] in want and p.get("shares", 0.0) > 0 and p.get("liveOpen"):
                 return True
         return False
 
@@ -651,7 +742,7 @@ class Runner:
             return {"error": "no desks enabled", "cycle": today}
         self._symbol_meta = self.symbol_meta(self._desks)
         if self.broker is None:
-            self.broker = PaperBroker(self._symbol_meta)
+            self.broker = PaperBroker(self._symbol_meta, self._load, self.now_et, self.st)
 
         pending = self.reconcile()
         mismatch = "" if pending else self.verify_book()
@@ -715,7 +806,7 @@ class Runner:
         notional = order.shares * order.ref_price
         held_qty, symbols = 0.0, set()
         for p in self.st.positions:
-            if p.get("shares", 0.0) > 0 and (p.get("liveOpen") or not self.live):
+            if p.get("shares", 0.0) > 0 and p.get("liveOpen"):
                 symbols.add(p["symbol"])
                 if p["symbol"] == order.symbol:
                     held_qty += p["shares"]
@@ -763,22 +854,25 @@ class Runner:
         statemod.journal("intent", {"cid": order.client_order_id, "symbol": order.symbol,
                                     "side": order.side, "shares": round(order.shares, 8),
                                     "type": order.order_type})
+        placed = self.now_et().timestamp()          # the venue's clock, not the host's
         if order.side == "buy":
             self.st.positions.append({
                 "symbol": order.symbol, "desk": order.desk, "side": "long",
                 "shares": 0.0, "targetShares": order.shares, "entry": order.ref_price,
-                "openedAt": stamp, "cost": 0.0, "openFee": 0.0,
-                "liveCid": order.client_order_id if self.live else "",
-                "liveOpen": False, "liveQty": 0.0, "mirrorAttempts": 0,
+                "openedAt": stamp, "placedAt": placed, "cost": 0.0, "openFee": 0.0,
+                "liveCid": order.client_order_id,
+                "liveOpen": False, "liveQty": 0.0,
                 "orderType": order.order_type, "tif": order.time_in_force,
             })
         else:
             remaining = order.shares
             for p in self.st.positions:
-                if p["symbol"] == order.symbol and p.get("liveOpen", not self.live) \
+                if p["symbol"] == order.symbol and p.get("liveOpen") \
                         and not p.get("closeCid") and remaining > 0:
-                    if self.live:
-                        p["closeCid"] = order.client_order_id
+                    p["closeCid"] = order.client_order_id
+                    p["closeType"] = order.order_type
+                    p["closeAt"] = placed
+                    p["closeShares"] = order.shares
                     remaining -= p["shares"]
         statemod.save(self.st)
 
@@ -824,7 +918,8 @@ class Runner:
                         self.st.trade_count += 1
                         self.rm.record_trade(take * px)
                         p["shares"] -= take
-                        p.pop("closeCid", None)
+                        for k in ("closeCid", "closeType", "closeAt", "closeShares"):
+                            p.pop(k, None)
                         if p["shares"] <= 1e-9:
                             self.st.positions.remove(p)
                     else:
@@ -835,6 +930,7 @@ class Runner:
                 # next decision; the lots must not keep a dead close id.
                 for p in self.st.positions:
                     if p.get("closeCid") == order.client_order_id:
-                        p.pop("closeCid", None)
+                        for k in ("closeCid", "closeType", "closeAt", "closeShares"):
+                            p.pop(k, None)
             # else: pending close — reconcile() finishes it
         statemod.save(self.st)

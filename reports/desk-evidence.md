@@ -1,9 +1,10 @@
 # Desk evidence
 
-Generated 2026-09-02 15:17 UTC
+Generated 2026-09-02 15:37 UTC
 
-Walk-forward figures are out-of-sample with fixed parameters over 5 folds, each desk replayed at its own capital
-floor with every cost charged. The `declared` column is the desk author's
+Walk-forward figures are out-of-sample with fixed parameters over 5 windows (the first trains only, so one fewer
+is scored), each desk replayed at its own capital floor with every cost
+charged. The `declared` column is the desk author's
 verdict, which may be stricter than the statistic; the allocator funds a
 desk only when both agree and this record is under 30 days old, and funds
 a `marginal` desk only when it is named explicitly in `data/desk/config.json`.

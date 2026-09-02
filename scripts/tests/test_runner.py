@@ -22,10 +22,23 @@ from desk.desks.base import (CLOSE, OPEN, Decision, Desk,        # noqa: E402
                              DeskMeta, register, _REGISTRY)
 
 ET = R._et_tz()
+# Ten daily bars whose LAST one is the session the default clock sits in
+# (2026-09-01, a Tuesday), stamped at the 09:30 ET open like Yahoo's.
+SESSION = dt.datetime(2026, 9, 1, 9, 30, tzinfo=ET)
+T0 = int(SESSION.timestamp()) - 9 * 86400
+NEXT = int((SESSION + dt.timedelta(days=1)).timestamp())      # Wednesday's bar
 
 
-def mkbars(closes, t0=1_700_000_000, step=86400):
-    return [Bar(t0 + i * step, c, c, c, c, 1000.0) for i, c in enumerate(closes)]
+def mkbars(closes, t0=T0, step=86400, opens=None):
+    out = []
+    for i, c in enumerate(closes):
+        o = opens[i] if opens else c
+        out.append(Bar(t0 + i * step, o, max(o, c), min(o, c), c, 1000.0))
+    return out
+
+
+def at(day, hour, minute):
+    return dt.datetime(2026, 9, day, hour, minute, tzinfo=ET)
 
 
 class _EqDesk(Desk):
@@ -115,6 +128,12 @@ class Base(unittest.TestCase):
         _REGISTRY.update(self.saved_registry)
         shutil.rmtree(self.tmp, ignore_errors=True)
 
+    def settle(self, r, when):
+        """Advance the clock and run a cycle so pending paper auction orders
+        fill at the session's print."""
+        r._clock = lambda: when
+        return r.run_cycle()
+
     def runner(self, desks, venue=None, equity=1000.0, clock=None):
         cfg = cfgmod.Config(preset="observe", equity=equity, desks=tuple(desks),
                             limits=risk.RiskLimits(max_annual_turnover=1000, min_trade_notional=1.0,
@@ -145,19 +164,28 @@ class TestWindows(Base):
         e = tel["executed"][0]
         self.assertEqual(e["type"], "cls")
         self.assertEqual(e["shares"], 5.0)            # $500 / $100, whole
+        self.assertEqual(e["status"], "accepted")     # no print yet
+        self.assertFalse(r.st.positions[0]["liveOpen"])
+        self.settle(r, at(1, 16, 5))                  # the close prints
         self.assertEqual(r.st.positions[0]["shares"], 5.0)
+        self.assertTrue(r.st.positions[0]["liveOpen"])
+        self.assertAlmostEqual(r.st.positions[0]["entry"], 100.0, delta=0.1)
 
     def test_pre_open_flattens_with_moo_and_does_not_flatten_others(self):
         r = self.runner(["_eq", "_cr"])
         r.run_cycle()                                  # buy X (cls) and B/USD
+        self.settle(r, at(1, 16, 5))
         self.assertEqual(len(r.st.positions), 2)
-        r._clock = lambda: dt.datetime(2026, 9, 2, 9, 10, tzinfo=ET)
-        tel = r.run_cycle()
+        tel = self.settle(r, at(2, 9, 10))
         self.assertEqual(tel["phase"], "pre_open")
         sells = [e for e in tel["executed"] if e["side"] == "sell"]
         self.assertEqual(len(sells), 1)
         self.assertEqual(sells[0]["type"], "opg")
+        self.assertEqual(sells[0]["status"], "accepted")
+        self.data["X"].append(Bar(NEXT, 103.0, 104.0, 101.0, 101.0, 1000.0))
+        self.settle(r, at(2, 9, 35))                   # the open prints
         self.assertEqual([p["symbol"] for p in r.st.positions], ["B/USD"])
+        self.assertAlmostEqual(r.st.closed[0]["exit"], 103.0, delta=0.1)   # the OPEN, not last close
 
     def test_crypto_trades_any_time_with_gtc_market(self):
         r = self.runner(["_cr"], clock=lambda: dt.datetime(2026, 9, 6, 3, 0, tzinfo=ET))
@@ -373,6 +401,7 @@ class TestLossHalt(Base):
     def _open_then_drop(self, venue=None):
         r = self.runner(["_eq"], venue=venue)
         r.run_cycle()
+        self.settle(r, at(1, 16, 5))
         self.assertEqual(r.st.positions[0]["shares"], 5.0)
         self.data["X"] = mkbars([100] * 9 + [80])       # -20% on a 50% position
         return r
@@ -456,6 +485,10 @@ class TestTurnoverAccounting(Base):
     def test_paper_fill_spends_the_budget_once(self):
         r = self.runner(["_eq"])
         r.run_cycle()
+        self.assertEqual(r.rm.telemetry()["turnover"]["usedUsd"], 0.0)   # nothing filled yet
+        self.settle(r, at(1, 16, 5))
+        self.assertAlmostEqual(r.rm.telemetry()["turnover"]["usedUsd"], 500.0, delta=1.0)
+        self.settle(r, at(1, 16, 10))
         self.assertAlmostEqual(r.rm.telemetry()["turnover"]["usedUsd"], 500.0, delta=1.0)
 
 
@@ -535,6 +568,7 @@ class TestModeGuard(Base):
         from desk import cli
         r = self.runner(["_eq"])
         r.run_cycle()
+        self.settle(r, at(1, 16, 5))
         st = r.st
         st.mode = "paper"
         cfg = cfgmod.Config(equity=1000.0)
@@ -557,12 +591,16 @@ class TestDefundedDesk(Base):
     def test_desk_that_loses_funding_liquidates_its_positions(self):
         r = self.runner(["_eq"])
         r.run_cycle()
+        self.settle(r, at(1, 16, 5))
         self.assertEqual(r.st.positions[0]["shares"], 5.0)
         r._verdicts = {"_eq": {"verdict": "not-significant", "stale": False, "date": "x"}}
-        tel = r.run_cycle()
+        tel = self.settle(r, at(1, 16, 10))
         self.assertTrue(any("liquidating" in n for n in tel["deskNotes"]))
-        self.assertEqual(r.st.positions, [])
         self.assertEqual(tel["executed"][0]["side"], "sell")
+        self.assertEqual(tel["executed"][0]["type"], "cls")     # after the close: next session
+        self.data["X"].append(Bar(NEXT, 100.0, 100.0, 100.0, 100.0, 1000.0))
+        self.settle(r, at(2, 16, 5))
+        self.assertEqual(r.st.positions, [])
 
 
 class TestReviewRoundThree(Base):
@@ -597,13 +635,69 @@ class TestReviewRoundThree(Base):
         r.cfg.limits.max_open_positions = 1
         r.rm.limits.max_open_positions = 1
         r.run_cycle()                                   # one lot of B/USD at 30%
-        r.cfg.desk_params = {"_cr": {"w": 0.6}}         # a new bar, a bigger target
+        r.cfg.desk_params = {"_cr": {"w": 0.6}}         # a new completed bar, a bigger target
         self.data["B/USD"] = mkbars([50] * 11)
-        tel = r.run_cycle()
+        tel = self.settle(r, at(3, 15, 40))
         buys = [e for e in tel["executed"] if e["side"] == "buy"]
         self.assertEqual(len(buys), 1)                  # same symbol: not a new position
         self.assertFalse(any("open positions" in (x.get("reason") or "") for x in tel["refused"]))
         self.assertEqual(len(r.st.positions), 2)        # two lots, one symbol
+
+
+class TestPaperAuction(Base):
+    def test_moo_fills_at_the_open_print_not_the_previous_close(self):
+        self.data["X"] = mkbars([100] * 10)
+        r = self.runner(["_eq"])
+        r.run_cycle()                                   # cls buy at 15:40
+        self.settle(r, at(1, 16, 5))                    # fills at Tuesday's close: 100
+        self.assertAlmostEqual(r.st.positions[0]["entry"], 100.0, delta=0.05)
+        self.settle(r, at(2, 9, 10))                    # opg sell, pending
+        self.assertTrue(r.st.positions[0].get("closeCid"))
+        self.assertEqual(r.st.positions[0]["shares"], 5.0)   # still held: no print yet
+        self.data["X"].append(Bar(NEXT, 104.0, 105.0, 99.0, 99.0, 1000.0))
+        self.settle(r, at(2, 9, 35))
+        self.assertEqual(r.st.positions, [])
+        c = r.st.closed[0]
+        self.assertAlmostEqual(c["exit"], 104.0, delta=0.05)  # the open, not 99 or 100
+        self.assertGreater(c["pnl"], 19.0)
+
+    def test_order_placed_after_the_print_waits_for_the_next_session(self):
+        r = self.runner(["_eq"], clock=lambda: at(1, 16, 30))   # after Tuesday's close
+        r._desks = r.enabled_desks()
+        r.run_cycle()                                   # phase closed: desk holds; nothing sent
+        self.assertEqual(r.st.positions, [])
+        # force an order after hours through a defunded liquidation path is
+        # covered elsewhere; here place one directly with the broker
+        r._symbol_meta = r.symbol_meta(r._desks)
+        broker = R.PaperBroker(r._symbol_meta, r._load, r.now_et, r.st)
+        o = R.Order("_eq", "X", "buy", 1.0, 100.0, "cls", "day", client_order_id="cid-late")
+        self.assertEqual(broker.execute(o)["status"], "accepted")
+        self.assertEqual(broker.order_state("cid-late")[0], "accepted")   # Tuesday's print is past
+        self.data["X"].append(Bar(NEXT, 101.0, 101.0, 101.0, 101.0, 1000.0))
+        r._clock = lambda: at(2, 16, 1)
+        status, filled, px = broker.order_state("cid-late")
+        self.assertEqual((status, filled), ("filled", 1.0))
+        self.assertAlmostEqual(px, 101.0, delta=0.05)
+
+    def test_auction_order_expires_when_no_bar_ever_arrives(self):
+        self.data["X"] = mkbars([100] * 10, t0=T0 - 86400)   # last bar is Monday
+        r = self.runner(["_eq"])
+        r.run_cycle()                                   # Tuesday cls buy, pending
+        self.settle(r, at(2, 16, 5))                    # a full day later, still no Tuesday bar
+        self.assertEqual(r.st.positions, [])            # expired, dropped
+        self.assertEqual(r.rm.telemetry()["turnover"]["usedUsd"], 0.0)
+
+    def test_pending_paper_order_survives_a_restart(self):
+        r = self.runner(["_eq"])
+        r.run_cycle()
+        cid = r.st.positions[0]["liveCid"]
+        # a new process: fresh broker, same state on disk
+        r2 = self.runner(["_eq"])
+        r2.st = statemod.load()
+        self.assertEqual(r2.st.positions[0]["liveCid"], cid)
+        self.settle(r2, at(1, 16, 5))
+        self.assertTrue(r2.st.positions[0]["liveOpen"])
+        self.assertEqual(r2.st.positions[0]["shares"], 5.0)
 
 
 if __name__ == "__main__":

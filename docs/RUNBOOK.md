@@ -215,8 +215,11 @@ python3 -m desk.cli status
 
 Do not skip steps. Each one exists because of a specific failure mode.
 
-**Step 1 — paper, no venue at all.** The default. Simulated fills at real
-quotes with the full cost model.
+**Step 1 — paper, no venue at all.** The default. Simulated fills with the
+full cost model. Market orders fill at the current quote; auction orders
+stay pending and fill at the session's official open or close once that
+bar exists, so paper P&L for the overnight desk measures the overnight
+move rather than the quote at the moment the order was placed.
 
 ```bash
 python3 -m desk.cli run
