@@ -67,12 +67,14 @@ def _get(url, timeout=45, tries=4, headers=None):
         except urllib.error.HTTPError as e:
             last = e
             if e.code in (429, 500, 502, 503, 504):
-                time.sleep(2 ** i)
+                if i < tries - 1:
+                    time.sleep(2 ** i)
                 continue
             return None
         except Exception as e:                              # noqa: BLE001
             last = e
-            time.sleep(1.5 ** i)
+            if i < tries - 1:
+                time.sleep(1.5 ** i)
     return None
 
 

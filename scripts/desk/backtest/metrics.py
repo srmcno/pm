@@ -77,7 +77,7 @@ class Stats:
     t_stat: float = 0.0
     p_value: float = 1.0
     deflated_sharpe: float = 0.0
-    min_track_record_days: float = 0.0
+    min_track_record_periods: float = 0.0
     skew: float = 0.0
     kurtosis: float = 0.0
     worst_period_pct: float = 0.0
@@ -174,7 +174,6 @@ def compute(returns, equity_curve=None, periods_per_year=252, n_trials=1,
 
     mean, sd, skew, kurt = _moments(rets)
     s.skew, s.kurtosis = round(skew, 3), round(kurt, 3)
-    total = equity_curve[-1] / (equity_curve[0] / (1 + rets[0])) - 1 if equity_curve else 0.0
     total = (equity_curve[-1] / equity_curve[0] - 1) if len(equity_curve) > 1 else 0.0
     s.total_return_pct = round(total * 100, 4)
     years = s.n / periods_per_year
@@ -210,7 +209,9 @@ def compute(returns, equity_curve=None, periods_per_year=252, n_trials=1,
                                               n_trials, periods_per_year), 4)
     mtrl = min_track_record_length(s.sharpe, skew, kurt,
                                    periods_per_year=periods_per_year)
-    s.min_track_record_days = round(mtrl, 1) if math.isfinite(mtrl) else float("inf")
+    # None, not inf: json.dump would write `Infinity`, which JSON.parse in
+    # the dashboard rejects, and the file would take the whole page down.
+    s.min_track_record_periods = round(mtrl, 1) if math.isfinite(mtrl) else None
 
     if benchmark_returns:
         bm = [r for r in benchmark_returns if r is not None and math.isfinite(r)]
@@ -237,7 +238,7 @@ def _verdict(s: Stats) -> str:
         return "not-significant"
     if s.deflated_sharpe < 0.90:
         return "likely-overfit"
-    if math.isfinite(s.min_track_record_days) and s.min_track_record_days > s.n:
+    if s.min_track_record_periods is not None and s.min_track_record_periods > s.n:
         return "too-short-to-judge"
     if s.sharpe < 0.5:
         return "weak"

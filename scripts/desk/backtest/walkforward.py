@@ -45,6 +45,7 @@ class WalkForwardResult:
     n_trials: int = 1
     param_stability: dict = field(default_factory=dict)
     notes: list = field(default_factory=list)
+    folds_requested: int = 0
 
     def to_dict(self):
         return {
@@ -78,6 +79,9 @@ def walk_forward(desk_cls, series, start_equity=1000.0, n_folds=5,
     its training period. Returns the stitched out-of-sample record.
     """
     engine_kw = engine_kw or {}
+    probe = getattr(metrics.Stats(), select_on, None)
+    if not isinstance(probe, (int, float)) or isinstance(probe, bool):
+        raise ValueError(f"select_on={select_on!r} is not a numeric Stats field")
     grid = grid if grid is not None else desk_cls.param_grid()
     points = _grid_points(grid)
     length = min(len(v) for v in series.values()) if series else 0
@@ -88,12 +92,16 @@ def walk_forward(desk_cls, series, start_equity=1000.0, n_folds=5,
         res.stats = metrics.Stats(notes=res.notes)
         return res
 
-    # Contiguous, non-overlapping test windows tiling the back of the series.
+    # Contiguous, non-overlapping windows tiling the series. The FIRST
+    # window is the training prefix and is never scored — there is nothing
+    # before it to train on — so `n_folds` windows yield `n_folds - 1`
+    # out-of-sample folds. The result says so explicitly (foldsScored).
     usable = length
     fold_len = usable // n_folds
     if fold_len < 30:
         n_folds = max(2, usable // 60)
         fold_len = usable // n_folds
+    res.folds_requested = n_folds
 
     chosen_counts = {}
     for k in range(n_folds):
@@ -116,7 +124,7 @@ def walk_forward(desk_cls, series, start_equity=1000.0, n_folds=5,
             st = metrics.compute(r.returns,
                                  equity_curve=[e for _, e in r.equity_curve],
                                  periods_per_year=desk.meta.periods_per_year)
-            score = getattr(st, select_on, st.sharpe)
+            score = getattr(st, select_on)
             if best_score is None or score > best_score:
                 best, best_score = params, score
         if best is None:
@@ -159,9 +167,15 @@ def walk_forward(desk_cls, series, start_equity=1000.0, n_folds=5,
     res.param_stability = {
         "distinctWinners": len(chosen_counts),
         "folds": len(res.folds),
-        "mostCommon": (max(chosen_counts.items(), key=lambda kv: kv[1])[0]
+        "foldsRequested": res.folds_requested,
+        "foldsScored": len(res.folds),
+        "mostCommon": (dict(max(chosen_counts.items(), key=lambda kv: kv[1])[0])
                        if chosen_counts else None),
     }
+    if res.folds_requested and len(res.folds) < res.folds_requested:
+        res.notes.append(
+            f"{res.folds_requested} windows requested; the first is the training "
+            f"prefix, so {len(res.folds)} were scored out of sample")
     if len(chosen_counts) == len(res.folds) and len(res.folds) > 2:
         res.notes.append(
             "every fold chose different parameters — the surface is unstable, "

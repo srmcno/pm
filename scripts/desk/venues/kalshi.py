@@ -57,7 +57,7 @@ class VenueError(RuntimeError):
 def to_fp(contracts):
     """Float contracts -> the string the API wants, at 0.01 granularity,
     rounded DOWN so a size never exceeds what was intended."""
-    cents = int(round(float(contracts) * 100 + 1e-9))
+    cents = math.floor(float(contracts) * 100 + 1e-9)
     return f"{cents // 100}.{cents % 100:02d}"
 
 
@@ -117,8 +117,10 @@ def _band_step(market, price):
 # ------------------------------------------------------------------ fees
 def series_fee_params(series_obj):
     """(fee_type, fee_multiplier) from a GET /series record."""
-    return (series_obj.get("fee_type") or "quadratic",
-            float(series_obj.get("fee_multiplier", 1.0) or 0.0))
+    mult = series_obj.get("fee_multiplier")
+    if mult is None or mult == "":
+        mult = 1.0                      # absent or null: the standard rate
+    return (series_obj.get("fee_type") or "quadratic", float(mult))
 
 
 def fee(price, contracts, maker=False, series_obj=None):
@@ -313,7 +315,13 @@ class KalshiVenue:
         except Exception:                                    # noqa: BLE001
             return None, 0.0, None
         filled = from_fp(o.get("fill_count_fp") or o.get("filled_count_fp") or 0)
-        px = dollars(o.get("yes_price_dollars"))
+        # The order object carries no average price; it is the fill cost
+        # (taker and maker, fixed-point dollars) over the contracts filled.
+        cost = dollars(o.get("taker_fill_cost_dollars")) + dollars(o.get("maker_fill_cost_dollars"))
+        if filled > 0 and cost > 0:
+            px = cost / filled
+        else:
+            px = dollars(o.get("yes_price_dollars")) or None
         return o.get("status"), filled, px
 
 

@@ -103,5 +103,19 @@ class TestFees(unittest.TestCase):
         self.assertEqual(K.fee(0.5, 10, series_obj={"fee_type": "quadratic", "fee_multiplier": 0}), 0.0)
 
 
+class TestReviewFixes(unittest.TestCase):
+    def test_to_fp_never_exceeds_the_requested_size(self):
+        self.assertEqual(K.to_fp(0.238), "0.23")
+        self.assertEqual(K.to_fp(1.999), "1.99")
+        self.assertEqual(K.to_fp(2.0), "2.00")
+
+    def test_null_fee_multiplier_means_the_standard_rate(self):
+        self.assertEqual(K.series_fee_params({"fee_multiplier": None})[1], 1.0)
+        self.assertEqual(K.series_fee_params({"fee_multiplier": ""})[1], 1.0)
+        self.assertEqual(K.series_fee_params({})[1], 1.0)
+        self.assertEqual(K.series_fee_params({"fee_multiplier": 0})[1], 0.0)
+        self.assertEqual(K.series_fee_params({"fee_multiplier": "0.25"})[1], 0.25)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

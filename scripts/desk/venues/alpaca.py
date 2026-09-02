@@ -336,11 +336,8 @@ def _et():
     """Eastern time without a tz database dependency — the two DST rules
     the US has used since 2007, second Sunday of March to first Sunday of
     November, applied on the venue's own UTC timestamp."""
-    try:
-        from zoneinfo import ZoneInfo
-        return ZoneInfo("America/New_York")
-    except Exception:                                        # noqa: BLE001
-        return _dt.timezone(_dt.timedelta(hours=-4))
+    from ..core.clock import eastern
+    return eastern()
 
 
 def smoke_test():

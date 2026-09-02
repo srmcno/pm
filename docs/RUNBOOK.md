@@ -70,7 +70,10 @@ python3 -m desk.cli --equity 500 costs
 ## 2. What is actually validated, and what is not
 
 Nothing trades until it passes walk-forward testing on data it never saw
-during fitting, with every cost charged. The allocator reads the record
+during fitting, with every cost charged. The walk-forward cuts the history
+into five windows; the first only trains, and the four after it are scored
+strictly out of sample, so every figure below covers the last four fifths of
+the sample. The allocator reads the record
 (`data/desk/evidence.json`) on every cycle: a desk whose latest statistic is
 not `validated`, or whose record is more than 30 days old, is refused whatever
 its declared status says. The Monday workflow keeps the record fresh, so a
@@ -78,25 +81,25 @@ desk whose edge decays switches itself off. Current verdicts:
 
 | Desk | Out-of-sample (fixed params, costs charged) | Benchmark | Verdict | Floor |
 |---|---|---|---|---|
-| `overnight` — hold US ETFs only overnight, whole-share MOC/MOO | Sharpe 0.75, CAGR 6.0%, maxDD -17% (at $2,000) | SPY 0.92 / 20% / -36% | validated | $2,000 |
-| `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 1.13, CAGR 31.7%, maxDD -28% | BTC 0.87 / 35.7% / -53% | validated | $100 |
-| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.5%, maxDD -33% on 5 folds at $100 (p 0.16); 0.63 / p 0.087 on 4 folds | equal-weight universe 0.75 / 11.1% / -32% | **marginal**; off while the statistic fails | $100 |
-| `reversion` — 3 down closes, 5-day hold | Sharpe 0.75, CAGR 10.5% — but not significant in 2016-21, strong only in 2021-26 | SPY 0.79 / 13.4% | **marginal**, opt-in | $500 |
+| `overnight` — hold US ETFs only overnight, whole-share MOC/MOO | Sharpe 0.75, CAGR 6.0%, maxDD -17% (at $2,000, p 0.035) | equal-weight universe 0.94 / 17.2% / -29% | validated | $2,000 |
+| `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 0.95, CAGR 24.5%, maxDD -28% (at $100, p 0.085) | BTC/ETH equal-weight 0.70 / 26.5% / -60% | validated | $100 |
+| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.5%, maxDD -33% (at $100, p 0.16); 0.63 / p 0.087 when cut into four windows | equal-weight universe 0.75 / 11.1% / -32% | **marginal**; off while the statistic fails | $100 |
+| `reversion` — 3 down closes, 5-day hold | Sharpe 0.73, CAGR 10.1%, maxDD -26% (at $500, p 0.040) — but not significant in 2016-21, strong only in 2021-26 | equal-weight universe 0.73 / 11.8% / -37% | **marginal**, opt-in | $500 |
 | `kalshi-bias` — buy favorites, hold to settlement | 487 tight-quoted settled markets: favorites +0.9% to +6.6% of stake net, t 0.5–1.25 | — | **rejected** | — |
 
 Read those honestly. **Neither `overnight` nor `trend` beats buy-and-hold on
-absolute return.** Both earn a better risk-adjusted return with roughly half
-the drawdown. If you want maximum return and can tolerate a 53% drawdown,
+absolute return.** Both earn a better risk-adjusted return with a much
+shallower drawdown. If you want maximum return and can tolerate a 53% drawdown,
 buy and hold bitcoin. If you want a smoother path, that is what these buy.
 
 `xsect` is marginal for a specific reason: its significance depends on how
-the walk-forward is cut (four folds pass, five do not), and on the five-fold
-run the dashboard publishes it earns a worse risk-adjusted return than
-simply holding its own seventeen ETFs equal-weighted. The momentum effect
+the walk-forward is cut (four windows pass, five do not), and on the
+five-window run the dashboard publishes it earns a worse risk-adjusted return
+than simply holding its own seventeen ETFs equal-weighted. The momentum effect
 it exploits is among the best-documented in finance; ten years of ETF price
 data cannot confirm it here. It is replayed every Monday. The allocator will
 not fund it while its statistic fails, whatever `config.json` says; its
-declared status changes only if the five-fold record clears the significance
+declared status changes only if the five-window record clears the significance
 bar every desk is held to (p at or under 0.10) and beats that equal-weight
 benchmark.
 
@@ -405,7 +408,7 @@ assuming they hold:
 - trend is the only desk funded by default. Its cap is half the account,
   so $250 works and $250 sits in cash. Crypto trend has earned 30%+ a year
   in this sample and will also sit flat for months: call it $0–$75.
-- xsect cannot currently be funded: its five-fold record is not significant
+- xsect cannot currently be funded: its walk-forward record is not significant
   and trails an equal-weight hold of the same ETFs (§2). If a later Monday run
   validates it and you name it in `config.json`, its half of the account has
   earned about 9% a year out of sample (about $22).

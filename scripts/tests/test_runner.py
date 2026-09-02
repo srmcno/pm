@@ -43,8 +43,12 @@ class _CryptoDesk(Desk):
                     periods_per_year=365, events=(CLOSE,), universe=("B/USD",),
                     warmup_bars=2, capital_floor=10.0, fractional=True)
 
+    @classmethod
+    def defaults(cls):
+        return {"w": 0.3}
+
     def decide(self, view):
-        return Decision({"B/USD": 0.3})
+        return Decision({"B/USD": float(self.params["w"])})
 
 
 class VenueSaidNo(Exception):
@@ -86,6 +90,10 @@ class FakeVenue:
 
     def positions(self):
         return None if self.held is None else list(self.held)
+
+    def cancel_by_client_id(self, cid):
+        self.canceled = getattr(self, "canceled", []) + [cid]
+        return True
 
     def now_et(self):
         return self.now
@@ -555,6 +563,47 @@ class TestDefundedDesk(Base):
         self.assertTrue(any("liquidating" in n for n in tel["deskNotes"]))
         self.assertEqual(r.st.positions, [])
         self.assertEqual(tel["executed"][0]["side"], "sell")
+
+
+class TestReviewRoundThree(Base):
+    def test_loss_halt_cancels_a_pending_entry_before_flattening(self):
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r.run_cycle()                                   # buy submitted, unconfirmed
+        cid = r.st.positions[0]["liveCid"]
+        v.equity = 900.0                                # -10% on the day
+        tel = r.run_cycle()
+        self.assertEqual(getattr(v, "canceled", []), [cid])
+        self.assertTrue(any("daily loss" in x["reason"] for x in tel["refused"]))
+        self.assertEqual(len(v.submitted), 1)           # nothing new sent
+
+    def test_live_crypto_buy_books_the_fill_net_of_the_fee(self):
+        from desk.core import money
+        v = FakeVenue()
+        r = self.runner(["_cr"], venue=v)
+        r.run_cycle()
+        cid = r.st.positions[0]["liveCid"]
+        qty = v.submitted[-1][1]
+        v.script[cid] = [("filled", qty, 50.0)]
+        r.run_cycle()
+        p = r.st.positions[0]
+        fee = money.crypto_fee("alpaca", qty * 50.0)
+        self.assertAlmostEqual(p["shares"], qty - fee / 50.0, places=9)
+        self.assertLess(p["shares"], qty)
+        self.assertAlmostEqual(r.st.cash, 1000.0 - qty * 50.0, places=6)
+
+    def test_open_position_cap_counts_symbols_not_lots(self):
+        r = self.runner(["_cr"])
+        r.cfg.limits.max_open_positions = 1
+        r.rm.limits.max_open_positions = 1
+        r.run_cycle()                                   # one lot of B/USD at 30%
+        r.cfg.desk_params = {"_cr": {"w": 0.6}}         # a new bar, a bigger target
+        self.data["B/USD"] = mkbars([50] * 11)
+        tel = r.run_cycle()
+        buys = [e for e in tel["executed"] if e["side"] == "buy"]
+        self.assertEqual(len(buys), 1)                  # same symbol: not a new position
+        self.assertFalse(any("open positions" in (x.get("reason") or "") for x in tel["refused"]))
+        self.assertEqual(len(r.st.positions), 2)        # two lots, one symbol
 
 
 if __name__ == "__main__":

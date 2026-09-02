@@ -222,8 +222,9 @@ def _write_evidence_report(blob):
              time.strftime("Generated %Y-%m-%d %H:%M UTC",
                            time.gmtime(blob["generatedAt"])), "",
              f"Walk-forward figures are out-of-sample with fixed parameters over "
-             f"{blob.get('folds', '?')} folds, each desk replayed at its own capital",
-             "floor with every cost charged. The `declared` column is the desk author's",
+             f"{blob.get('folds', '?')} windows (the first trains only, so one fewer",
+             "is scored), each desk replayed at its own capital floor with every cost",
+             "charged. The `declared` column is the desk author's",
              "verdict, which may be stricter than the statistic; the allocator funds a",
              "desk only when both agree and this record is under 30 days old, and funds",
              "a `marginal` desk only when it is named explicitly in `data/desk/config.json`.", "",
@@ -437,6 +438,12 @@ def cmd_config(args):
     cfg = cfgmod.load(equity=args.equity, preset=args.preset)
     if args.set_live is not None:
         cfg.live = args.set_live
+    if args.desks is not None:
+        names = tuple(n.strip() for n in args.desks.split(",") if n.strip())
+        unknown = [n for n in names if not deskbase.get(n)]
+        if unknown:
+            raise SystemExit(f"unknown desk(s): {', '.join(unknown)}; see `desks`")
+        cfg.desks = cfg.explicit_desks = names
     cfgmod.save(cfg)
     print(cfgmod.describe(cfg))
     return 0
@@ -527,6 +534,9 @@ def main():
 
     c = sub.add_parser("config")
     c.add_argument("--set-live", type=lambda s: s.lower() == "true", default=None)
+    c.add_argument("--desks", default=None,
+                   help="comma-separated desks to run, named EXPLICITLY (this is "
+                        "what opts a marginal desk in); omit to keep the preset's")
     c.set_defaults(fn=cmd_config)
 
     args = ap.parse_args()

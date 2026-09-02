@@ -14,7 +14,7 @@ preset is a coherent set of answers to that, not a difficulty slider.
 """
 import json
 import os
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, asdict, field, fields
 
 from .risk import RiskLimits
 
@@ -68,7 +68,7 @@ PRESETS = {
               "noise. From $100, crypto trend on BTC/ETH is the one desk "
               "whose walk-forward record holds at this size, and it is the "
               "only desk this preset funds on its own. Monthly ETF momentum "
-              "(xsect) is listed but MARGINAL: its five-fold walk-forward is "
+              "(xsect) is listed but MARGINAL: its five-window walk-forward is "
               "not significant and trails an equal-weight hold of the same "
               "ETFs. The allocator will not fund it while that statistic "
               "fails; if a later validation run passes it, naming it in "
@@ -180,7 +180,19 @@ def load(path=None, equity=None, preset=None):
     name = preset or raw.get("preset") or preset_for_equity(eq).name
     p = PRESETS.get(name) or preset_for_equity(eq)
 
-    limits = RiskLimits(**{**p.limits.to_dict(), **(raw.get("limits") or {})})
+    # The operator's overrides are the one hand-edited input. Unknown keys
+    # are ignored and values are coerced to the field's type, so a typo or
+    # a quoted number cannot crash the halt evaluation mid-session.
+    base = p.limits.to_dict()
+    types = {f.name: f.type for f in fields(RiskLimits)}
+    for key, val in (raw.get("limits") or {}).items():
+        if key not in base:
+            continue
+        try:
+            base[key] = int(val) if types[key] is int else float(val)
+        except (TypeError, ValueError):
+            continue
+    limits = RiskLimits(**base)
     cfg = Config(
         preset=p.name,
         equity=eq,
@@ -199,11 +211,17 @@ def save(cfg, path=None):
     path = path or CONFIG_PATH
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = path + ".tmp"
+    # Only the operator's EXPLICIT desk list is written. Writing the
+    # preset's inherited list would turn every preset desk into an
+    # explicitly named one on the next load, which is what arms a marginal
+    # desk — a save/load round trip must not change what runs.
+    blob = {"preset": cfg.preset, "equity": cfg.equity, "live": cfg.live,
+            "venuePaper": cfg.venue_paper, "limits": cfg.limits.to_dict(),
+            "deskParams": cfg.desk_params}
+    if cfg.explicit_desks:
+        blob["desks"] = list(cfg.explicit_desks)
     with open(tmp, "w") as f:
-        json.dump({"preset": cfg.preset, "equity": cfg.equity, "live": cfg.live,
-                   "venuePaper": cfg.venue_paper, "desks": list(cfg.desks),
-                   "limits": cfg.limits.to_dict(),
-                   "deskParams": cfg.desk_params}, f, indent=1)
+        json.dump(blob, f, indent=1)
     os.replace(tmp, path)
     return path
 

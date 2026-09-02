@@ -246,6 +246,9 @@ class Engine:
 
     # --------------------------------------------------------------- run
     def run(self):
+        # Until the replay has run, the account is exactly what it started
+        # with; a guard return must not read as a total loss.
+        self.result.end_equity = self.start_equity
         symbols = list(self.series)
         if not symbols:
             self.result.notes.append("no series")

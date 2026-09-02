@@ -34,7 +34,7 @@ from dataclasses import dataclass, field
 
 from .core import config as cfgmod
 from .backtest.engine import Engine
-from .core import evidence, money, risk, state as statemod
+from .core import clock, evidence, money, risk, state as statemod
 from .data import bars
 from .desks import base as deskbase
 
@@ -47,11 +47,7 @@ FAILED = {"canceled", "expired", "rejected", "stopped", "suspended", "replaced",
 
 
 def _et_tz():
-    try:
-        from zoneinfo import ZoneInfo
-        return ZoneInfo("America/New_York")
-    except Exception:                                        # noqa: BLE001
-        return _dt.timezone(_dt.timedelta(hours=-4))
+    return clock.eastern()
 
 
 def session_phase(now_et):
@@ -417,9 +413,20 @@ class Runner:
     # ------------------------------------------------------------ booking
     def _book_open(self, p, filled, px):
         fees = self._est_fee(p["symbol"], filled, px, "buy")
-        p.update({"shares": filled, "entry": px, "cost": filled * px,
-                  "openFee": fees, "liveOpen": True, "liveQty": filled})
-        self.st.cash -= filled * px + fees
+        m = self._symbol_meta.get(p["symbol"]) if hasattr(self, "_symbol_meta") else None
+        shares = filled
+        if self.live and m is not None and m.asset_class == "crypto" and px > 0:
+            # Alpaca takes the crypto fee from the coin received, so the
+            # account holds the fill LESS the fee; booking the gross fill
+            # would size every exit too large. The venue check corrects any
+            # difference between this estimate and the posted fee.
+            shares = max(0.0, filled - fees / px)
+            fees_cash = 0.0
+        else:
+            fees_cash = fees
+        p.update({"shares": shares, "entry": px, "cost": filled * px,
+                  "openFee": fees, "liveOpen": True, "liveQty": shares})
+        self.st.cash -= filled * px + fees_cash
         # Turnover is counted where the fill is confirmed, so an auction
         # order that fills long after submission still spends its budget.
         self.rm.record_trade(filled * px)
@@ -589,6 +596,21 @@ class Runner:
                              reducing=(delta < 0 and held.get(sym, 0.0) > 0)))
         return out
 
+    def _cancel_pending_opens(self):
+        """Cancel every unconfirmed opening order, then reconcile. Returns
+        True if something is still pending afterwards."""
+        cancel = getattr(getattr(self.broker, "venue", None), "cancel_by_client_id", None)
+        for p in self.st.positions:
+            if p.get("liveCid") and not p.get("liveOpen"):
+                statemod.journal("halt_cancel", {"cid": p["liveCid"], "symbol": p["symbol"]})
+                if cancel is not None:
+                    try:
+                        cancel(p["liveCid"])
+                    except Exception as e:                     # noqa: BLE001
+                        statemod.journal("cancel_error", {"cid": p["liveCid"],
+                                                          "error": str(e)[:200]})
+        return self.reconcile()
+
     def flatten_orders(self, marks):
         """One market sell per symbol closing every confirmed position. Crypto
         GTC; equity DAY — placed outside the session it queues for the open,
@@ -644,6 +666,11 @@ class Runner:
         targets, notes, active = self.decide_all(self._desks, allocs, phase)
 
         executed, refused = [], []
+        if halt and self.rm.loss_halted() and pending and not mismatch:
+            # An entry still working during a loss halt is exposure waiting
+            # to happen — an auction order can fill hours later. Pull it,
+            # reconcile whatever part of it already filled, then flatten.
+            pending = self._cancel_pending_opens()
         if mismatch:
             refused.append({"reason": mismatch, "scope": "all"})
         elif halt and self.rm.loss_halted() and not pending:
@@ -686,8 +713,16 @@ class Runner:
     def _execute(self, order, executed, refused):
         """Risk check, journal, submit, book. The only path to a venue."""
         notional = order.shares * order.ref_price
-        ok, why = self.rm.check_trade(notional, order.symbol, len(self.st.positions),
-                                      reducing=order.reducing)
+        held_qty, symbols = 0.0, set()
+        for p in self.st.positions:
+            if p.get("shares", 0.0) > 0 and (p.get("liveOpen") or not self.live):
+                symbols.add(p["symbol"])
+                if p["symbol"] == order.symbol:
+                    held_qty += p["shares"]
+        ok, why = self.rm.check_trade(
+            notional, order.symbol, len(symbols), reducing=order.reducing,
+            current_notional=held_qty * order.ref_price,
+            new_symbol=(order.side == "buy" and held_qty <= 0))
         if not ok:
             refused.append({"symbol": order.symbol, "reason": why})
             return

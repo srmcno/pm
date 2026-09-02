@@ -229,8 +229,14 @@ class RiskManager:
         get flat; the STOP file means touch nothing."""
         return bool(self.halt_reason) and not self.stop_file_present()
 
-    def check_trade(self, notional, symbol="", open_positions=0, reducing=False):
+    def check_trade(self, notional, symbol="", open_positions=0, reducing=False,
+                    current_notional=0.0, new_symbol=True):
         """Approve or refuse one intended trade. Returns (ok, reason).
+
+        `current_notional` is what the account already holds in this
+        symbol, so the position cap is judged on the RESULTING position, not
+        on the increment; `open_positions` counts distinct symbols and only
+        binds when the order would add one.
 
         A risk-REDUCING order — one that sells down or closes a position —
         is never refused by the caps that exist to limit exposure, because
@@ -246,10 +252,11 @@ class RiskManager:
         n = abs(notional)
         if n < self.limits.min_trade_notional:
             return False, f"below minimum trade notional ${self.limits.min_trade_notional:.2f}"
-        if n > self.equity * self.limits.max_position_weight * 1.02:
-            return False, (f"position would be {n/max(self.equity,1e-9):.0%} of equity, "
+        after = abs(current_notional) + n
+        if after > self.equity * self.limits.max_position_weight * 1.02:
+            return False, (f"position would be {after/max(self.equity,1e-9):.0%} of equity, "
                            f"over the {self.limits.max_position_weight:.0%} cap")
-        if open_positions >= self.limits.max_open_positions:
+        if new_symbol and open_positions >= self.limits.max_open_positions:
             return False, f"already at {open_positions} open positions"
         if not self.budget.allows(n, self.equity):
             self.budget.refuse(n)
@@ -325,7 +332,10 @@ class RiskManager:
 
         if not eligible:
             return out
-        share = min(self.limits.max_desk_weight, 1.0 / len(eligible))
+        # The gross cap applies to the whole book, so the per-desk share is
+        # its slice of the cap, not of the account.
+        share = min(self.limits.max_desk_weight,
+                    self.limits.max_gross_exposure / len(eligible))
         for d in eligible:
             out.append(DeskAllocation(d.meta.name, round(share, 4), True, ""))
         return out

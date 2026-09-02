@@ -438,5 +438,114 @@ class TestRiskGates(unittest.TestCase):
         self.assertEqual(evidence.verdicts("/nonexistent/evidence.json"), {})
 
 
+class TestReviewRoundThree(unittest.TestCase):
+    def test_eastern_fallback_applies_the_dst_rule(self):
+        import datetime as dt
+        from desk.core.clock import USEastern
+        tz = USEastern()
+        jan = dt.datetime(2026, 1, 15, 17, 0, tzinfo=dt.timezone.utc).astimezone(tz)
+        jul = dt.datetime(2026, 7, 15, 17, 0, tzinfo=dt.timezone.utc).astimezone(tz)
+        self.assertEqual((jan.hour, jan.tzname()), (12, "EST"))
+        self.assertEqual((jul.hour, jul.tzname()), (13, "EDT"))
+        before = dt.datetime(2026, 3, 8, 6, 59, tzinfo=dt.timezone.utc).astimezone(tz)
+        after = dt.datetime(2026, 3, 8, 7, 0, tzinfo=dt.timezone.utc).astimezone(tz)
+        self.assertEqual((before.hour, before.minute), (1, 59))
+        self.assertEqual(after.hour, 3)
+        nov = dt.datetime(2026, 11, 1, 6, 30, tzinfo=dt.timezone.utc).astimezone(tz)
+        self.assertEqual((nov.hour, nov.tzname()), (1, "EST"))
+
+    def test_limits_overrides_are_filtered_and_coerced(self):
+        import json, tempfile
+        fd, path = tempfile.mkstemp(suffix=".json")
+        with open(path, "w") as f:
+            json.dump({"preset": "small", "limits": {"daily_loss_halt": "0.05",
+                                                     "max_open_positions": "3",
+                                                     "bogus": 1, "weekly_loss_halt": "x"}}, f)
+        cfg = config.load(path)
+        self.assertEqual(cfg.limits.daily_loss_halt, 0.05)
+        self.assertEqual(cfg.limits.max_open_positions, 3)
+        self.assertEqual(cfg.limits.weekly_loss_halt,
+                         config.PRESETS["small"].limits.weekly_loss_halt)
+
+    def test_save_load_does_not_promote_preset_desks_to_explicit(self):
+        import json, tempfile
+        fd, path = tempfile.mkstemp(suffix=".json")
+        with open(path, "w") as f:
+            json.dump({"preset": "small", "equity": 500}, f)
+        cfg = config.load(path)
+        self.assertEqual(cfg.explicit_desks, ())
+        config.save(cfg, path)
+        again = config.load(path)
+        self.assertEqual(again.explicit_desks, ())
+        self.assertEqual(again.desks, config.PRESETS["small"].desks)
+        self.assertNotIn("desks", json.load(open(path)))
+        again.desks = again.explicit_desks = ("xsect",)
+        config.save(again, path)
+        self.assertEqual(config.load(path).explicit_desks, ("xsect",))
+
+    def test_allocation_respects_the_gross_cap(self):
+        class D:
+            pass
+        ds = []
+        for n in ("a", "b"):
+            d = D()
+            d.meta = DeskMeta(name=n, title=n, asset_class="equity", venue="alpaca",
+                              capital_floor=10.0)
+            ds.append(d)
+        rm = risk.RiskManager(1000.0, risk.RiskLimits(max_gross_exposure=0.9,
+                                                      max_desk_weight=0.6),
+                              state_path="/tmp/_risk_gross.json")
+        a = rm.allocate(ds, 1000.0)
+        self.assertEqual([x.weight for x in a], [0.45, 0.45])
+
+    def test_position_cap_judges_the_resulting_position(self):
+        rm = risk.RiskManager(1000.0, risk.RiskLimits(max_position_weight=0.30,
+                                                      max_open_positions=2),
+                              state_path="/tmp/_risk_post.json")
+        self.assertTrue(rm.check_trade(150.0, "X", current_notional=100.0)[0])
+        ok, why = rm.check_trade(150.0, "X", current_notional=250.0)
+        self.assertFalse(ok)
+        self.assertIn("40%", why)
+        # the open-positions cap binds only when a NEW symbol would be added
+        self.assertTrue(rm.check_trade(50.0, "X", open_positions=2, new_symbol=False)[0])
+        self.assertFalse(rm.check_trade(50.0, "Z", open_positions=2, new_symbol=True)[0])
+
+    def test_non_finite_track_record_serializes_as_null(self):
+        import json
+        st = metrics.compute([-0.01, -0.02, 0.005, -0.01] * 20, periods_per_year=252)
+        self.assertIsNone(st.min_track_record_periods)
+        self.assertNotIn("Infinity", json.dumps(st.to_dict()))
+        self.assertEqual(st.verdict, "unprofitable")
+
+    def test_engine_guard_paths_keep_start_equity(self):
+        from desk.desks.base import Desk, DeskMeta as DM, Decision as Dc
+        class D(Desk):
+            meta = DM(name="_g", title="g", asset_class="equity", venue="alpaca",
+                      universe=("A",), warmup_bars=5)
+            def decide(self, view):
+                return Dc({})
+        r = Engine(D(), {}, start_equity=500.0).run()
+        self.assertEqual(r.end_equity, 500.0)
+
+    def test_walk_forward_reports_windows_scored(self):
+        from desk.backtest.walkforward import walk_forward
+        from desk.desks.base import Desk, DeskMeta as DM, Decision as Dc
+        class D(Desk):
+            meta = DM(name="_w", title="w", asset_class="equity", venue="alpaca",
+                      universe=("A",), warmup_bars=5)
+            def decide(self, view):
+                return Dc({"A": 0.5})
+        px, bars_ = 100.0, []
+        for i in range(600):
+            px *= 1 + (0.002 if i % 3 else -0.001)
+            bars_.append(Bar(1_600_000_000 + i * 86400, px, px, px, px, 1.0))
+        res = walk_forward(D, {"A": bars_}, n_folds=5, grid={})
+        self.assertEqual(res.param_stability["foldsRequested"], 5)
+        self.assertEqual(res.param_stability["foldsScored"], 4)
+        self.assertTrue(any("training prefix" in n for n in res.notes))
+        with self.assertRaises(ValueError):
+            walk_forward(D, {"A": bars_}, n_folds=5, grid={}, select_on="verdict")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

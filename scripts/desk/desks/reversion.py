@@ -61,7 +61,10 @@ class ShortTermReversal(Desk):
         status_reason=("validated on the full walk-forward (Sharpe 0.75) but not significant in 2016-21 and strong only in 2021-26 — the reverse of the published pattern; ten years cannot say which half is the anomaly"),
         description="Buys broad ETFs after three consecutive down closes and "
                     "exits on a close above the 5-day average or after five "
-                    "sessions. MARGINAL: validated on the full walk-forward "
+                    "sessions. Holds at most max_names, oldest signal first; "
+                    "when the book is full a newer signal waits for a slot and "
+                    "enters late, with its hold clock still running from the "
+                    "signal day. MARGINAL: validated on the full walk-forward "
                     "but only significant in the recent half of the sample.",
     )
 
@@ -201,7 +204,13 @@ class ShortTermReversal(Desk):
         # Oldest position first, most oversold first among same-day entries.
         # Ordering by entry age rather than by today's signal strength is
         # what keeps an existing holding from being displaced by a fresher
-        # name: a desk that re-ranks every session is a daily-turnover desk,
+        # name. Note what this implies when more than max_names are
+        # oversold at once: the youngest signals are NOT held, and if a slot
+        # frees before they revert they enter late, with the hold clock
+        # still counted from their signal day (so a shorter hold). That is
+        # the rule the replay measured and the rule the live loop runs; it
+        # is stated here so nobody reads the entry rule as "every signal".
+        # A desk that re-ranks every session is a daily-turnover desk,
         # and the $0.03/day fee floor is what it would be paying for.
         held.sort(key=lambda r: (r[0], r[1], r[2]))
         k = int(self.params["max_names"])

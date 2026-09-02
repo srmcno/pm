@@ -87,23 +87,24 @@ diversification. So this desk crosses, fractionally, and its capital
 floor is $100 rather than $2,000.
 
 WHY IT IS DECLARED MARGINAL rather than validated. The p 0.087 above is a
-four-fold walk-forward. The standing validation run uses five folds, and
-there the same desk with the same fixed parameters reads:
+walk-forward cut into four windows (the first trains only, three scored).
+The standing validation run cuts five windows (four scored), and there the
+same desk with the same fixed parameters reads:
 
-    walk-forward, 5 folds, $100       Sharpe 0.50, CAGR 8.5%, p 0.155
-    walk-forward, 5 folds, $2,000     Sharpe 0.52, CAGR 8.8%, p 0.144
+    walk-forward, 5 windows, $100     Sharpe 0.50, CAGR 8.5%, p 0.155
+    walk-forward, 5 windows, $2,000   Sharpe 0.52, CAGR 8.8%, p 0.144
     equal-weight buy-and-hold          Sharpe 0.75, CAGR 11.1%
     of the same 17 ETFs
 
-A record that validates at one fold count and fails at the next is a
-record whose significance is being decided by the fold boundaries, not
+A record that validates at one window count and fails at the next is a
+record whose significance is being decided by the window boundaries, not
 by the strategy. And on the run that matters — the one the dashboard
 publishes — the rotation earns a WORSE risk-adjusted return than simply
 holding its own universe equal-weighted, with the same drawdown. The
 literature says this effect is real; ten years of seventeen ETFs on
 unadjusted prices cannot confirm it. So the desk ships, is replayed
 every Monday, and is funded only when the operator names it explicitly.
-If a later five-fold run clears the statistic's significance bar (p at
+If a later five-window run clears the statistic's significance bar (p at
 or under 0.10) AND beats the equal-weight hold of its own universe on
 Sharpe, the status changes; it does not change on a good year.
 """
@@ -151,20 +152,20 @@ class CrossSectionalMomentum(Desk):
         # shares, which at small size costs the diversification the desk is
         # built on. Measured both ways in the docstring.
         execution_style="crossing",
-        # The five-fold walk-forward the dashboard publishes is not
-        # significant (p 0.144) and sits below the equal-weight buy-and-hold
+        # The five-window walk-forward the dashboard publishes is not
+        # significant (p 0.155) and sits below the equal-weight buy-and-hold
         # of the same names on Sharpe. See the docstring for the numbers.
         status="marginal",
-        status_reason=("five-fold walk-forward Sharpe 0.50 at $100 (0.52 at "
-                       "$2,000), p 0.14-0.16, below the equal-weight buy-and-hold "
-                       "of its own universe (0.75); a four-fold run validates at "
-                       "p 0.087, so the record is decided by fold boundaries "
-                       "rather than by the desk"),
+        status_reason=("five-window walk-forward (four scored) Sharpe 0.50 at $100 "
+                       "(0.52 at $2,000), p 0.14-0.16, below the equal-weight "
+                       "buy-and-hold of its own universe (0.75); a four-window "
+                       "run validates at p 0.087, so the record is decided by "
+                       "window boundaries rather than by the desk"),
         description="Ranks a sector/asset-class ETF universe on trailing "
                     "return skipping the last month, holds the top K "
                     "equal-weighted, and swaps any name below its own "
                     "long-run trend for cash. Rebalances monthly. MARGINAL: "
-                    "not significant on the five-fold walk-forward and below "
+                    "not significant on the five-window walk-forward and below "
                     "its own equal-weight benchmark.",
     )
 
