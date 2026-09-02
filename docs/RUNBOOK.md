@@ -297,7 +297,12 @@ python3 -m desk.cli watch --minutes 600 --seconds 300
 
 The runner reads the venue's clock and only acts in the windows the desks
 need: **09:00–09:26 ET** for market-on-open orders (exchange cutoff 09:28)
-and **15:30–15:48 ET** for market-on-close (cutoff 15:50). Outside those
+and **15:30–15:48 ET** for market-on-close (cutoff 15:50). One known gap
+between replay and live follows from that: the replay decides a close event
+on the official close, while the live loop decides at 15:30–15:48 on the
+session so far, because an order for the close has to be in before it. The
+last half hour's move is the difference; the alternative, deciding on the
+previous close, is a full session staler. Outside those
 windows equity desks hold whatever they have; nothing is flattened because
 a cycle happened to run at noon. Crypto trades on any cycle. A cycle every
 five minutes covers everything without hammering anything.

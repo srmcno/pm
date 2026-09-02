@@ -224,22 +224,28 @@ function render() {
     return;
   }
   const mins = (Date.now() / 1000 - d.updatedAt) / 60;
-  const live = (d.account && d.account.mode || "paper").indexOf("live") === 0;
+  const mode = (d.account && d.account.mode) || "paper";
+  const live = mode === "live-real-money";
+  const modeLabel = live ? "REAL ORDERS ARMED"
+    : mode === "live-paper-endpoint" ? "mirroring to the broker's paper endpoint"
+    : "paper only, no orders";
   const pill = el("span", "pill " + (mins < 90 ? "live" : "stale"),
     mins < 90 ? "system live" : "system stale");
   asof.append(pill, `Updated ${ago(d.updatedAt)} · preset ${d.config.preset} · ` +
-    (live ? "REAL ORDERS ARMED" : "paper only, no orders"));
+    modeLabel);
 
   const acct = d.account || {};
   const cfg = d.config || {};
   const ev = (d.evidence || {}).desks || {};
   const validated = Object.values(ev).filter(x => x.verdict === "validated" && (x.declared || "validated") === "validated").length;
-  const ret = acct.bankrollStart ? ((acct.cash / acct.bankrollStart - 1) * 100) : 0;
+  // Marked equity from the last cycle, not the cash left after buying.
+  const equity = (d.cycle && typeof d.cycle.equity === "number") ? d.cycle.equity : acct.cash;
+  const ret = acct.bankrollStart ? ((equity / acct.bankrollStart - 1) * 100) : 0;
   const risk = ((d.cycle || {}).risk) || {};
 
   const tiles = document.getElementById("tiles");
   tiles.replaceChildren();
-  [["Account", `$${num(acct.cash)}`, `${ret >= 0 ? "+" : ""}${num(ret)}% since start`, true],
+  [["Account", `$${num(equity)}`, `${ret >= 0 ? "+" : ""}${num(ret)}% since start · $${num(acct.cash)} cash`, true],
    ["Desks validated", `${validated} of ${Object.keys(ev).length}`, "out-of-sample verdicts", false],
    ["Preset", cfg.preset || "—", `$${num(cfg.equity, 0)} configured`, false],
    ["Turnover used", `${num((risk.turnover || {}).utilizationPct, 1)}%`, "of the annual budget", false],

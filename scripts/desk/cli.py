@@ -349,24 +349,34 @@ def cmd_watch(args):
     broker = _arm(args, cfg, st)
     r = runnermod.Runner(cfg=cfg, st=st, broker=broker)
     deadline = time.time() + args.minutes * 60
-    n = 0
+    n, errors, streak = 0, 0, 0
     while time.time() < deadline:
         t0 = time.time()
         try:
             tel = r.run_cycle()
             n += 1
+            streak = 0
             print(f"{time.strftime('%H:%M:%S')} equity ${tel['equity']:.2f} "
                   f"pos {tel['positions']} exec {len(tel['executed'])} "
                   f"refused {len(tel['refused'])}", flush=True)
             _publish(tel, cfg, st)
         except Exception as e:                                  # noqa: BLE001
+            errors += 1
+            streak += 1
             print(f"cycle error: {e}", flush=True)
+            if streak >= 3 and n == 0:
+                # Nothing has worked yet and it is not getting better: a
+                # shift that cannot run must fail loudly, not report success
+                # and let the chain keep scheduling more of the same.
+                print("three consecutive failures and no good cycle — giving up",
+                      flush=True)
+                break
         if os.path.exists(risk.STOP_FILE):
             print("STOP file appeared — exiting", flush=True)
             break
         time.sleep(max(5.0, args.seconds - (time.time() - t0)))
-    print(f"shift over after {n} cycles", flush=True)
-    return 0
+    print(f"shift over after {n} cycles ({errors} failed)", flush=True)
+    return 0 if n > 0 or errors == 0 else 1
 
 
 def _arm_or_die(args, cfg):

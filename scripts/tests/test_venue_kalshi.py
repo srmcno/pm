@@ -109,6 +109,16 @@ class TestReviewFixes(unittest.TestCase):
         self.assertEqual(K.to_fp(1.999), "1.99")
         self.assertEqual(K.to_fp(2.0), "2.00")
 
+    def test_order_state_tolerates_missing_cost_fields(self):
+        v = K.KalshiVenue(key_id="k")
+        v.order = lambda oid: {"order": {"status": "resting", "fill_count_fp": "0.00"}}
+        self.assertEqual(v.order_state("o1"), ("resting", 0.0, None))
+        v.order = lambda oid: {"order": {"status": "executed", "fill_count_fp": "2.00",
+                                         "taker_fill_cost_dollars": "1.10"}}
+        status, filled, px = v.order_state("o2")
+        self.assertEqual((status, filled), ("executed", 2.0))
+        self.assertAlmostEqual(px, 0.55)
+
     def test_null_fee_multiplier_means_the_standard_rate(self):
         self.assertEqual(K.series_fee_params({"fee_multiplier": None})[1], 1.0)
         self.assertEqual(K.series_fee_params({"fee_multiplier": ""})[1], 1.0)

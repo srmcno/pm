@@ -316,7 +316,19 @@ class Engine:
             self.result.positions_over_time.append(
                 (t, {s: round(p.shares, 6) for s, p in self.positions.items()}))
 
+        # The last session's fee floor is charged after the loop; fold it
+        # into the final equity point and return so the record, and every
+        # statistic on it, includes every fee the replay says it paid.
         self._close_fee_day()
+        if self.result.equity_curve:
+            t_last, _ = self.result.equity_curve[-1]
+            eq = self.equity(close_marks)
+            self.result.equity_curve[-1] = (t_last, round(eq, 6))
+            if self.result.returns:
+                base = (self.result.equity_curve[-2][1]
+                        if len(self.result.equity_curve) >= 2 else self.start_equity)
+                if base > 0:
+                    self.result.returns[-1] = eq / base - 1
         self.result.end_equity = self.result.equity_curve[-1][1] if \
             self.result.equity_curve else self.start_equity
         return self.result

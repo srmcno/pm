@@ -589,6 +589,13 @@ class Runner:
                     # 24/7 venues serve the candle still forming. The replay
                     # decided on completed bars, so the live loop does too.
                     s = completed_bars(s, d.meta.interval, now_ts)
+                # Equity desks keep today's forming bar on purpose. Their
+                # close decisions are made at 15:30-15:48 for orders that
+                # fill at 16:00: the session so far is the best available
+                # proxy for the close the replay decided on, and the only
+                # alternative — deciding on yesterday's close — is a full
+                # session staler. The runbook lists this as the one known
+                # gap between replay and live.
                 if s:
                     series[sym] = s
             if not series:

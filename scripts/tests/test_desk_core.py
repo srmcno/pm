@@ -560,5 +560,49 @@ class TestFirstPeriodCounts(unittest.TestCase):
         self.assertAlmostEqual(st2.max_drawdown_pct, -50.0, places=3)
 
 
+class TestFinalFeeFloor(unittest.TestCase):
+    def test_last_sessions_fee_floor_is_in_the_record(self):
+        from desk.desks.base import Desk, DeskMeta as DM, Decision as Dc, CLOSE as C
+        class D(Desk):
+            meta = DM(name="_ff", title="ff", asset_class="equity", venue="alpaca",
+                      universe=("A",), warmup_bars=3, events=(C,), fractional=True)
+            def decide(self, view):
+                # buy on the very last bar only
+                return Dc({"A": 0.5} if view.index == 9 else {})
+        bars_ = [Bar(1_600_000_000 + i * 86400, 100.0, 100.0, 100.0, 100.0, 1.0)
+                 for i in range(10)]
+        eng = Engine(D(), {"A": bars_}, start_equity=1000.0)
+        r = eng.run()
+        self.assertGreater(r.fee_floor_paid, 0.0)
+        self.assertEqual(r.end_equity, r.equity_curve[-1][1])
+        self.assertAlmostEqual(r.end_equity, eng.cash + 500.0, places=4)
+        self.assertLess(r.end_equity, 1000.0 - r.fee_floor_paid + 1e-9)
+        prod = 1.0
+        for x in r.returns:
+            prod *= 1 + x
+        self.assertAlmostEqual(prod, r.end_equity / r.equity_curve[0][1], places=9)
+
+
+class TestWatchExitCode(unittest.TestCase):
+    def test_a_shift_that_cannot_run_fails(self):
+        import argparse
+        from desk import cli
+        saved_runner, saved_sleep = cli.runnermod.Runner, cli.time.sleep
+        class Broken:
+            def __init__(self, **kw):
+                pass
+            def run_cycle(self):
+                raise RuntimeError("venue down")
+        cli.runnermod.Runner = Broken
+        cli.time.sleep = lambda *_: None
+        try:
+            args = argparse.Namespace(equity=1000.0, preset="observe", live=False,
+                                      i_accept_total_loss=False, venue_paper=True,
+                                      reset_book=False, minutes=1.0, seconds=0.0)
+            self.assertEqual(cli.cmd_watch(args), 1)
+        finally:
+            cli.runnermod.Runner, cli.time.sleep = saved_runner, saved_sleep
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

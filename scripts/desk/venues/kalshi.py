@@ -317,7 +317,12 @@ class KalshiVenue:
         filled = from_fp(o.get("fill_count_fp") or o.get("filled_count_fp") or 0)
         # The order object carries no average price; it is the fill cost
         # (taker and maker, fixed-point dollars) over the contracts filled.
-        cost = dollars(o.get("taker_fill_cost_dollars")) + dollars(o.get("maker_fill_cost_dollars"))
+        def _cost(v):                      # a dollar amount, not a price
+            try:
+                return max(0.0, float(v))
+            except (TypeError, ValueError):
+                return 0.0
+        cost = _cost(o.get("taker_fill_cost_dollars")) + _cost(o.get("maker_fill_cost_dollars"))
         if filled > 0 and cost > 0:
             px = cost / filled
         else:
