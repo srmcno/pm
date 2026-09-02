@@ -82,8 +82,8 @@ desk whose edge decays switches itself off. Current verdicts:
 | Desk | Out-of-sample (fixed params, costs charged) | Benchmark | Verdict | Floor |
 |---|---|---|---|---|
 | `overnight` — hold US ETFs only overnight, whole-share MOC/MOO | Sharpe 0.75, CAGR 6.0%, maxDD -17% (at $2,000, p 0.035) | equal-weight universe 0.94 / 17.2% / -29% | validated | $2,000 |
-| `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 0.95, CAGR 24.5%, maxDD -28% (at $100, p 0.085) | BTC/ETH equal-weight 0.70 / 26.5% / -60% | validated | $100 |
-| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.5%, maxDD -33% (at $100, p 0.16); 0.63 / p 0.087 when cut into four windows | equal-weight universe 0.75 / 11.1% / -32% | **marginal**; off while the statistic fails | $100 |
+| `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 0.95, CAGR 24.6%, maxDD -28% (at $100, p 0.085) | BTC/ETH equal-weight 0.70 / 26.5% / -60% | validated | $100 |
+| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.4%, maxDD -33% (at $100, p 0.16); 0.63 / p 0.087 when cut into four windows | equal-weight universe 0.75 / 11.1% / -32% | **marginal**; off while the statistic fails | $100 |
 | `reversion` — 3 down closes, 5-day hold | Sharpe 0.73, CAGR 10.1%, maxDD -26% (at $500, p 0.040) — but not significant in 2016-21, strong only in 2021-26 | equal-weight universe 0.73 / 11.8% / -37% | **marginal**, opt-in | $500 |
 | `kalshi-bias` — buy favorites, hold to settlement | 487 tight-quoted settled markets: favorites +0.9% to +6.6% of stake net, t 0.5–1.25 | — | **rejected** | — |
 
