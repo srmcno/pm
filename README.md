@@ -44,7 +44,7 @@ legally use.
 | Risk | `desk/core/risk.py` | Allocation gated on each desk's latest walk-forward verdict and its capital floor; daily/weekly/drawdown loss halts that flatten and survive restarts; a **turnover budget** — the brake the June 2026 PDT repeal removed. |
 | Runner | `desk/runner.py` | Reconciles every pending order before deciding, books only confirmed fills at the venue's price, acts only inside the auction submission windows on the venue's clock. Paper and live share the path. |
 | Venues | `desk/venues/alpaca.py`, `desk/venues/kalshi.py` | Client-side enforcement of every order rule that would otherwise be a rejection: fractional-vs-auction, crypto TIF, MOC/MOO cutoffs, Kalshi's per-market tick grid and fixed-point quantities. Ship disarmed. |
-| Desks | `desk/desks/` | `overnight` (validated, $2,000+), `trend` (validated, $100+), `xsect` (marginal, $100+ — off while its walk-forward statistic fails; naming it in the config is not enough), `reversion` (marginal, opt-in, $500+), `kalshi-bias` (tested and rejected — the study is in its docstring). |
+| Desks | `desk/desks/` | `overnight` (validated; needs $2,000 of its own capital, so $4,000 under a two-desk preset), `trend` (validated, $100+), `xsect` (marginal, $100+ — off while its walk-forward statistic fails; naming it in the config is not enough), `reversion` (marginal, opt-in, $500+), `kalshi-bias` (tested and rejected — the study is in its docstring). |
 | Operator | `desk/cli.py`, `docs/RUNBOOK.md`, `dashboard/desk.html` | `status`, `validate`, `run`, `watch`, `halt`; the real-money runbook; a dashboard that leads with each desk's out-of-sample verdict. |
 
 Start here:

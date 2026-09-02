@@ -462,18 +462,26 @@ class Runner:
             return f"could not read the venue's positions ({str(e)[:120]})"
         if raw is None:
             return ""                       # adapter does not report positions
-        canon = {s.replace("/", "").replace("-", ""): s for s in self._symbol_meta}
+        book = {}
+        for p in self.st.positions:
+            if p.get("liveOpen") and not p.get("closeCid") and p.get("shares", 0.0) > 0:
+                book.setdefault(p["symbol"], []).append(p)
+        # Symbols the book holds count even when no configured desk trades
+        # them any more; otherwise a desk removed from the config would make
+        # its real positions invisible here and they would be "shrunk" away.
+        known = set(self._symbol_meta) | set(book)
+        canon = {s.replace("/", "").replace("-", ""): s for s in known}
         venue = {}
         for r in raw:
             key = str(r.get("symbol", "")).replace("/", "").replace("-", "")
             sym = canon.get(key)
             if sym:
                 venue[sym] = venue.get(sym, 0.0) + abs(float(r.get("qty") or 0.0))
-        book = {}
-        for p in self.st.positions:
-            if p.get("liveOpen") and not p.get("closeCid") and p.get("shares", 0.0) > 0:
-                book.setdefault(p["symbol"], []).append(p)
         problems = []
+        for sym in book:
+            if sym not in self._symbol_meta and venue.get(sym, 0.0) > 0:
+                problems.append(f"{sym}: held, but no configured desk trades it any "
+                                f"more — restore its desk or close it at the broker")
         for sym, lots in book.items():
             bq = sum(l["shares"] for l in lots)
             vq = venue.get(sym, 0.0)

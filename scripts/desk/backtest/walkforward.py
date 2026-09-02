@@ -133,20 +133,27 @@ def walk_forward(desk_cls, series, start_equity=1000.0, n_folds=5,
         # Test on the untouched window, warming the desk on prior bars so the
         # first test decision is not made from an empty history.
         warm = desk_cls().meta.warmup_bars
-        ctx_start = max(0, test_start - warm - 1)
+        ctx_start = max(0, test_start - warm)
         test = _slice(series, ctx_start, test_end)
         desk = desk_cls(**best)
         eng = Engine(desk, test, start_equity=start_equity, **engine_kw)
         r = eng.run()
+        # The replay scores from its own warm-up point inside the slice;
+        # anything before test_start is a training bar and is dropped, so
+        # every scored return is strictly out of sample.
+        first_scored = ctx_start + max(warm, 2)
+        skip = max(0, test_start - first_scored)
+        returns = r.returns[skip:]
+        curve = r.equity_curve[skip:]
 
         fold = Fold(index=k, train_start=train_start, train_end=train_end,
                     test_start=test_start, test_end=test_end,
                     chosen_params=best, train_sharpe=round(best_score or 0, 3),
-                    test_bars=len(r.returns))
-        if r.returns:
-            fold.test_return_pct = round(
-                (r.equity_curve[-1][1] / r.equity_curve[0][1] - 1) * 100, 3)
-            res.oos_returns.extend(r.returns)
+                    test_bars=len(returns))
+        if returns and curve:
+            base = r.equity_curve[skip - 1][1] if skip > 0 else start_equity
+            fold.test_return_pct = round((curve[-1][1] / base - 1) * 100, 3)
+            res.oos_returns.extend(returns)
         res.folds.append(fold)
         key = tuple(sorted(best.items()))
         chosen_counts[key] = chosen_counts.get(key, 0) + 1

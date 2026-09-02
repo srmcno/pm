@@ -336,12 +336,47 @@ class RiskManager:
 
         if not eligible:
             return out
-        # The gross cap applies to the whole book, so the per-desk share is
-        # its slice of the cap, not of the account.
-        share = min(self.limits.max_desk_weight,
-                    self.limits.max_gross_exposure / len(eligible))
+        # A floor is about the capital the DESK gets, not the account: the
+        # overnight desk was validated running $2,000 of its own, and $800
+        # of a $2,000 account is the sizing regime its record rejects. So
+        # floors are settled first, largest first, and a desk whose share
+        # cannot reach its floor is refused with the number that would fund
+        # it; the rest split what remains equally, each under the desk cap
+        # and all under the gross cap.
+        cap = self.limits.max_desk_weight * eq
+        remaining = self.limits.max_gross_exposure * eq
+        eligible.sort(key=lambda d: -float(getattr(d.meta, "capital_floor", 0.0)))
+        n_left = len(eligible)
         for d in eligible:
-            out.append(DeskAllocation(d.meta.name, round(share, 4), True, ""))
+            floor = float(getattr(d.meta, "capital_floor", 0.0))
+            base = min(cap, remaining / n_left) if n_left > 0 else 0.0
+            n_left -= 1
+            if remaining <= 1e-9:
+                out.append(DeskAllocation(
+                    d.meta.name, 0.0, False,
+                    "no capital left after the other desks' floors"))
+                continue
+            if base + 1e-9 < floor:
+                if floor <= min(cap, remaining) + 1e-9:
+                    alloc = floor
+                else:
+                    out.append(DeskAllocation(
+                        d.meta.name, 0.0, False,
+                        f"needs ${floor:,.0f} of its own capital; its share here "
+                        f"would be ${base:,.0f} ({self.limits.max_desk_weight:.0%} desk "
+                        f"cap on ${eq:,.0f}, {len(eligible)} desks). Fund about "
+                        f"${floor / max(self.limits.max_desk_weight, 1e-9):,.0f}, or "
+                        f"name it as the only desk."))
+                    continue
+            else:
+                alloc = base
+            if alloc <= 0:
+                out.append(DeskAllocation(
+                    d.meta.name, 0.0, False,
+                    "no capital left after the other desks' floors"))
+                continue
+            remaining -= alloc
+            out.append(DeskAllocation(d.meta.name, round(alloc / eq, 4), True, ""))
         return out
 
     def telemetry(self):

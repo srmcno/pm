@@ -628,5 +628,64 @@ class TestFirstBarCost(unittest.TestCase):
         self.assertAlmostEqual(prod, r.end_equity / 1000.0, places=9)
 
 
+class TestFloorOnDeskShare(unittest.TestCase):
+    def _desks(self):
+        class D:
+            pass
+        out = []
+        for name, floor in (("over", 2000.0), ("trend", 100.0)):
+            d = D()
+            d.meta = DeskMeta(name=name, title=name, asset_class="equity", venue="alpaca",
+                              capital_floor=floor)
+            out.append(d)
+        return out
+
+    def test_floor_is_judged_on_the_desks_share_not_the_account(self):
+        rm = risk.RiskManager(2000.0, risk.RiskLimits(max_desk_weight=0.4),
+                              state_path="/tmp/_risk_share.json")
+        a = {x.name: x for x in rm.allocate(self._desks(), 2000.0)}
+        self.assertFalse(a["over"].enabled)
+        self.assertIn("share", a["over"].reason)
+        self.assertIn("$5,000", a["over"].reason)
+        self.assertTrue(a["trend"].enabled)
+        a = {x.name: x for x in rm.allocate(self._desks(), 5000.0)}
+        self.assertEqual((a["over"].weight, a["trend"].weight), (0.4, 0.4))
+
+    def test_floor_is_taken_first_when_the_cap_allows_it(self):
+        rm = risk.RiskManager(2500.0, risk.RiskLimits(max_desk_weight=1.0),
+                              state_path="/tmp/_risk_share2.json")
+        a = {x.name: x for x in rm.allocate(self._desks(), 2500.0)}
+        self.assertEqual(a["over"].weight, 0.8)          # exactly its $2,000 floor
+        self.assertEqual(a["trend"].weight, 0.2)         # what is left
+        a = {x.name: x for x in rm.allocate(self._desks(), 2000.0)}
+        self.assertEqual(a["over"].weight, 1.0)
+        self.assertFalse(a["trend"].enabled)
+        self.assertIn("no capital left", a["trend"].reason)
+
+    def test_standard_preset_starts_where_the_overnight_desk_can_be_funded(self):
+        self.assertEqual(config.preset_for_equity(3000.0).name, "small")
+        self.assertEqual(config.preset_for_equity(4000.0).name, "standard")
+        lim = config.PRESETS["standard"].limits
+        self.assertGreaterEqual(lim.max_desk_weight * 4000.0, 2000.0)
+
+
+class TestFoldsScoreOnlyUntouchedBars(unittest.TestCase):
+    def test_each_fold_scores_exactly_its_window(self):
+        from desk.backtest.walkforward import walk_forward
+        from desk.desks.base import Desk, DeskMeta as DM, Decision as Dc
+        class D(Desk):
+            meta = DM(name="_wf2", title="w", asset_class="equity", venue="alpaca",
+                      universe=("A",), warmup_bars=5)
+            def decide(self, view):
+                return Dc({"A": 0.5})
+        px, bars_ = 100.0, []
+        for i in range(600):
+            px *= 1 + (0.002 if i % 3 else -0.001)
+            bars_.append(Bar(1_600_000_000 + i * 86400, px, px, px, px, 1.0))
+        res = walk_forward(D, {"A": bars_}, n_folds=5, grid={})
+        for f in res.folds:
+            self.assertEqual(f.test_bars, f.test_end - f.test_start)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

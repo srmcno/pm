@@ -781,5 +781,22 @@ class TestRoundSix(Base):
         self.assertEqual(r.st.fee_day, {})
 
 
+class TestLotOutsideTheUniverse(Base):
+    def test_venue_check_keeps_a_lot_whose_desk_was_removed(self):
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r.run_cycle()
+        cid = r.st.positions[0]["liveCid"]
+        v.script[cid] = [("filled", v.submitted[-1][1], 100.0)]
+        v.held = [{"symbol": "X", "qty": "5"}]
+        r.run_cycle()
+        self.assertTrue(r.st.positions[0]["liveOpen"])
+        r.cfg.desks = ("_cr",)                          # X's desk is gone from the config
+        r._verdicts["_cr"] = {"verdict": "validated", "stale": False, "date": "t"}
+        tel = r.run_cycle()
+        self.assertEqual([p["shares"] for p in r.st.positions if p["symbol"] == "X"], [5.0])
+        self.assertIn("no configured desk", tel["bookMismatch"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

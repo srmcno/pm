@@ -77,7 +77,7 @@ PRESETS = {
 
     "small": Preset(
         name="small",
-        title="Small account ($250-$2,000)",
+        title="Small account ($250-$4,000)",
         min_equity=250.0,
         limits=RiskLimits(max_gross_exposure=1.0, max_desk_weight=0.5,
                           max_position_weight=0.34, daily_loss_halt=0.04,
@@ -89,28 +89,31 @@ PRESETS = {
               "by default. Monthly ETF momentum (xsect) is marginal and off: "
               "its statistic does not validate, and naming it in "
               "data/desk/config.json only helps once it does. The overnight "
-              "desk is NOT here: it only works with whole-share auction "
-              "orders and its walk-forward record does not validate until "
-              "$2,000. No shorting: under $2,000 an Alpaca account is "
-              "limited-margin and cannot short at all.",
+              "desk is NOT here: it needs $2,000 of its OWN capital (whole-"
+              "share auction sizing), which under a shared preset means a "
+              "$4,000 account. Between $2,000 and $4,000 it can run alone: "
+              "`config --desks overnight` with max_desk_weight 1.0. No "
+              "shorting: under $2,000 an Alpaca account is limited-margin "
+              "and cannot short at all.",
     ),
 
     "standard": Preset(
         name="standard",
-        title="Standard account ($2,000-$25,000)",
-        min_equity=2000.0,
-        limits=RiskLimits(max_gross_exposure=1.0, max_desk_weight=0.4,
+        title="Standard account ($4,000-$25,000)",
+        min_equity=4000.0,
+        limits=RiskLimits(max_gross_exposure=1.0, max_desk_weight=0.5,
                           max_position_weight=0.30, daily_loss_halt=0.035,
                           weekly_loss_halt=0.09, max_drawdown_halt=0.22,
                           max_annual_turnover=250.0, min_trade_notional=5.0,
                           max_open_positions=10),
         desks=("overnight", "xsect", "trend"),
-        notes="Above $2,000 the account leaves limited-margin status and the "
-              "overnight desk's whole-share auction sizing has enough names "
-              "to work (walk-forward Sharpe 0.75 here, 0.79 at $5,000). The "
-              "marginal desks (xsect, reversion) stay off unless named "
-              "explicitly in data/desk/config.json and their latest statistic "
-              "validates; the rejected Kalshi desk never funds.",
+        notes="From $4,000 the overnight desk gets the $2,000 of its own "
+              "capital its record requires (half the account under the 50% "
+              "desk cap; walk-forward Sharpe 0.75 at $2,000, 0.79 at $5,000) "
+              "and crypto trend takes the other half. The marginal desks "
+              "(xsect, reversion) stay off unless named explicitly in "
+              "data/desk/config.json and their latest statistic validates; "
+              "the rejected Kalshi desk never funds.",
     ),
 
     # Deliberately not a "maximum risk" preset. It relaxes turnover and

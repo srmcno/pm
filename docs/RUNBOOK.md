@@ -49,7 +49,8 @@ Whole shares of $107–$766 ETFs re-set the floor:
 |---|---|---|
 | Under $100 | Nothing validated | Equity desks need $100+ (monthly) or $2,000+ (daily); the Kalshi study found no edge. Paper-trade and save. |
 | $100–$2,000 | `trend` (`micro`/`small`) | Crypto trend on BTC/ETH (validated, floor $100). Monthly ETF momentum (`xsect`) is listed in these presets but off: its latest statistic is not significant, and naming it in `config.json` is not enough until a validation run passes it. No shorting under $2,000. |
-| $2,000+ | + `overnight` (`standard`) | Whole-share auction sizing now holds enough names to work. Account leaves limited-margin status. |
+| $2,000–$4,000 | `trend`, or `overnight` alone | The overnight desk needs $2,000 of its **own** capital (its record was made at that size in whole shares). Two desks share an account, so under a preset it waits for $4,000; to run it alone from $2,000 name it as the only desk (`config --desks overnight`) with `max_desk_weight` 1.0. The account leaves limited-margin status at $2,000. |
+| $4,000+ | `overnight` + `trend` (`standard`) | Each desk gets half the account, so the overnight desk clears its $2,000 floor with whole-share sizing that holds enough names to work. |
 | $25,000+ | same, tighter caps (`scaled`) | Frictions are noise; caps tighten rather than loosen. |
 
 The `reversion` desk is registered but in no preset (see §2). The
@@ -424,9 +425,11 @@ assuming they hold:
 - Fees: about 0.5% on trend's turnover; under $1 a year on xsect (it
   trades about ten days a year).
 
-**At $2,000** (`standard`: + overnight), add roughly 6–8% a year on the
-overnight sleeve with a -17% to -19% drawdown, and about $7.50/yr of fee
-floor from its daily activity.
+**At $4,000** (`standard`: overnight + trend, half each), add roughly 6–8% a
+year on the overnight sleeve with a -17% to -19% drawdown, and about $7.50/yr
+of fee floor from its daily activity. A floor is about the desk's own
+capital: the allocator refuses a desk whose share of the account would be
+under its floor and says what account size would fund it.
 
 The value of running small is not the dollars. It is proving the whole
 pipeline — signal, sizing, execution, reconciliation, tax records — with
