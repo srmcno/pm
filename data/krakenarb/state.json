@@ -1364,10 +1364,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1788382104,
-   "equity": 74.0957
-  },
-  {
    "t": 1788382114,
    "equity": 74.0957
   },
@@ -3362,6 +3358,10 @@
   {
    "t": 1788387095,
    "equity": 74.0957
+  },
+  {
+   "t": 1788387130,
+   "equity": 74.0957
   }
  ],
  "decay": {
@@ -3376,6 +3376,6 @@
   "atomicUsd": 1.8407,
   "delayedUsd": 8.6891,
   "captureRatio": 4.721,
-  "scansReplayed": 16800
+  "scansReplayed": 16832
  }
 }
