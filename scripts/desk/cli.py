@@ -242,14 +242,14 @@ def _write_evidence_report(blob):
         f.write("\n".join(lines) + "\n")
 
 
-def _arm(args, st):
+def _arm(args, cfg, st):
     """Broker for this process, or None for simulated fills. The state's
     mode is set here, once, so every published cycle says truthfully
     whether it was real money — `run` and `watch` must not differ."""
     if not args.live:
         st.mode = "paper"
         return None
-    _arm_or_die(args)
+    _arm_or_die(args, cfg)
     st.mode = "live-real-money" if not args.venue_paper else "live-paper-endpoint"
     return _make_broker(args)
 
@@ -257,7 +257,7 @@ def _arm(args, st):
 def cmd_run(args):
     cfg = cfgmod.load(equity=args.equity, preset=args.preset)
     st = statemod.load(bankroll=cfg.equity)
-    broker = _arm(args, st)
+    broker = _arm(args, cfg, st)
     r = runnermod.Runner(cfg=cfg, st=st, broker=broker)
     tel = r.run_cycle()
     print(json.dumps(tel, indent=1)[:4000])
@@ -268,7 +268,7 @@ def cmd_run(args):
 def cmd_watch(args):
     cfg = cfgmod.load(equity=args.equity, preset=args.preset)
     st = statemod.load(bankroll=cfg.equity)
-    broker = _arm(args, st)
+    broker = _arm(args, cfg, st)
     r = runnermod.Runner(cfg=cfg, st=st, broker=broker)
     deadline = time.time() + args.minutes * 60
     n = 0
@@ -291,10 +291,19 @@ def cmd_watch(args):
     return 0
 
 
-def _arm_or_die(args):
+def _arm_or_die(args, cfg):
+    """Every switch must be on at once. The flags are per-invocation; the
+    config file's `live` is the one that lives in the repository, so the
+    decision to point this at real money is visible in git history and
+    cannot be made by a workflow secret alone."""
     if not (args.live and args.i_accept_total_loss):
         raise SystemExit("live execution requires both --live and "
                          "--i-accept-total-loss")
+    if not args.venue_paper and not getattr(cfg, "live", False):
+        raise SystemExit(
+            "the real-money endpoint also requires data/desk/config.json to "
+            "say \"live\": true — run `python3 -m desk.cli config --set-live true` "
+            "and commit it")
     if os.path.exists(risk.STOP_FILE):
         raise SystemExit(f"STOP file present at {risk.STOP_FILE}")
 

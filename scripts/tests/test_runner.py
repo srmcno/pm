@@ -245,5 +245,37 @@ class TestRisk(Base):
             _EqDesk.meta.capital_floor = 10.0
 
 
+class TestArming(unittest.TestCase):
+    """The real-money endpoint needs every switch, including the committed
+    config flag; the paper endpoint needs only the flags."""
+
+    def _args(self, **kw):
+        import argparse
+        d = dict(live=True, i_accept_total_loss=True, venue_paper=True)
+        d.update(kw)
+        return argparse.Namespace(**d)
+
+    def _cfg(self, live):
+        from desk.core import config as cfgmod
+        return cfgmod.Config(live=live)
+
+    def test_flags_are_required(self):
+        from desk import cli
+        for bad in (dict(live=False), dict(i_accept_total_loss=False)):
+            with self.assertRaises(SystemExit):
+                cli._arm_or_die(self._args(**bad), self._cfg(True))
+
+    def test_paper_endpoint_does_not_need_config_flag(self):
+        from desk import cli
+        cli._arm_or_die(self._args(venue_paper=True), self._cfg(False))
+
+    def test_real_money_needs_config_flag(self):
+        from desk import cli
+        with self.assertRaises(SystemExit) as cm:
+            cli._arm_or_die(self._args(venue_paper=False), self._cfg(False))
+        self.assertIn("config.json", str(cm.exception))
+        cli._arm_or_die(self._args(venue_paper=False), self._cfg(True))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

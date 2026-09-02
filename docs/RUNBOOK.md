@@ -226,15 +226,20 @@ default. Real money needs an additional explicit flag.
 
 **Step 3 — real money, smallest size that clears the floor.** Only after
 step 2 has run clean for a week and you have compared the desk's book to the
-broker's statement line by line.
+broker's statement line by line. First record the decision in the config
+file, which is committed, so it is in the repository's history:
 
 ```bash
+python3 -m desk.cli config --set-live true
+git add data/desk/config.json && git commit -m "permit real money"
 python3 -m desk.cli run --live --i-accept-total-loss --real-money
 ```
 
 Every one of these is required simultaneously: credentials in the environment,
-`--live`, `--i-accept-total-loss`, `--real-money`, and the **absence** of
-`data/desk/STOP`. Missing any one and no order can be produced.
+`"live": true` in `data/desk/config.json`, `--live`, `--i-accept-total-loss`,
+`--real-money`, and the **absence** of `data/desk/STOP`. Missing any one and
+no real-money order can be produced. The paper endpoint needs only the two
+flags and credentials.
 
 ---
 

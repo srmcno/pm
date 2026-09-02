@@ -134,7 +134,10 @@ PRESETS = {
 class Config:
     preset: str = "observe"
     equity: float = 1000.0
-    live: bool = False                 # arm real orders (still needs flags + keys)
+    # Permits the REAL MONEY endpoint. Not sufficient on its own: orders
+    # still need credentials, --live, --i-accept-total-loss, --real-money,
+    # and no STOP file. Lives in the repo so the decision is in git history.
+    live: bool = False
     venue_paper: bool = True           # Alpaca paper endpoint when live
     desks: tuple = ()
     limits: RiskLimits = field(default_factory=RiskLimits)
@@ -208,9 +211,7 @@ def describe(cfg):
     lines = [
         f"preset      {cfg.preset} — {p.title if p else ''}",
         f"equity      ${cfg.equity:,.2f}",
-        f"mode        {'LIVE ORDERS ARMED' if cfg.live else 'paper only'}"
-        + ("" if not cfg.live else
-           f" ({'paper endpoint' if cfg.venue_paper else 'REAL MONEY endpoint'})"),
+        f"real money  {'PERMITTED by config (still needs keys and the --live, --i-accept-total-loss, --real-money flags)' if cfg.live else 'forbidden by config'}",
         f"desks       {', '.join(cfg.desks) or 'none'}",
         f"turnover    {cfg.limits.max_annual_turnover:g}x equity per year "
         f"(${cfg.limits.max_annual_turnover * cfg.equity:,.0f})",
