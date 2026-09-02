@@ -174,12 +174,15 @@ LIVE_BRANCH = "claude/polymarket-wallets-analysis-m81p4j"
 
 
 def publish_repo(paths, message):
-    """Commit the given paths, push to the checked-out branch, and dispatch
-    the Pages deploy. Best-effort: returns True when the push landed.
+    """Commit the given paths and push to the checked-out branch.
+    Best-effort: returns True when the push landed.
 
-    The explicit deploy dispatch matters — pushes made with the workflow's
-    GITHUB_TOKEN never trigger on-push workflows (GitHub's recursion
-    guard), so without it the site silently serves stale data.
+    This does NOT deploy the site. Pushes made with a workflow's
+    GITHUB_TOKEN do not trigger on-push workflows, so the Pages deploy runs
+    on its own ten-minute schedule instead. Dispatching a deploy from here
+    ran one per publish — several a minute across the desks — and GitHub
+    keeps only one queued run in the "pages" concurrency group, so each was
+    cancelled by the next and the site stopped publishing altogether.
     """
     def git(*argv):
         return subprocess.run(["git", *argv], cwd=BASE, check=False,
@@ -204,15 +207,6 @@ def publish_repo(paths, message):
     ok = r.returncode == 0
     print("  site push:", "ok" if ok else (r.stderr or "").strip()[:200],
           flush=True)
-    if ok and (os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")):
-        try:
-            d = subprocess.run(["gh", "workflow", "run", "jekyll-gh-pages.yml",
-                                "--ref", branch], cwd=BASE, check=False,
-                               capture_output=True, text=True)
-            print("  site deploy:", "dispatched" if d.returncode == 0
-                  else (d.stderr or "").strip()[:120], flush=True)
-        except OSError:
-            pass
     return ok
 
 

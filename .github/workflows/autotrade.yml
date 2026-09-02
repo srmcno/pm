@@ -68,5 +68,5 @@ jobs:
           git commit -m "auto: trading cycle $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin claude/polymarket-wallets-analysis-m81p4j || true
           git push origin HEAD:claude/polymarket-wallets-analysis-m81p4j
-          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
-          gh workflow run jekyll-gh-pages.yml --ref claude/polymarket-wallets-analysis-m81p4j || true
+          # The scheduled Pages deploy publishes this within ten minutes.
+          # Dispatching one here instead only thrashed the deploy queue.

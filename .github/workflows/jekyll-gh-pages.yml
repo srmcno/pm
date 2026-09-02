@@ -6,6 +6,15 @@ on:
   push:
     branches: ["claude/polymarket-wallets-analysis-m81p4j"]
     paths: ["dashboard/**", ".github/workflows/jekyll-gh-pages.yml"]
+  # The desks commit fresh dashboard data every minute or two. Deploying on
+  # each of those commits does not publish the site FASTER — it publishes it
+  # never: only one run may be queued in the "pages" concurrency group, so
+  # every queued deploy was cancelled by the next one before a runner picked
+  # it up, and the site served three-day-old data while the bots ran fine.
+  # One deploy every ten minutes always lands, and is well inside the forty
+  # minutes the dashboard allows before it calls a feed stale.
+  schedule:
+    - cron: "*/10 * * * *"
   workflow_dispatch: {}
 
 permissions:
