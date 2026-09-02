@@ -368,7 +368,7 @@ class TestDeclaredStatus(unittest.TestCase):
         self.assertEqual(st["kalshi-bias"], "rejected")
         self.assertEqual(st["reversion"], "marginal")
         self.assertEqual(st["overnight"], "validated")
-        self.assertEqual(st["trend"], "validated")
+        self.assertEqual(st["trend"], "marginal")
         for n, c in all_desks().items():
             if c.meta.status != "validated":
                 self.assertTrue(c.meta.status_reason, f"{n} must say why")

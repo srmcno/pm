@@ -91,7 +91,7 @@ walk-forward cut into four windows (the first trains only, three scored).
 The standing validation run cuts five windows (four scored), and there the
 same desk with the same fixed parameters reads:
 
-    walk-forward, 5 windows, $100     Sharpe 0.50, CAGR 8.4%, p 0.155
+    walk-forward, 5 windows, $100     Sharpe 0.50, CAGR 8.3%, p 0.159
     walk-forward, 5 windows, $2,000   Sharpe 0.52, CAGR 8.8%, p 0.144
     equal-weight buy-and-hold          Sharpe 0.75, CAGR 11.1%
     of the same 17 ETFs

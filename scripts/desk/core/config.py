@@ -62,17 +62,16 @@ PRESETS = {
                           max_annual_turnover=12.0, min_trade_notional=1.0,
                           max_open_positions=4),
         desks=("trend", "xsect"),
-        notes="Below $100 nothing validated can run: the daily equity desk "
-              "needs whole-share auction orders and $2,000, and the Kalshi "
-              "favorite-longshot study found no edge that clears its own "
-              "noise. From $100, crypto trend on BTC/ETH is the one desk "
-              "whose walk-forward record holds at this size, and it is the "
-              "only desk this preset funds on its own. Monthly ETF momentum "
-              "(xsect) is listed but MARGINAL: its five-window walk-forward is "
-              "not significant and trails an equal-weight hold of the same "
-              "ETFs. The allocator will not fund it while that statistic "
-              "fails; if a later validation run passes it, naming it in "
-              "data/desk/config.json turns it on.",
+        notes="At this size nothing currently clears the bar. The daily "
+              "equity desk needs $2,000 of its own capital in whole shares; "
+              "the Kalshi favorite-longshot study found no edge; crypto trend "
+              "on BTC/ETH (trend) and monthly ETF momentum (xsect) are both "
+              "MARGINAL — trend sits just over the p 0.10 bar on the strictly "
+              "out-of-sample run, xsect trails an equal-weight hold of its "
+              "own ETFs. Both are listed, both are re-tested every Monday, "
+              "and the allocator funds neither until a run validates it AND "
+              "it is named in data/desk/config.json. Until then this preset "
+              "runs paper and records the result.",
     ),
 
     "small": Preset(
@@ -85,10 +84,11 @@ PRESETS = {
                           max_annual_turnover=120.0, min_trade_notional=1.0,
                           max_open_positions=6),
         desks=("trend", "xsect"),
-        notes="Crypto trend, validated at this size, is the only desk funded "
-              "by default. Monthly ETF momentum (xsect) is marginal and off: "
-              "its statistic does not validate, and naming it in "
-              "data/desk/config.json only helps once it does. The overnight "
+        notes="Nothing is funded by default at this size. Crypto trend (p "
+              "0.10 on the strictly out-of-sample run) and monthly ETF "
+              "momentum (below its equal-weight benchmark) are both marginal "
+              "and off until a Monday run validates them and they are named "
+              "in data/desk/config.json. The overnight "
               "desk is NOT here: it needs $2,000 of its OWN capital (whole-"
               "share auction sizing), which under a shared preset means a "
               "$4,000 account. Between $2,000 and $4,000 it can run alone: "
@@ -109,9 +109,9 @@ PRESETS = {
         desks=("overnight", "xsect", "trend"),
         notes="From $4,000 the overnight desk gets the $2,000 of its own "
               "capital its record requires (half the account under the 50% "
-              "desk cap; walk-forward Sharpe 0.75 at $2,000, 0.79 at $5,000) "
-              "and crypto trend takes the other half. The marginal desks "
-              "(xsect, reversion) stay off unless named explicitly in "
+              "desk cap; walk-forward Sharpe 0.76 at $2,000, 0.79 at $5,000). "
+              "It is the one desk currently validated. The marginal desks "
+              "(trend, xsect, reversion) stay off unless named explicitly in "
               "data/desk/config.json and their latest statistic validates; "
               "the rejected Kalshi desk never funds.",
     ),

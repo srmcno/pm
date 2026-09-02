@@ -176,6 +176,18 @@ class CryptoTrend(Desk):
         # would be cheaper but a maker order that does not fill turns a
         # long/flat desk into a coin flip on which side of the trend it sits.
         execution_style="crossing",
+        # On the five-window walk-forward with every fold scored strictly
+        # out of sample the statistic sits just over the significance bar
+        # (p 0.101); with one training bar per fold included it
+        # read 0.087. A record decided by one bar per fold is not one the
+        # author will call validated. Re-tested every Monday.
+        status="marginal",
+        status_reason=("five-window walk-forward (four scored) Sharpe 0.90, "
+                       "CAGR 22.9%, p 0.101 — just over the "
+                       "0.10 bar every desk is held to (0.087 when each fold "
+                       "included its last training bar); above the BTC/ETH hold "
+                       "on Sharpe (0.70) with half its drawdown, but not yet "
+                       "significant"),
         description="Long BTC and ETH while each trades above its own moving "
                     "average, flat otherwise, sized inverse to realized "
                     "volatility. A volatility-scaled deadband suppresses the "

@@ -63,7 +63,7 @@ floor, sets the size below which the desk stops working:
     $250      0.3%    0.14       1.4        -
     $500      1.1%    0.31       1.5        -
     $1,000    5.5%    0.88       2.6        not significant (p 0.17)
-    $2,000    7.9%    0.94       3.4        validated, Sharpe 0.75
+    $2,000    7.9%    0.94       3.4        validated, Sharpe 0.76
     $5,000    8.6%    0.91       3.4        validated, Sharpe 0.79
 
 `capital_floor` is $2,000 because that is where the walk-forward record

@@ -47,8 +47,8 @@ Whole shares of $107–$766 ETFs re-set the floor:
 
 | Capital | What runs (`preset`) | Why |
 |---|---|---|
-| Under $100 | Nothing validated | Equity desks need $100+ (monthly) or $2,000+ (daily); the Kalshi study found no edge. Paper-trade and save. |
-| $100–$2,000 | `trend` (`micro`/`small`) | Crypto trend on BTC/ETH (validated, floor $100). Monthly ETF momentum (`xsect`) is listed in these presets but off: its latest statistic is not significant, and naming it in `config.json` is not enough until a validation run passes it. No shorting under $2,000. |
+| Under $2,000 | Nothing validated (paper only) | The one validated desk needs $2,000 of its own capital. Crypto trend (p 0.10) and monthly ETF momentum are marginal and re-tested every Monday; the Kalshi study found no edge. Paper-trade and save. |
+| $100–$2,000 | `micro` / `small`: paper | `trend` and `xsect` are listed but marginal: trend's strictly out-of-sample record reads p 0.101, a hair over the 0.10 bar (0.087 when each fold kept one training bar); xsect trails an equal-weight hold. Neither funds until a Monday run validates it AND it is named in `config.json`. No shorting under $2,000. |
 | $2,000–$4,000 | `trend`, or `overnight` alone | The overnight desk needs $2,000 of its **own** capital (its record was made at that size in whole shares). Two desks share an account, so under a preset it waits for $4,000; to run it alone from $2,000 name it as the only desk (`config --desks overnight`) with `max_desk_weight` 1.0. The account leaves limited-margin status at $2,000. |
 | $4,000+ | `overnight` + `trend` (`standard`) | Each desk gets half the account, so the overnight desk clears its $2,000 floor with whole-share sizing that holds enough names to work. |
 | $25,000+ | same, tighter caps (`scaled`) | Frictions are noise; caps tighten rather than loosen. |
@@ -82,16 +82,22 @@ desk whose edge decays switches itself off. Current verdicts:
 
 | Desk | Out-of-sample (fixed params, costs charged) | Benchmark | Verdict | Floor |
 |---|---|---|---|---|
-| `overnight` — hold US ETFs only overnight, whole-share MOC/MOO | Sharpe 0.75, CAGR 6.0%, maxDD -17% (at $2,000, p 0.035) | equal-weight universe 0.94 / 17.2% / -29% | validated | $2,000 |
-| `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 0.94, CAGR 24.2%, maxDD -29% (at $100, p 0.087) | BTC/ETH equal-weight 0.70 / 26.5% / -60% | validated | $100 |
-| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.4%, maxDD -33% (at $100, p 0.16); 0.63 / p 0.087 when cut into four windows | equal-weight universe 0.75 / 11.1% / -32% | **marginal**; off while the statistic fails | $100 |
-| `reversion` — 3 down closes, 5-day hold | Sharpe 0.73, CAGR 10.1%, maxDD -26% (at $500, p 0.040) — but not significant in 2016-21, strong only in 2021-26 | equal-weight universe 0.73 / 11.8% / -37% | **marginal**, opt-in | $500 |
+| `overnight` — hold US ETFs only overnight, whole-share MOC/MOO | Sharpe 0.76, CAGR 6.1%, maxDD -17% (at $2,000, p 0.031) | equal-weight universe 0.94 / 17.2% / -29% | validated | $2,000 |
+| `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 0.90, CAGR 22.9%, maxDD -31% (at $100, p 0.101 — just over the bar; 0.087 when each fold kept one training bar) | BTC/ETH equal-weight 0.70 / 26.5% / -60% | **marginal**; off while the statistic fails | $100 |
+| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.3%, maxDD -33% (at $100, p 0.16); 0.63 / p 0.087 when cut into four windows | equal-weight universe 0.75 / 11.1% / -32% | **marginal**; off while the statistic fails | $100 |
+| `reversion` — 3 down closes, 5-day hold | Sharpe 0.72, CAGR 10.1%, maxDD -26% (at $500, p 0.041) — but not significant in 2016-21, strong only in 2021-26 | equal-weight universe 0.73 / 11.8% / -37% | **marginal**, opt-in | $500 |
 | `kalshi-bias` — buy favorites, hold to settlement | 487 tight-quoted settled markets: favorites +0.9% to +6.6% of stake net, t 0.5–1.25 | — | **rejected** | — |
 
 Read those honestly. **Neither `overnight` nor `trend` beats buy-and-hold on
 absolute return.** Both earn a better risk-adjusted return with a much
-shallower drawdown. If you want maximum return and can tolerate a 53% drawdown,
+shallower drawdown. If you want maximum return and can tolerate a 60% drawdown,
 buy and hold bitcoin. If you want a smoother path, that is what these buy.
+
+`trend` is marginal by a hair: on the run where every scored bar is strictly
+out of sample its p-value is 0.101 against a bar of 0.10, and the same desk
+read 0.087 when each fold kept one training bar. A record that one bar per
+fold decides is not a validated one. It is re-tested every Monday, and it
+turns on the week it clears the bar, provided it is named in `config.json`.
 
 `xsect` is marginal for a specific reason: its significance depends on how
 the walk-forward is cut (four windows pass, five do not), and on the
@@ -411,19 +417,14 @@ Ranked by how likely it is to cost you money.
 
 ## 11. Honest expectations
 
-**At $500** (`small`), using the validated out-of-sample figures and
-assuming they hold:
-
-- trend is the only desk funded by default. Its cap is half the account,
-  so $250 works and $250 sits in cash. Crypto trend has earned 30%+ a year
-  in this sample and will also sit flat for months: call it $0–$75.
-- xsect cannot currently be funded: its walk-forward record is not significant
-  and trails an equal-weight hold of the same ETFs (§2). If a later Monday run
-  validates it and you name it in `config.json`, its half of the account has
-  earned about 9% a year out of sample (about $22).
-- Expect a **25–35% drawdown** on whatever is funded at some point.
-- Fees: about 0.5% on trend's turnover; under $1 a year on xsect (it
-  trades about ten days a year).
+**At $500** (`small`): nothing is funded by default today. Both desks at
+this size are marginal, so the honest expectation is zero until a Monday run
+validates one and you name it in `config.json`. If trend clears the bar (it
+is one bar per fold away), its half of the account has earned about 23% a
+year out of sample with a 31% drawdown, and will sit flat for months at a
+time: call it $0–$60 on $250. If xsect ever clears its benchmark, its half
+has earned about 8% a year (about $20). Fees: about 0.5% on trend's
+turnover; under $1 a year on xsect (it trades about ten days a year).
 
 **At $4,000** (`standard`: overnight + trend, half each), add roughly 6–8% a
 year on the overnight sleeve with a -17% to -19% drawdown, and about $7.50/yr
