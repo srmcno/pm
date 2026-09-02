@@ -1,5 +1,5 @@
 {
- "bankroll_cap": 40.0,
+ "bankroll_cap": 50.0,
  "max_stake_per_trade": 4.0,
  "max_daily_stake": 16.0,
  "max_open": 10,

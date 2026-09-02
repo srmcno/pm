@@ -387,6 +387,7 @@
         <div class="desk-sub" id="desk-st-sub">Crypto lead-lag equities</div>
       </a>
     </div>
+    <p class="asof">Each card has its own heartbeat. Freshness windows: Smart Money 40 min, Engine v2 40 min, Arb 12 min, Stocks 20 min.</p>
   </section>
 
   <div class="tiles" id="tiles"></div>
@@ -603,16 +604,21 @@ function lastBeatTs() {
   return Math.max((LIVE.paper && LIVE.paper.updatedAt) || 0,
     (LIVE.signals && LIVE.signals.meta && LIVE.signals.meta.generatedAt) || 0);
 }
-function statusPill(atTs) {
+function statusPill(atTs, opts = {}) {
   // Each engine reports its own freshness: one can be publishing happily
   // while the other's shift has died, and a shared pill would hide that.
+  const staleMinutes = opts.staleMinutes ?? 40;
+  const liveLabel = opts.liveLabel ?? "updating";
+  const staleLabel = opts.staleLabel ?? "stale";
   const ts = atTs != null ? atTs : lastBeatTs();
-  const live = ts && (Date.now() / 1000 - ts) / 60 < 40;
+  const ageMinutes = ts ? (Date.now() / 1000 - ts) / 60 : Infinity;
+  const live = ts && ageMinutes < staleMinutes;
   const el = document.createElement("span");
   el.className = "pill " + (live ? "live" : "stale");
-  el.textContent = live ? "bot live" : "bot stale";
-  el.title = live ? "The watcher checked in within the last 40 minutes."
-    : "No watcher heartbeat for 40+ minutes — the data below may be old.";
+  el.textContent = live ? liveLabel : staleLabel;
+  el.title = ts
+    ? `Last update ${ago(ts)}. Stale after ${staleMinutes} minutes.`
+    : `No heartbeat yet. Stale after ${staleMinutes} minutes.`;
   return el;
 }
 const OUTLINK = (slug, eventSlug) =>
@@ -627,7 +633,7 @@ function renderSignals() {
   const sigAsof = document.getElementById("sig-asof");
   sigAsof.replaceChildren();
   if (payload && payload.meta) {
-    sigAsof.append(statusPill(),
+    sigAsof.append(statusPill(undefined, { liveLabel: "watcher recent", staleLabel: "watcher stale", staleMinutes: 40 }),
       `Updated ${ago(payload.meta.generatedAt)} · ${payload.meta.watchlistSize} wallets watched · ` +
       `${payload.meta.minBackers}+ independent backers required`);
   }
@@ -671,7 +677,7 @@ function renderLedger() {
   tiles.replaceChildren();
   if (!p) { document.getElementById("paper-asof").textContent = "No bot data yet."; return; }
   const paperAsof = document.getElementById("paper-asof");
-  paperAsof.replaceChildren(statusPill(),
+  paperAsof.replaceChildren(statusPill(undefined, { liveLabel: "watcher recent", staleLabel: "watcher stale", staleMinutes: 40 }),
     `Paper account — no real money. Updated ${ago(p.updatedAt)} · started with $${p.bankrollStart.toFixed(2)}`);
   const ret = (p.equity / p.bankrollStart - 1) * 100;
   const defs = [
@@ -746,9 +752,9 @@ function renderDesks() {
     el.textContent = txt;
     el.className = el.className.replace(/ (pos|neg)$/, "") + (cls ? " " + cls : "");
   };
-  const pill = (id, ts) => {
+  const pill = (id, ts, opts) => {
     const el = document.getElementById(id);
-    if (el) el.replaceChildren(statusPill(ts));
+    if (el) el.replaceChildren(statusPill(ts, opts));
   };
   const money = v => (v >= 0 ? "+" : "") + "$" + Math.abs(v).toFixed(2);
 
@@ -757,8 +763,8 @@ function renderDesks() {
     const ret = pap.equity - pap.bankrollStart;
     set("desk-sm-big", "$" + pap.equity.toFixed(2), ret >= 0 ? "pos" : "neg");
     set("desk-sm-sub", `${(sig && sig.signals || []).length} active signals · ` +
-      `${pap.closedCount || (pap.closed || []).length} settled`);
-    pill("desk-sm-pill", lastBeatTs());
+      `${pap.closedCount || (pap.closed || []).length} settled · bankroll $${Number(pap.bankrollStart || 0).toFixed(0)}`);
+    pill("desk-sm-pill", lastBeatTs(), { liveLabel: "recent", staleLabel: "stale", staleMinutes: 40 });
   }
   const en = LIVE.engine;
   if (en && en.meta) {
@@ -769,7 +775,7 @@ function renderDesks() {
       ? `λ fitted · ${en.meta.votingRights} voting rights`
       : `calibrating ${en.meta.observations}/${en.meta.observationsNeeded} · ` +
         `${en.meta.votingRights} voting rights`);
-    pill("desk-en-pill", en.meta.generatedAt);
+    pill("desk-en-pill", en.meta.generatedAt, { liveLabel: "recent", staleLabel: "stale", staleMinutes: 40 });
   }
   const ar = LIVE.arb;
   if (ar) {
@@ -781,7 +787,8 @@ function renderDesks() {
     }
     const nOpp = (ar.opportunities || ar.verified || []).length;
     set("desk-ar-sub", `${nOpp} verified cycles · ${ar.pairCount || "~2,100"} pairs`);
-    pill("desk-ar-pill", (ar.meta && ar.meta.generatedAt) || ar.updatedAt || ar.t);
+    pill("desk-ar-pill", (ar.meta && ar.meta.generatedAt) || ar.updatedAt || ar.t,
+      { liveLabel: "recent", staleLabel: "stale", staleMinutes: 12 });
   }
   const stx = LIVE.stocks;
   if (stx && stx.account) {
@@ -791,7 +798,7 @@ function renderDesks() {
     const day = a.day || {};
     set("desk-st-sub", `${stx.meta.market} · today ${money(day.pnl || 0)} ` +
       `over ${day.trades || 0} trades`);
-    pill("desk-st-pill", stx.meta.generatedAt);
+    pill("desk-st-pill", stx.meta.generatedAt, { liveLabel: "recent", staleLabel: "stale", staleMinutes: 20 });
   }
 }
 
@@ -806,7 +813,7 @@ function renderEngine() {
     return;
   }
   const m = p.meta, dg = p.diagnostics || {};
-  asof.append(statusPill(m.generatedAt),
+  asof.append(statusPill(m.generatedAt, { liveLabel: "engine recent", staleLabel: "engine stale", staleMinutes: 40 }),
     `Updated ${ago(m.generatedAt)} · ${m.watchlistSize} wallets watched · ` +
     `${m.votingRights} specialty voting rights · feed: ${m.feed} · ` +
     `Σ ≥ ${m.theta} and N_eff ≥ ${m.minEffectiveBackers} to fire`);
