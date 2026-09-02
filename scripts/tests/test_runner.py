@@ -798,5 +798,68 @@ class TestLotOutsideTheUniverse(Base):
         self.assertIn("no configured desk", tel["bookMismatch"])
 
 
+class TestRoundSeven(Base):
+    def _lot(self, sh, fee=0.0, **kw):
+        d = {"symbol": "X", "desk": "_eq", "side": "long", "shares": sh,
+             "targetShares": sh, "entry": 100.0, "openedAt": 1, "cost": sh * 100.0,
+             "openFee": fee, "liveCid": f"c{sh}", "liveOpen": True, "liveQty": sh,
+             "orderType": "cls", "tif": "day"}
+        d.update(kw)
+        return d
+
+    def test_close_intent_survives_one_not_found(self):
+        """A close whose submission timed out may still land. One miss keeps
+        the lots reserved; the second frees them for a fresh decision."""
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r._desks = r.enabled_desks()
+        r._symbol_meta = r.symbol_meta(r._desks)
+        r.st.positions = [self._lot(3.0, closeCid="close1", closeShares=3.0)]
+        # unscripted id -> the venue has never heard of it
+        self.assertTrue(r.reconcile())
+        p = r.st.positions[0]
+        self.assertEqual(p.get("closeCid"), "close1")
+        self.assertEqual(p.get("closeNotFound"), 1)
+        self.assertEqual(p["shares"], 3.0)
+        # it shows up late and fills: booked against the same lot, no second sell
+        v.script["close1"] = [("filled", 3.0, 105.0)]
+        self.assertFalse(r.reconcile())
+        self.assertEqual(r.st.positions, [])
+        self.assertEqual([c["shares"] for c in r.st.closed], [3.0])
+
+    def test_close_intent_is_dropped_after_two_misses(self):
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r._desks = r.enabled_desks()
+        r._symbol_meta = r.symbol_meta(r._desks)
+        r.st.positions = [self._lot(3.0, closeCid="close1", closeShares=3.0)]
+        self.assertTrue(r.reconcile())
+        self.assertFalse(r.reconcile())
+        p = r.st.positions[0]
+        self.assertNotIn("closeCid", p)
+        self.assertNotIn("closeNotFound", p)
+        self.assertEqual(p["shares"], 3.0)
+        self.assertEqual(r.st.closed, [])
+
+    def test_partial_closes_charge_the_entry_fee_once(self):
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r._desks = r.enabled_desks()
+        r._symbol_meta = r.symbol_meta(r._desks)
+        r.st.positions = [self._lot(4.0, fee=1.0, closeCid="close1", closeShares=2.0)]
+        v.script["close1"] = [("filled", 2.0, 100.0)]
+        r.reconcile()
+        p = r.st.positions[0]
+        self.assertEqual(p["shares"], 2.0)
+        self.assertAlmostEqual(p["openFee"], 0.5)
+        self.assertAlmostEqual(p["cost"], 200.0)
+        p["closeCid"], p["closeShares"] = "close2", 2.0
+        v.script["close2"] = [("filled", 2.0, 100.0)]
+        r.reconcile()
+        self.assertEqual(r.st.positions, [])
+        entry_fee_charged = -sum(c["pnl"] + c["fees"] for c in r.st.closed)
+        self.assertAlmostEqual(entry_fee_charged, 1.0, places=6)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

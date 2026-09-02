@@ -199,8 +199,12 @@ def load(path=None, equity=None, preset=None):
     cfg = Config(
         preset=p.name,
         equity=eq,
-        live=bool(raw.get("live", False)),
-        venue_paper=bool(raw.get("venuePaper", True)),
+        # The real-money gate is the JSON boolean true and nothing else.
+        # bool("false") is True; a hand-edited file that SAYS live is off
+        # must never arm the real endpoint. venuePaper errs the other way:
+        # anything but the boolean false stays on the paper endpoint.
+        live=raw.get("live", False) is True,
+        venue_paper=raw.get("venuePaper", True) is not False,
         desks=tuple(raw.get("desks") or p.desks),
         explicit_desks=tuple(raw.get("desks") or ()),
         limits=limits,

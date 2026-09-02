@@ -142,5 +142,55 @@ class TestQtyFormat(unittest.TestCase):
         self.assertEqual(format_qty(0.009975), "0.009975")
 
 
+class _FakeAssets(_Fake):
+    def __init__(self, answers, assets):
+        super().__init__(answers)
+        self.assets = assets
+        self.asset_calls = 0
+
+    def _api(self, method, path, params=None, body=None):
+        if path.startswith("/v2/assets/"):
+            self.asset_calls += 1
+            sym = path[len("/v2/assets/"):].replace("%2F", "/")
+            if sym not in self.assets:
+                raise A.VenueError(404, "asset not found")
+            if self.assets[sym] == "boom":
+                raise A.VenueError(500, "server error")
+            return self.assets[sym]
+        return super()._api(method, path, params=params, body=body)
+
+
+class TestCryptoMinimum(unittest.TestCase):
+    RULES = {"BTC/USD": {"min_order_size": "0.0001", "min_trade_increment": "0.000000001"}}
+
+    def test_below_the_venue_minimum_is_refused_client_side(self):
+        v = _FakeAssets({}, self.RULES)
+        with self.assertRaises(ValueError) as cm:
+            v.submit("BTC/USD", 0.00005, "buy")
+        self.assertIn("minimum order size", str(cm.exception))
+        self.assertEqual(v.sent, [])
+
+    def test_quantity_rounds_down_to_the_trade_increment(self):
+        v = _FakeAssets({}, self.RULES)
+        v.submit("BTC/USD", 0.0099750000004, "sell")
+        self.assertEqual(v.sent[-1]["qty"], "0.009975")
+        v.submit("BTC/USD", 0.01, "buy")
+        self.assertEqual(v.sent[-1]["qty"], "0.01")
+        self.assertEqual(v.asset_calls, 1)            # cached per symbol
+
+    def test_unknown_rules_do_not_block_the_order(self):
+        v = _FakeAssets({}, {"BTC/USD": "boom"})
+        v.submit("BTC/USD", 0.00005, "buy")           # the venue decides
+        self.assertEqual(v.sent[-1]["qty"], "0.00005")
+        self.assertEqual(v.asset_calls, 1)
+        v.submit("BTC/USD", 0.00005, "buy")
+        self.assertEqual(v.asset_calls, 2)            # a failed lookup is not cached
+
+    def test_equities_are_not_looked_up(self):
+        v = _FakeAssets({}, {})
+        v.submit("SPY", 3, "buy", order_type="cls")
+        self.assertEqual(v.asset_calls, 0)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

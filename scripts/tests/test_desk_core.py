@@ -687,5 +687,43 @@ class TestFoldsScoreOnlyUntouchedBars(unittest.TestCase):
             self.assertEqual(f.test_bars, f.test_end - f.test_start)
 
 
+class TestLiveGateIsBoolean(unittest.TestCase):
+    """`"live": "false"` in a hand-edited config must not arm real money:
+    only the JSON boolean true does."""
+
+    def _load(self, blob):
+        import json
+        import tempfile
+        d = tempfile.mkdtemp()
+        path = os.path.join(d, "config.json")
+        with open(path, "w") as f:
+            json.dump(blob, f)
+        return config.load(path=path)
+
+    def test_only_the_boolean_true_arms(self):
+        self.assertFalse(self._load({"live": "false"}).live)
+        self.assertFalse(self._load({"live": "true"}).live)
+        self.assertFalse(self._load({"live": 1}).live)
+        self.assertFalse(self._load({}).live)
+        self.assertTrue(self._load({"live": True}).live)
+
+    def test_paper_endpoint_unless_the_boolean_false(self):
+        self.assertTrue(self._load({"venuePaper": "false"}).venue_paper)
+        self.assertTrue(self._load({}).venue_paper)
+        self.assertFalse(self._load({"venuePaper": False}).venue_paper)
+
+    def test_the_cli_flag_round_trips_as_a_boolean(self):
+        import json
+        import tempfile
+        d = tempfile.mkdtemp()
+        path = os.path.join(d, "config.json")
+        cfg = config.load(path=path)
+        cfg.live = True
+        config.save(cfg, path=path)
+        with open(path) as f:
+            self.assertIs(json.load(f)["live"], True)
+        self.assertTrue(config.load(path=path).live)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

@@ -429,18 +429,34 @@ class Runner:
                                              else "partial close")
                             remaining -= take
                         else:
-                            p.pop("closeCid", None)     # not reached: still open
+                            self._clear_close(p)        # not reached: still open
                 else:
                     statemod.journal("close_dead", {"cid": cid, "status": status})
                     for p in lots:
-                        p.pop("closeCid", None)         # retry on a later cycle
+                        self._clear_close(p)            # retry on a later cycle
             elif status == "not_found":
-                for p in lots:
-                    p.pop("closeCid", None)
+                # Same rule as an opening order. A close whose submission
+                # timed out may still land at the venue; freeing the lots on
+                # the first miss would let the next decision sell them
+                # again, and two sells of one lot is a short.
+                n = max(int(p.get("closeNotFound", 0)) for p in lots) + 1
+                if n >= 2:
+                    statemod.journal("close_dead", {"cid": cid, "status": "not_found"})
+                    for p in lots:
+                        self._clear_close(p)
+                else:
+                    for p in lots:
+                        p["closeNotFound"] = n
+                    pending = True
             else:
                 pending = True
         statemod.save(self.st)
         return pending
+
+    @staticmethod
+    def _clear_close(p):
+        for k in ("closeCid", "closeType", "closeAt", "closeShares", "closeNotFound"):
+            p.pop(k, None)
 
     def verify_book(self):
         """Live only: the venue's positions are the truth. Returns '' when the
@@ -531,10 +547,16 @@ class Runner:
         statemod.journal("open_confirmed", {"cid": p.get("liveCid"), "symbol": p["symbol"],
                                             "shares": filled, "price": px})
 
-    def _book_close(self, p, filled, px, reason):
-        fees = self._est_fee(p["symbol"], filled, px, "sell")
+    def _book_close(self, p, filled, px, reason, fees=None):
+        """Book `filled` shares of lot `p` sold at `px`. The lot's entry fee
+        and cost are consumed in proportion, so a lot closed in several
+        pieces is charged its entry fee exactly once in total."""
+        if fees is None:
+            fees = self._est_fee(p["symbol"], filled, px, "sell")
         take = min(filled, p["shares"]) if p["shares"] else filled
-        pnl = take * (px - p.get("entry", px)) - fees - (p.get("openFee", 0.0) * (take / max(p["shares"], take, 1e-9)))
+        frac = take / max(p["shares"], take, 1e-9)
+        open_fee = float(p.get("openFee", 0.0)) * frac
+        pnl = take * (px - p.get("entry", px)) - fees - open_fee
         self.st.cash += take * px - fees
         self.st.closed.append({"symbol": p["symbol"], "desk": p.get("desk", ""),
                                "side": p.get("side", "long"), "shares": take,
@@ -545,8 +567,9 @@ class Runner:
         self.rm.record_trade(take * px)
         self._note_fee(p["symbol"], fees)
         p["shares"] = max(0.0, p["shares"] - take)
-        for k in ("closeCid", "closeType", "closeAt", "closeShares"):
-            p.pop(k, None)
+        p["openFee"] = max(0.0, float(p.get("openFee", 0.0)) - open_fee)
+        p["cost"] = p["shares"] * float(p.get("entry") or px)
+        self._clear_close(p)
         if p["shares"] <= 1e-9:
             self.st.positions.remove(p)
         statemod.journal("close_confirmed", {"symbol": p["symbol"], "shares": take, "price": px})
@@ -956,6 +979,7 @@ class Runner:
                     p["closeType"] = order.order_type
                     p["closeAt"] = placed
                     p["closeShares"] = order.shares
+                    p.pop("closeNotFound", None)
                     remaining -= p["shares"]
         statemod.save(self.st)
 
@@ -994,32 +1018,17 @@ class Runner:
                             or remaining <= 0 or p["shares"] <= 0:
                         continue                # not one of this order's lots
                     take = min(p["shares"], remaining)
-                    if res.get("paper"):
-                        fees = res.get("fees", 0.0) * (take / filled)
-                        pnl = take * (px - p["entry"]) - fees - p.get("openFee", 0.0) * (take / p["shares"])
-                        self.st.cash += take * px - fees
-                        self.st.closed.append({"symbol": order.symbol, "desk": p.get("desk", ""),
-                                               "side": "long", "shares": take, "entry": p["entry"],
-                                               "exit": px, "openedAt": p.get("openedAt", 0),
-                                               "closedAt": int(time.time()), "pnl": round(pnl, 6),
-                                               "fees": round(fees, 6), "reason": order.reason})
-                        self.st.trade_count += 1
-                        self.rm.record_trade(take * px)
-                        self._note_fee(order.symbol, fees)
-                        p["shares"] -= take
-                        for k in ("closeCid", "closeType", "closeAt", "closeShares"):
-                            p.pop(k, None)
-                        if p["shares"] <= 1e-9:
-                            self.st.positions.remove(p)
-                    else:
-                        self._book_close(p, take, px, order.reason)
+                    # Paper fills carry the simulated fee; live fees are
+                    # estimated the same way the replay charges them.
+                    fees = (res.get("fees", 0.0) * (take / filled)
+                            if res.get("paper") else None)
+                    self._book_close(p, take, px, order.reason, fees=fees)
                     remaining -= take
             if status in FAILED or status == "refused":
                 # Whatever did not fill stays open and is retried by the
                 # next decision; the lots must not keep a dead close id.
                 for p in self.st.positions:
                     if p.get("closeCid") == order.client_order_id:
-                        for k in ("closeCid", "closeType", "closeAt", "closeShares"):
-                            p.pop(k, None)
+                        self._clear_close(p)
             # else: pending close — reconcile() finishes it
         statemod.save(self.st)

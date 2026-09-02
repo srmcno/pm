@@ -45,6 +45,7 @@ know:
 """
 import datetime as _dt
 import json
+import math
 import os
 import time
 import urllib.error
@@ -218,6 +219,47 @@ class AlpacaVenue:
     def asset(self, symbol):
         return self._api("GET", f"/v2/assets/{urllib.parse.quote(symbol, safe='')}")
 
+    def asset_rules(self, symbol):
+        """(min_order_size, min_trade_increment) as the assets endpoint
+        reports them, cached per symbol for the life of the client. (None,
+        None) when the venue does not publish them or the lookup failed; a
+        failed lookup is not cached, so the next order asks again."""
+        cache = self.__dict__.setdefault("_asset_rules", {})
+        if symbol in cache:
+            return cache[symbol]
+        try:
+            a = self.asset(symbol) or {}
+        except Exception:                                    # noqa: BLE001
+            return None, None
+
+        def num(key):
+            try:
+                v = a.get(key)
+                return float(v) if v not in (None, "") else None
+            except (TypeError, ValueError):
+                return None
+        cache[symbol] = (num("min_order_size"), num("min_trade_increment"))
+        return cache[symbol]
+
+    def conform_qty(self, symbol, qty):
+        """Round a crypto quantity DOWN to the venue's trade increment and
+        refuse one below its minimum order size, client-side, so the order
+        never reaches the venue to be rejected. Equities are governed by the
+        whole/fractional rules in `validate_order`."""
+        q = float(qty)
+        if not _is_crypto(symbol):
+            return q
+        lo, inc = self.asset_rules(symbol)
+        if inc and inc > 0:
+            q = math.floor(q / inc + 1e-9) * inc
+        if lo and q + 1e-12 < lo:
+            raise ValueError(f"{symbol}: {float(qty):.9g} is below the venue's minimum "
+                             f"order size {lo:.9g}")
+        if q <= 0:
+            raise ValueError(f"{symbol}: {float(qty):.9g} rounds to nothing at the "
+                             f"venue's trade increment {inc:.9g}")
+        return q
+
     def can_short(self):
         """Shorting needs a full margin account, which needs $2,000 equity."""
         a = self.account()
@@ -278,7 +320,7 @@ class AlpacaVenue:
         if notional is not None:
             body["notional"] = str(round(float(notional), 2))
         else:
-            body["qty"] = format_qty(qty)
+            body["qty"] = format_qty(self.conform_qty(symbol, qty))
         if limit_price is not None:
             body["limit_price"] = str(round(float(limit_price), 2))
         if client_order_id:
