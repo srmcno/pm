@@ -25,7 +25,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from desk.core import config as cfgmod            # noqa: E402
-from desk.core import money, risk, state as statemod   # noqa: E402
+from desk.core import evidence, money, risk, state as statemod   # noqa: E402
 from desk.backtest import metrics                 # noqa: E402
 from desk.backtest.engine import run_desk         # noqa: E402
 from desk.backtest.walkforward import walk_forward  # noqa: E402
@@ -54,7 +54,7 @@ except Exception:                                 # noqa: BLE001
 
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 DASH = os.path.join(BASE, "dashboard", "data", "desk.json")
-EVIDENCE = os.path.join(BASE, "data", "desk", "evidence.json")
+EVIDENCE = evidence.PATH
 REPORT = os.path.join(BASE, "reports", "desk-evidence.md")
 
 
@@ -93,7 +93,8 @@ def cmd_status(args):
     print(cfgmod.describe(cfg))
     print()
     desks = [deskbase.get(n)() for n in cfg.desks if deskbase.get(n)]
-    allocs = rm.allocate(desks, st.cash, explicit_desks=cfg.explicit_desks)
+    allocs = rm.allocate(desks, st.cash, explicit_desks=cfg.explicit_desks,
+                         verdicts=evidence.verdicts())
     print("allocations")
     for a in allocs:
         mark = "on " if a.enabled else "OFF"
@@ -224,8 +225,8 @@ def _write_evidence_report(blob):
              f"{blob.get('folds', '?')} folds, each desk replayed at its own capital",
              "floor with every cost charged. The `declared` column is the desk author's",
              "verdict, which may be stricter than the statistic; the allocator funds a",
-             "desk only when both agree, and funds a `marginal` desk only when it is",
-             "named explicitly in `data/desk/config.json`.", "",
+             "desk only when both agree and this record is under 30 days old, and funds",
+             "a `marginal` desk only when it is named explicitly in `data/desk/config.json`.", "",
              "| desk | statistic | declared | OOS Sharpe | OOS CAGR | max DD | p | benchmark Sharpe | replayed at | floor |",
              "|---|---|---|---|---|---|---|---|---|---|"]
     for name, d in sorted(blob.get("desks", {}).items()):

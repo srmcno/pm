@@ -33,7 +33,8 @@ import time
 from dataclasses import dataclass, field
 
 from .core import config as cfgmod
-from .core import money, risk, state as statemod
+from .backtest.engine import Engine
+from .core import evidence, money, risk, state as statemod
 from .data import bars
 from .desks import base as deskbase
 
@@ -117,6 +118,26 @@ class Order:
     reason: str = ""
     client_order_id: str = ""
     attempt: int = 0
+    # Sells down or closes an existing position. The risk manager never
+    # refuses these on exposure caps, and a loss halt sends them.
+    reducing: bool = False
+
+
+def interval_seconds(interval):
+    """'1d' -> 86400, '1h' -> 3600, '15m' -> 900."""
+    try:
+        n, unit = int(str(interval)[:-1]), str(interval)[-1]
+    except ValueError:
+        return 86400
+    return n * {"m": 60, "h": 3600, "d": 86400, "w": 604800}.get(unit, 86400)
+
+
+def completed_bars(series, interval, now_ts):
+    """Only bars whose period has ended. A 24/7 venue serves the candle
+    still forming; a daily desk that saw it as complete would re-decide
+    every cycle on a moving close — a strategy the replay never tested."""
+    span = interval_seconds(interval)
+    return [b for b in series if b.t + span <= now_ts]
 
 
 # ------------------------------------------------------------------ brokers
@@ -191,7 +212,7 @@ class LiveBroker:
 # ------------------------------------------------------------------- runner
 class Runner:
     def __init__(self, cfg=None, st=None, broker=None, rm=None,
-                 series_loader=None, clock=None):
+                 series_loader=None, clock=None, verdicts=None):
         self.cfg = cfg or cfgmod.load()
         self.st = st or statemod.load(bankroll=self.cfg.equity)
         self.rm = rm or risk.RiskManager(self.st.cash, self.cfg.limits)
@@ -199,7 +220,13 @@ class Runner:
         self.live = broker is not None and not isinstance(broker, PaperBroker)
         self._load = series_loader or self._default_loader
         self._clock = clock                     # () -> aware datetime, for tests
+        # None: read data/desk/evidence.json on every cycle, so a Monday
+        # validation that fails a desk switches it off at the next cycle.
+        self._verdicts = verdicts
         self.telemetry = {}
+
+    def verdicts(self):
+        return self._verdicts if self._verdicts is not None else evidence.verdicts()
 
     # --------------------------------------------------------------- setup
     @staticmethod
@@ -253,57 +280,72 @@ class Runner:
         if not self.live:
             return False
         pending = False
+        # --- opening orders that have not been confirmed
         for p in list(self.st.positions):
-            # --- opening orders that have not been confirmed
-            if p.get("liveCid") and not p.get("liveOpen") and not p.get("liveDead"):
-                status, filled, px = self.broker.venue.order_state(p["liveCid"])
-                if status == "filled" and filled > 0:
-                    self._book_open(p, filled, px or p.get("entry") or 0.0)
-                elif status in FAILED:
-                    if filled > 0:
-                        self._book_open(p, filled, px or p.get("entry") or 0.0)
-                    else:
-                        statemod.journal("open_dead", {"cid": p["liveCid"], "status": status})
-                        self.st.positions.remove(p)
-                elif status == "not_found":
-                    attempt = int(p.get("mirrorAttempts", 0)) + 1
-                    if attempt > MAX_ATTEMPTS:
-                        statemod.journal("open_abandoned", {"cid": p["liveCid"]})
-                        self.st.positions.remove(p)
-                    else:
-                        # Never landed: resubmit under a fresh attempt id.
-                        p["mirrorAttempts"] = attempt
-                        p["liveCid"] = client_order_id(p["desk"], p["symbol"], "buy",
-                                                       p["openedAt"], attempt)
-                        statemod.save(self.st)
-                        o = Order(p["desk"], p["symbol"], "buy", p["targetShares"],
-                                  p.get("entry") or 0.0, p.get("orderType", "market"),
-                                  p.get("tif", "day"), client_order_id=p["liveCid"])
-                        res = self.broker.execute(o)
-                        if res.get("status") == "filled" and res.get("filled_qty"):
-                            self._book_open(p, res["filled_qty"], res.get("price") or o.ref_price)
-                        else:
-                            pending = True
-                else:
-                    if filled > 0:
-                        p["liveQty"] = filled           # partial: exposure exists
-                    pending = True
+            if not (p.get("liveCid") and not p.get("liveOpen") and not p.get("liveDead")):
                 continue
-            # --- closing orders that have not been confirmed
-            if p.get("closeCid"):
-                status, filled, px = self.broker.venue.order_state(p["closeCid"])
-                if status == "filled" and filled > 0:
-                    self._book_close(p, filled, px or p.get("entry") or 0.0, "close confirmed")
-                elif status in FAILED:
-                    if filled > 0:
-                        self._book_close(p, filled, px or p.get("entry") or 0.0, "partial close")
-                    else:
-                        statemod.journal("close_dead", {"cid": p["closeCid"], "status": status})
-                        p.pop("closeCid", None)         # retry on a later cycle
-                elif status == "not_found":
-                    p.pop("closeCid", None)
+            status, filled, px = self.broker.venue.order_state(p["liveCid"])
+            if status == "filled" and filled > 0:
+                self._book_open(p, filled, px or p.get("entry") or 0.0)
+            elif status in FAILED:
+                if filled > 0:
+                    self._book_open(p, filled, px or p.get("entry") or 0.0)
                 else:
-                    pending = True
+                    statemod.journal("open_dead", {"cid": p["liveCid"], "status": status})
+                    self.st.positions.remove(p)
+            elif status == "not_found":
+                attempt = int(p.get("mirrorAttempts", 0)) + 1
+                if attempt > MAX_ATTEMPTS:
+                    statemod.journal("open_abandoned", {"cid": p["liveCid"]})
+                    self.st.positions.remove(p)
+                else:
+                    # Never landed: resubmit under a fresh attempt id.
+                    p["mirrorAttempts"] = attempt
+                    p["liveCid"] = client_order_id(p["desk"], p["symbol"], "buy",
+                                                   p["openedAt"], attempt)
+                    statemod.save(self.st)
+                    o = Order(p["desk"], p["symbol"], "buy", p["targetShares"],
+                              p.get("entry") or 0.0, p.get("orderType", "market"),
+                              p.get("tif", "day"), client_order_id=p["liveCid"])
+                    res = self.broker.execute(o)
+                    if res.get("status") == "filled" and res.get("filled_qty"):
+                        self._book_open(p, res["filled_qty"], res.get("price") or o.ref_price)
+                    else:
+                        pending = True
+            else:
+                if filled > 0:
+                    p["liveQty"] = filled           # partial: exposure exists
+                pending = True
+        # --- closing orders. One order can span several lots of a symbol,
+        # so its fill is distributed across them once, in order — never
+        # applied to each lot in full.
+        by_cid = {}
+        for p in self.st.positions:
+            if p.get("closeCid") and p.get("liveOpen"):
+                by_cid.setdefault(p["closeCid"], []).append(p)
+        for cid, lots in by_cid.items():
+            status, filled, px = self.broker.venue.order_state(cid)
+            if status == "filled" or status in FAILED:
+                if filled > 0:
+                    remaining = float(filled)
+                    for p in lots:
+                        take = min(p["shares"], remaining)
+                        if take > 1e-12:
+                            self._book_close(p, take, px or p.get("entry") or 0.0,
+                                             "close confirmed" if status == "filled"
+                                             else "partial close")
+                            remaining -= take
+                        else:
+                            p.pop("closeCid", None)     # not reached: still open
+                else:
+                    statemod.journal("close_dead", {"cid": cid, "status": status})
+                    for p in lots:
+                        p.pop("closeCid", None)         # retry on a later cycle
+            elif status == "not_found":
+                for p in lots:
+                    p.pop("closeCid", None)
+            else:
+                pending = True
         statemod.save(self.st)
         return pending
 
@@ -313,6 +355,9 @@ class Runner:
         p.update({"shares": filled, "entry": px, "cost": filled * px,
                   "openFee": fees, "liveOpen": True, "liveQty": filled})
         self.st.cash -= filled * px + fees
+        # Turnover is counted where the fill is confirmed, so an auction
+        # order that fills long after submission still spends its budget.
+        self.rm.record_trade(filled * px)
         statemod.journal("open_confirmed", {"cid": p.get("liveCid"), "symbol": p["symbol"],
                                             "shares": filled, "price": px})
 
@@ -327,6 +372,7 @@ class Runner:
                                "openedAt": p.get("openedAt", 0), "closedAt": int(time.time()),
                                "pnl": round(pnl, 6), "fees": round(fees, 6), "reason": reason})
         self.st.trade_count += 1
+        self.rm.record_trade(take * px)
         p["shares"] = max(0.0, p["shares"] - take)
         p.pop("closeCid", None)
         if p["shares"] <= 1e-9:
@@ -359,8 +405,13 @@ class Runner:
                 notes.append(f"{d.meta.name}: holding (outside its window, phase {phase})")
                 continue
             series = {}
+            now_ts = self.now_et().timestamp()
             for sym in d.universe():
                 s = self._load(sym, d.meta.interval, src_for(d))
+                if s and d.meta.asset_class == "crypto":
+                    # 24/7 venues serve the candle still forming. The replay
+                    # decided on completed bars, so the live loop does too.
+                    s = completed_bars(s, d.meta.interval, now_ts)
                 if s:
                     series[sym] = s
             if not series:
@@ -374,14 +425,25 @@ class Runner:
             if length <= d.meta.warmup_bars:
                 notes.append(f"{d.meta.name}: warming up ({length}/{d.meta.warmup_bars})")
                 continue
-            view = deskbase.View(aligned, length - 1, ev,
-                                 aligned[list(aligned)[0]][-1].t)
-            decision = d.decide(view)
+            bar_ts = aligned[list(aligned)[0]][-1].t
+            prev = self.st.decisions.get(d.meta.name) or {}
+            if prev.get("barTs") == bar_ts and prev.get("event") == ev:
+                # Same bar, same event: the replay decided exactly once here.
+                # Restate that decision so a missed fill still self-corrects,
+                # but do not decide again on the same (or a moving) bar.
+                weights = dict(prev.get("weights") or {})
+                note = "unchanged, already decided on this bar: " + str(prev.get("note", ""))
+            else:
+                view = deskbase.View(aligned, length - 1, ev, bar_ts)
+                decision = d.decide(view)
+                weights = dict((decision.weights or {}) if decision else {})
+                note = decision.note if decision else ""
+                self.st.decisions[d.meta.name] = {
+                    "barTs": bar_ts, "event": ev, "weights": weights,
+                    "note": note, "at": int(time.time())}
             active.update(d.universe())
-            if not decision:
-                continue
-            notes.append(f"{d.meta.name}[{ev}]: {decision.note}")
-            for sym, w in (decision.weights or {}).items():
+            notes.append(f"{d.meta.name}[{ev}]: {note}")
+            for sym, w in weights.items():
                 targets[sym] = targets.get(sym, 0.0) + w * alloc.weight
         return targets, notes, active
 
@@ -413,19 +475,60 @@ class Runner:
                 continue
             otype, tif, whole = order_style(m, phase)
             want_w = targets.get(sym, 0.0)
-            want = (equity * want_w) / px if want_w else 0.0
+            raw = (equity * want_w) / px if want_w else 0.0
+            held_qty = held.get(sym, 0.0)
+            want = raw
             if whole:
-                want = float(int(want))
-            delta = want - held.get(sym, 0.0)
+                # Whole shares floor. A held position whose unrounded target
+                # is within one share of it stays put: otherwise a fee-sized
+                # equity change turns 5.0000 into 4.9999, floors to 4, and
+                # sells a share every cycle.
+                if held_qty > 0 and raw > 0 and abs(raw - held_qty) < 1:
+                    continue
+                want = float(int(raw))
+            delta = want - held_qty
             notional = abs(delta) * px
             if notional < self.cfg.limits.min_trade_notional:
                 continue
             if whole and abs(delta) < 1:
                 continue
+            # The replay's no-trade band, applied here with the same numbers:
+            # a difference under 2% of equity AND under 10% of the position is
+            # drift, not a signal. Without it a whole-share desk would sell a
+            # share every cycle on fee-sized equity changes.
+            if held_qty > 0 and want > 0 \
+                    and notional < equity * Engine.REBALANCE_BAND_EQUITY \
+                    and notional < held_qty * px * Engine.REBALANCE_BAND_POSITION:
+                continue
             out.append(Order(desk=self._owner(sym), symbol=sym,
                              side="buy" if delta > 0 else "sell", shares=abs(delta),
                              ref_price=px, order_type=otype, time_in_force=tif,
-                             reason=f"target {want_w:.1%} ({otype})"))
+                             reason=f"target {want_w:.1%} ({otype})",
+                             reducing=(delta < 0 and held.get(sym, 0.0) > 0)))
+        return out
+
+    def flatten_orders(self, marks):
+        """One market sell per symbol closing every confirmed position. Crypto
+        GTC; equity DAY — placed outside the session it queues for the open,
+        which is the earliest anything can be sold anyway."""
+        by_sym = {}
+        for p in self.st.positions:
+            if p.get("closeCid") or (p.get("liveCid") and not p.get("liveOpen")):
+                continue                        # pending; reconcile owns it
+            if p.get("shares", 0.0) <= 0:
+                continue
+            by_sym[p["symbol"]] = by_sym.get(p["symbol"], 0.0) + p["shares"]
+        out = []
+        for sym, shares in by_sym.items():
+            m = self._symbol_meta.get(sym)
+            px = marks.get(sym) or 0.0
+            if px <= 0:
+                px = next((p.get("entry") for p in self.st.positions
+                           if p["symbol"] == sym and p.get("entry")), 0.0)
+            out.append(Order(desk=self._owner(sym), symbol=sym, side="sell",
+                             shares=shares, ref_price=px, order_type="market",
+                             time_in_force="gtc" if (m and m.asset_class == "crypto") else "day",
+                             reason="loss halt: flatten", reducing=True))
         return out
 
     def _owner(self, sym):
@@ -453,39 +556,28 @@ class Runner:
         self.rm.roll_session(today, equity)
         halt = self.rm.mark(equity)
         allocs = {a.name: a for a in self.rm.allocate(
-            self._desks, equity, explicit_desks=getattr(self.cfg, "explicit_desks", ()))}
+            self._desks, equity, explicit_desks=getattr(self.cfg, "explicit_desks", ()),
+            verdicts=self.verdicts())}
         targets, notes, active = self.decide_all(self._desks, allocs, phase)
 
         executed, refused = [], []
-        if halt:
-            refused.append({"reason": halt, "scope": "all"})
+        if halt and self.rm.loss_halted() and not pending:
+            # A loss halt means get flat, not freeze: the exposure is what is
+            # losing. Only the operator's STOP file holds the book as it is.
+            refused.append({"reason": halt, "scope": "all new exposure; flattening"})
+            statemod.journal("halt_flatten", {"reason": halt,
+                                              "positions": len(self.st.positions)})
+            for order in self.flatten_orders(marks):
+                self._execute(order, executed, refused)
+        elif halt:
+            refused.append({"reason": halt, "scope": "all"
+                            + ("; flattening once the pending order settles" if pending else "")})
         elif pending:
             refused.append({"reason": "an earlier order is still pending; not trading "
                                       "until it reaches a terminal state", "scope": "all"})
         else:
             for order in self.orders_for(targets, marks, equity, active, phase):
-                notional = order.shares * order.ref_price
-                ok, why = self.rm.check_trade(notional, order.symbol, len(self.st.positions))
-                if not ok:
-                    refused.append({"symbol": order.symbol, "reason": why})
-                    continue
-                stamp = int(time.time())
-                order.client_order_id = client_order_id(order.desk, order.symbol,
-                                                        order.side, stamp)
-                self._record_intent(order, stamp)
-                res = self.broker.execute(order)
-                self._apply_result(order, res, stamp)
-                if res.get("status") == "filled" and res.get("filled_qty"):
-                    self.rm.record_trade(notional)
-                    executed.append({"symbol": order.symbol, "side": order.side,
-                                     "shares": round(res["filled_qty"], 8),
-                                     "price": res.get("price"), "type": order.order_type})
-                elif res.get("status") == "refused":
-                    refused.append({"symbol": order.symbol, "reason": res.get("error")})
-                else:
-                    executed.append({"symbol": order.symbol, "side": order.side,
-                                     "shares": round(order.shares, 8), "type": order.order_type,
-                                     "status": res.get("status") or "pending"})
+                self._execute(order, executed, refused)
 
         equity = self.account_equity(marks)
         self.st.equity_curve.append({"t": int(time.time()), "equity": round(equity, 4)})
@@ -505,6 +597,33 @@ class Runner:
         return self.telemetry
 
     # ------------------------------------------------------------- effects
+    def _execute(self, order, executed, refused):
+        """Risk check, journal, submit, book. The only path to a venue."""
+        notional = order.shares * order.ref_price
+        ok, why = self.rm.check_trade(notional, order.symbol, len(self.st.positions),
+                                      reducing=order.reducing)
+        if not ok:
+            refused.append({"symbol": order.symbol, "reason": why})
+            return
+        stamp = int(time.time())
+        order.client_order_id = client_order_id(order.desk, order.symbol,
+                                                order.side, stamp)
+        self._record_intent(order, stamp)
+        res = self.broker.execute(order)
+        self._apply_result(order, res, stamp)
+        if res.get("status") == "filled" and res.get("filled_qty"):
+            executed.append({"symbol": order.symbol, "side": order.side,
+                             "shares": round(res["filled_qty"], 8),
+                             "price": res.get("price"), "type": order.order_type,
+                             "reason": order.reason})
+        elif res.get("status") == "refused":
+            refused.append({"symbol": order.symbol, "reason": res.get("error")})
+        else:
+            executed.append({"symbol": order.symbol, "side": order.side,
+                             "shares": round(order.shares, 8), "type": order.order_type,
+                             "status": res.get("status") or "pending",
+                             "reason": order.reason})
+
     def _record_intent(self, order, stamp):
         """Journal, and for a BUY create the pending position BEFORE the
         order leaves, so a crash between the two leaves an id to reconcile."""
@@ -544,6 +663,7 @@ class Runner:
                     p.update({"shares": filled, "entry": px, "cost": filled * px,
                               "openFee": fees, "liveOpen": True, "liveQty": filled})
                     self.st.cash -= filled * px + fees
+                    self.rm.record_trade(filled * px)
                 else:
                     self._book_open(p, filled, px)
             elif res.get("status") in FAILED or res.get("status") == "refused":
@@ -566,6 +686,7 @@ class Runner:
                                                "closedAt": int(time.time()), "pnl": round(pnl, 6),
                                                "fees": round(fees, 6), "reason": order.reason})
                         self.st.trade_count += 1
+                        self.rm.record_trade(take * px)
                         p["shares"] -= take
                         p.pop("closeCid", None)
                         if p["shares"] <= 1e-9:

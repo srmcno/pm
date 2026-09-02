@@ -70,7 +70,9 @@ PRESETS = {
               "only desk this preset funds on its own. Monthly ETF momentum "
               "(xsect) is listed but MARGINAL: its five-fold walk-forward is "
               "not significant and trails an equal-weight hold of the same "
-              "ETFs. It runs only if you name it in data/desk/config.json.",
+              "ETFs. The allocator will not fund it while that statistic "
+              "fails; if a later validation run passes it, naming it in "
+              "data/desk/config.json turns it on.",
     ),
 
     "small": Preset(
@@ -84,8 +86,9 @@ PRESETS = {
                           max_open_positions=6),
         desks=("trend", "xsect"),
         notes="Crypto trend, validated at this size, is the only desk funded "
-              "by default. Monthly ETF momentum (xsect) is marginal and off "
-              "until named explicitly in data/desk/config.json. The overnight "
+              "by default. Monthly ETF momentum (xsect) is marginal and off: "
+              "its statistic does not validate, and naming it in "
+              "data/desk/config.json only helps once it does. The overnight "
               "desk is NOT here: it only works with whole-share auction "
               "orders and its walk-forward record does not validate until "
               "$2,000. No shorting: under $2,000 an Alpaca account is "
@@ -106,8 +109,8 @@ PRESETS = {
               "overnight desk's whole-share auction sizing has enough names "
               "to work (walk-forward Sharpe 0.75 here, 0.79 at $5,000). The "
               "marginal desks (xsect, reversion) stay off unless named "
-              "explicitly in data/desk/config.json; the rejected Kalshi desk "
-              "never funds.",
+              "explicitly in data/desk/config.json and their latest statistic "
+              "validates; the rejected Kalshi desk never funds.",
     ),
 
     # Deliberately not a "maximum risk" preset. It relaxes turnover and

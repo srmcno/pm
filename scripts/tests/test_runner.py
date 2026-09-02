@@ -98,7 +98,9 @@ class Base(unittest.TestCase):
         broker = R.LiveBroker(venue, settle_seconds=0.0, poll=0.0) if venue else None
         return R.Runner(cfg=cfg, st=st, broker=broker, rm=rm,
                         series_loader=lambda s, i, src: self.data.get(s, []),
-                        clock=clock or (lambda: dt.datetime(2026, 9, 1, 15, 40, tzinfo=ET)))
+                        clock=clock or (lambda: dt.datetime(2026, 9, 1, 15, 40, tzinfo=ET)),
+                        verdicts={d: {"verdict": "validated", "stale": False,
+                                      "date": "test"} for d in desks})
 
 
 class TestWindows(Base):
@@ -275,6 +277,146 @@ class TestArming(unittest.TestCase):
             cli._arm_or_die(self._args(venue_paper=False), self._cfg(False))
         self.assertIn("config.json", str(cm.exception))
         cli._arm_or_die(self._args(venue_paper=False), self._cfg(True))
+
+
+class TestVerdictGate(Base):
+    """The latest walk-forward statistic decides funding; a failed or stale
+    record switches a desk off at the next cycle."""
+
+    def test_desk_whose_statistic_failed_is_not_funded(self):
+        r = self.runner(["_eq"])
+        r._verdicts = {"_eq": {"verdict": "not-significant", "stale": False,
+                               "date": "2026-09-01"}}
+        tel = r.run_cycle()
+        self.assertEqual(tel["executed"], [])
+        self.assertFalse(tel["allocations"]["_eq"]["enabled"])
+        self.assertIn("statistic", tel["allocations"]["_eq"]["reason"])
+
+    def test_missing_or_stale_record_is_not_funded(self):
+        r = self.runner(["_eq"])
+        r._verdicts = {}
+        tel = r.run_cycle()
+        self.assertFalse(tel["allocations"]["_eq"]["enabled"])
+        self.assertIn("no validation record", tel["allocations"]["_eq"]["reason"])
+        r = self.runner(["_eq"])
+        r._verdicts = {"_eq": {"verdict": "validated", "stale": True,
+                               "ageDays": 45, "maxAgeDays": 30}}
+        tel = r.run_cycle()
+        self.assertFalse(tel["allocations"]["_eq"]["enabled"])
+        self.assertIn("days old", tel["allocations"]["_eq"]["reason"])
+
+
+class TestLossHalt(Base):
+    """A loss halt gets flat; the STOP file freezes; neither re-enters."""
+
+    def _open_then_drop(self, venue=None):
+        r = self.runner(["_eq"], venue=venue)
+        r.run_cycle()
+        self.assertEqual(r.st.positions[0]["shares"], 5.0)
+        self.data["X"] = mkbars([100] * 9 + [80])       # -20% on a 50% position
+        return r
+
+    def test_daily_loss_halt_flattens_instead_of_freezing(self):
+        r = self._open_then_drop()
+        tel = r.run_cycle()
+        self.assertTrue(any("daily loss" in x["reason"] for x in tel["refused"]))
+        sells = [e for e in tel["executed"] if e["side"] == "sell"]
+        self.assertEqual(len(sells), 1)
+        self.assertEqual(sells[0]["type"], "market")
+        self.assertEqual(r.st.positions, [])
+        self.assertEqual(len(r.st.closed), 1)
+
+    def test_halt_does_not_reopen_after_flattening(self):
+        r = self._open_then_drop()
+        r.run_cycle()
+        tel = r.run_cycle()
+        self.assertEqual(tel["executed"], [])
+        self.assertEqual(r.st.positions, [])
+
+    def test_stop_file_freezes_the_book(self):
+        r = self._open_then_drop()
+        open(risk.STOP_FILE, "w").write("x")
+        tel = r.run_cycle()
+        self.assertEqual(tel["executed"], [])
+        self.assertEqual(len(r.st.positions), 1)
+
+    def test_live_flatten_is_a_reducing_market_sell(self):
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r.run_cycle()
+        cid = r.st.positions[0]["liveCid"]
+        v.script[cid] = [("filled", v.submitted[-1][1], 100.0)]
+        r.run_cycle()                                   # confirmed open
+        v.equity = 900.0                                # the venue says -10% today
+        tel = r.run_cycle()
+        self.assertTrue(any("daily loss" in x["reason"] for x in tel["refused"]))
+        sym, qty, side, otype, tif, _cid = v.submitted[-1]
+        self.assertEqual((sym, side, otype, tif), ("X", "sell", "market", "day"))
+        self.assertEqual(float(qty), 5.0)
+        self.assertTrue(r.st.positions[0].get("closeCid"))
+
+
+class TestMultiLotClose(Base):
+    def test_one_close_order_is_distributed_across_lots(self):
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r._desks = r.enabled_desks()
+        r._symbol_meta = r.symbol_meta(r._desks)
+
+        def lot(sh):
+            return {"symbol": "X", "desk": "_eq", "side": "long", "shares": sh,
+                    "targetShares": sh, "entry": 100.0, "openedAt": 1, "cost": sh * 100.0,
+                    "openFee": 0.0, "liveCid": f"c{sh}", "liveOpen": True, "liveQty": sh,
+                    "mirrorAttempts": 0, "orderType": "cls", "tif": "day",
+                    "closeCid": "close1"}
+        r.st.positions = [lot(3.0), lot(2.0)]
+        r.st.cash = 500.0
+        v.script["close1"] = [("filled", 4.0, 110.0)]
+        pending = r.reconcile()
+        self.assertFalse(pending)
+        self.assertEqual(sum(c["shares"] for c in r.st.closed), 4.0)
+        self.assertEqual([p["shares"] for p in r.st.positions], [1.0])
+        self.assertNotIn("closeCid", r.st.positions[0])
+        self.assertAlmostEqual(r.st.cash, 940.0, delta=0.05)
+        self.assertAlmostEqual(r.rm.telemetry()["turnover"]["usedUsd"], 440.0, delta=0.01)
+
+
+class TestTurnoverAccounting(Base):
+    def test_fill_confirmed_by_reconcile_spends_the_budget(self):
+        v = FakeVenue()
+        r = self.runner(["_eq"], venue=v)
+        r.run_cycle()                                   # submitted, pending
+        self.assertEqual(r.rm.telemetry()["turnover"]["usedUsd"], 0.0)
+        cid = r.st.positions[0]["liveCid"]
+        v.script[cid] = [("filled", v.submitted[-1][1], 100.0)]
+        r.run_cycle()
+        self.assertAlmostEqual(r.rm.telemetry()["turnover"]["usedUsd"], 500.0, delta=0.01)
+
+    def test_paper_fill_spends_the_budget_once(self):
+        r = self.runner(["_eq"])
+        r.run_cycle()
+        self.assertAlmostEqual(r.rm.telemetry()["turnover"]["usedUsd"], 500.0, delta=1.0)
+
+
+class TestOncePerBar(Base):
+    def test_crypto_desk_ignores_the_forming_candle_and_decides_once_per_bar(self):
+        now = dt.datetime(2026, 9, 1, 15, 40, tzinfo=ET)
+        t0 = int(now.timestamp()) - 3600 - 9 * 86400    # bar 9 started an hour ago
+        self.data["B/USD"] = mkbars([50] * 10, t0=t0)
+        r = self.runner(["_cr"], clock=lambda: now)
+        r.run_cycle()
+        self.assertEqual(r.st.decisions["_cr"]["barTs"], t0 + 8 * 86400)  # last COMPLETED
+        self.data["B/USD"] = mkbars([50] * 9 + [80], t0=t0)   # the forming candle moves
+        tel = r.run_cycle()
+        self.assertTrue(any("unchanged" in n for n in tel["deskNotes"]))
+        self.assertEqual(r.st.decisions["_cr"]["barTs"], t0 + 8 * 86400)
+
+    def test_equity_desk_restates_rather_than_redecides_within_a_window(self):
+        r = self.runner(["_eq"])
+        r.run_cycle()
+        tel = r.run_cycle()
+        self.assertTrue(any("unchanged" in n for n in tel["deskNotes"]))
+        self.assertEqual(tel["executed"], [])           # already at target: no churn
 
 
 if __name__ == "__main__":

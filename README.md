@@ -41,10 +41,10 @@ legally use.
 | Replay | `desk/backtest/engine.py` | Event-driven, lookahead-safe (a desk cannot see the current bar at the open), targets differenced with a no-trade band, fills in the auction or across the spread according to what the desk declares it will do live. |
 | Statistics | `desk/backtest/metrics.py` | Deflated Sharpe, t-stat, minimum track-record length, and a one-word verdict that refuses small or over-searched samples. |
 | Walk-forward | `desk/backtest/walkforward.py` | Rolling folds scored only on untouched windows; fixed parameters by default because the per-fold search was shown to pick noise. |
-| Risk | `desk/core/risk.py` | Allocation with per-desk capital floors, daily/weekly/drawdown halts that survive restarts, and a **turnover budget** — the brake the June 2026 PDT repeal removed. |
+| Risk | `desk/core/risk.py` | Allocation gated on each desk's latest walk-forward verdict and its capital floor; daily/weekly/drawdown loss halts that flatten and survive restarts; a **turnover budget** — the brake the June 2026 PDT repeal removed. |
 | Runner | `desk/runner.py` | Reconciles every pending order before deciding, books only confirmed fills at the venue's price, acts only inside the auction submission windows on the venue's clock. Paper and live share the path. |
 | Venues | `desk/venues/alpaca.py`, `desk/venues/kalshi.py` | Client-side enforcement of every order rule that would otherwise be a rejection: fractional-vs-auction, crypto TIF, MOC/MOO cutoffs, Kalshi's per-market tick grid and fixed-point quantities. Ship disarmed. |
-| Desks | `desk/desks/` | `overnight` (validated, $2,000+), `trend` (validated, $100+), `xsect` (marginal, opt-in, $100+ — not significant on five folds and below its own equal-weight benchmark), `reversion` (marginal, opt-in, $500+), `kalshi-bias` (tested and rejected — the study is in its docstring). |
+| Desks | `desk/desks/` | `overnight` (validated, $2,000+), `trend` (validated, $100+), `xsect` (marginal, $100+ — off while its five-fold statistic fails; naming it in the config is not enough), `reversion` (marginal, opt-in, $500+), `kalshi-bias` (tested and rejected — the study is in its docstring). |
 | Operator | `desk/cli.py`, `docs/RUNBOOK.md`, `dashboard/desk.html` | `status`, `validate`, `run`, `watch`, `halt`; the real-money runbook; a dashboard that leads with each desk's out-of-sample verdict. |
 
 Start here:

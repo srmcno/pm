@@ -48,14 +48,15 @@ Whole shares of $107–$766 ETFs re-set the floor:
 | Capital | What runs (`preset`) | Why |
 |---|---|---|
 | Under $100 | Nothing validated | Equity desks need $100+ (monthly) or $2,000+ (daily); the Kalshi study found no edge. Paper-trade and save. |
-| $100–$2,000 | `trend` (`micro`/`small`) | Crypto trend on BTC/ETH (validated, floor $100). Monthly ETF momentum (`xsect`) is listed in these presets but marginal — off until you name it in `config.json`. No shorting under $2,000. |
+| $100–$2,000 | `trend` (`micro`/`small`) | Crypto trend on BTC/ETH (validated, floor $100). Monthly ETF momentum (`xsect`) is listed in these presets but off: its latest statistic is not significant, and naming it in `config.json` is not enough until a validation run passes it. No shorting under $2,000. |
 | $2,000+ | + `overnight` (`standard`) | Whole-share auction sizing now holds enough names to work. Account leaves limited-margin status. |
 | $25,000+ | same, tighter caps (`scaled`) | Frictions are noise; caps tighten rather than loosen. |
 
 The `reversion` desk is registered but in no preset (see §2). The
 `kalshi-bias` desk is registered and rejected. A marginal desk funds only
-when it appears in the `desks` list of `data/desk/config.json`; a preset
-listing it is not enough.
+when it appears in the `desks` list of `data/desk/config.json` AND its latest
+statistic is `validated`; a preset listing it is not enough, and neither is
+naming it while the statistic fails.
 
 Check your own numbers before funding anything:
 
@@ -69,13 +70,17 @@ python3 -m desk.cli --equity 500 costs
 ## 2. What is actually validated, and what is not
 
 Nothing trades until it passes walk-forward testing on data it never saw
-during fitting, with every cost charged. Current verdicts:
+during fitting, with every cost charged. The allocator reads the record
+(`data/desk/evidence.json`) on every cycle: a desk whose latest statistic is
+not `validated`, or whose record is more than 30 days old, is refused whatever
+its declared status says. The Monday workflow keeps the record fresh, so a
+desk whose edge decays switches itself off. Current verdicts:
 
 | Desk | Out-of-sample (fixed params, costs charged) | Benchmark | Verdict | Floor |
 |---|---|---|---|---|
 | `overnight` — hold US ETFs only overnight, whole-share MOC/MOO | Sharpe 0.75, CAGR 6.0%, maxDD -17% (at $2,000) | SPY 0.92 / 20% / -36% | validated | $2,000 |
 | `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 1.13, CAGR 31.7%, maxDD -28% | BTC 0.87 / 35.7% / -53% | validated | $100 |
-| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.5%, maxDD -33% on 5 folds at $100 (p 0.16); 0.63 / p 0.087 on 4 folds | equal-weight universe 0.75 / 11.1% / -32% | **marginal**, opt-in | $100 |
+| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.5%, maxDD -33% on 5 folds at $100 (p 0.16); 0.63 / p 0.087 on 4 folds | equal-weight universe 0.75 / 11.1% / -32% | **marginal**; off while the statistic fails | $100 |
 | `reversion` — 3 down closes, 5-day hold | Sharpe 0.75, CAGR 10.5% — but not significant in 2016-21, strong only in 2021-26 | SPY 0.79 / 13.4% | **marginal**, opt-in | $500 |
 | `kalshi-bias` — buy favorites, hold to settlement | 487 tight-quoted settled markets: favorites +0.9% to +6.6% of stake net, t 0.5–1.25 | — | **rejected** | — |
 
@@ -89,9 +94,11 @@ the walk-forward is cut (four folds pass, five do not), and on the five-fold
 run the dashboard publishes it earns a worse risk-adjusted return than
 simply holding its own seventeen ETFs equal-weighted. The momentum effect
 it exploits is among the best-documented in finance; ten years of ETF price
-data cannot confirm it here. It is replayed every Monday, and its status
-changes only if the five-fold record clears the significance bar every desk
-is held to (p at or under 0.10) and beats that equal-weight benchmark.
+data cannot confirm it here. It is replayed every Monday. The allocator will
+not fund it while its statistic fails, whatever `config.json` says; its
+declared status changes only if the five-fold record clears the significance
+bar every desk is held to (p at or under 0.10) and beats that equal-weight
+benchmark.
 
 Tested and found dead — do not let anyone sell you these:
 
@@ -278,13 +285,20 @@ python3 -m desk.cli halt      # writes data/desk/STOP — nothing trades
 python3 -m desk.cli resume    # removes it
 ```
 
-The STOP file is checked before every cycle and mid-loop. Automatic halts also
-exist and persist across restarts:
+The STOP file is checked before every cycle and mid-loop. It **freezes** the
+book: nothing is bought and nothing is sold, so if you want out, sell at the
+broker. Automatic loss halts are different — they **flatten**: on the cycle
+that trips one, every confirmed position is sold with a market order (DAY for
+equities, so one placed after the close fills at the next open; GTC for
+crypto) and no new exposure is taken. Loss halts persist across restarts:
 
-- **Daily loss halt** (default 4%): flattens and stops for the session.
-- **Weekly loss halt** (10%).
-- **Drawdown halt** (25% from peak equity): stops everything and survives a
-  restart — it does not reset with a new session.
+- **Daily loss halt** (default 4% from the session's starting equity): flattens
+  and stops until the next session.
+- **Weekly loss halt** (10% from the ISO week's starting equity): flattens and
+  stops until the next week.
+- **Drawdown halt** (25% from peak equity): flattens, stops everything, and
+  does not reset with a new session — clear `data/desk/risk-state.json` only
+  once you have decided, with the account flat, to start again.
 - **Turnover budget**: refuses trades once the trailing-year traded notional
   exceeds the allowance. This exists because the PDT repeal removed the
   external brake; at 5 round trips a day, spread alone consumes roughly 62% of
@@ -367,10 +381,10 @@ assuming they hold:
 - trend is the only desk funded by default. Its cap is half the account,
   so $250 works and $250 sits in cash. Crypto trend has earned 30%+ a year
   in this sample and will also sit flat for months: call it $0–$75.
-- If you opt into xsect by naming it in `config.json`, its other half of
-  the account has earned 9% a year out of sample (about $22) — but read §2
-  first: that record is not significant on five folds and trails an
-  equal-weight hold of the same ETFs.
+- xsect cannot currently be funded: its five-fold record is not significant
+  and trails an equal-weight hold of the same ETFs (§2). If a later Monday run
+  validates it and you name it in `config.json`, its half of the account has
+  earned about 9% a year out of sample (about $22).
 - Expect a **25–35% drawdown** on whatever is funded at some point.
 - Fees: about 0.5% on trend's turnover; under $1 a year on xsect (it
   trades about ten days a year).

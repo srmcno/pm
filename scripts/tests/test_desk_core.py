@@ -374,5 +374,69 @@ class TestDeclaredStatus(unittest.TestCase):
                 self.assertTrue(c.meta.status_reason, f"{n} must say why")
 
 
+class TestRiskGates(unittest.TestCase):
+    def _rm(self, **lim):
+        return risk.RiskManager(1000.0, risk.RiskLimits(**lim),
+                                state_path="/tmp/_risk_gates.json")
+
+    def test_weekly_baseline_rolls_at_the_iso_week_boundary(self):
+        rm = self._rm()
+        rm.roll_session("2026-08-31", 1000.0)           # Monday
+        rm.roll_session("2026-09-03", 1200.0)           # same ISO week
+        self.assertEqual(rm.week["start"], "2026-08-31")
+        self.assertEqual(rm.week["start_equity"], 1000.0)
+        rm.roll_session("2026-09-07", 1200.0)           # next Monday
+        self.assertEqual(rm.week["start"], "2026-09-07")
+        self.assertEqual(rm.week["start_equity"], 1200.0)
+
+    def test_reducing_orders_pass_the_exposure_caps(self):
+        rm = self._rm(max_position_weight=0.1, max_open_positions=1,
+                      max_annual_turnover=0.01)
+        ok, why = rm.check_trade(500.0, "X", open_positions=1)
+        self.assertFalse(ok)
+        ok, why = rm.check_trade(500.0, "X", open_positions=1, reducing=True)
+        self.assertTrue(ok, why)
+        rm.halt_reason = "daily loss -5.0% hit the 4% halt"
+        self.assertFalse(rm.check_trade(500.0, "X")[0])
+        self.assertTrue(rm.check_trade(500.0, "X", reducing=True)[0])
+        self.assertTrue(rm.loss_halted())
+
+    def test_verdict_gate(self):
+        class D:
+            pass
+        d = D()
+        d.meta = DeskMeta(name="v", title="v", asset_class="equity", venue="alpaca",
+                          capital_floor=10.0)
+        rm = self._rm()
+        ok = {"verdict": "validated", "stale": False, "date": "2026-09-01"}
+        self.assertTrue(rm.allocate([d], 1000.0, verdicts={"v": ok})[0].enabled)
+        self.assertTrue(rm.allocate([d], 1000.0)[0].enabled)       # no record given
+        a = rm.allocate([d], 1000.0, verdicts={})[0]
+        self.assertFalse(a.enabled)
+        self.assertIn("no validation record", a.reason)
+        a = rm.allocate([d], 1000.0, verdicts={"v": {**ok, "verdict": "unprofitable"}})[0]
+        self.assertFalse(a.enabled)
+        self.assertIn("unprofitable", a.reason)
+        a = rm.allocate([d], 1000.0, verdicts={"v": {**ok, "stale": True, "ageDays": 40,
+                                                      "maxAgeDays": 30}})[0]
+        self.assertFalse(a.enabled)
+        self.assertIn("days old", a.reason)
+
+    def test_evidence_verdicts_reads_the_record(self):
+        import json, tempfile, time
+        from desk.core import evidence
+        fd, path = tempfile.mkstemp(suffix=".json")
+        with open(path, "w") as f:
+            json.dump({"generatedAt": int(time.time()) - 5 * 86400,
+                       "desks": {"a": {"verdict": "validated"}, "b": {"verdict": "weak"}}}, f)
+        v = evidence.verdicts(path)
+        self.assertEqual(v["a"]["verdict"], "validated")
+        self.assertFalse(v["a"]["stale"])
+        self.assertEqual(v["b"]["verdict"], "weak")
+        v = evidence.verdicts(path, max_age_days=3)
+        self.assertTrue(v["a"]["stale"])
+        self.assertEqual(evidence.verdicts("/nonexistent/evidence.json"), {})
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

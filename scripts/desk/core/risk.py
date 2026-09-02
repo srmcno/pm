@@ -27,6 +27,7 @@ years, that floor alone takes a $40 account to zero while the same strategy
 compounds at 9.6% on $1,000. Desks declare a floor; the allocator refuses to
 fund them below it instead of letting the fees quietly eat the account.
 """
+import datetime as _dt
 import json
 import os
 import time
@@ -164,14 +165,28 @@ class RiskManager:
     def stop_file_present(self):
         return os.path.exists(STOP_FILE)
 
+    @staticmethod
+    def _week_key(day):
+        """(ISO year, ISO week) of a YYYY-MM-DD string, or None."""
+        try:
+            y, m, d = (int(x) for x in str(day).split("-"))
+            iso = _dt.date(y, m, d).isocalendar()
+            return (iso[0], iso[1])
+        except (TypeError, ValueError):
+            return None
+
     def roll_session(self, today, equity):
-        """Start a new session. Clears the daily halt; drawdown halts persist."""
+        """Start a new session. Clears the daily halt; drawdown halts persist.
+        The weekly baseline re-bases at each ISO week boundary — measured
+        against a stale week it would halt on ordinary drift from an old
+        high and miss a real loss from this week's start."""
         self.equity = float(equity)
         self.peak_equity = max(self.peak_equity, self.equity)
         if self.day.get("date") != today:
             self.day = {"date": today, "start_equity": self.equity,
                         "pnl": 0.0, "halted": False, "trades": 0}
-        if self.week.get("start") is None:
+        if self.week.get("start") is None or \
+                self._week_key(self.week.get("start")) != self._week_key(today):
             self.week = {"start": today, "start_equity": self.equity}
 
     def mark(self, equity):
@@ -208,8 +223,24 @@ class RiskManager:
     def can_trade(self):
         return not self.halt_reason and not self.day.get("halted")
 
-    def check_trade(self, notional, symbol="", open_positions=0):
-        """Approve or refuse one intended trade. Returns (ok, reason)."""
+    def loss_halted(self):
+        """True when an automatic loss halt (daily, weekly, drawdown) is in
+        force — as opposed to the operator's STOP file. A loss halt means
+        get flat; the STOP file means touch nothing."""
+        return bool(self.halt_reason) and not self.stop_file_present()
+
+    def check_trade(self, notional, symbol="", open_positions=0, reducing=False):
+        """Approve or refuse one intended trade. Returns (ok, reason).
+
+        A risk-REDUCING order — one that sells down or closes a position —
+        is never refused by the caps that exist to limit exposure, because
+        refusing it would trap the exposure they are meant to limit. It is
+        still counted against turnover, and the STOP file still holds it.
+        """
+        if reducing:
+            if self.stop_file_present():
+                return False, "STOP file present"
+            return True, ""
         if not self.can_trade():
             return False, self.halt_reason or "session halted"
         n = abs(notional)
@@ -233,13 +264,18 @@ class RiskManager:
         self.day["trades"] = self.day.get("trades", 0) + 1
 
     # -------------------------------------------------------- allocation
-    def allocate(self, desks, equity=None, explicit_desks=()):
+    def allocate(self, desks, equity=None, explicit_desks=(), verdicts=None):
         """Split equity across desks, refusing any below its capital floor,
-        any the author rejected, and any marginal desk not named explicitly.
+        any the author rejected, any marginal desk not named explicitly, and
+        — when `verdicts` (from desk.core.evidence) is given — any desk whose
+        latest walk-forward statistic is not `validated` or is stale.
 
         A desk funded under its floor does not lose slowly — on a daily
         equity strategy the fee floor takes it to zero. Refusing is the only
         honest response, and the reason is carried through to the dashboard.
+        `verdicts=None` means the caller has no record to check (unit tests,
+        a backtest); the runner always passes one, so a scheduled validation
+        that fails a desk switches it off at the next cycle.
         """
         eq = float(equity if equity is not None else self.equity)
         explicit = lambda name: name in set(explicit_desks or ())
@@ -258,6 +294,25 @@ class RiskManager:
                     "marginal — runs only when named explicitly in config: "
                     + getattr(d.meta, "status_reason", "")))
                 continue
+            if verdicts is not None:
+                v = verdicts.get(d.meta.name)
+                if not v:
+                    out.append(DeskAllocation(
+                        d.meta.name, 0.0, False,
+                        "no validation record for this desk — run `desk.cli validate`"))
+                    continue
+                if v.get("stale"):
+                    out.append(DeskAllocation(
+                        d.meta.name, 0.0, False,
+                        f"validation record is {v.get('ageDays', '?')} days old "
+                        f"(limit {v.get('maxAgeDays', '?')}); re-run `desk.cli validate`"))
+                    continue
+                if v.get("verdict") != "validated":
+                    out.append(DeskAllocation(
+                        d.meta.name, 0.0, False,
+                        f"statistic '{v.get('verdict')}' on the last validation run "
+                        f"({v.get('date', '?')}); off until a run validates it"))
+                    continue
             if eq <= 0:
                 out.append(DeskAllocation(d.meta.name, 0.0, False, "no equity"))
             elif floor > 0 and eq < floor:

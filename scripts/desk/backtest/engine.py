@@ -232,8 +232,14 @@ class Engine:
             if not px or abs(w) < 1e-9:
                 continue
             side = "long" if w > 0 else "short"
-            shares = money.round_shares(abs(eq * w) / px,
-                                        self.desk.meta.fractional, side)
+            raw = abs(eq * w) / px
+            held = abs((self.positions.get(sym) or Position(sym)).shares)
+            # Whole-share hysteresis, identical to the live runner: a held
+            # position whose unrounded target is within one share of it stays
+            # put, so a fee-sized equity change cannot floor 5.0 to 4.
+            if not self.desk.meta.fractional and held > 0 and abs(raw - held) < 1:
+                continue
+            shares = money.round_shares(raw, self.desk.meta.fractional, side)
             if shares <= 0:
                 continue
             self._trade(t, sym, shares if w > 0 else -shares, px, event, eq)

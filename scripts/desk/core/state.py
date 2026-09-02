@@ -80,6 +80,11 @@ class DeskState:
     updated_at: int = 0
     trade_count: int = 0
     mode: str = "paper"            # paper | live-paper-endpoint | live-real-money
+    # Last decision per desk: {name: {barTs, event, weights, note, at}}. A
+    # desk decides once per completed bar per event, as it did in the
+    # replay; later cycles on the same bar restate that decision so a missed
+    # fill still self-corrects without the desk re-deciding on moving data.
+    decisions: dict = field(default_factory=dict)
 
     def equity(self, marks):
         eq = self.cash
@@ -114,6 +119,7 @@ def load(name="state.json", bankroll=1000.0):
     st.updated_at = blob.get("updatedAt", 0)
     st.trade_count = blob.get("tradeCount", len(st.closed))
     st.mode = blob.get("mode", "paper")
+    st.decisions = blob.get("decisions", {}) or {}
     return st
 
 
@@ -134,6 +140,7 @@ def save(st, name="state.json"):
             "updatedAt": st.updated_at,
             "tradeCount": st.trade_count,
             "mode": st.mode,
+            "decisions": st.decisions,
         }, f, indent=1)
     os.replace(tmp, path)
     return path
