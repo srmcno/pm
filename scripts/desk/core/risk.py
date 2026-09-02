@@ -230,13 +230,16 @@ class RiskManager:
         return bool(self.halt_reason) and not self.stop_file_present()
 
     def check_trade(self, notional, symbol="", open_positions=0, reducing=False,
-                    current_notional=0.0, new_symbol=True):
+                    current_notional=0.0, new_symbol=True, reserved=0.0):
         """Approve or refuse one intended trade. Returns (ok, reason).
 
         `current_notional` is what the account already holds in this
         symbol, so the position cap is judged on the RESULTING position, not
         on the increment; `open_positions` counts distinct symbols and only
-        binds when the order would add one.
+        binds when the order would add one. `reserved` is the notional of
+        orders already resting at the venue: they spend turnover the moment
+        they fill, so a batch of auction orders cannot each be judged
+        against the same untouched allowance.
 
         A risk-REDUCING order — one that sells down or closes a position —
         is never refused by the caps that exist to limit exposure, because
@@ -258,12 +261,13 @@ class RiskManager:
                            f"over the {self.limits.max_position_weight:.0%} cap")
         if new_symbol and open_positions >= self.limits.max_open_positions:
             return False, f"already at {open_positions} open positions"
-        if not self.budget.allows(n, self.equity):
+        if not self.budget.allows(n + max(0.0, reserved), self.equity):
             self.budget.refuse(n)
             used = self.budget.used()
             return False, (f"turnover budget exhausted: ${used:,.0f} of "
                            f"${self.limits.max_annual_turnover * self.equity:,.0f} "
-                           f"used in the trailing year")
+                           f"used in the trailing year"
+                           + (f", ${reserved:,.0f} resting" if reserved > 0 else ""))
         return True, ""
 
     def record_trade(self, notional):

@@ -505,19 +505,18 @@ class Runner:
     def _book_open(self, p, filled, px):
         fees = self._est_fee(p["symbol"], filled, px, "buy")
         m = self._symbol_meta.get(p["symbol"]) if hasattr(self, "_symbol_meta") else None
-        shares = filled
-        if self.live and m is not None and m.asset_class == "crypto" and px > 0:
-            # Alpaca takes the crypto fee from the coin received, so the
-            # account holds the fill LESS the fee; booking the gross fill
-            # would size every exit too large. The venue check corrects any
-            # difference between this estimate and the posted fee.
-            shares = max(0.0, filled - fees / px)
+        fees_cash = fees
+        if self.live and m is not None and m.asset_class == "crypto":
+            # Alpaca takes the crypto fee from the coin received, but posts
+            # it at end of day. Until then the venue shows the GROSS fill, so
+            # the book holds the gross fill too; the per-cycle venue check
+            # shrinks the lot the moment the fee posts. Booking net now would
+            # read as an unexplained venue excess and stop trading all day.
             fees_cash = 0.0
-        else:
-            fees_cash = fees
-        p.update({"shares": shares, "entry": px, "cost": filled * px,
-                  "openFee": fees, "liveOpen": True, "liveQty": shares})
+        p.update({"shares": filled, "entry": px, "cost": filled * px,
+                  "openFee": fees, "liveOpen": True, "liveQty": filled})
         self.st.cash -= filled * px + fees_cash
+        self._note_fee(p["symbol"], fees)
         # Turnover is counted where the fill is confirmed, so an auction
         # order that fills long after submission still spends its budget.
         self.rm.record_trade(filled * px)
@@ -536,12 +535,39 @@ class Runner:
                                "pnl": round(pnl, 6), "fees": round(fees, 6), "reason": reason})
         self.st.trade_count += 1
         self.rm.record_trade(take * px)
+        self._note_fee(p["symbol"], fees)
         p["shares"] = max(0.0, p["shares"] - take)
         for k in ("closeCid", "closeType", "closeAt", "closeShares"):
             p.pop(k, None)
         if p["shares"] <= 1e-9:
             self.st.positions.remove(p)
         statemod.journal("close_confirmed", {"symbol": p["symbol"], "shares": take, "price": px})
+
+    def _note_fee(self, symbol, fees):
+        """Paper only: accumulate the day's raw regulatory fees so the
+        per-day, per-fee-type cent rounding the replay charges is charged
+        here too. Live, the broker does the rounding."""
+        if self.live or fees <= 0:
+            return
+        m = self._symbol_meta.get(symbol) if hasattr(self, "_symbol_meta") else None
+        if m is None or m.asset_class != "equity":
+            return
+        fd = self.st.fee_day
+        fd["date"] = fd.get("date") or getattr(self, "_today", None)
+        fd["raw"] = fd.get("raw", 0.0) + fees
+        fd["traded"] = True
+
+    def _pending_notional(self):
+        """Notional of orders already at the venue but not yet filled: it
+        must count against the turnover budget before more is submitted."""
+        total = 0.0
+        for p in self.st.positions:
+            if p.get("liveCid") and not p.get("liveOpen"):
+                total += float(p.get("targetShares", 0.0)) * float(p.get("entry") or 0.0)
+            if p.get("closeCid"):
+                total += float(p.get("closeShares", p.get("shares", 0.0))) \
+                    * float(p.get("entry") or 0.0)
+        return total
 
     def _est_fee(self, symbol, shares, px, side):
         m = self._symbol_meta.get(symbol) if hasattr(self, "_symbol_meta") else None
@@ -767,12 +793,25 @@ class Runner:
         if self.broker is None:
             self.broker = PaperBroker(self._symbol_meta, self._load, self.now_et, self.st)
 
+        self._today = today
         pending = self.reconcile()
         mismatch = "" if pending else self.verify_book()
         all_syms = list(self._symbol_meta)
         marks = self.marks(all_syms)
         equity = self.account_equity(marks)
         self.rm.roll_session(today, equity)
+        if not self.live:
+            # Paper charges the replay's per-day fee floor when a new
+            # session starts, exactly where the replay charges it.
+            fd = self.st.fee_day
+            if fd.get("date") and fd["date"] != today:
+                extra = money.daily_fee_floor(fd.get("raw", 0.0), bool(fd.get("traded")))
+                if extra > 0:
+                    self.st.cash -= extra
+                    statemod.journal("fee_floor", {"date": fd["date"], "extra": round(extra, 6)})
+                self.st.fee_day = {}
+            equity = self.account_equity(marks)
+        self._reserved = self._pending_notional()
         halt = self.rm.mark(equity)
         allocs = {a.name: a for a in self.rm.allocate(
             self._desks, equity, explicit_desks=getattr(self.cfg, "explicit_desks", ()),
@@ -842,7 +881,8 @@ class Runner:
         ok, why = self.rm.check_trade(
             notional, order.symbol, len(symbols), reducing=order.reducing,
             current_notional=held_qty * order.ref_price,
-            new_symbol=(order.side == "buy" and held_qty <= 0))
+            new_symbol=(order.side == "buy" and held_qty <= 0),
+            reserved=getattr(self, "_reserved", 0.0))
         if not ok:
             refused.append({"symbol": order.symbol, "reason": why})
             return
@@ -851,6 +891,10 @@ class Runner:
         self._record_intent(order, stamp)
         res = self.broker.execute(order)
         self._apply_result(order, res, stamp)
+        if res.get("status") not in ("filled", "refused") and res.get("status") not in FAILED:
+            # Resting at the venue: it spends budget the moment it fills, so
+            # the rest of this cycle's orders must see it as spent already.
+            self._reserved = getattr(self, "_reserved", 0.0) + notional
         if res.get("status") == "filled" and res.get("filled_qty"):
             executed.append({"symbol": order.symbol, "side": order.side,
                              "shares": round(res["filled_qty"], 8),
@@ -925,6 +969,7 @@ class Runner:
                               "openFee": fees, "liveOpen": True, "liveQty": filled})
                     self.st.cash -= filled * px + fees
                     self.rm.record_trade(filled * px)
+                    self._note_fee(order.symbol, fees)
                 else:
                     self._book_open(p, filled, px)
             elif res.get("status") in FAILED and filled > 0:
@@ -952,6 +997,7 @@ class Runner:
                                                "fees": round(fees, 6), "reason": order.reason})
                         self.st.trade_count += 1
                         self.rm.record_trade(take * px)
+                        self._note_fee(order.symbol, fees)
                         p["shares"] -= take
                         for k in ("closeCid", "closeType", "closeAt", "closeShares"):
                             p.pop(k, None)

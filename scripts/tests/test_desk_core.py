@@ -604,5 +604,29 @@ class TestWatchExitCode(unittest.TestCase):
             cli.runnermod.Runner, cli.time.sleep = saved_runner, saved_sleep
 
 
+class TestFirstBarCost(unittest.TestCase):
+    def test_entering_on_the_first_bar_costs_something_in_the_returns(self):
+        from desk.desks.base import Desk, DeskMeta as DM, Decision as Dc, CLOSE as C
+        class D(Desk):
+            meta = DM(name="_fb", title="fb", asset_class="crypto", venue="alpaca",
+                      periods_per_year=365, universe=("B/USD",), warmup_bars=2,
+                      events=(C,), fractional=True)
+            def decide(self, view):
+                return Dc({"B/USD": 0.5})
+        bars_ = [Bar(1_600_000_000 + i * 86400, 100.0, 100.0, 100.0, 100.0, 1.0)
+                 for i in range(12)]
+        r = Engine(D(), {"B/USD": bars_}, start_equity=1000.0).run()
+        self.assertLess(r.end_equity, 1000.0)
+        self.assertEqual(len(r.returns), len(r.equity_curve))
+        st = metrics.compute(r.returns, equity_curve=[e for _, e in r.equity_curve],
+                             periods_per_year=365)
+        self.assertLess(st.total_return_pct, 0.0)
+        self.assertLess(st.max_drawdown_pct, 0.0)
+        prod = 1.0
+        for x in r.returns:
+            prod *= 1 + x
+        self.assertAlmostEqual(prod, r.end_equity / 1000.0, places=9)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

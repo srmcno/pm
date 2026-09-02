@@ -261,7 +261,10 @@ class Engine:
             return self.result
 
         events = tuple(self.desk.meta.events)
-        prev_eq = None
+        # The first tradable bar's return is measured from the starting
+        # equity, so a desk that enters on it pays that bar's cost in the
+        # return series and not only in the curve's baseline.
+        prev_eq = self.start_equity
         import datetime as _dt
 
         for i in range(warm, length):

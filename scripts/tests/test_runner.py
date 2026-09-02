@@ -632,20 +632,23 @@ class TestReviewRoundThree(Base):
         self.assertTrue(any("daily loss" in x["reason"] for x in tel["refused"]))
         self.assertEqual(len(v.submitted), 1)           # nothing new sent
 
-    def test_live_crypto_buy_books_the_fill_net_of_the_fee(self):
-        from desk.core import money
+    def test_live_crypto_buy_books_the_gross_fill_until_the_fee_posts(self):
         v = FakeVenue()
         r = self.runner(["_cr"], venue=v)
         r.run_cycle()
         cid = r.st.positions[0]["liveCid"]
         qty = v.submitted[-1][1]
         v.script[cid] = [("filled", qty, 50.0)]
-        r.run_cycle()
+        v.held = [{"symbol": "BUSD", "qty": str(qty)}]      # gross, fee not posted yet
+        tel = r.run_cycle()
         p = r.st.positions[0]
-        fee = money.crypto_fee("alpaca", qty * 50.0)
-        self.assertAlmostEqual(p["shares"], qty - fee / 50.0, places=9)
-        self.assertLess(p["shares"], qty)
+        self.assertEqual(p["shares"], qty)
+        self.assertEqual(tel["bookMismatch"], "")
         self.assertAlmostEqual(r.st.cash, 1000.0 - qty * 50.0, places=6)
+        v.held = [{"symbol": "BUSD", "qty": str(qty * 0.9975)}]   # end of day: fee posted
+        tel = r.run_cycle()
+        self.assertEqual(tel["bookMismatch"], "")
+        self.assertAlmostEqual(r.st.positions[0]["shares"], qty * 0.9975, places=9)
 
     def test_open_position_cap_counts_symbols_not_lots(self):
         r = self.runner(["_cr"])
@@ -751,6 +754,31 @@ class TestDesksShareASymbol(Base):
         tel = self.settle(r, at(2, 15, 45))             # next cycle: the buy goes
         self.assertEqual([(e["side"], e["status"]) for e in tel["executed"]],
                          [("buy", "accepted")])
+
+
+class TestRoundSix(Base):
+    def test_resting_orders_reserve_turnover_within_a_cycle(self):
+        r = self.runner(["_eq", "_hold"])
+        r.rm.limits.max_annual_turnover = 0.25            # $250 on $1,000
+        r.rm.budget.allowance_x = 0.25
+        tel = r.run_cycle()                               # _eq: $200 cls resting; _hold: $100
+        kinds = [(e["side"], e.get("status", "filled")) for e in tel["executed"]]
+        self.assertEqual(kinds, [("buy", "accepted")])   # the auction order rests...
+        self.assertTrue(any("turnover" in (x.get("reason") or "") for x in tel["refused"]))
+
+    def test_paper_charges_the_daily_fee_floor_at_the_next_session(self):
+        from desk.core import money
+        r = self.runner(["_eq"])
+        r.run_cycle()
+        self.settle(r, at(1, 16, 5))                      # filled: a tiny CAT fee today
+        cash_after_fill = r.st.cash
+        raw = r.st.fee_day.get("raw", 0.0)
+        self.assertTrue(r.st.fee_day.get("traded"))
+        self.settle(r, at(2, 9, 10))                      # new session: floor charged
+        extra = money.daily_fee_floor(raw, True)
+        self.assertGreater(extra, 0.0)
+        self.assertAlmostEqual(cash_after_fill - r.st.cash, extra, places=6)
+        self.assertEqual(r.st.fee_day, {})
 
 
 if __name__ == "__main__":
