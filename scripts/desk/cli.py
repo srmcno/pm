@@ -243,16 +243,89 @@ def _write_evidence_report(blob):
         f.write("\n".join(lines) + "\n")
 
 
+def _mode_for(args):
+    if not args.live:
+        return "paper"
+    return "live-real-money" if not args.venue_paper else "live-paper-endpoint"
+
+
 def _arm(args, cfg, st):
     """Broker for this process, or None for simulated fills. The state's
     mode is set here, once, so every published cycle says truthfully
-    whether it was real money — `run` and `watch` must not differ."""
+    whether it was real money — `run` and `watch` must not differ.
+
+    A book carries positions from exactly one mode. Paper lots replayed
+    into a live account would be SOLD there — a short, or a rejection loop
+    — so a mode change with positions on the book is refused unless the
+    operator asks for a fresh book explicitly.
+    """
+    mode = _mode_for(args)
+    if st.positions and st.mode != mode:
+        if getattr(args, "reset_book", False):
+            statemod.journal("book_reset", {"from": st.mode, "to": mode,
+                                            "positions": len(st.positions)})
+            st.positions, st.closed, st.equity_curve, st.decisions = [], [], [], {}
+            st.cash = st.bankroll_start = float(cfg.equity)
+        else:
+            raise SystemExit(
+                f"the book holds {len(st.positions)} position(s) opened in "
+                f"{st.mode!r} mode; refusing to run in {mode!r} mode with them. "
+                f"Close them in that mode, or pass --reset-book to start a fresh "
+                f"book (the old lots are journalled, never traded).")
     if not args.live:
         st.mode = "paper"
         return None
     _arm_or_die(args, cfg)
-    st.mode = "live-real-money" if not args.venue_paper else "live-paper-endpoint"
+    st.mode = mode
     return _make_broker(args)
+
+
+def cmd_adopt(args):
+    """Rebuild the book from what the venue actually holds.
+
+    For the case the runner refuses to trade on: positions at the broker the
+    book does not know about (a shift whose state was never committed, a
+    manual trade). Every position in the configured universe becomes one
+    confirmed lot at the broker's average entry; anything outside the
+    universe is listed and left alone.
+    """
+    cfg = cfgmod.load(equity=args.equity, preset=args.preset)
+    st = statemod.load(bankroll=cfg.equity)
+    if not args.live:
+        raise SystemExit("adopt reads a venue: pass --live --i-accept-total-loss "
+                         "(and --real-money for the real account)")
+    _arm_or_die(args, cfg)
+    venue = _make_broker(args).venue
+    desks = [deskbase.get(n)() for n in cfg.desks if deskbase.get(n)]
+    meta = runnermod.Runner.symbol_meta(desks)
+    canon = {s.replace("/", "").replace("-", ""): s for s in meta}
+    lots, skipped = [], []
+    for r in venue.positions() or []:
+        sym = canon.get(str(r.get("symbol", "")).replace("/", "").replace("-", ""))
+        qty = abs(float(r.get("qty") or 0.0))
+        if not sym or qty <= 0:
+            skipped.append(f"{r.get('symbol')} x{r.get('qty')}")
+            continue
+        px = float(r.get("avg_entry_price") or 0.0)
+        owner = next((d.meta.name for d in desks if sym in d.universe()), "portfolio")
+        lots.append({"symbol": sym, "desk": owner, "side": "long", "shares": qty,
+                     "targetShares": qty, "entry": px, "openedAt": int(time.time()),
+                     "cost": qty * px, "openFee": 0.0, "liveCid": "adopted",
+                     "liveOpen": True, "liveQty": qty, "orderType": "market",
+                     "tif": "day"})
+    statemod.journal("book_adopted", {"mode": _mode_for(args), "lots": len(lots),
+                                      "skipped": skipped})
+    st.positions = lots
+    st.decisions = {}
+    st.mode = _mode_for(args)
+    statemod.save(st)
+    print(f"adopted {len(lots)} position(s) from the venue into the book "
+          f"({st.mode}):")
+    for l in lots:
+        print(f"  {l['symbol']:<10} {l['shares']:g} @ {l['entry']:.4f}  desk {l['desk']}")
+    if skipped:
+        print("left alone (outside the configured universe): " + ", ".join(skipped))
+    return 0
 
 
 def cmd_run(args):
@@ -311,10 +384,13 @@ def _arm_or_die(args, cfg):
 
 def _make_broker(args):
     try:
-        from desk.venues.alpaca import AlpacaVenue
+        from desk.venues.alpaca import AlpacaVenue, NotArmed
     except Exception as e:                                      # noqa: BLE001
         raise SystemExit(f"venue adapter unavailable: {e}")
-    return runnermod.LiveBroker(AlpacaVenue(paper=args.venue_paper))
+    try:
+        return runnermod.LiveBroker(AlpacaVenue(paper=args.venue_paper))
+    except NotArmed as e:
+        raise SystemExit(f"not armed: {e}")
 
 
 def _publish(tel, cfg, st):
@@ -431,8 +507,11 @@ def main():
     v.add_argument("--folds", type=int, default=5)
     v.set_defaults(fn=cmd_validate)
 
-    for name, fn in (("run", cmd_run), ("watch", cmd_watch)):
+    for name, fn in (("run", cmd_run), ("watch", cmd_watch), ("adopt", cmd_adopt)):
         p = sub.add_parser(name)
+        p.add_argument("--reset-book", action="store_true",
+                       help="start a fresh book when switching modes with "
+                            "positions on the old one (old lots are journalled)")
         p.add_argument("--live", action="store_true",
                        help="mirror decisions to a real venue (still needs "
                             "--i-accept-total-loss, keys, and no STOP file)")

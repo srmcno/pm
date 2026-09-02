@@ -44,7 +44,6 @@ PRE_OPEN = ((9, 0), (9, 26))       # MOO cutoff 09:28
 PRE_CLOSE = ((15, 30), (15, 48))   # MOC cutoff 15:50
 FAILED = {"canceled", "expired", "rejected", "stopped", "suspended", "replaced",
           "done_for_day"}
-MAX_ATTEMPTS = 3
 
 
 def _et_tz():
@@ -98,9 +97,10 @@ def order_style(desk_meta, phase):
 
 
 def client_order_id(desk_name, symbol, side, stamp, attempt=0):
-    """Deterministic per desk, symbol, side and time bucket, so a retried
-    ambiguous submission reconciles to the accepted order instead of firing
-    a second one."""
+    """Readable and unique: desk, symbol, side and a millisecond stamp. The
+    runner also checks it against every id the book already carries, so two
+    orders can never share one — a shared id would let one order's state be
+    read as another's fill."""
     sym = symbol.replace("/", "").replace("-", "")
     suffix = f"-a{attempt}" if attempt else ""
     return f"dk-{desk_name}-{sym}-{side[0]}-{int(stamp)}{suffix}"
@@ -195,7 +195,18 @@ class LiveBroker:
             return {"status": "refused", "filled_qty": 0.0, "price": None,
                     "fees": 0.0, "paper": False, "error": str(e)}
         except Exception as e:                                 # noqa: BLE001
-            # Ambiguous: the venue may have accepted it. Reconcile by id.
+            code = getattr(e, "status", None)
+            if isinstance(code, int) and 400 <= code < 500 and code not in (408, 429):
+                # The venue answered and said no: nothing is resting there.
+                # Treating this as ambiguous would poll it to not_found and
+                # block every desk behind a "pending" order that never was.
+                statemod.journal("refused", {"cid": order.client_order_id, "status": code,
+                                             "error": str(e)[:300]})
+                return {"status": "refused", "filled_qty": 0.0, "price": None,
+                        "fees": 0.0, "paper": False,
+                        "error": f"venue {code}: {str(e)[:200]}"}
+            # Ambiguous (timeout, 5xx, rate limit): the venue may have
+            # accepted it. Reconcile by client id.
             statemod.journal("submit_error", {"cid": order.client_order_id,
                                               "error": str(e)[:300]})
         deadline = time.time() + self.settle_seconds
@@ -294,24 +305,19 @@ class Runner:
                     statemod.journal("open_dead", {"cid": p["liveCid"], "status": status})
                     self.st.positions.remove(p)
             elif status == "not_found":
-                attempt = int(p.get("mirrorAttempts", 0)) + 1
-                if attempt > MAX_ATTEMPTS:
-                    statemod.journal("open_abandoned", {"cid": p["liveCid"]})
+                # The venue has never heard of it. Look once more next cycle
+                # in case the query itself failed; then the intent is dead
+                # and the desk's next decision restates the target through
+                # the normal path. It is NEVER resubmitted from here: that
+                # would bypass the risk check, the halts, the STOP file and
+                # the auction window the order was decided in.
+                n = int(p.get("notFound", 0)) + 1
+                if n >= 2:
+                    statemod.journal("open_dead", {"cid": p["liveCid"], "status": "not_found"})
                     self.st.positions.remove(p)
                 else:
-                    # Never landed: resubmit under a fresh attempt id.
-                    p["mirrorAttempts"] = attempt
-                    p["liveCid"] = client_order_id(p["desk"], p["symbol"], "buy",
-                                                   p["openedAt"], attempt)
-                    statemod.save(self.st)
-                    o = Order(p["desk"], p["symbol"], "buy", p["targetShares"],
-                              p.get("entry") or 0.0, p.get("orderType", "market"),
-                              p.get("tif", "day"), client_order_id=p["liveCid"])
-                    res = self.broker.execute(o)
-                    if res.get("status") == "filled" and res.get("filled_qty"):
-                        self._book_open(p, res["filled_qty"], res.get("price") or o.ref_price)
-                    else:
-                        pending = True
+                    p["notFound"] = n
+                    pending = True
             else:
                 if filled > 0:
                     p["liveQty"] = filled           # partial: exposure exists
@@ -348,6 +354,65 @@ class Runner:
                 pending = True
         statemod.save(self.st)
         return pending
+
+    def verify_book(self):
+        """Live only: the venue's positions are the truth. Returns '' when the
+        book agrees with the venue, else a reason not to trade.
+
+        A lot the venue holds LESS of is shrunk to what it holds — Alpaca
+        takes crypto fees from the asset received, so 0.01 BTC bought is
+        0.009975 BTC held, and a sell sized at 0.01 is rejected forever. A
+        lot the venue does not hold at all is dropped. Anything the venue
+        holds in this book's universe that the book does not know about is
+        untracked exposure; the book refuses to trade until the operator has
+        looked and run `desk.cli adopt`.
+        """
+        if not self.live or not hasattr(self.broker.venue, "positions"):
+            return ""
+        try:
+            raw = self.broker.venue.positions()
+        except Exception as e:                                 # noqa: BLE001
+            return f"could not read the venue's positions ({str(e)[:120]})"
+        if raw is None:
+            return ""                       # adapter does not report positions
+        canon = {s.replace("/", "").replace("-", ""): s for s in self._symbol_meta}
+        venue = {}
+        for r in raw:
+            key = str(r.get("symbol", "")).replace("/", "").replace("-", "")
+            sym = canon.get(key)
+            if sym:
+                venue[sym] = venue.get(sym, 0.0) + abs(float(r.get("qty") or 0.0))
+        book = {}
+        for p in self.st.positions:
+            if p.get("liveOpen") and not p.get("closeCid") and p.get("shares", 0.0) > 0:
+                book.setdefault(p["symbol"], []).append(p)
+        problems = []
+        for sym, lots in book.items():
+            bq = sum(l["shares"] for l in lots)
+            vq = venue.get(sym, 0.0)
+            if vq + 1e-9 < bq:
+                excess = bq - vq
+                for l in reversed(lots):
+                    cut = min(l["shares"], excess)
+                    l["shares"] -= cut
+                    excess -= cut
+                    if l["shares"] <= 1e-9:
+                        self.st.positions.remove(l)
+                    if excess <= 1e-12:
+                        break
+                statemod.journal("book_shrunk", {"symbol": sym, "book": bq, "venue": vq})
+            elif vq > bq * (1 + 1e-6) + 1e-6:
+                problems.append(f"{sym}: venue holds {vq:g}, book {bq:g}")
+        for sym, vq in venue.items():
+            if sym not in book and vq > 0:
+                problems.append(f"{sym}: venue holds {vq:g}, book none")
+        if problems:
+            statemod.journal("book_mismatch", {"problems": problems})
+            statemod.save(self.st)
+            return ("book does not match the venue: " + "; ".join(problems)
+                    + ". Check the broker, then run `desk.cli adopt`.")
+        statemod.save(self.st)
+        return ""
 
     # ------------------------------------------------------------ booking
     def _book_open(self, p, filled, px):
@@ -398,7 +463,16 @@ class Runner:
         for d in desks:
             alloc = allocs.get(d.meta.name)
             if not alloc or not alloc.enabled:
-                notes.append(f"{d.meta.name}: {alloc.reason if alloc else 'not allocated'}")
+                reason = alloc.reason if alloc else "not allocated"
+                if self._holds_any(d.universe()):
+                    # Funding withdrawn while positions are on — a failed
+                    # verdict, a stale record, equity under the floor. Those
+                    # positions are liquidated through the normal order path
+                    # rather than left as an unmanaged hold.
+                    active.update(d.universe())
+                    notes.append(f"{d.meta.name}: {reason} — liquidating held positions")
+                else:
+                    notes.append(f"{d.meta.name}: {reason}")
                 continue
             ev = event_for(d.meta, phase)
             if ev is None:
@@ -446,6 +520,14 @@ class Runner:
             for sym, w in weights.items():
                 targets[sym] = targets.get(sym, 0.0) + w * alloc.weight
         return targets, notes, active
+
+    def _holds_any(self, symbols):
+        want = set(symbols)
+        for p in self.st.positions:
+            if p["symbol"] in want and p.get("shares", 0.0) > 0 \
+                    and (p.get("liveOpen") or not self.live):
+                return True
+        return False
 
     def marks(self, symbols):
         out = {}
@@ -550,6 +632,7 @@ class Runner:
             self.broker = PaperBroker(self._symbol_meta)
 
         pending = self.reconcile()
+        mismatch = "" if pending else self.verify_book()
         all_syms = list(self._symbol_meta)
         marks = self.marks(all_syms)
         equity = self.account_equity(marks)
@@ -561,7 +644,9 @@ class Runner:
         targets, notes, active = self.decide_all(self._desks, allocs, phase)
 
         executed, refused = [], []
-        if halt and self.rm.loss_halted() and not pending:
+        if mismatch:
+            refused.append({"reason": mismatch, "scope": "all"})
+        elif halt and self.rm.loss_halted() and not pending:
             # A loss halt means get flat, not freeze: the exposure is what is
             # losing. Only the operator's STOP file holds the book as it is.
             refused.append({"reason": halt, "scope": "all new exposure; flattening"})
@@ -588,6 +673,7 @@ class Runner:
             "cycle": today, "phase": phase, "nowEt": now.strftime("%H:%M"),
             "equity": round(equity, 2), "cash": round(self.st.cash, 2),
             "positions": len(self.st.positions), "pending": pending,
+            "bookMismatch": mismatch,
             "targets": {k: round(v, 4) for k, v in targets.items()},
             "executed": executed, "refused": refused, "deskNotes": notes,
             "allocations": {k: {"weight": a.weight, "enabled": a.enabled, "reason": a.reason}
@@ -606,8 +692,7 @@ class Runner:
             refused.append({"symbol": order.symbol, "reason": why})
             return
         stamp = int(time.time())
-        order.client_order_id = client_order_id(order.desk, order.symbol,
-                                                order.side, stamp)
+        order.client_order_id = self._new_cid(order)
         self._record_intent(order, stamp)
         res = self.broker.execute(order)
         self._apply_result(order, res, stamp)
@@ -623,6 +708,19 @@ class Runner:
                              "shares": round(order.shares, 8), "type": order.order_type,
                              "status": res.get("status") or "pending",
                              "reason": order.reason})
+
+    def _new_cid(self, order):
+        used = set()
+        for p in self.st.positions:
+            used.add(p.get("liveCid"))
+            used.add(p.get("closeCid"))
+        base = client_order_id(order.desk, order.symbol, order.side,
+                               int(time.time() * 1000))
+        cid, n = base, 0
+        while cid in used:
+            n += 1
+            cid = f"{base}-{n}"
+        return cid
 
     def _record_intent(self, order, stamp):
         """Journal, and for a BUY create the pending position BEFORE the
@@ -666,11 +764,14 @@ class Runner:
                     self.rm.record_trade(filled * px)
                 else:
                     self._book_open(p, filled, px)
+            elif res.get("status") in FAILED and filled > 0:
+                self._book_open(p, filled, px)          # partial, then terminal
             elif res.get("status") in FAILED or res.get("status") == "refused":
                 self.st.positions.remove(p)
             # else: pending — reconcile() picks it up next cycle
         else:
-            if res.get("status") == "filled" and filled > 0:
+            status = res.get("status")
+            if (status == "filled" or status in FAILED) and filled > 0:
                 remaining = filled
                 for p in list(self.st.positions):
                     if p["symbol"] != order.symbol or remaining <= 0 or p["shares"] <= 0:
@@ -694,7 +795,9 @@ class Runner:
                     else:
                         self._book_close(p, take, px, order.reason)
                     remaining -= take
-            elif res.get("status") in FAILED or res.get("status") == "refused":
+            if status in FAILED or status == "refused":
+                # Whatever did not fill stays open and is retried by the
+                # next decision; the lots must not keep a dead close id.
                 for p in self.st.positions:
                     if p.get("closeCid") == order.client_order_id:
                         p.pop("closeCid", None)

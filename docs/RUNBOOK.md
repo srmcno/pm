@@ -248,6 +248,22 @@ Every one of these is required simultaneously: credentials in the environment,
 no real-money order can be produced. The paper endpoint needs only the two
 flags and credentials.
 
+**Changing mode with positions on the book is refused.** A book carries
+positions from exactly one mode; paper lots replayed into a live account would
+be *sold* there. Close them in the mode they were opened in, or pass
+`--reset-book` to start a fresh book (the old lots are journalled, never
+traded). In either live mode the runner also compares the book with the
+venue's positions on every cycle: a lot the venue holds less of is shrunk to
+match (Alpaca takes crypto fees from the coin you receive); a lot the venue
+no longer holds is dropped; anything the venue holds that the book does not
+know about stops all trading until you have looked at the broker and run
+
+```bash
+python3 -m desk.cli adopt --live --i-accept-total-loss [--real-money]
+```
+
+which rebuilds the book from the venue's positions at their average entry.
+
 ---
 
 ## 6. Running it continuously
@@ -255,7 +271,11 @@ flags and credentials.
 Two ways.
 
 **GitHub Actions (no machine of your own).** The shift workflows self-chain in
-~2-hour blocks. They run paper-only until the secrets exist.
+~2-hour blocks of five 20-minute runs, committing the book to the repository
+after each run so a cancelled or timed-out job loses at most twenty minutes of
+state, and the venue check above catches anything it did lose. They run
+paper-only until the secrets exist. Stop the workflow before hand-editing
+anything under `data/desk/`; a running shift's commit rebases over yours.
 
 ```bash
 # dispatch manually, or let the cron schedule start it
@@ -320,9 +340,13 @@ python3 -m desk.cli publish       # refresh the dashboard payload
 The dashboard page is `dashboard/desk.html`, fed by `dashboard/data/desk.json`.
 
 **Reconcile weekly.** Compare the desk's positions and cash against the
-broker's statement. They should match to the cent. If they do not, stop and
-find out why before trading again — a book that has silently diverged is worse
-than no book. The two known sources of legitimate drift:
+broker's statement. The runner checks positions against the venue every
+cycle and refuses to trade on a mismatch it cannot explain (`status` shows
+the reason; `adopt` rebuilds the book from the venue once you have looked).
+Cash it does not check, so compare that yourself: it should match to the
+cent. If it does not, stop and find out why before trading again — a book
+that has silently diverged is worse than no book. The two known sources of
+legitimate drift:
 
 - Alpaca **crypto fees post at end of day**, not on fill, and are deducted
   from the asset you *received*. Intraday P&L will read optimistic by roughly

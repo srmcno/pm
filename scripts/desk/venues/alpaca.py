@@ -72,6 +72,15 @@ class NotArmed(Exception):
     """Raised when a real order was requested without every safeguard."""
 
 
+def format_qty(qty):
+    """Whole shares as an integer string; fractions as plain decimals. A
+    dust lot like 1.6e-05 BTC must not serialize in exponent notation."""
+    q = float(qty)
+    if not _is_fractional(q):
+        return str(int(round(q)))
+    return f"{q:.9f}".rstrip("0").rstrip(".")
+
+
 class VenueError(RuntimeError):
     def __init__(self, status, text):
         super().__init__(f"alpaca {status}: {text[:300]}")
@@ -269,8 +278,7 @@ class AlpacaVenue:
         if notional is not None:
             body["notional"] = str(round(float(notional), 2))
         else:
-            q = float(qty)
-            body["qty"] = str(int(round(q))) if not _is_fractional(q) else str(round(q, 9))
+            body["qty"] = format_qty(qty)
         if limit_price is not None:
             body["limit_price"] = str(round(float(limit_price), 2))
         if client_order_id:

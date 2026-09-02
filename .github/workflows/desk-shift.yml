@@ -45,34 +45,57 @@ jobs:
       - name: Install dependencies
         run: pip install "requests>=2.31,<3"
 
-      - name: Run one shift
+      - name: Run the shift in 20-minute blocks, committing state after each
         working-directory: scripts
         run: |
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
+          # The runner's disk is the only copy of the book until it is
+          # pushed. Committing after every block bounds what a cancelled or
+          # timed-out job can lose to twenty minutes, and the runner's
+          # venue check catches the rest (it refuses to trade on a mismatch).
+          commit_state() {
+            ( cd .. \
+              && for p in data/desk dashboard/data reports; do [ -e "$p" ] && git add "$p"; done \
+              && { git diff --cached --quiet && exit 0; \
+                   git commit -q -m "auto: desk shift $(date -u +'%Y-%m-%d %H:%M UTC')"; \
+                   git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" \
+                     || { git rebase --abort || true; echo "::warning::rebase failed; state kept locally"; exit 0; }; \
+                   git push origin "HEAD:${GITHUB_REF_NAME}" \
+                     || echo "::warning::push failed; retrying after the next block"; } )
+          }
           # A STOP file in the repository halts every shift without needing
           # a workflow edit — the same switch the CLI writes.
           if [ -f ../data/desk/STOP ]; then
             echo "::warning::data/desk/STOP present — not trading this shift"
             python3 -m desk.cli publish
+            commit_state
             exit 0
           fi
+          FLAGS=""
           if [ -n "$APCA_API_KEY_ID" ] && [ -n "$APCA_API_SECRET_KEY" ]; then
             if [ "$DESK_REAL_MONEY" = "1" ]; then
-              echo "Mirroring to the REAL MONEY endpoint."
-              python3 -m desk.cli watch --minutes 110 --seconds 300 \
-                --live --i-accept-total-loss --real-money
+              echo "Mirroring to the REAL MONEY endpoint (needs a committed config with live: true)."
+              FLAGS="--live --i-accept-total-loss --real-money"
             else
               echo "Mirroring to the broker's PAPER endpoint."
-              python3 -m desk.cli watch --minutes 110 --seconds 300 \
-                --live --i-accept-total-loss
+              FLAGS="--live --i-accept-total-loss"
             fi
           else
             echo "No broker credentials — simulated fills only."
-            python3 -m desk.cli watch --minutes 110 --seconds 300
           fi
+          FAILED=""
+          for block in 1 2 3 4 5; do
+            python3 -m desk.cli watch --minutes 20 --seconds 300 $FLAGS \
+              || { echo "::error::shift block $block failed — see the log above"; FAILED=1; }
+            commit_state
+            [ -n "$FAILED" ] && break
+            [ -f ../data/desk/STOP ] && { echo "STOP file appeared"; break; }
+          done
+          [ -z "$FAILED" ]
 
       - name: Commit state
+        if: always()
         run: |
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"

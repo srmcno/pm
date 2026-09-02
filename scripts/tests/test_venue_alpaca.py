@@ -132,5 +132,15 @@ class TestArming(unittest.TestCase):
             A.assert_armed(Args())
 
 
+class TestQtyFormat(unittest.TestCase):
+    def test_no_exponent_notation_for_dust(self):
+        from desk.venues.alpaca import format_qty
+        self.assertEqual(format_qty(1.6e-05), "0.000016")
+        self.assertEqual(format_qty(5), "5")
+        self.assertEqual(format_qty(5.0), "5")
+        self.assertEqual(format_qty(0.5), "0.5")
+        self.assertEqual(format_qty(0.009975), "0.009975")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

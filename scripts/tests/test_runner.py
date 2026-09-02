@@ -47,27 +47,45 @@ class _CryptoDesk(Desk):
         return Decision({"B/USD": 0.3})
 
 
+class VenueSaidNo(Exception):
+    """Stands in for the adapter's VenueError: carries the HTTP status."""
+    def __init__(self, status, msg="no"):
+        super().__init__(msg)
+        self.status = status
+
+
 class FakeVenue:
-    """Scripted order states. `script[cid]` is a list consumed one per query."""
+    """Scripted order states. `script[cid]` is a list consumed one per query;
+    `default` answers any unscripted id; `reject` makes submit raise."""
     def __init__(self):
         self.script = {}
         self.submitted = []
         self.equity = 1000.0
         self.now = dt.datetime(2026, 9, 1, 15, 40, tzinfo=ET)
+        self.held = None                # what /v2/positions returns; None = unsupported
+        self.default = None
+        self.reject = None              # an exception to raise on submit
 
     def submit(self, symbol, qty, side, order_type="market", time_in_force="day",
                client_order_id=None, **kw):
+        if self.reject is not None:
+            raise self.reject
         self.submitted.append((symbol, qty, side, order_type, time_in_force, client_order_id))
         return {"id": "o", "status": "accepted"}
 
     def order_state(self, cid):
         seq = self.script.get(cid)
         if not seq:
+            if cid not in self.script and self.default is not None:
+                return self.default
             return ("not_found", 0.0, None) if cid not in self.script else ("accepted", 0.0, None)
         return seq.pop(0) if len(seq) > 1 else seq[0]
 
     def account(self):
         return {"equity": str(self.equity)}
+
+    def positions(self):
+        return None if self.held is None else list(self.held)
 
     def now_et(self):
         return self.now
@@ -177,19 +195,54 @@ class TestReconcile(Base):
         cid = r.st.positions[0]["liveCid"]
         v.script[cid] = [("rejected", 0.0, None)]
         r.run_cycle()
-        self.assertEqual(r.st.positions, [])
+        # The rejected intent is gone. The desk still wants the position, so
+        # a fresh intent (new id, unconfirmed) may follow through the normal
+        # path — but nothing is booked and the dead id is not reused.
+        self.assertEqual([p for p in r.st.positions if p["liveOpen"]], [])
+        self.assertNotIn(cid, [p["liveCid"] for p in r.st.positions])
 
-    def test_lost_submission_retries_under_a_new_attempt_id(self):
+    def test_lost_submission_is_dropped_never_resubmitted_from_reconcile(self):
         v = FakeVenue()
         r = self.runner(["_eq"], venue=v)
         r.run_cycle()
         first = r.st.positions[0]["liveCid"]
-        # venue has never heard of it -> not_found -> resubmit as attempt 1
+        # venue has never heard of it -> one more look, still pending, no order
+        tel = r.run_cycle()
+        self.assertTrue(tel["pending"])
+        self.assertEqual(len(v.submitted), 1)
+        # second not_found -> the intent is dead; the desk restates its target
+        # through the normal path (risk check, halts, window) with a new id
         r.run_cycle()
         self.assertEqual(len(v.submitted), 2)
-        second = r.st.positions[0]["liveCid"]
-        self.assertNotEqual(first, second)
-        self.assertTrue(second.endswith("-a1"))
+        second = v.submitted[-1][5]
+        self.assertFalse(second.endswith("-a1"))       # a fresh intent, not a retry
+        self.assertEqual([p["liveCid"] for p in r.st.positions], [second])
+        self.assertEqual(r.st.positions[0].get("notFound", 0), 0)
+        self.assertTrue(first)
+
+    def test_venue_4xx_is_a_refusal_not_a_pending_order(self):
+        v = FakeVenue()
+        v.reject = VenueSaidNo(403, "insufficient buying power")
+        r = self.runner(["_eq"], venue=v)
+        tel = r.run_cycle()
+        self.assertFalse(tel["pending"])
+        self.assertEqual(r.st.positions, [])
+        self.assertTrue(any("venue 403" in (x.get("reason") or "") for x in tel["refused"]))
+        v.reject = VenueSaidNo(503, "gateway")        # ambiguous: stays pending
+        r = self.runner(["_eq"], venue=v)
+        tel = r.run_cycle()
+        self.assertEqual(len(r.st.positions), 1)
+        self.assertFalse(r.st.positions[0]["liveOpen"])
+
+    def test_terminal_status_with_a_partial_fill_is_booked(self):
+        v = FakeVenue()
+        v.default = ("canceled", 2.0, 100.0)            # 2 of 5 filled, then canceled
+        r = self.runner(["_eq"], venue=v)
+        r.run_cycle()
+        self.assertEqual(len(r.st.positions), 1)
+        self.assertTrue(r.st.positions[0]["liveOpen"])
+        self.assertEqual(r.st.positions[0]["shares"], 2.0)
+        self.assertAlmostEqual(r.rm.telemetry()["turnover"]["usedUsd"], 200.0, delta=0.01)
 
     def test_partial_fill_is_tracked_as_exposure_but_stays_pending(self):
         v = FakeVenue()
@@ -417,6 +470,91 @@ class TestOncePerBar(Base):
         tel = r.run_cycle()
         self.assertTrue(any("unchanged" in n for n in tel["deskNotes"]))
         self.assertEqual(tel["executed"], [])           # already at target: no churn
+
+
+class TestBookVersusVenue(Base):
+    def _confirmed(self, venue, shares=5.0):
+        r = self.runner(["_eq"], venue=venue)
+        r.run_cycle()
+        cid = r.st.positions[0]["liveCid"]
+        venue.script[cid] = [("filled", shares, 100.0)]
+        venue.held = [{"symbol": "X", "qty": str(shares)}]
+        r.run_cycle()
+        self.assertTrue(r.st.positions[0]["liveOpen"])
+        return r
+
+    def test_book_shrinks_to_what_the_venue_holds(self):
+        v = FakeVenue()
+        r = self._confirmed(v)
+        v.held = [{"symbol": "X", "qty": "4"}]          # e.g. a fee taken in kind
+        tel = r.run_cycle()
+        self.assertEqual(tel["bookMismatch"], "")
+        confirmed = [p for p in r.st.positions if p["liveOpen"]]
+        self.assertEqual([p["shares"] for p in confirmed], [4.0])
+
+    def test_lot_the_venue_no_longer_holds_is_dropped(self):
+        v = FakeVenue()
+        r = self._confirmed(v)
+        v.held = []                                     # sold at the broker by hand
+        tel = r.run_cycle()
+        self.assertEqual(tel["bookMismatch"], "")
+        self.assertEqual([p for p in r.st.positions if p["liveOpen"]], [])
+
+    def test_untracked_venue_position_refuses_trading(self):
+        v = FakeVenue()
+        v.held = [{"symbol": "X", "qty": "3"}]
+        r = self.runner(["_eq"], venue=v)
+        tel = r.run_cycle()
+        self.assertIn("adopt", tel["bookMismatch"])
+        self.assertEqual(v.submitted, [])
+        self.assertTrue(any("adopt" in x["reason"] for x in tel["refused"]))
+
+    def test_crypto_symbol_matches_the_venues_spelling(self):
+        v = FakeVenue()
+        r = self.runner(["_cr"], venue=v)
+        r.run_cycle()
+        cid = r.st.positions[0]["liveCid"]
+        qty = v.submitted[-1][1]
+        v.script[cid] = [("filled", qty, 50.0)]
+        v.held = [{"symbol": "BUSD", "qty": str(qty * 0.9975)}]   # fee taken in kind
+        r.run_cycle()
+        self.assertAlmostEqual(r.st.positions[0]["shares"], qty * 0.9975, places=6)
+
+
+class TestModeGuard(Base):
+    def test_mode_change_with_positions_is_refused_unless_reset(self):
+        import argparse
+        from desk import cli
+        r = self.runner(["_eq"])
+        r.run_cycle()
+        st = r.st
+        st.mode = "paper"
+        cfg = cfgmod.Config(equity=1000.0)
+        args = argparse.Namespace(live=True, i_accept_total_loss=True, venue_paper=True,
+                                  reset_book=False)
+        with self.assertRaises(SystemExit) as cm:
+            cli._arm(args, cfg, st)
+        self.assertIn("paper", str(cm.exception))
+        self.assertEqual(len(st.positions), 1)          # untouched
+        args.reset_book = True
+        try:
+            cli._arm(args, cfg, st)
+        except SystemExit as e:                          # no adapter keys here
+            self.assertNotIn("refusing to run", str(e))
+        self.assertEqual(st.positions, [])
+        self.assertEqual(st.cash, 1000.0)
+
+
+class TestDefundedDesk(Base):
+    def test_desk_that_loses_funding_liquidates_its_positions(self):
+        r = self.runner(["_eq"])
+        r.run_cycle()
+        self.assertEqual(r.st.positions[0]["shares"], 5.0)
+        r._verdicts = {"_eq": {"verdict": "not-significant", "stale": False, "date": "x"}}
+        tel = r.run_cycle()
+        self.assertTrue(any("liquidating" in n for n in tel["deskNotes"]))
+        self.assertEqual(r.st.positions, [])
+        self.assertEqual(tel["executed"][0]["side"], "sell")
 
 
 if __name__ == "__main__":
