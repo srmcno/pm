@@ -1,63 +1,11 @@
 {
  "meta": {
-  "generatedAt": 1788350955,
+  "generatedAt": 1788351865,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
   "live": true,
   "source": "watch.py"
  },
- "signals": [
-  {
-   "conditionId": "0x04cfc9a4750296502a38b7dd244e7d7c7e277576f62a56e7fdff8ae9d4e27fd2",
-   "outcomeIndex": 1,
-   "title": "LoL: Hanwha Life Esports vs T1 (BO5) - LCK Playoffs",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.7295,
-     "netUsd": 1832.37,
-     "avgPrice": 0.3177,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.287472649066123
-    },
-    {
-     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
-     "name": "HMLSF",
-     "quality": 0.6149,
-     "netUsd": 11487.46,
-     "avgPrice": 0.4701,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 1.862497290993911
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "JustADonk",
-     "quality": 0.5241,
-     "netUsd": 11959.74,
-     "avgPrice": 0.4926,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.649121829146884
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 25279.57,
-   "score": 5.7991,
-   "question": "LoL: Hanwha Life Esports vs T1 (BO5) - LCK Playoffs",
-   "outcome": "T1",
-   "tokenId": "42819687634672881483617510271698078404051708570906741617482740253212535042722",
-   "currentPrice": 0.485,
-   "backersAvgEntry": 0.4268,
-   "driftSinceEntry": 0.0582,
-   "endDate": "2026-09-02T14:00:00Z",
-   "slug": "lol-hle1-t1-2026-09-02",
-   "eventSlug": "lol-hle1-t1-2026-09-02"
-  }
- ]
+ "signals": []
 }
