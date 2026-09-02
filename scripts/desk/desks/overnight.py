@@ -47,20 +47,29 @@ per-fold grid search was allowed to pick, the deflated Sharpe fell to 0.84
 and the folds disagreed with each other, so this desk ships with FIXED
 parameters and no optimization.
 
-CAPITAL FLOOR, measured on the same ten years:
+EXECUTION DECIDES THE CAPITAL FLOOR, and it was measured twice:
 
-    start    end     CAGR   Sharpe   fees as % of capital per year
-    $40      $0.00      -        -   14.4%   <- account destroyed by fees
-    $100     $138    3.4%     0.38    6.9%
-    $250     $513    7.9%     0.80    2.7%
-    $500   $1,139    9.1%     0.91    1.4%
-    $1,000 $2,382    9.6%     0.96    0.8%
+    walk-forward, fractional market orders crossing the book at 15:59
+        CAGR -1.0%, Sharpe -0.04  -> unprofitable
+    walk-forward, whole-share market-on-close / market-on-open
+        CAGR +8.3%, Sharpe 0.80   -> validated
 
-The desk trades every session, and US regulatory fees are aggregated per
-day and rounded up to the cent, so any active day costs at least $0.03
-regardless of size. At $40 that is the entire edge and then some. This is
-why `capital_floor` is $250 and not a token value: below it the desk does
-not underperform, it dies.
+The desk only works when both legs fill AT the auction print. Alpaca does
+not accept fractional quantities on auction orders, so the position must
+be a whole number of shares of ETFs priced $107 to $766. That, not the fee
+floor, sets the size below which the desk stops working:
+
+    equity    CAGR   Sharpe   names held   walk-forward
+    $250      0.3%    0.14       1.4        -
+    $500      1.1%    0.31       1.5        -
+    $1,000    5.5%    0.88       2.6        not significant (p 0.17)
+    $2,000    7.9%    0.94       3.4        validated, Sharpe 0.75
+    $5,000    8.6%    0.91       3.4        validated, Sharpe 0.79
+
+`capital_floor` is $2,000 because that is where the walk-forward record
+first validates, and it coincides with the line above which an Alpaca
+account leaves limited-margin status. Below it the desk holds one or two
+names, the vol-scaling has nothing to work with, and the record is noise.
 """
 import statistics as st
 
@@ -79,12 +88,15 @@ class OvernightDrift(Desk):
         events=(OPEN, CLOSE),
         universe=("SPY", "QQQ", "IWM", "XLK", "GLD", "IBIT", "SMH", "EFA"),
         warmup_bars=130,
-        # Measured, not guessed: see the table above. $250 is where the
-        # per-day fee floor stops dominating; $500 is where it is noise.
-        capital_floor=250.0,
+        # Measured, not guessed: see the table above. The walk-forward record
+        # first validates at $2,000 once positions are whole shares.
+        capital_floor=2000.0,
         pdt_day_trades=False,      # held overnight — never a day trade
         shortable=False,
-        fractional=True,
+        # Auction orders cannot be fractional at Alpaca, and the desk does
+        # not work outside the auction (see the docstring), so sizing is in
+        # whole shares in the replay exactly as it must be live.
+        fractional=False,
         # Both legs are auction orders — MOC into the close, MOO out of the
         # open — so they fill at the official print with no spread to cross.
         # This is what makes ~500 round trips a year survivable; the same

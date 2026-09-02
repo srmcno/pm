@@ -125,6 +125,16 @@ class DeskMeta:
     # live executor's order type both read this field, so a desk cannot be
     # backtested one way and traded another.
     execution_style: str = "crossing"
+    # The desk author's verdict, which can be STRICTER than the statistic.
+    # A walk-forward record can validate on the full sample and still be
+    # one an honest author will not fund — because it only holds in half
+    # the sample, or because the effect it exploits is documented to have
+    # weakened. The statistic cannot know that; the author can. Values:
+    # "validated" | "marginal" | "rejected". The allocator refuses
+    # "rejected" outright and funds "marginal" only when the operator names
+    # the desk explicitly in data/desk/config.json.
+    status: str = "validated"
+    status_reason: str = ""
     description: str = ""
 
 

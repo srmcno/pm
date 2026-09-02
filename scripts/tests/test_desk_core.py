@@ -296,10 +296,18 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.preset_for_equity(5000).name, "standard")
         self.assertEqual(config.preset_for_equity(100000).name, "scaled")
 
-    def test_micro_preset_excludes_equity_desks(self):
+    def test_micro_preset_only_runs_desks_validated_at_small_size(self):
         p = config.PRESETS["micro"]
-        self.assertNotIn("overnight", p.desks)
-        self.assertIn("kalshi-bias", p.desks)
+        self.assertNotIn("overnight", p.desks)      # needs whole-share auctions, $2,000
+        self.assertNotIn("kalshi-bias", p.desks)    # tested and rejected
+        self.assertNotIn("reversion", p.desks)      # marginal, opt-in only
+        self.assertIn("xsect", p.desks)
+        self.assertIn("trend", p.desks)
+
+    def test_overnight_only_enters_at_two_thousand(self):
+        for name in ("micro", "small"):
+            self.assertNotIn("overnight", config.PRESETS[name].desks)
+        self.assertIn("overnight", config.PRESETS["standard"].desks)
 
     def test_turnover_allowance_widens_with_size(self):
         self.assertLess(config.PRESETS["micro"].limits.max_annual_turnover,
@@ -326,6 +334,44 @@ class TestData(unittest.TestCase):
     def test_sma(self):
         self.assertEqual(sma([1, 2, 3, 4, 5], 3), [2.0, 3.0, 4.0])
         self.assertEqual(sma([1, 2], 5), [])
+
+
+
+class TestDeclaredStatus(unittest.TestCase):
+    def _desk(self, name, status, floor=10.0):
+        class D:
+            pass
+        d = D()
+        d.meta = DeskMeta(name=name, title=name, asset_class="equity", venue="alpaca",
+                          capital_floor=floor, status=status, status_reason="why")
+        return d
+
+    def test_rejected_is_never_funded(self):
+        rm = risk.RiskManager(1000.0, state_path="/tmp/_risk_status.json")
+        a = {x.name: x for x in rm.allocate([self._desk("r", "rejected"),
+                                             self._desk("v", "validated")], 1000.0)}
+        self.assertFalse(a["r"].enabled)
+        self.assertIn("rejected", a["r"].reason)
+        self.assertTrue(a["v"].enabled)
+
+    def test_marginal_needs_an_explicit_name(self):
+        rm = risk.RiskManager(1000.0, state_path="/tmp/_risk_status.json")
+        d = self._desk("m", "marginal")
+        self.assertFalse(rm.allocate([d], 1000.0)[0].enabled)
+        self.assertTrue(rm.allocate([d], 1000.0, explicit_desks=("m",))[0].enabled)
+
+    def test_registered_desks_declare_consistently(self):
+        import desk.desks.overnight, desk.desks.trend, desk.desks.xsect  # noqa: F401
+        import desk.desks.reversion, desk.desks.kalshi_bias              # noqa: F401
+        from desk.desks.base import all_desks
+        st = {n: c.meta.status for n, c in all_desks().items()}
+        self.assertEqual(st["kalshi-bias"], "rejected")
+        self.assertEqual(st["reversion"], "marginal")
+        self.assertEqual(st["overnight"], "validated")
+        self.assertEqual(st["trend"], "validated")
+        for n, c in all_desks().items():
+            if c.meta.status != "validated":
+                self.assertTrue(c.meta.status_reason, f"{n} must say why")
 
 
 if __name__ == "__main__":

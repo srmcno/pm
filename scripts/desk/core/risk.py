@@ -233,17 +233,31 @@ class RiskManager:
         self.day["trades"] = self.day.get("trades", 0) + 1
 
     # -------------------------------------------------------- allocation
-    def allocate(self, desks, equity=None):
-        """Split equity across desks, refusing any below its capital floor.
+    def allocate(self, desks, equity=None, explicit_desks=()):
+        """Split equity across desks, refusing any below its capital floor,
+        any the author rejected, and any marginal desk not named explicitly.
 
         A desk funded under its floor does not lose slowly — on a daily
         equity strategy the fee floor takes it to zero. Refusing is the only
         honest response, and the reason is carried through to the dashboard.
         """
         eq = float(equity if equity is not None else self.equity)
+        explicit = lambda name: name in set(explicit_desks or ())
         out, eligible = [], []
         for d in desks:
             floor = getattr(d.meta, "capital_floor", 0.0)
+            status = getattr(d.meta, "status", "validated")
+            if status == "rejected":
+                out.append(DeskAllocation(
+                    d.meta.name, 0.0, False,
+                    "rejected by its own study: " + getattr(d.meta, "status_reason", "")))
+                continue
+            if status == "marginal" and not explicit(d.meta.name):
+                out.append(DeskAllocation(
+                    d.meta.name, 0.0, False,
+                    "marginal — runs only when named explicitly in config: "
+                    + getattr(d.meta, "status_reason", "")))
+                continue
             if eq <= 0:
                 out.append(DeskAllocation(d.meta.name, 0.0, False, "no equity"))
             elif floor > 0 and eq < floor:

@@ -17,28 +17,45 @@ and one cost dominates: **US regulatory fees are aggregated per day, per fee
 type, and rounded up to the cent.** Any day on which you trade equities costs
 at least $0.03 (SEC + FINRA TAF + CAT), no matter how small the trade.
 
-Measured on the overnight desk over ten years of real data, charging that
-floor:
+Two costs were measured, and together they decide what an account can run.
 
-| Starting capital | After 10 years | CAGR | Sharpe | Fees as % of capital/yr |
-|---|---|---|---|---|
-| $40 | **$0.00** | — | — | 14.4% |
-| $100 | $138 | 3.4% | 0.38 | 6.9% |
-| $250 | $513 | 7.9% | 0.80 | 2.7% |
-| $500 | $1,139 | 9.1% | 0.91 | 1.4% |
-| $1,000 | $2,382 | 9.6% | 0.96 | 0.8% |
+**The fee floor.** On the overnight desk over ten years, charged in full:
 
-A $40 account running a daily equity strategy does not underperform. It goes
-to zero, and the strategy itself is fine — the fee floor eats it.
+| Starting capital | After 10 years | CAGR | Fees as % of capital/yr |
+|---|---|---|---|
+| $40 | **$0.00** | — | 14.4% |
+| $250 | $513 | 7.9% | 2.7% |
+| $1,000 | $2,382 | 9.6% | 0.8% |
+
+A $40 account running a daily equity strategy does not underperform. It
+goes to zero on fees while the strategy itself is fine.
+
+**Execution.** That table assumed fractional shares filling at the auction
+print — which Alpaca does not offer. Auction orders (market-on-close /
+market-on-open) must be whole shares, and the overnight desk does not work
+any other way (crossing the spread instead: walk-forward **-1.0% a year**).
+Whole shares of $107–$766 ETFs re-set the floor:
+
+| Equity | Overnight desk, whole-share auction | Walk-forward |
+|---|---|---|
+| $500 | 1.1% CAGR, holds 1.5 names | — |
+| $1,000 | 5.5% CAGR | not significant (p 0.17) |
+| **$2,000** | 7.9% CAGR, 3.4 names | **validated, Sharpe 0.75** |
+| $5,000 | 8.6% CAGR | validated, Sharpe 0.79 |
 
 **What this means for you:**
 
-| Capital | What to run | Why |
+| Capital | What runs (`preset`) | Why |
 |---|---|---|
-| Under $100 | Kalshi only (`micro` preset) | Contracts are fractional to $0.01 and maker orders are free on 98.7% of series. The only venue where a tiny account is not structurally disadvantaged. |
-| $100–$250 | Kalshi + `xsect` | Cross-sectional momentum rebalances monthly — about 12 active days a year, so $0.36/yr in fee floor instead of $7.50. |
-| $250–$2,000 | `small` preset: overnight, xsect, Kalshi | Daily equity desks become viable. Still no shorting — under $2,000 an Alpaca account is limited-margin. |
-| $2,000+ | `standard` preset: everything | Shorting and 4x intraday buying power unlock. Fee floor is noise. Crypto trend is worth its 25bps taker cost. |
+| Under $100 | Nothing validated | Equity desks need $100+ (monthly) or $2,000+ (daily); the Kalshi study found no edge. Paper-trade and save. |
+| $100–$2,000 | `trend` (`micro`/`small`) | Crypto trend on BTC/ETH (validated, floor $100). Monthly ETF momentum (`xsect`) is listed in these presets but marginal — off until you name it in `config.json`. No shorting under $2,000. |
+| $2,000+ | + `overnight` (`standard`) | Whole-share auction sizing now holds enough names to work. Account leaves limited-margin status. |
+| $25,000+ | same, tighter caps (`scaled`) | Frictions are noise; caps tighten rather than loosen. |
+
+The `reversion` desk is registered but in no preset (see §2). The
+`kalshi-bias` desk is registered and rejected. A marginal desk funds only
+when it appears in the `desks` list of `data/desk/config.json`; a preset
+listing it is not enough.
 
 Check your own numbers before funding anything:
 
@@ -54,18 +71,29 @@ python3 -m desk.cli --equity 500 costs
 Nothing trades until it passes walk-forward testing on data it never saw
 during fitting, with every cost charged. Current verdicts:
 
-| Desk | Out-of-sample | Benchmark | Verdict |
-|---|---|---|---|
-| `overnight` — hold US ETFs only overnight | Sharpe 0.82, CAGR 8.6%, maxDD -19% | SPY 0.92 / 20% / -36% | validated |
-| `trend` — BTC/ETH above a moving average | Sharpe 1.13, CAGR 31.7%, maxDD -28% | BTC 0.87 / 35.7% / -53% | validated |
-| `xsect` — monthly ETF momentum | Sharpe 0.64, CAGR 11.6%, maxDD -33% | — | validated |
+| Desk | Out-of-sample (fixed params, costs charged) | Benchmark | Verdict | Floor |
+|---|---|---|---|---|
+| `overnight` — hold US ETFs only overnight, whole-share MOC/MOO | Sharpe 0.75, CAGR 6.0%, maxDD -17% (at $2,000) | SPY 0.92 / 20% / -36% | validated | $2,000 |
+| `trend` — BTC/ETH above a moving average, vol-scaled | Sharpe 1.13, CAGR 31.7%, maxDD -28% | BTC 0.87 / 35.7% / -53% | validated | $100 |
+| `xsect` — monthly ETF momentum, fractional, crossing | Sharpe 0.50, CAGR 8.5%, maxDD -33% on 5 folds at $100 (p 0.16); 0.63 / p 0.087 on 4 folds | equal-weight universe 0.75 / 11.1% / -32% | **marginal**, opt-in | $100 |
+| `reversion` — 3 down closes, 5-day hold | Sharpe 0.75, CAGR 10.5% — but not significant in 2016-21, strong only in 2021-26 | SPY 0.79 / 13.4% | **marginal**, opt-in | $500 |
+| `kalshi-bias` — buy favorites, hold to settlement | 487 tight-quoted settled markets: favorites +0.9% to +6.6% of stake net, t 0.5–1.25 | — | **rejected** | — |
 
 Read those honestly. **Neither `overnight` nor `trend` beats buy-and-hold on
 absolute return.** Both earn a better risk-adjusted return with roughly half
 the drawdown. If you want maximum return and can tolerate a 53% drawdown,
 buy and hold bitcoin. If you want a smoother path, that is what these buy.
 
-Things tested and found dead — do not let anyone sell you these:
+`xsect` is marginal for a specific reason: its significance depends on how
+the walk-forward is cut (four folds pass, five do not), and on the five-fold
+run the dashboard publishes it earns a worse risk-adjusted return than
+simply holding its own seventeen ETFs equal-weighted. The momentum effect
+it exploits is among the best-documented in finance; ten years of ETF price
+data cannot confirm it here. It is replayed every Monday, and its status
+changes only if the five-fold record clears the significance bar every desk
+is held to (p at or under 0.10) and beats that equal-weight benchmark.
+
+Tested and found dead — do not let anyone sell you these:
 
 - **Cross-venue crypto arbitrage** between US venues: measured live, best net
   edge **-64bps**. Coinbase, Kraken and Alpaca quote within ~2bps of each
@@ -77,6 +105,11 @@ Things tested and found dead — do not let anyone sell you these:
   zero resting liquidity.
 - **Intraday crypto→equity lead-lag** (the previous system's flagship): 239
   live paper trades, **-4.2%**, 81% of them stopped out, 23% win rate.
+- **Kalshi favorite-longshot bias**: directionally present at the favorite
+  end after fees, but on 21–29 markets per bucket it is indistinguishable
+  from a fair price. The desk ships with that finding encoded as a gate
+  that returns nothing; the settled set grows monthly and the question can
+  be re-asked with `python3 -m desk.cli backtest kalshi-bias`.
 
 Regenerate all of this yourself:
 
@@ -224,10 +257,12 @@ cd scripts
 python3 -m desk.cli watch --minutes 600 --seconds 300
 ```
 
-The `overnight` desk needs to act near the close (submit MOC before 15:50 ET)
-and near the open. The `xsect` desk only acts on the last session of the month.
-`trend` runs daily on a 24/7 market. A cycle every five minutes covers all of
-them without hammering anything.
+The runner reads the venue's clock and only acts in the windows the desks
+need: **09:00–09:26 ET** for market-on-open orders (exchange cutoff 09:28)
+and **15:30–15:48 ET** for market-on-close (cutoff 15:50). Outside those
+windows equity desks hold whatever they have; nothing is flattened because
+a cycle happened to run at noon. Crypto trades on any cycle. A cycle every
+five minutes covers everything without hammering anything.
 
 ---
 
@@ -319,18 +354,27 @@ Ranked by how likely it is to cost you money.
 
 ---
 
-## 11. Honest expectations at $500
+## 11. Honest expectations
 
-Running the `small` preset with $500, using the validated out-of-sample
-figures and assuming they hold:
+**At $500** (`small`), using the validated out-of-sample figures and
+assuming they hold:
 
-- Expected return roughly **8–11% a year**, which is **$40–$55**.
-- Expect a **20–30% drawdown** at some point. That is $100–$150 of paper loss,
-  and it will feel much worse than the numbers suggest.
-- Fees will cost about **$7.50/yr** on the daily desk and about $0.36/yr on the
-  monthly one.
+- trend is the only desk funded by default. Its cap is half the account,
+  so $250 works and $250 sits in cash. Crypto trend has earned 30%+ a year
+  in this sample and will also sit flat for months: call it $0–$75.
+- If you opt into xsect by naming it in `config.json`, its other half of
+  the account has earned 9% a year out of sample (about $22) — but read §2
+  first: that record is not significant on five folds and trails an
+  equal-weight hold of the same ETFs.
+- Expect a **25–35% drawdown** on whatever is funded at some point.
+- Fees: about 0.5% on trend's turnover; under $1 a year on xsect (it
+  trades about ten days a year).
 
-The value of running $500 is not the $45. It is proving the whole pipeline —
-signal, sizing, execution, reconciliation, tax records — with real money at a
-size where being wrong is affordable. Scale only after the book has matched the
-broker for a few months.
+**At $2,000** (`standard`: + overnight), add roughly 6–8% a year on the
+overnight sleeve with a -17% to -19% drawdown, and about $7.50/yr of fee
+floor from its daily activity.
+
+The value of running small is not the dollars. It is proving the whole
+pipeline — signal, sizing, execution, reconciliation, tax records — with
+real money at a size where being wrong is affordable. Scale only after the
+book has matched the broker for a few months.

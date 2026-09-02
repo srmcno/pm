@@ -21,6 +21,47 @@ Everything runs on Polymarket's public APIs. No keys, no accounts, no real money
 | Consensus engine | `scripts/pmx/` | A second-generation pipeline that runs alongside the above and publishes to the same site: specialty-weighted voting instead of a flat backer count, calibration-gated fractional-Kelly sizing (minimum stakes until the probability model is fitted from settled outcomes), near-real-time on-chain fill detection (0-2 s measured) instead of polling, and active exits instead of holding to resolution. Its own shift (`engine-shift.yml`) feeds the dashboard's **Consensus engine** panel. Architecture and measurements: **[`docs/ENGINE.md`](docs/ENGINE.md)**. |
 | Stocks desk | `scripts/stocks/` | Intraday long/short trading of digital-asset proxy equities (MSTR, COIN, IBIT, ETHA and peers) against their 24/7 crypto reference prices. Betas fitted daily; entries on dislocation, exits on reversion; flat before the close; self-halting past a daily drawdown limit. Paper account by default; Alpaca execution ships disarmed and is subject to the pattern day trader rule below $25,000 equity. Page: `stocks.html`. |
 
+## Desk system (2026 rebuild) — what actually trades
+
+Everything above was the first generation. Its live paper records, measured
+over sixteen days of continuous shifts, were the reason for the rebuild:
+the intraday lead-lag desk lost 4.2% over 239 trades with 81% stopped out,
+the MEXC triangle desk's paper gains inverted under its own one-scan
+latency replay, and the Kraken trial's gains came from 22%-per-cycle prints
+on illiquid books that would never have filled. None of it was a coding
+bug. All of it was measurement — optimistic fills, fees counted on some
+legs and not others, parameters picked from a 216-point grid on five days
+of data. So the second generation, `scripts/desk/`, is built so that the
+measurement is hard to fake, and it runs only on venues a US resident can
+legally use.
+
+| Piece | Path | What it does |
+|---|---|---|
+| Cost model | `desk/core/money.py` | Verified 2026 fee schedules, including the per-day per-fee-type cent rounding that costs any active US equity day $0.03 and takes a $40 daily strategy to zero. Kalshi's quadratic fee with per-series maker/taker treatment. |
+| Replay | `desk/backtest/engine.py` | Event-driven, lookahead-safe (a desk cannot see the current bar at the open), targets differenced with a no-trade band, fills in the auction or across the spread according to what the desk declares it will do live. |
+| Statistics | `desk/backtest/metrics.py` | Deflated Sharpe, t-stat, minimum track-record length, and a one-word verdict that refuses small or over-searched samples. |
+| Walk-forward | `desk/backtest/walkforward.py` | Rolling folds scored only on untouched windows; fixed parameters by default because the per-fold search was shown to pick noise. |
+| Risk | `desk/core/risk.py` | Allocation with per-desk capital floors, daily/weekly/drawdown halts that survive restarts, and a **turnover budget** — the brake the June 2026 PDT repeal removed. |
+| Runner | `desk/runner.py` | Reconciles every pending order before deciding, books only confirmed fills at the venue's price, acts only inside the auction submission windows on the venue's clock. Paper and live share the path. |
+| Venues | `desk/venues/alpaca.py`, `desk/venues/kalshi.py` | Client-side enforcement of every order rule that would otherwise be a rejection: fractional-vs-auction, crypto TIF, MOC/MOO cutoffs, Kalshi's per-market tick grid and fixed-point quantities. Ship disarmed. |
+| Desks | `desk/desks/` | `overnight` (validated, $2,000+), `trend` (validated, $100+), `xsect` (marginal, opt-in, $100+ — not significant on five folds and below its own equal-weight benchmark), `reversion` (marginal, opt-in, $500+), `kalshi-bias` (tested and rejected — the study is in its docstring). |
+| Operator | `desk/cli.py`, `docs/RUNBOOK.md`, `dashboard/desk.html` | `status`, `validate`, `run`, `watch`, `halt`; the real-money runbook; a dashboard that leads with each desk's out-of-sample verdict. |
+
+Start here:
+
+```bash
+cd scripts
+python3 -m desk.cli --equity 500 costs      # what trading costs at your size
+python3 -m desk.cli validate                # walk-forward every desk, write evidence
+python3 -m desk.cli --equity 500 status     # what your account is allowed to run
+python3 -m desk.cli run                     # one paper cycle
+```
+
+Real orders need credentials, `--live`, `--i-accept-total-loss`, and
+`--real-money` all at once, plus the absence of `data/desk/STOP`. Read
+[`docs/RUNBOOK.md`](docs/RUNBOOK.md) first — its opening section is the
+measured table of what an account size can and cannot run.
+
 ## Quick start
 
 ```bash

@@ -70,6 +70,42 @@ rerun would rank differently and could plausibly do somewhat worse. The
 benchmarks are computed on the same unadjusted data, so the COMPARISON is
 apples to apples, but the absolute CAGRs above understate every line by
 roughly 1.5-2%/yr.
+
+EXECUTION, measured and chosen for a reason. Two ways to place the monthly
+rebalance were replayed over the same ten years:
+
+    market-on-close, whole shares      walk-forward Sharpe 0.55, p 0.13, not significant
+    market DAY order at the close,     walk-forward Sharpe 0.63, p 0.087, validated
+    fractional shares, crossing        CAGR 9.5% at $100, 9.8% at $5,000
+
+The auction is the cheaper fill but forbids fractional shares, and at
+small size whole shares of $100-$700 ETFs leave the book holding one or
+two names — the ranking has nothing to choose between. Crossing the
+spread costs about 4bps a fill, and with roughly ten rebalances a year
+that is under half a percent annually: cheaper than losing the
+diversification. So this desk crosses, fractionally, and its capital
+floor is $100 rather than $2,000.
+
+WHY IT IS DECLARED MARGINAL rather than validated. The p 0.087 above is a
+four-fold walk-forward. The standing validation run uses five folds, and
+there the same desk with the same fixed parameters reads:
+
+    walk-forward, 5 folds, $100       Sharpe 0.50, CAGR 8.5%, p 0.155
+    walk-forward, 5 folds, $2,000     Sharpe 0.52, CAGR 8.8%, p 0.144
+    equal-weight buy-and-hold          Sharpe 0.75, CAGR 11.1%
+    of the same 17 ETFs
+
+A record that validates at one fold count and fails at the next is a
+record whose significance is being decided by the fold boundaries, not
+by the strategy. And on the run that matters — the one the dashboard
+publishes — the rotation earns a WORSE risk-adjusted return than simply
+holding its own universe equal-weighted, with the same drawdown. The
+literature says this effect is real; ten years of seventeen ETFs on
+unadjusted prices cannot confirm it. So the desk ships, is replayed
+every Monday, and is funded only when the operator names it explicitly.
+If a later five-fold run clears the statistic's significance bar (p at
+or under 0.10) AND beats the equal-weight hold of its own universe on
+Sharpe, the status changes; it does not change on a good year.
 """
 import datetime as dt
 import statistics as st
@@ -109,15 +145,27 @@ class CrossSectionalMomentum(Desk):
         pdt_day_trades=False,      # holds for a month; never a day trade
         shortable=False,
         fractional=True,
-        # Month-end rebalances go in as market-on-close and fill at the
-        # official print. There is no spread to cross, which matters because
-        # sector ETFs are not penny-wide: crossing the book on XLRE or EEM
-        # would cost ~4bps a side against a signal worth a few percent a year.
-        execution_style="auction",
+        # Month-start rebalances go in as fractional market DAY orders that
+        # cross the spread (~4bps a side on XLRE/EEM, under 0.5%/yr at ten
+        # rebalances). The auction would be cheaper but forbids fractional
+        # shares, which at small size costs the diversification the desk is
+        # built on. Measured both ways in the docstring.
+        execution_style="crossing",
+        # The five-fold walk-forward the dashboard publishes is not
+        # significant (p 0.144) and sits below the equal-weight buy-and-hold
+        # of the same names on Sharpe. See the docstring for the numbers.
+        status="marginal",
+        status_reason=("five-fold walk-forward Sharpe 0.50 at $100 (0.52 at "
+                       "$2,000), p 0.14-0.16, below the equal-weight buy-and-hold "
+                       "of its own universe (0.75); a four-fold run validates at "
+                       "p 0.087, so the record is decided by fold boundaries "
+                       "rather than by the desk"),
         description="Ranks a sector/asset-class ETF universe on trailing "
                     "return skipping the last month, holds the top K "
                     "equal-weighted, and swaps any name below its own "
-                    "long-run trend for cash. Rebalances monthly.",
+                    "long-run trend for cash. Rebalances monthly. MARGINAL: "
+                    "not significant on the five-fold walk-forward and below "
+                    "its own equal-weight benchmark.",
     )
 
     @classmethod

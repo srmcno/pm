@@ -93,7 +93,7 @@ def cmd_status(args):
     print(cfgmod.describe(cfg))
     print()
     desks = [deskbase.get(n)() for n in cfg.desks if deskbase.get(n)]
-    allocs = rm.allocate(desks, st.cash)
+    allocs = rm.allocate(desks, st.cash, explicit_desks=cfg.explicit_desks)
     print("allocations")
     for a in allocs:
         mark = "on " if a.enabled else "OFF"
@@ -141,19 +141,28 @@ def cmd_validate(args):
     This is what the dashboard reads and what decides whether a desk is
     allowed to trade. A desk whose verdict is not 'validated' stays off.
     """
-    out = {"generatedAt": int(time.time()), "desks": {}}
+    out = {"generatedAt": int(time.time()), "folds": args.folds, "desks": {}}
     for name, cls in sorted(deskbase.all_desks().items()):
         d = cls()
-        print(f"--- {name}")
+        # Replay each desk at the size it claims to work from, unless the
+        # operator asked for a specific size. Whole-share desks behave very
+        # differently at $500 and $2,000, and a single global equity would
+        # let a scheduled run silently re-grade every desk at the wrong size.
+        eq = (float(args.equity) if getattr(args, "equity_explicit", False)
+              else max(float(d.meta.capital_floor), 100.0))
+        print(f"--- {name} (replayed at ${eq:,.0f}, {args.folds} folds)")
         try:
             aligned, dropped = _load_series(d)
             if not aligned:
-                out["desks"][name] = {"verdict": "no-data"}
+                out["desks"][name] = {"verdict": "no-data", "equity": eq,
+                                      "declared": getattr(d.meta, "status", "validated"),
+                                      "declaredReason": getattr(d.meta, "status_reason", ""),
+                                      "capitalFloor": d.meta.capital_floor}
                 print("    no data")
                 continue
-            res, ins = run_desk(d, aligned, start_equity=args.equity)
+            res, ins = run_desk(d, aligned, start_equity=eq)
             grid = {k: [v] for k, v in d.params.items() if k in cls.param_grid()}
-            wf = walk_forward(cls, aligned, start_equity=args.equity,
+            wf = walk_forward(cls, aligned, start_equity=eq,
                               n_folds=args.folds, grid=grid or None)
             bench = _benchmark(aligned, d)
             out["desks"][name] = {
@@ -161,6 +170,8 @@ def cmd_validate(args):
                 "assetClass": d.meta.asset_class,
                 "venue": d.meta.venue,
                 "capitalFloor": d.meta.capital_floor,
+                "equity": eq,
+                "folds": args.folds,
                 "universe": list(d.meta.universe),
                 "inSample": ins.to_dict(),
                 "walkForward": wf.stats.to_dict() if wf.stats else None,
@@ -169,6 +180,8 @@ def cmd_validate(args):
                 "feeFloor": round(res.fee_floor_paid, 2),
                 "turnoverAnn": round(ins.turnover_ann, 2),
                 "verdict": (wf.stats.verdict if wf.stats else "no-walk-forward"),
+                "declared": getattr(d.meta, "status", "validated"),
+                "declaredReason": getattr(d.meta, "status_reason", ""),
                 "notes": wf.notes,
                 "droppedSymbols": dropped,
             }
@@ -207,30 +220,44 @@ def _write_evidence_report(blob):
     lines = ["# Desk evidence", "",
              time.strftime("Generated %Y-%m-%d %H:%M UTC",
                            time.gmtime(blob["generatedAt"])), "",
-             "Walk-forward figures are out-of-sample with fixed parameters. A desk",
-             "is only permitted to trade when its verdict is `validated`.", "",
-             "| desk | verdict | OOS Sharpe | OOS CAGR | max DD | benchmark Sharpe | floor |",
-             "|---|---|---|---|---|---|---|"]
+             f"Walk-forward figures are out-of-sample with fixed parameters over "
+             f"{blob.get('folds', '?')} folds, each desk replayed at its own capital",
+             "floor with every cost charged. The `declared` column is the desk author's",
+             "verdict, which may be stricter than the statistic; the allocator funds a",
+             "desk only when both agree, and funds a `marginal` desk only when it is",
+             "named explicitly in `data/desk/config.json`.", "",
+             "| desk | statistic | declared | OOS Sharpe | OOS CAGR | max DD | p | benchmark Sharpe | replayed at | floor |",
+             "|---|---|---|---|---|---|---|---|---|---|"]
     for name, d in sorted(blob.get("desks", {}).items()):
         wf = d.get("walkForward") or {}
         bm = ((d.get("benchmark") or {}).get("equalWeightBuyHold") or {})
+        eq = d.get("equity")
         lines.append(
-            f"| {name} | {d.get('verdict','?')} | {wf.get('sharpe','—')} | "
+            f"| {name} | {d.get('verdict','?')} | {d.get('declared','—')} | {wf.get('sharpe','—')} | "
             f"{wf.get('cagr_pct','—')}% | {wf.get('max_drawdown_pct','—')}% | "
-            f"{bm.get('sharpe','—')} | ${d.get('capitalFloor','—')} |")
+            f"{wf.get('p_value','—')} | {bm.get('sharpe','—')} | "
+            f"{'$%s' % format(eq, ',.0f') if eq else '—'} | ${format(d.get('capitalFloor', 0), ',.0f')} |")
     os.makedirs(os.path.dirname(REPORT), exist_ok=True)
     with open(REPORT, "w") as f:
         f.write("\n".join(lines) + "\n")
 
 
+def _arm(args, st):
+    """Broker for this process, or None for simulated fills. The state's
+    mode is set here, once, so every published cycle says truthfully
+    whether it was real money — `run` and `watch` must not differ."""
+    if not args.live:
+        st.mode = "paper"
+        return None
+    _arm_or_die(args)
+    st.mode = "live-real-money" if not args.venue_paper else "live-paper-endpoint"
+    return _make_broker(args)
+
+
 def cmd_run(args):
     cfg = cfgmod.load(equity=args.equity, preset=args.preset)
     st = statemod.load(bankroll=cfg.equity)
-    broker = None
-    if args.live:
-        _arm_or_die(args)
-        st.mode = "live-real-money" if not args.venue_paper else "live-paper-endpoint"
-        broker = _make_broker(args)
+    broker = _arm(args, st)
     r = runnermod.Runner(cfg=cfg, st=st, broker=broker)
     tel = r.run_cycle()
     print(json.dumps(tel, indent=1)[:4000])
@@ -241,10 +268,7 @@ def cmd_run(args):
 def cmd_watch(args):
     cfg = cfgmod.load(equity=args.equity, preset=args.preset)
     st = statemod.load(bankroll=cfg.equity)
-    broker = None
-    if args.live:
-        _arm_or_die(args)
-        broker = _make_broker(args)
+    broker = _arm(args, st)
     r = runnermod.Runner(cfg=cfg, st=st, broker=broker)
     deadline = time.time() + args.minutes * 60
     n = 0
@@ -302,8 +326,10 @@ def _publish(tel, cfg, st):
                     "recent": st.closed[-20:][::-1], "mode": st.mode},
         "evidence": evidence,
         "notes": ("Paper unless the account is explicitly armed. Walk-forward "
-                  "figures are out-of-sample with fixed parameters; a desk "
-                  "only trades when its verdict is validated."),
+                  "figures are out-of-sample with fixed parameters, each desk "
+                  "replayed at its own capital floor. A desk is funded only "
+                  "when the statistic and the author's declared status agree; "
+                  "a marginal desk runs only when named in the config file."),
     }
     os.makedirs(os.path.dirname(DASH), exist_ok=True)
     tmp = DASH + ".tmp"
@@ -415,6 +441,7 @@ def main():
     c.set_defaults(fn=cmd_config)
 
     args = ap.parse_args()
+    args.equity_explicit = args.equity is not None
     if args.equity is None:
         args.equity = cfgmod.load().equity
     return args.fn(args)

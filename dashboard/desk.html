@@ -107,8 +107,10 @@
 <section>
   <h2>Evidence</h2>
   <p class="sectionnote">Every registered desk, scored on data it never saw during fitting. Walk-forward
-    figures use fixed parameters, so no result here is the best of a search. A desk trades only when its
-    verdict is <strong>validated</strong>; anything else stays off and says why.</p>
+    figures use fixed parameters, so no result here is the best of a search, and each desk is replayed at
+    its own capital floor. A desk trades only when the statistic is <strong>validated</strong> and the
+    author's declared status agrees; a <strong>marginal</strong> desk runs only when named explicitly in
+    the config file, and anything else stays off and says why.</p>
   <div class="card" id="evidence"></div>
 </section>
 
@@ -207,7 +209,7 @@ function render() {
   const acct = d.account || {};
   const cfg = d.config || {};
   const ev = (d.evidence || {}).desks || {};
-  const validated = Object.values(ev).filter(x => x.verdict === "validated").length;
+  const validated = Object.values(ev).filter(x => x.verdict === "validated" && (x.declared || "validated") === "validated").length;
   const ret = acct.bankrollStart ? ((acct.cash / acct.bankrollStart - 1) * 100) : 0;
   const risk = ((d.cycle || {}).risk) || {};
 
@@ -231,16 +233,19 @@ function render() {
     const bm = ((x.benchmark || {}).equalWeightBuyHold) || {};
     return [[name, "l"],
             [x.verdict || "—", verdictClass(x.verdict)],
+            [x.declared || "—", verdictClass(x.declared === "marginal" ? "" : x.declared)],
             [num(wf.sharpe), wf.sharpe > 0 ? "pos" : "neg"],
             [`${num(wf.cagr_pct, 1)}%`, wf.cagr_pct > 0 ? "pos" : "neg"],
             [`${num(wf.max_drawdown_pct, 1)}%`, "neg"],
+            [wf.p_value == null ? "—" : num(wf.p_value, 3), wf.p_value != null && wf.p_value < 0.05 ? "pos" : ""],
             [num(bm.sharpe), ""],
+            [x.equity ? `$${num(x.equity, 0)}` : "—", ""],
             [`$${num(x.capitalFloor, 0)}`, ""],
             [`${num(x.turnoverAnn, 1)}x`, ""]];
   });
   fill("evidence", rows.length ? table(
-    [["Desk", 1], ["Verdict", 0], ["OOS Sharpe", 0], ["OOS CAGR", 0],
-     ["Max DD", 0], ["Benchmark Sharpe", 0], ["Floor", 0], ["Turnover", 0]], rows) : null,
+    [["Desk", 1], ["Statistic", 0], ["Declared", 0], ["OOS Sharpe", 0], ["OOS CAGR", 0],
+     ["Max DD", 0], ["p", 0], ["Benchmark Sharpe", 0], ["Replayed at", 0], ["Floor", 0], ["Turnover", 0]], rows) : null,
     "No evidence file yet — run `python3 -m desk.cli validate`.");
 
   const allocs = ((d.cycle || {}).allocations) || {};

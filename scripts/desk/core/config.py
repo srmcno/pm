@@ -44,7 +44,8 @@ PRESETS = {
                           max_position_weight=0.35, daily_loss_halt=0.04,
                           max_annual_turnover=1000.0, max_open_positions=8),
         desks=("overnight", "trend", "xsect", "reversion", "kalshi-bias"),
-        notes="Runs every desk on paper and records the result. No venue "
+        notes="Runs every registered desk on paper, including the rejected "
+              "and marginal ones, and records the result. No venue "
               "credentials are read and no order can be produced.",
     ),
 
@@ -60,12 +61,16 @@ PRESETS = {
                           weekly_loss_halt=0.12, max_drawdown_halt=0.25,
                           max_annual_turnover=12.0, min_trade_notional=1.0,
                           max_open_positions=4),
-        desks=("kalshi-bias",),
-        notes="At this size US equity desks are not viable: the per-day fee "
-              "floor of about $0.03 is 14% a year on $40 and takes the "
-              "account to zero over a decade. Kalshi is the exception — "
-              "fractional contracts to $0.01 and free maker orders — so it "
-              "is the only desk enabled here.",
+        desks=("trend", "xsect"),
+        notes="Below $100 nothing validated can run: the daily equity desk "
+              "needs whole-share auction orders and $2,000, and the Kalshi "
+              "favorite-longshot study found no edge that clears its own "
+              "noise. From $100, crypto trend on BTC/ETH is the one desk "
+              "whose walk-forward record holds at this size, and it is the "
+              "only desk this preset funds on its own. Monthly ETF momentum "
+              "(xsect) is listed but MARGINAL: its five-fold walk-forward is "
+              "not significant and trails an equal-weight hold of the same "
+              "ETFs. It runs only if you name it in data/desk/config.json.",
     ),
 
     "small": Preset(
@@ -77,12 +82,14 @@ PRESETS = {
                           weekly_loss_halt=0.10, max_drawdown_halt=0.25,
                           max_annual_turnover=120.0, min_trade_notional=1.0,
                           max_open_positions=6),
-        desks=("overnight", "xsect", "kalshi-bias"),
-        notes="Equity desks become viable here. The overnight desk is the "
-              "flagship (walk-forward Sharpe 0.83) and monthly-rebalanced "
-              "cross-sectional momentum adds a low-turnover second stream. "
-              "No shorting: under $2,000 an Alpaca account is limited-margin "
-              "and cannot short at all.",
+        desks=("trend", "xsect"),
+        notes="Crypto trend, validated at this size, is the only desk funded "
+              "by default. Monthly ETF momentum (xsect) is marginal and off "
+              "until named explicitly in data/desk/config.json. The overnight "
+              "desk is NOT here: it only works with whole-share auction "
+              "orders and its walk-forward record does not validate until "
+              "$2,000. No shorting: under $2,000 an Alpaca account is "
+              "limited-margin and cannot short at all.",
     ),
 
     "standard": Preset(
@@ -94,11 +101,13 @@ PRESETS = {
                           weekly_loss_halt=0.09, max_drawdown_halt=0.22,
                           max_annual_turnover=250.0, min_trade_notional=5.0,
                           max_open_positions=10),
-        desks=("overnight", "xsect", "trend", "reversion", "kalshi-bias"),
-        notes="Above $2,000 the account leaves limited-margin status: "
-              "shorting and 4x intraday buying power become available. The "
-              "fee floor is now noise, so every validated desk can run and "
-              "crypto trend is worth its 25bps taker cost.",
+        desks=("overnight", "xsect", "trend"),
+        notes="Above $2,000 the account leaves limited-margin status and the "
+              "overnight desk's whole-share auction sizing has enough names "
+              "to work (walk-forward Sharpe 0.75 here, 0.79 at $5,000). The "
+              "marginal desks (xsect, reversion) stay off unless named "
+              "explicitly in data/desk/config.json; the rejected Kalshi desk "
+              "never funds.",
     ),
 
     # Deliberately not a "maximum risk" preset. It relaxes turnover and
@@ -113,7 +122,7 @@ PRESETS = {
                           weekly_loss_halt=0.08, max_drawdown_halt=0.20,
                           max_annual_turnover=400.0, min_trade_notional=20.0,
                           max_open_positions=16),
-        desks=("overnight", "xsect", "trend", "reversion", "kalshi-bias"),
+        desks=("overnight", "xsect", "trend"),
         notes="Frictions are immaterial at this size, so the binding "
               "constraints become capacity and correlation rather than cost. "
               "Position and desk caps tighten, not loosen.",
@@ -130,6 +139,9 @@ class Config:
     desks: tuple = ()
     limits: RiskLimits = field(default_factory=RiskLimits)
     desk_params: dict = field(default_factory=dict)
+    # Desks the operator named in the config file, as opposed to inherited
+    # from the preset. A marginal desk runs only if it is in here.
+    explicit_desks: tuple = ()
     notes: str = ""
 
     def to_dict(self):
@@ -169,6 +181,7 @@ def load(path=None, equity=None, preset=None):
         live=bool(raw.get("live", False)),
         venue_paper=bool(raw.get("venuePaper", True)),
         desks=tuple(raw.get("desks") or p.desks),
+        explicit_desks=tuple(raw.get("desks") or ()),
         limits=limits,
         desk_params=raw.get("deskParams") or {},
         notes=p.notes,
