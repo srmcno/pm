@@ -93,9 +93,12 @@ def cmd_status(args):
     print(cfgmod.describe(cfg))
     print()
     desks = [deskbase.get(n)() for n in cfg.desks if deskbase.get(n)]
-    allocs = rm.allocate(desks, st.cash, explicit_desks=cfg.explicit_desks,
+    # Allocation is judged on equity, not on the cash left after buying:
+    # a book that is 60% invested has not lost 60% of its account.
+    eq = st.equity({p["symbol"]: p.get("entry", 0.0) for p in st.positions})
+    allocs = rm.allocate(desks, eq, explicit_desks=cfg.explicit_desks,
                          verdicts=evidence.verdicts())
-    print("allocations")
+    print(f"allocations (on equity ${eq:,.2f} at entry marks)")
     for a in allocs:
         mark = "on " if a.enabled else "OFF"
         print(f"  {mark} {a.name:<14}{a.weight:>7.1%}  {a.reason}")
