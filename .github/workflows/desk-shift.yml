@@ -1,0 +1,121 @@
+name: Desk system shift
+
+# Runs the multi-desk system in back-to-back shifts. Paper-only until
+# broker credentials exist as repository secrets; adding them is the single
+# switch that turns on order mirroring, and even then the venue's PAPER
+# endpoint is the default — real money needs DESK_REAL_MONEY=1 as well.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "20 */2 * * *"   # best-effort backup; the chain below is primary
+
+concurrency:
+  group: desk-shift
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  shift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+      APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
+      KALSHI_API_KEY_ID: ${{ secrets.KALSHI_API_KEY_ID }}
+      DESK_REAL_MONEY: ${{ secrets.DESK_REAL_MONEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      # Shifts perpetuate themselves; the concurrency group holds the
+      # successor pending until this one ends. Disabling the workflow in the
+      # Actions UI is the off switch.
+      - name: Queue the next shift
+        run: gh workflow run desk-shift.yml --ref "${GITHUB_REF_NAME}" || true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install "requests>=2.31,<3"
+
+      - name: Run the shift in 20-minute blocks, committing state after each
+        working-directory: scripts
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          # The runner's disk is the only copy of the book until it is
+          # pushed. Committing after every block bounds what a cancelled or
+          # timed-out job can lose to twenty minutes, and the runner's
+          # venue check catches the rest (it refuses to trade on a mismatch).
+          commit_state() {
+            ( cd .. \
+              && for p in data/desk dashboard/data reports; do [ -e "$p" ] && git add "$p"; done \
+              && { git diff --cached --quiet && exit 0; \
+                   git commit -q -m "auto: desk shift $(date -u +'%Y-%m-%d %H:%M UTC')"; \
+                   git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" \
+                     || { git rebase --abort || true; echo "::warning::rebase failed; state kept locally"; exit 0; }; \
+                   git push origin "HEAD:${GITHUB_REF_NAME}" \
+                     || echo "::warning::push failed; retrying after the next block"; } )
+          }
+          # A STOP file in the repository halts every shift without needing
+          # a workflow edit — the same switch the CLI writes.
+          if [ -f ../data/desk/STOP ]; then
+            echo "::warning::data/desk/STOP present — not trading this shift"
+            python3 -m desk.cli publish
+            commit_state
+            exit 0
+          fi
+          FLAGS=""
+          if [ -n "$APCA_API_KEY_ID" ] && [ -n "$APCA_API_SECRET_KEY" ]; then
+            if [ "$DESK_REAL_MONEY" = "1" ]; then
+              echo "Mirroring to the REAL MONEY endpoint (needs a committed config with live: true)."
+              FLAGS="--live --i-accept-total-loss --real-money"
+            else
+              echo "Mirroring to the broker's PAPER endpoint."
+              FLAGS="--live --i-accept-total-loss"
+            fi
+          else
+            echo "No broker credentials — simulated fills only."
+          fi
+          FAILED=""
+          for block in 1 2 3 4 5; do
+            python3 -m desk.cli watch --minutes 20 --seconds 300 $FLAGS \
+              || { echo "::error::shift block $block failed — see the log above"; FAILED=1; }
+            commit_state
+            [ -n "$FAILED" ] && break
+            [ -f ../data/desk/STOP ] && { echo "STOP file appeared"; break; }
+          done
+          [ -z "$FAILED" ]
+
+      - name: Commit and push state, deploy the dashboard
+        if: always()
+        run: |
+          git config user.name "sharp-money-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for p in data/desk dashboard/data reports; do
+            [ -e "$p" ] && git add "$p"
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m "auto: desk shift $(date -u +'%Y-%m-%d %H:%M UTC')"
+          fi
+          # The block commits push best-effort; anything they could not push
+          # is still only on this runner. A failure HERE fails the job, so a
+          # stranded book is loud rather than discovered at the next shift.
+          git fetch origin "${GITHUB_REF_NAME}"
+          if [ "$(git rev-list --count "origin/${GITHUB_REF_NAME}..HEAD")" != "0" ]; then
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" \
+              || { git rebase --abort || true; echo "::error::rebase failed"; exit 1; }
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy
+          # explicitly, and do so even when this step had nothing left to
+          # commit because the blocks already pushed the dashboard payload.
+          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" \
+            || echo "::warning::pages dispatch failed"
