@@ -1,0 +1,30 @@
+{
+ "bankrollStart": 1000.0,
+ "cash": 1000.0,
+ "positions": [],
+ "closed": [],
+ "equityCurve": [
+  {
+   "t": 1788367076,
+   "equity": 1000.0
+  },
+  {
+   "t": 1788367369,
+   "equity": 1000.0
+  },
+  {
+   "t": 1788367669,
+   "equity": 1000.0
+  },
+  {
+   "t": 1788367969,
+   "equity": 1000.0
+  }
+ ],
+ "createdAt": 1788367069,
+ "updatedAt": 1788367969,
+ "tradeCount": 0,
+ "mode": "paper",
+ "decisions": {},
+ "feeDay": {}
+}
