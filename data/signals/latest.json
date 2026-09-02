@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788341294,
+  "generatedAt": 1788342203,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 15568.52,
      "avgPrice": 0.8343,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.51862171312224
+     "lastTradeAgoH": 0.4,
+     "score": 2.492262616814015
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -31,30 +31,30 @@
      "netUsd": 10388.69,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 1.6438431802677818
+     "lastTradeAgoH": 0.4,
+     "score": 1.6266392387316064
     },
     {
      "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
      "name": "fkigedgjdgwbg",
      "quality": 0.4372,
-     "netUsd": 6493.59,
-     "avgPrice": 0.4036,
+     "netUsd": 25133.84,
+     "avgPrice": 0.8296,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.3655947675172682
+     "lastTradeAgoH": 0.2,
+     "score": 1.3737589050428245
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 32450.8,
-   "score": 5.5281,
+   "totalNetUsd": 51091.05,
+   "score": 5.4927,
    "question": "LoL: Hanwha Life Esports vs T1 - Game 2 Winner",
    "outcome": "T1",
    "tokenId": "35453714793284653962184719425495820838338551092982505677958700922100536194952",
-   "currentPrice": 0.765,
-   "backersAvgEntry": 0.696,
-   "driftSinceEntry": 0.069,
+   "currentPrice": 0.885,
+   "backersAvgEntry": 0.838,
+   "driftSinceEntry": 0.047,
    "endDate": "2026-09-02T12:00:00Z",
    "slug": "lol-hle1-t1-2026-09-02-game2",
    "eventSlug": "lol-hle1-t1-2026-09-02"
