@@ -547,5 +547,18 @@ class TestReviewRoundThree(unittest.TestCase):
             walk_forward(D, {"A": bars_}, n_folds=5, grid={}, select_on="verdict")
 
 
+class TestFirstPeriodCounts(unittest.TestCase):
+    def test_total_return_and_drawdown_include_the_first_period(self):
+        rets = [-0.5] + [0.0] * 40
+        st = metrics.compute(rets, periods_per_year=252)
+        self.assertAlmostEqual(st.total_return_pct, -50.0, places=3)
+        self.assertAlmostEqual(st.max_drawdown_pct, -50.0, places=3)
+        # a replay-style curve (one point per bar, after the bar's return)
+        curve = [50.0] + [50.0] * 40
+        st2 = metrics.compute(rets, equity_curve=curve, periods_per_year=252)
+        self.assertAlmostEqual(st2.total_return_pct, -50.0, places=3)
+        self.assertAlmostEqual(st2.max_drawdown_pct, -50.0, places=3)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

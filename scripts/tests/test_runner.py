@@ -71,6 +71,22 @@ class VenueSaidNo(Exception):
         self.status = status
 
 
+class _HoldDesk(Desk):
+    """Crossing desk that always wants `w` of equity in X — shares the
+    symbol with _EqDesk but keeps its own lots."""
+    meta = DeskMeta(name="_hold", title="hold", asset_class="equity", venue="alpaca",
+                    events=(CLOSE,), universe=("X",), warmup_bars=2,
+                    capital_floor=10.0, fractional=True, execution_style="crossing")
+
+    @classmethod
+    def defaults(cls):
+        return {"w": 0.2}
+
+    def decide(self, view):
+        w = float(self.params["w"])
+        return Decision({"X": w} if w > 0 else {})
+
+
 class FakeVenue:
     """Scripted order states. `script[cid]` is a list consumed one per query;
     `default` answers any unscripted id; `reject` makes submit raise."""
@@ -121,6 +137,7 @@ class Base(unittest.TestCase):
         _REGISTRY.clear()
         register(_EqDesk)
         register(_CryptoDesk)
+        register(_HoldDesk)
         self.data = {"X": mkbars([100] * 10), "B/USD": mkbars([50] * 10)}
 
     def tearDown(self):
@@ -698,6 +715,42 @@ class TestPaperAuction(Base):
         self.settle(r2, at(1, 16, 5))
         self.assertTrue(r2.st.positions[0]["liveOpen"])
         self.assertEqual(r2.st.positions[0]["shares"], 5.0)
+
+
+class TestDesksShareASymbol(Base):
+    def test_one_desk_going_flat_does_not_sell_anothers_lot(self):
+        # two desks share equity 50/50: _eq wants 25% (2 whole shares, cls),
+        # _hold wants 10% (1 share, market now)
+        r = self.runner(["_eq", "_hold"])
+        r.run_cycle()
+        self.settle(r, at(1, 16, 5))
+        lots = {p["desk"]: p["shares"] for p in r.st.positions}
+        self.assertEqual(lots, {"_eq": 2.0, "_hold": 1.0})
+        tel = self.settle(r, at(2, 9, 10))              # _eq flat at the open; _hold holds
+        sells = [e for e in tel["executed"] if e["side"] == "sell"]
+        self.assertEqual([(e["shares"], e["type"]) for e in sells], [(2.0, "opg")])
+        self.data["X"].append(Bar(NEXT, 100.0, 100.0, 100.0, 100.0, 1000.0))
+        self.settle(r, at(2, 9, 35))
+        self.assertEqual([(p["desk"], p["shares"]) for p in r.st.positions], [("_hold", 1.0)])
+        self.assertEqual(r.st.closed[0]["desk"], "_eq")
+
+    def test_opposite_sides_in_one_cycle_defer_the_buy(self):
+        r = self.runner(["_eq", "_hold"])
+        r.run_cycle()
+        self.settle(r, at(1, 16, 5))                    # _eq 2 lots... _eq 2, _hold 1
+        self.settle(r, at(2, 9, 10))                    # _eq sells at the open (opg)
+        self.data["X"].append(Bar(NEXT, 100.0, 100.0, 100.0, 100.0, 1000.0))
+        self.settle(r, at(2, 9, 35))
+        self.assertEqual([(p["desk"], p["shares"]) for p in r.st.positions], [("_hold", 1.0)])
+        r.cfg.desk_params = {"_hold": {"w": 0.0}}       # _hold wants out at the close...
+        tel = self.settle(r, at(2, 15, 40))             # ...while _eq wants back in
+        sides = [(e["side"], e.get("status", "filled")) for e in tel["executed"]]
+        self.assertEqual(sides, [("sell", "filled")])
+        self.assertTrue(any("deferred" in n for n in tel["deskNotes"]))
+        self.assertEqual(r.st.positions, [])
+        tel = self.settle(r, at(2, 15, 45))             # next cycle: the buy goes
+        self.assertEqual([(e["side"], e["status"]) for e in tel["executed"]],
+                         [("buy", "accepted")])
 
 
 if __name__ == "__main__":

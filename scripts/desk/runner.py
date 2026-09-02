@@ -555,19 +555,23 @@ class Runner:
 
     # ------------------------------------------------------------- decide
     def decide_all(self, desks, allocs, phase):
-        """Targets from every desk that is in its window; symbols of desks
-        that are holding are left untouched (returned in `held_only`)."""
-        targets, notes, active = {}, [], set()
+        """Per-desk targets ({desk: {symbol: weight of equity}}) from every
+        desk that is in its window. A desk that is holding is absent, and its
+        lots are not touched. Positions carry their owning desk, and orders
+        are sized per desk, so one desk's flat target cannot sell a lot
+        another desk is holding in the same symbol."""
+        by_desk, notes, active = {}, [], set()
         src_for = lambda d: "alpaca" if d.meta.asset_class == "crypto" else "yahoo"
         for d in desks:
             alloc = allocs.get(d.meta.name)
             if not alloc or not alloc.enabled:
                 reason = alloc.reason if alloc else "not allocated"
-                if self._holds_any(d.universe()):
+                if self._holds_any(d.universe(), d.meta.name):
                     # Funding withdrawn while positions are on — a failed
                     # verdict, a stale record, equity under the floor. Those
                     # positions are liquidated through the normal order path
                     # rather than left as an unmanaged hold.
+                    by_desk[d.meta.name] = {}
                     active.update(d.universe())
                     notes.append(f"{d.meta.name}: {reason} — liquidating held positions")
                 else:
@@ -616,14 +620,14 @@ class Runner:
                     "note": note, "at": int(time.time())}
             active.update(d.universe())
             notes.append(f"{d.meta.name}[{ev}]: {note}")
-            for sym, w in weights.items():
-                targets[sym] = targets.get(sym, 0.0) + w * alloc.weight
-        return targets, notes, active
+            by_desk[d.meta.name] = {sym: w * alloc.weight for sym, w in weights.items()}
+        return by_desk, notes, active
 
-    def _holds_any(self, symbols):
+    def _holds_any(self, symbols, desk=None):
         want = set(symbols)
         for p in self.st.positions:
-            if p["symbol"] in want and p.get("shares", 0.0) > 0 and p.get("liveOpen"):
+            if p["symbol"] in want and p.get("shares", 0.0) > 0 and p.get("liveOpen") \
+                    and (desk is None or p.get("desk") == desk):
                 return True
         return False
 
@@ -637,55 +641,72 @@ class Runner:
                 out[sym] = s[-1].c
         return out
 
-    def orders_for(self, targets, marks, equity, active, phase):
-        held = {}
+    def orders_for(self, by_desk, marks, equity, phase):
+        """Orders that move each active desk's OWN lots to its targets.
+        Returns (orders, notes). Two desks holding the same symbol are two
+        books: the overnight desk going flat at the open sells its lots and
+        nobody else's. When two desks want opposite sides of one symbol in
+        the same cycle the sell goes and the buy waits a cycle — the venue
+        would reject the pair as a wash, and the target self-corrects."""
+        held = {}                                  # (desk, symbol) -> qty
         for p in self.st.positions:
             if p.get("closeCid") or (p.get("liveCid") and not p.get("liveOpen")):
                 continue                        # pending; reconcile owns it
-            held[p["symbol"]] = held.get(p["symbol"], 0.0) + p["shares"]
-        out = []
-        for sym in set(list(targets) + list(held)):
-            if sym not in active:
-                continue                        # owning desk is holding
-            px = marks.get(sym)
-            if not px or px <= 0:
-                continue
-            m = self._symbol_meta.get(sym)
-            if m is None:
-                continue
-            otype, tif, whole = order_style(m, phase)
-            want_w = targets.get(sym, 0.0)
-            raw = (equity * want_w) / px if want_w else 0.0
-            held_qty = held.get(sym, 0.0)
-            want = raw
-            if whole:
-                # Whole shares floor. A held position whose unrounded target
-                # is within one share of it stays put: otherwise a fee-sized
-                # equity change turns 5.0000 into 4.9999, floors to 4, and
-                # sells a share every cycle.
-                if held_qty > 0 and raw > 0 and abs(raw - held_qty) < 1:
+            key = (p.get("desk", "portfolio"), p["symbol"])
+            held[key] = held.get(key, 0.0) + p["shares"]
+        out, notes = [], []
+        desk_meta = {d.meta.name: d.meta for d in self._desks}
+        for desk, targets in by_desk.items():
+            mine = {sym: q for (d, sym), q in held.items() if d == desk}
+            for sym in set(list(targets) + list(mine)):
+                px = marks.get(sym)
+                if not px or px <= 0:
                     continue
-                want = float(int(raw))
-            delta = want - held_qty
-            notional = abs(delta) * px
-            if notional < self.cfg.limits.min_trade_notional:
+                # The ORDERING desk decides how the order reaches the market:
+                # two desks sharing a symbol can differ (auction vs crossing).
+                m = desk_meta.get(desk) or self._symbol_meta.get(sym)
+                if m is None or sym not in self._symbol_meta:
+                    continue
+                otype, tif, whole = order_style(m, phase)
+                want_w = targets.get(sym, 0.0)
+                raw = (equity * want_w) / px if want_w else 0.0
+                held_qty = mine.get(sym, 0.0)
+                want = raw
+                if whole:
+                    # Whole shares floor. A held position whose unrounded
+                    # target is within one share of it stays put: otherwise a
+                    # fee-sized equity change turns 5.0000 into 4.9999, floors
+                    # to 4, and sells a share every cycle.
+                    if held_qty > 0 and raw > 0 and abs(raw - held_qty) < 1:
+                        continue
+                    want = float(int(raw))
+                delta = want - held_qty
+                notional = abs(delta) * px
+                if notional < self.cfg.limits.min_trade_notional:
+                    continue
+                if whole and abs(delta) < 1:
+                    continue
+                # The replay's no-trade band, applied here with the same
+                # numbers: a difference under 2% of equity AND under 10% of
+                # the position is drift, not a signal.
+                if held_qty > 0 and want > 0 \
+                        and notional < equity * Engine.REBALANCE_BAND_EQUITY \
+                        and notional < held_qty * px * Engine.REBALANCE_BAND_POSITION:
+                    continue
+                out.append(Order(desk=desk, symbol=sym,
+                                 side="buy" if delta > 0 else "sell", shares=abs(delta),
+                                 ref_price=px, order_type=otype, time_in_force=tif,
+                                 reason=f"{desk}: target {want_w:.1%} ({otype})",
+                                 reducing=(delta < 0 and held_qty > 0)))
+        selling = {o.symbol for o in out if o.side == "sell"}
+        kept = []
+        for o in out:
+            if o.side == "buy" and o.symbol in selling:
+                notes.append(f"{o.desk}: buy of {o.symbol} deferred a cycle — another "
+                             f"desk is selling it now")
                 continue
-            if whole and abs(delta) < 1:
-                continue
-            # The replay's no-trade band, applied here with the same numbers:
-            # a difference under 2% of equity AND under 10% of the position is
-            # drift, not a signal. Without it a whole-share desk would sell a
-            # share every cycle on fee-sized equity changes.
-            if held_qty > 0 and want > 0 \
-                    and notional < equity * Engine.REBALANCE_BAND_EQUITY \
-                    and notional < held_qty * px * Engine.REBALANCE_BAND_POSITION:
-                continue
-            out.append(Order(desk=self._owner(sym), symbol=sym,
-                             side="buy" if delta > 0 else "sell", shares=abs(delta),
-                             ref_price=px, order_type=otype, time_in_force=tif,
-                             reason=f"target {want_w:.1%} ({otype})",
-                             reducing=(delta < 0 and held.get(sym, 0.0) > 0)))
-        return out
+            kept.append(o)
+        return kept, notes
 
     def _cancel_pending_opens(self):
         """Cancel every unconfirmed opening order, then reconcile. Returns
@@ -720,17 +741,12 @@ class Runner:
             if px <= 0:
                 px = next((p.get("entry") for p in self.st.positions
                            if p["symbol"] == sym and p.get("entry")), 0.0)
-            out.append(Order(desk=self._owner(sym), symbol=sym, side="sell",
+            # desk "portfolio": every desk's lots in the symbol are closed.
+            out.append(Order(desk="portfolio", symbol=sym, side="sell",
                              shares=shares, ref_price=px, order_type="market",
                              time_in_force="gtc" if (m and m.asset_class == "crypto") else "day",
                              reason="loss halt: flatten", reducing=True))
         return out
-
-    def _owner(self, sym):
-        for d in self._desks:
-            if sym in d.universe():
-                return d.meta.name
-        return "portfolio"
 
     # ---------------------------------------------------------------- cycle
     def run_cycle(self, today=None):
@@ -754,7 +770,11 @@ class Runner:
         allocs = {a.name: a for a in self.rm.allocate(
             self._desks, equity, explicit_desks=getattr(self.cfg, "explicit_desks", ()),
             verdicts=self.verdicts())}
-        targets, notes, active = self.decide_all(self._desks, allocs, phase)
+        by_desk, notes, active = self.decide_all(self._desks, allocs, phase)
+        targets = {}
+        for _d, tw in by_desk.items():
+            for sym, w in tw.items():
+                targets[sym] = targets.get(sym, 0.0) + w
 
         executed, refused = [], []
         if halt and self.rm.loss_halted() and pending and not mismatch:
@@ -779,7 +799,9 @@ class Runner:
             refused.append({"reason": "an earlier order is still pending; not trading "
                                       "until it reaches a terminal state", "scope": "all"})
         else:
-            for order in self.orders_for(targets, marks, equity, active, phase):
+            orders, order_notes = self.orders_for(by_desk, marks, equity, phase)
+            notes.extend(order_notes)
+            for order in orders:
                 self._execute(order, executed, refused)
 
         equity = self.account_equity(marks)
@@ -868,7 +890,9 @@ class Runner:
             remaining = order.shares
             for p in self.st.positions:
                 if p["symbol"] == order.symbol and p.get("liveOpen") \
-                        and not p.get("closeCid") and remaining > 0:
+                        and not p.get("closeCid") and remaining > 0 \
+                        and (order.desk == "portfolio"
+                             or p.get("desk", "portfolio") == order.desk):
                     p["closeCid"] = order.client_order_id
                     p["closeType"] = order.order_type
                     p["closeAt"] = placed
@@ -880,8 +904,11 @@ class Runner:
         filled = res.get("filled_qty") or 0.0
         px = res.get("price") or order.ref_price
         if order.side == "buy":
-            p = next((q for q in self.st.positions if q.get("openedAt") == stamp
-                      and q["symbol"] == order.symbol and not q.get("liveOpen")), None)
+            # Match the lot by its order id, never by symbol and second: two
+            # desks can buy the same symbol in the same cycle.
+            p = next((q for q in self.st.positions
+                      if q.get("liveCid") == order.client_order_id
+                      and not q.get("liveOpen")), None)
             if p is None:
                 return
             if res.get("status") == "filled" and filled > 0:
@@ -903,8 +930,9 @@ class Runner:
             if (status == "filled" or status in FAILED) and filled > 0:
                 remaining = filled
                 for p in list(self.st.positions):
-                    if p["symbol"] != order.symbol or remaining <= 0 or p["shares"] <= 0:
-                        continue
+                    if p.get("closeCid") != order.client_order_id \
+                            or remaining <= 0 or p["shares"] <= 0:
+                        continue                # not one of this order's lots
                     take = min(p["shares"], remaining)
                     if res.get("paper"):
                         fees = res.get("fees", 0.0) * (take / filled)

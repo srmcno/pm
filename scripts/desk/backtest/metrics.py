@@ -166,11 +166,17 @@ def compute(returns, equity_curve=None, periods_per_year=252, n_trials=1,
         s.notes.append("fewer than 3 periods — no statistics computed")
         return s
 
+    # The curve must START at the equity before the first return, or the
+    # first period vanishes from total return, CAGR and drawdown. The replay
+    # records one point per bar, after that bar's return, so the starting
+    # point is reconstructed from the first return.
     if equity_curve is None:
-        equity_curve, e = [], 1.0
+        equity_curve, e = [1.0], 1.0
         for r in rets:
             e *= (1 + r)
             equity_curve.append(e)
+    elif len(equity_curve) == len(rets) and rets[0] > -1.0 and equity_curve[0] > 0:
+        equity_curve = [equity_curve[0] / (1 + rets[0])] + list(equity_curve)
 
     mean, sd, skew, kurt = _moments(rets)
     s.skew, s.kurtosis = round(skew, 3), round(kurt, 3)
