@@ -57,5 +57,5 @@ jobs:
           git commit -m "auto: kraken trial shift $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin "${GITHUB_REF_NAME}" || true
           git push origin "HEAD:${GITHUB_REF_NAME}"
-          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy explicitly.
-          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" || true
+          # The scheduled Pages deploy publishes this within ten minutes.
+          # Dispatching one here instead only thrashed the deploy queue.

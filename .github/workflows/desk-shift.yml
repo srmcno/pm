@@ -114,8 +114,5 @@ jobs:
               || { git rebase --abort || true; echo "::error::rebase failed"; exit 1; }
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
-          # GITHUB_TOKEN pushes never trigger on-push workflows — deploy
-          # explicitly, and do so even when this step had nothing left to
-          # commit because the blocks already pushed the dashboard payload.
-          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" \
-            || echo "::warning::pages dispatch failed"
+          # The scheduled Pages deploy publishes this within ten minutes.
+          # Dispatching one here instead only thrashed the deploy queue.
