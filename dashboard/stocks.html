@@ -52,6 +52,7 @@
     text-transform: uppercase; vertical-align: 1px; }
   .pill.live { background: rgba(12,163,12,0.14); color: var(--up); }
   .pill.stale { background: rgba(224,95,95,0.14); color: var(--down); }
+  .pill.idle { background: var(--grid); color: var(--muted); }
   .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 12px; margin: 18px 0 26px; }
   .tile { background: var(--surface); border: 1px solid var(--border);
@@ -154,11 +155,34 @@ const $ = id => document.getElementById(id);
 const fmt = (v, d=2) => v == null ? "—" : Number(v).toFixed(d);
 const money = v => (v >= 0 ? "+" : "−") + "$" + Math.abs(v).toFixed(2);
 
+// Thirty minutes, not twenty: the desk writes on its own heartbeat but the
+// browser sees it only after the next Pages deploy, five minutes apart and
+// subject to GitHub's scheduling delay.
+const FRESH_MINUTES = 30;
+
+function marketOpen(now = new Date()) {
+  // Regular US session in New York, holidays aside.
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York", weekday: "short", hour: "2-digit",
+    minute: "2-digit", hour12: false,
+  }).formatToParts(now).map(p => [p.type, p.value]));
+  if (parts.weekday === "Sat" || parts.weekday === "Sun") return false;
+  const mins = Number(parts.hour) * 60 + Number(parts.minute);
+  return mins >= 9 * 60 + 30 && mins < 16 * 60;
+}
+
 function pill(ts) {
-  const live = ts && (Date.now() / 1000 - ts) / 60 < 20;
+  const live = ts && (Date.now() / 1000 - ts) / 60 < FRESH_MINUTES;
+  // This desk only trades the regular session. Outside it the desk is idle
+  // by design, and a red "stale" every evening trains you to ignore the one
+  // that means something.
+  const idle = !live && !marketOpen();
   const el = document.createElement("span");
-  el.className = "pill " + (live ? "live" : "stale");
-  el.textContent = live ? "desk live" : "desk stale";
+  el.className = "pill " + (live ? "live" : idle ? "idle" : "stale");
+  el.textContent = live ? "desk live" : idle ? "market closed" : "desk stale";
+  el.title = live ? `Published ${Math.round((Date.now() / 1000 - ts) / 60)} minutes ago.`
+    : idle ? "The US session is closed; this desk trades it only."
+    : `No publish for ${FRESH_MINUTES}+ minutes during the session.`;
   return el;
 }
 function ago(ts) {

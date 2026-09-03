@@ -29,3 +29,29 @@ jobs:
           done
           echo "No active shift — dispatching one."
           gh workflow run watch-shift.yml --ref "${GITHUB_REF_NAME}"
+
+      - name: Free the Pages queue if a deploy is wedged
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A deploy that enters the github-pages environment queue and never
+          # leaves sits in "waiting" forever, and because it holds the "pages"
+          # concurrency group every later deploy queues behind it and is
+          # cancelled by the next one. That is not theoretical: one wedged on
+          # 2026-08-30 and the site served that day's data for three days
+          # while every desk kept committing on time. Nothing recovers from
+          # it on its own, so cancel it and let the schedule publish again.
+          runs=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/jekyll-gh-pages.yml/runs?status=waiting&per_page=20" \
+                   --jq '.workflow_runs[] | "\(.id) \(.created_at)"' || true)
+          [ -z "$runs" ] && { echo "No waiting deploy."; exit 0; }
+          now=$(date -u +%s)
+          echo "$runs" | while read -r id created; do
+            age=$(( (now - $(date -u -d "$created" +%s)) / 60 ))
+            if [ "$age" -ge 15 ]; then
+              echo "::warning::Pages deploy $id has been waiting ${age}m — cancelling it."
+              gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/runs/$id/cancel" || true
+            else
+              echo "Pages deploy $id is waiting but only ${age}m old — leaving it."
+            fi
+          done

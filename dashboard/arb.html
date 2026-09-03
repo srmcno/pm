@@ -313,11 +313,17 @@ function render() {
   const asof = document.getElementById("asof");
   asof.replaceChildren();
   if (!d) { asof.textContent = "No scan data yet — the desk publishes within minutes of its first shift."; return; }
+  // The scanner publishes every couple of minutes, but the browser sees it
+  // only after the next Pages deploy, which runs every five. Twelve minutes
+  // went red on a healthy desk that had published just after one; thirty
+  // covers the scan interval and the publishing latency together.
+  const FRESH = 30;
   const mins = (Date.now() / 1000 - d.updatedAt) / 60;
-  const pill = el("span", "pill " + (mins < 12 ? "live" : "stale"),
-    mins < 12 ? "desk live" : "desk stale");
-  pill.title = mins < 12 ? "The scanner published within the last 12 minutes."
-    : "No publish for 12+ minutes — data below may be old.";
+  const pill = el("span", "pill " + (mins < FRESH ? "live" : "stale"),
+    mins < FRESH ? "desk live" : "desk stale");
+  pill.title = mins < FRESH
+    ? `The scanner published ${Math.round(mins)} minutes ago.`
+    : `No publish for ${FRESH}+ minutes — data below may be old.`;
   asof.append(pill, `Updated ${ago(d.updatedAt)} · ${d.meta.pairs.toLocaleString()} pairs · ` +
     `${d.meta.triangles} cycles routed · paper only, no real money`);
 
