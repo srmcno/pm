@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Moffitt Money">
+  <!-- Tab icons sit on browser chrome, not on the page, so the mark carries
+       its own gold ground and reads the same in a light or a dark tab. The M
+       is a stroked path, not text: a favicon must not depend on a font. -->
+  <rect x="1" y="1" width="30" height="30" rx="7" fill="#a9852e"/>
+  <rect x="1" y="1" width="30" height="30" rx="7" fill="none" stroke="#8a6a22" stroke-width="1.5"/>
+  <path d="M8 24V9l8 8 8-8v15" fill="none" stroke="#0d0d0c" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
