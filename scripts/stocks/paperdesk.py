@@ -153,16 +153,21 @@ def open_position(st, snap, quote_px, cfg: StrategyConfig, now=None):
 
 def close_position(st, pos, quote_px, why, cfg: StrategyConfig, now=None):
     px = fill_price(pos["symbol"], quote_px, pos["side"] == "short", cfg)
+    close_fee = 0.0
     if pos["side"] == "long":
         # Closing a long is a sale; regulatory fees come out of proceeds.
-        proceeds = pos["shares"] * px - sell_side_fees(pos["shares"], px)
+        close_fee = sell_side_fees(pos["shares"], px)
+        proceeds = pos["shares"] * px - close_fee
     else:
         proceeds = pos["shares"] * (2 * pos["entry"] - px)
     pnl = round(proceeds - pos["cost"] - pos.get("openFee", 0.0), 2)
     st["cash"] = round(st["cash"] + proceeds, 4)
     st["positions"].remove(pos)
+    # Total regulatory fees over the round trip, for display only — pnl
+    # above already nets the same two figures out via proceeds/openFee.
+    fees = round(pos.get("openFee", 0.0) + close_fee, 4)
     closed = {**pos, "exit": round(px, 4), "closedAt": int(now or time.time()),
-              "pnl": pnl, "exitReason": why}
+              "pnl": pnl, "exitReason": why, "fees": fees}
     st["closed"].append(closed)
     day = _day(st)
     day["trades"] += 1

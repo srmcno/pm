@@ -430,6 +430,34 @@ class TestAccounting(unittest.TestCase):
                                           cfg, now=60)["pnl"])
         self.assertAlmostEqual(results[0] - results[1], 1.0, places=6)
 
+    def test_closed_trade_reports_total_fees_for_display(self):
+        # The dashboard shows a Fees column on top of pnl, which already
+        # nets these out — the field must reflect the whole round trip
+        # without changing what pnl itself was computed from.
+        from stocks.paperdesk import (default_state, close_position,
+                                      sell_side_fees)
+        from stocks.strategy import StrategyConfig
+        cfg = StrategyConfig()
+        cfg.slippage_bps = 0.0
+
+        st = default_state(1000.0)
+        long_pos = {"symbol": "MSTR", "side": "long", "shares": 10.0,
+                   "entry": 50.0, "cost": 500.0, "openedAt": 0, "reason": "t"}
+        st["positions"].append(long_pos)
+        st["cash"] -= long_pos["cost"]
+        closed = close_position(st, long_pos, 55.0, "reverted", cfg, now=60)
+        self.assertAlmostEqual(closed["fees"], round(sell_side_fees(10.0, 55.0), 4), places=6)
+
+        st = default_state(1000.0)
+        short_pos = {"symbol": "IBIT", "side": "short", "shares": 10.0,
+                    "entry": 50.0, "cost": 500.0, "openFee": 1.23,
+                    "openedAt": 0, "reason": "t"}
+        st["positions"].append(short_pos)
+        st["cash"] -= short_pos["cost"] + short_pos["openFee"]
+        closed = close_position(st, short_pos, 45.0, "reverted", cfg, now=60)
+        # a buy-to-cover is not a sale, so only the opening leg is fee-bearing
+        self.assertAlmostEqual(closed["fees"], 1.23, places=6)
+
     def test_daily_loss_halt(self):
         from stocks.paperdesk import default_state, _day
         st = default_state(1000.0)

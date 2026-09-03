@@ -126,16 +126,18 @@
   <div class="tablewrap"><table>
     <thead><tr>
       <th class="l">Side</th><th class="l">Symbol</th><th>Shares</th>
-      <th>Entry</th><th>Cost</th><th class="l">Basis</th>
+      <th>Entry</th><th>Cost</th><th>Opened</th><th>Held</th><th class="l">Basis</th>
     </tr></thead>
     <tbody id="positions"></tbody>
   </table></div>
 
   <h2>Recent trades</h2>
+  <p class="note" id="tradesnote"></p>
   <div class="tablewrap"><table>
     <thead><tr>
       <th class="l">Side</th><th class="l">Symbol</th><th>Entry</th>
-      <th>Exit</th><th>P&amp;L</th><th class="l">Exit reason</th>
+      <th>Exit</th><th>Return</th><th>P&amp;L</th><th>Fees</th><th>Held</th>
+      <th>Closed</th><th class="l">Exit reason</th>
     </tr></thead>
     <tbody id="trades"></tbody>
   </table></div>
@@ -192,6 +194,28 @@ function ago(ts) {
   return m < 2 ? "just now" : m < 90 ? `${m} min ago`
     : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
 }
+// Absolute time for anything read after the fact — this desk trades
+// intraday, so "held" is almost always minutes, and a relative time alone
+// stops meaning anything once the tab is reopened the next morning.
+function when(ts) {
+  if (!ts) return "—";
+  const d = new Date(ts * 1000);
+  const opts = { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
+  if (d.getFullYear() !== new Date().getFullYear()) opts.year = "numeric";
+  return d.toLocaleString("en-US", opts);
+}
+function whenTitle(ts) {
+  if (!ts) return "";
+  return new Date(ts * 1000).toISOString().replace("T", " ").slice(0, 16) + " UTC · " + ago(ts);
+}
+function held(seconds) {
+  if (seconds == null || seconds < 0) return "—";
+  const m = Math.round(seconds / 60);
+  if (m < 1) return "<1m";
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60), rm = m % 60;
+  return rm ? `${h}h ${rm}m` : `${h}h`;
+}
 function tile(label, value, sub, cls) {
   const d = document.createElement("div"); d.className = "tile";
   d.innerHTML = `<div class="label"></div><div class="value"></div><div class="sub"></div>`;
@@ -203,12 +227,20 @@ function tile(label, value, sub, cls) {
 }
 function row(cells) {
   const tr = document.createElement("tr");
-  for (const [txt, cls] of cells) {
+  for (const [txt, cls, title] of cells) {
     const td = document.createElement("td");
     if (cls) td.className = cls;
+    if (title) td.title = title;
     td.textContent = txt;
     tr.appendChild(td);
   }
+  return tr;
+}
+function emptyRow(cols, text) {
+  const tr = document.createElement("tr");
+  const td = document.createElement("td");
+  td.className = "empty"; td.colSpan = cols; td.textContent = text;
+  tr.appendChild(td);
   return tr;
 }
 
@@ -242,29 +274,52 @@ function render(d) {
     ]));
   }
   if (!(d.board || []).length)
-    board.append(row([["no data (market closed or feed unavailable)", "l empty"]]));
+    board.append(emptyRow(8, "no data (market closed or feed unavailable)"));
 
+  const now = Date.now() / 1000;
   const pos = $("positions"); pos.replaceChildren();
   for (const p of d.positions || []) {
     pos.append(row([
       [p.side.toUpperCase(), "l " + (p.side === "long" ? "pos" : "neg")],
       [p.symbol, "l"], [fmt(p.shares), ""], [fmt(p.entry), ""],
-      ["$" + fmt(p.cost), ""], [p.reason, "l"],
+      ["$" + fmt(p.cost), ""],
+      [when(p.openedAt), "", whenTitle(p.openedAt)],
+      [held(p.openedAt ? now - p.openedAt : null), ""],
+      [p.reason, "l"],
     ]));
   }
   if (!(d.positions || []).length)
-    pos.append(row([["none", "l empty"]]));
+    pos.append(emptyRow(8, "none"));
 
+  const trades = d.recentTrades || [];
   const tr = $("trades"); tr.replaceChildren();
-  for (const c of d.recentTrades || []) {
+  for (const c of trades) {
+    const basis = (c.shares || 0) * (c.entry || 0);
+    const retPct = basis ? (c.pnl || 0) / basis * 100 : null;
     tr.append(row([
       [c.side.toUpperCase(), "l"], [c.symbol, "l"], [fmt(c.entry), ""],
-      [fmt(c.exit), ""], [money(c.pnl), c.pnl >= 0 ? "pos" : "neg"],
+      [fmt(c.exit), ""],
+      [retPct == null ? "—" : `${retPct >= 0 ? "+" : ""}${retPct.toFixed(1)}%`,
+       retPct == null ? "" : retPct >= 0 ? "pos" : "neg"],
+      [money(c.pnl), c.pnl >= 0 ? "pos" : "neg"],
+      [c.fees != null ? "$" + fmt(c.fees, 4) : "—", ""],
+      [held(c.openedAt != null && c.closedAt != null ? c.closedAt - c.openedAt : null), ""],
+      [when(c.closedAt), "", whenTitle(c.closedAt)],
       [c.exitReason, "l"],
     ]));
   }
-  if (!(d.recentTrades || []).length)
-    tr.append(row([["none yet", "l empty"]]));
+  if (!trades.length) {
+    tr.append(emptyRow(10, "none yet"));
+    $("tradesnote").textContent = "";
+  } else {
+    const wins = trades.filter(c => c.pnl > 0).length;
+    const totalPnl = trades.reduce((s, c) => s + (c.pnl || 0), 0);
+    const totalFees = trades.reduce((s, c) => s + (c.fees || 0), 0);
+    $("tradesnote").textContent =
+      `Of the ${trades.length} shown: ${wins} win${wins === 1 ? "" : "s"} ` +
+      `(${Math.round(trades.length ? wins / trades.length * 100 : 0)}%), ` +
+      `${totalPnl >= 0 ? "+" : ""}$${totalPnl.toFixed(2)} net of $${totalFees.toFixed(2)} in fees.`;
+  }
 
   const bt = $("backtest");
   if (d.backtest && !d.backtest.error) {
