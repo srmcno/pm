@@ -184,10 +184,38 @@ function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
   return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
 }
-function el(tag, cls, text) {
+// Absolute date/time for anything that gets read after the fact — a
+// relative "3h ago" stops meaning anything the moment the tab is revisited
+// a day later. Year is included only once it stops being implied.
+function when(ts) {
+  if (!ts) return "—";
+  const d = new Date(ts * 1000);
+  const opts = { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
+  if (d.getFullYear() !== new Date().getFullYear()) opts.year = "numeric";
+  return d.toLocaleString("en-US", opts);
+}
+function whenTitle(ts) {
+  if (!ts) return "";
+  return new Date(ts * 1000).toISOString().replace("T", " ").slice(0, 16) + " UTC · " + ago(ts);
+}
+// How long a position has been open, or was open for: minutes below an
+// hour, then hours, then days — never more than two units, since a third
+// only adds noise once the first two already answer "how long".
+function held(seconds) {
+  if (seconds == null || seconds < 0) return "—";
+  const m = Math.round(seconds / 60);
+  if (m < 1) return "<1m";
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60), rm = m % 60;
+  if (h < 24) return rm ? `${h}h ${rm}m` : `${h}h`;
+  const dd = Math.floor(h / 24), rh = h % 24;
+  return rh ? `${dd}d ${rh}h` : `${dd}d`;
+}
+function el(tag, cls, text, title) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
   if (text != null) e.textContent = text;
+  if (title) e.title = title;
   return e;
 }
 function table(headers, rows) {
@@ -198,7 +226,7 @@ function table(headers, rows) {
   const tb = el("tbody");
   rows.forEach(cells => {
     const r = el("tr");
-    cells.forEach(([txt, cls]) => r.appendChild(el("td", cls || "", txt)));
+    cells.forEach(([txt, cls, title]) => r.appendChild(el("td", cls || "", txt, title)));
     tb.appendChild(r);
   });
   t.appendChild(tb);
@@ -306,20 +334,48 @@ function render() {
 
   const pos = acct.positions || [];
   const recent = acct.recent || [];
+  const now = Date.now() / 1000;
   const box = document.getElementById("book");
   box.replaceChildren();
   if (pos.length) {
     box.appendChild(el("p", "note", "Open positions"));
-    box.appendChild(table([["Symbol", 1], ["Side", 0], ["Shares", 0], ["Entry", 0]],
-      pos.map(p => [[p.symbol, "l"], [p.side || "long", ""],
-                    [num(p.shares, 6), ""], [`$${num(p.entry)}`, ""]])));
+    box.appendChild(table(
+      [["Desk", 1], ["Symbol", 1], ["Side", 0], ["Shares", 0], ["Entry", 0],
+       ["Cost", 0], ["Opened", 0], ["Held", 0]],
+      pos.map(p => [[p.desk || "—", "l"], [p.symbol, "l"], [p.side || "long", ""],
+                    [num(p.shares, 6), ""], [`$${num(p.entry)}`, ""],
+                    [`$${num((p.shares || 0) * (p.entry || 0))}`, ""],
+                    [when(p.openedAt), "", whenTitle(p.openedAt)],
+                    [held(p.openedAt ? now - p.openedAt : null), ""]])));
   }
   if (recent.length) {
-    box.appendChild(el("p", "note", "Recent closed trades"));
-    box.appendChild(table([["Symbol", 1], ["Shares", 0], ["Entry", 0], ["Exit", 0], ["P&L", 0]],
-      recent.map(c => [[c.symbol, "l"], [num(c.shares, 4), ""], [`$${num(c.entry)}`, ""],
-                       [`$${num(c.exit)}`, ""],
-                       [`${c.pnl >= 0 ? "+" : ""}$${num(c.pnl)}`, c.pnl >= 0 ? "pos" : "neg"]])));
+    const wins = recent.filter(c => c.pnl > 0).length;
+    const totalPnl = recent.reduce((s, c) => s + (c.pnl || 0), 0);
+    const totalFees = recent.reduce((s, c) => s + (c.fees || 0), 0);
+    const durations = recent.filter(c => c.openedAt && c.closedAt)
+      .map(c => c.closedAt - c.openedAt);
+    const avgHeld = durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : null;
+    box.appendChild(el("p", "note",
+      `Recent closed trades — of the ${recent.length} shown: ` +
+      `${wins} win${wins === 1 ? "" : "s"} (${num(recent.length ? wins / recent.length * 100 : 0, 0)}%), ` +
+      `${totalPnl >= 0 ? "+" : ""}$${num(totalPnl)} net of $${num(totalFees)} in fees, ` +
+      `average hold ${held(avgHeld)}`));
+    box.appendChild(table(
+      [["Desk", 1], ["Symbol", 1], ["Side", 0], ["Shares", 0], ["Entry", 0], ["Exit", 0],
+       ["Return", 0], ["P&L", 0], ["Fees", 0], ["Held", 0], ["Closed", 0], ["Reason", 1]],
+      recent.map(c => {
+        const basis = (c.shares || 0) * (c.entry || 0);
+        const retPct = basis ? (c.pnl || 0) / basis * 100 : null;
+        return [[c.desk || "—", "l"], [c.symbol, "l"], [c.side || "long", ""],
+                [num(c.shares, 4), ""], [`$${num(c.entry)}`, ""], [`$${num(c.exit)}`, ""],
+                [retPct == null ? "—" : `${retPct >= 0 ? "+" : ""}${num(retPct, 1)}%`,
+                 retPct == null ? "" : retPct >= 0 ? "pos" : "neg"],
+                [`${c.pnl >= 0 ? "+" : ""}$${num(c.pnl)}`, c.pnl >= 0 ? "pos" : "neg"],
+                [`$${num(c.fees, 4)}`, ""],
+                [held(c.openedAt && c.closedAt ? c.closedAt - c.openedAt : null), ""],
+                [when(c.closedAt), "", whenTitle(c.closedAt)],
+                [c.reason || "—", "l"]];
+      })));
   }
   if (!pos.length && !recent.length) {
     box.appendChild(el("p", "empty", "Nothing held and nothing closed yet."));

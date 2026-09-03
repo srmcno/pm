@@ -316,6 +316,7 @@
   .kvs div .k { color: var(--muted); font-size: 11.5px; }
   .kvs div .v { font-weight: 600; font-variant-numeric: tabular-nums; }
 
+  .minitablewrap { overflow-x: auto; }
   .minitable { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   .minitable td, .minitable th { padding: 4px 6px; text-align: right; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
   .minitable th { color: var(--muted); font-weight: 600; font-size: 11.5px; }
@@ -439,6 +440,7 @@
       </div>
       <div class="card">
         <h3>Settled</h3>
+        <p class="note" id="paperclosednote"></p>
         <div id="paperclosed"></div>
       </div>
     </div>
@@ -602,6 +604,30 @@ function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
   return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
 }
+// Absolute date/time for the ledger — some markets take days to settle, so
+// a relative "3h ago" on an open position stops being useful almost
+// immediately and says nothing at all about when a settled one closed.
+function when(ts) {
+  if (!ts) return "—";
+  const d = new Date(ts * 1000);
+  const opts = { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
+  if (d.getFullYear() !== new Date().getFullYear()) opts.year = "numeric";
+  return d.toLocaleString("en-US", opts);
+}
+function whenTitle(ts) {
+  if (!ts) return "";
+  return new Date(ts * 1000).toISOString().replace("T", " ").slice(0, 16) + " UTC · " + ago(ts);
+}
+function held(seconds) {
+  if (seconds == null || seconds < 0) return "—";
+  const m = Math.round(seconds / 60);
+  if (m < 1) return "<1m";
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60), rm = m % 60;
+  if (h < 24) return rm ? `${h}h ${rm}m` : `${h}h`;
+  const dd = Math.floor(h / 24), rh = h % 24;
+  return rh ? `${dd}d ${rh}h` : `${dd}d`;
+}
 /* The watcher heartbeats every ~15 min (paper mark + signal re-price), so a
    quiet bot and a dead bot look different: no heartbeat for 40+ min = stale. */
 function lastBeatTs() {
@@ -733,25 +759,67 @@ function renderLedger() {
     const tb = document.createElement("tbody");
     rows.forEach(cells => {
       const r = document.createElement("tr");
-      cells.forEach(([txt, cls]) => { const c = document.createElement("td"); if (cls) c.className = cls; c.textContent = txt; r.appendChild(c); });
+      cells.forEach(([txt, cls, title]) => {
+        const c = document.createElement("td");
+        if (cls) c.className = cls;
+        if (title) c.title = title;
+        c.textContent = txt;
+        r.appendChild(c);
+      });
       tb.appendChild(r);
     });
-    t.appendChild(tb); return t;
+    t.appendChild(tb);
+    const wrap = document.createElement("div"); wrap.className = "minitablewrap";
+    wrap.appendChild(t);
+    return wrap;
   };
+  const now = Date.now() / 1000;
   const openBox = document.getElementById("paperopen");
   openBox.replaceChildren(p.positions.length ? mkTable(
-    p.positions.map(x => [[x.question, "l"], [x.outcome, "l"],
-      [Math.round(x.entryPrice * 100) + "¢", ""], [x.markPrice != null ? Math.round(x.markPrice * 100) + "¢" : "—", ""],
-      [`$${(x.valueUsd != null ? x.valueUsd : x.costUsd).toFixed(2)}`, ""]]),
-    [["Market", 1], ["Side", 1], ["Entry", 0], ["Now", 0], ["Value", 0]])
+    p.positions.map(x => {
+      const value = x.valueUsd != null ? x.valueUsd : x.costUsd;
+      const retPct = x.costUsd ? (value - x.costUsd) / x.costUsd * 100 : null;
+      return [[x.question, "l"], [x.outcome, "l"],
+        [Math.round(x.entryPrice * 100) + "¢", ""],
+        [x.markPrice != null ? Math.round(x.markPrice * 100) + "¢" : "—", ""],
+        [`$${value.toFixed(2)}`, ""],
+        [retPct == null ? "—" : `${retPct >= 0 ? "+" : ""}${retPct.toFixed(1)}%`,
+         retPct == null ? "" : retPct >= 0 ? "pos" : "neg"],
+        [when(x.openedAt), "", whenTitle(x.openedAt)],
+        [held(x.openedAt ? now - x.openedAt : null), ""]];
+    }),
+    [["Market", 1], ["Side", 1], ["Entry", 0], ["Now", 0], ["Value", 0],
+     ["Unrealized", 0], ["Opened", 0], ["Held", 0]])
     : Object.assign(document.createElement("p"), { textContent: "None open." }));
+  const closed = p.closed || [];
   const closedBox = document.getElementById("paperclosed");
-  closedBox.replaceChildren((p.closed || []).length ? mkTable(
-    p.closed.map(x => [[x.question, "l"], [x.outcome, "l"],
-      [Math.round(x.entryPrice * 100) + "¢", ""], [x.settlePrice >= 0.999 ? "WON" : x.settlePrice <= 0.001 ? "LOST" : Math.round(x.settlePrice * 100) + "¢", x.pnl >= 0 ? "pos" : "neg"],
-      [(x.pnl >= 0 ? "+" : "") + `$${x.pnl.toFixed(2)}`, x.pnl >= 0 ? "pos" : "neg"]]),
-    [["Market", 1], ["Side", 1], ["Entry", 0], ["Result", 0], ["PnL", 0]])
+  closedBox.replaceChildren(closed.length ? mkTable(
+    closed.map(x => {
+      const retPct = x.costUsd ? x.pnl / x.costUsd * 100 : null;
+      return [[x.question, "l"], [x.outcome, "l"],
+        [Math.round(x.entryPrice * 100) + "¢", ""],
+        [x.settlePrice >= 0.999 ? "WON" : x.settlePrice <= 0.001 ? "LOST" : Math.round(x.settlePrice * 100) + "¢", x.pnl >= 0 ? "pos" : "neg"],
+        [retPct == null ? "—" : `${retPct >= 0 ? "+" : ""}${retPct.toFixed(1)}%`,
+         retPct == null ? "" : retPct >= 0 ? "pos" : "neg"],
+        [(x.pnl >= 0 ? "+" : "") + `$${x.pnl.toFixed(2)}`, x.pnl >= 0 ? "pos" : "neg"],
+        [when(x.settledAt), "", whenTitle(x.settledAt)],
+        [held(x.openedAt && x.settledAt ? x.settledAt - x.openedAt : null), ""]];
+    }),
+    [["Market", 1], ["Side", 1], ["Entry", 0], ["Result", 0], ["Return", 0],
+     ["PnL", 0], ["Settled", 0], ["Held", 0]])
     : Object.assign(document.createElement("p"), { textContent: "Nothing settled yet." }));
+  const closedNote = document.getElementById("paperclosednote");
+  if (closed.length) {
+    const wins = closed.filter(x => x.pnl > 0).length;
+    const totalPnl = closed.reduce((s, x) => s + (x.pnl || 0), 0);
+    const durations = closed.filter(x => x.openedAt && x.settledAt).map(x => x.settledAt - x.openedAt);
+    const avgHeld = durations.length ? durations.reduce((a, b) => a + b, 0) / durations.length : null;
+    closedNote.textContent = `Of the ${closed.length} shown: ${wins} win${wins === 1 ? "" : "s"} ` +
+      `(${Math.round(wins / closed.length * 100)}%), ${totalPnl >= 0 ? "+" : ""}$${totalPnl.toFixed(2)} net, ` +
+      `average time to settlement ${held(avgHeld)}.`;
+  } else {
+    closedNote.textContent = "";
+  }
 }
 
 function equitySparkline(curve, w, h) {

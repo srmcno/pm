@@ -149,6 +149,7 @@
     text-transform: uppercase; text-align: center; color: var(--ink); margin: 0 0 6px;
   }
   .sectionnote { color: var(--ink-2); font-size: 13.5px; margin: 0 auto 16px; max-width: 82ch; text-align: center; }
+  .note { color: var(--muted); font-size: 12.5px; margin: 0 0 10px; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 14px 16px; overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   td, th { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -266,10 +267,24 @@ function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
   return m < 2 ? "just now" : m < 90 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`;
 }
-function el(tag, cls, text) {
+// Absolute date/time for the trade ledger — a relative "3h ago" is honest
+// in the moment but stops meaning anything once the page is reopened later.
+function when(ts) {
+  if (!ts) return "—";
+  const d = new Date(ts * 1000);
+  const opts = { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit" };
+  if (d.getFullYear() !== new Date().getFullYear()) opts.year = "numeric";
+  return d.toLocaleString("en-US", opts);
+}
+function whenTitle(ts) {
+  if (!ts) return "";
+  return new Date(ts * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC · " + ago(ts);
+}
+function el(tag, cls, text, title) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
   if (text != null) e.textContent = text;
+  if (title) e.title = title;
   return e;
 }
 function table(headers, rows) {
@@ -280,7 +295,7 @@ function table(headers, rows) {
   const tb = el("tbody");
   rows.forEach(cells => {
     const r = el("tr");
-    cells.forEach(([txt, cls]) => r.appendChild(el("td", cls || "", txt)));
+    cells.forEach(([txt, cls, title]) => r.appendChild(el("td", cls || "", txt, title)));
     tb.appendChild(r);
   });
   t.appendChild(tb);
@@ -395,10 +410,21 @@ function render() {
     "No credible cross-venue dislocations right now.");
 
   const trades = p.trades || [];
-  fill("ledger", trades.length ? table(
-    [["When", 1], ["Cycle", 1], ["Size", 0], ["Edge", 0], ["Profit", 0]],
-    trades.map(t => [[ago(t.t), "l"], [t.path, "l"], [`$${t.sizeUsd}`, ""],
-      [t.bps + " bps", ""], [`${t.profitUsd >= 0 ? "+" : ""}$${t.profitUsd.toFixed(3)}`, t.profitUsd >= 0 ? "pos" : "neg"]])) : null,
+  let ledgerNode = null;
+  if (trades.length) {
+    const wrap = el("div");
+    const totalProfit = trades.reduce((s, t) => s + (t.profitUsd || 0), 0);
+    const avgBps = trades.reduce((s, t) => s + (t.bps || 0), 0) / trades.length;
+    wrap.appendChild(el("p", "note",
+      `Of the ${trades.length} round trips shown: ${totalProfit >= 0 ? "+" : "−"}` +
+      `$${Math.abs(totalProfit).toFixed(3)} total, ${avgBps.toFixed(1)} bps average edge.`));
+    wrap.appendChild(table(
+      [["When", 1], ["Cycle", 1], ["Size", 0], ["Edge", 0], ["Profit", 0]],
+      trades.map(t => [[when(t.t), "l", whenTitle(t.t)], [t.path, "l"], [`$${t.sizeUsd}`, ""],
+        [t.bps + " bps", ""], [`${t.profitUsd >= 0 ? "+" : ""}$${t.profitUsd.toFixed(3)}`, t.profitUsd >= 0 ? "pos" : "neg"]])));
+    ledgerNode = wrap;
+  }
+  fill("ledger", ledgerNode,
     "No round trips yet — edges must survive depth-verification first.");
 
   document.getElementById("notes").textContent = d.notes || "";
