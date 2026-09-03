@@ -6,7 +6,7 @@ Scanned 2026-09-03 16:00 UTC · 1462 pairs · 1342 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→XMN→EUR→USD at 67.4 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→XMN→EUR→USD at 66.6 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
