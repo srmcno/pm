@@ -1,19 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Moffitt Money">
-  <!-- An Art Deco monogram: the M has splayed stems, pointed apexes and a
-       centre V driven down to the baseline, set inside a single fine rule
-       the way a 1920s poster frames a letter.
+  <!-- An Art Deco monogram with the classic inline: a channel of the ground
+       cut down the centre of every stroke. Splayed stems, pointed apexes,
+       and the centre V driven to the baseline.
 
-       Two constraints shaped it. A tab icon sits on browser chrome rather
-       than on the page, so it cannot inherit the site's light or dark
-       theme — hence its own deep ground. And it is read at 16 pixels, where
-       hairlines fill in: an inline down each stem and a stepped crown were
-       both drawn and both turned to mush at that size, so the detail here
-       is one rule and nothing else. The letter is a path, never text,
-       because a favicon must not depend on a font. -->
+       The stems are deliberately fat. The inline is the whole point of the
+       mark, and at 16 pixels — where a tab actually renders it — one unit of
+       this 32-unit grid is half a pixel, so a hairline inline greys out into
+       mush. At two units it is a full pixel and the channel still reads at
+       tab size; the stems had to widen to carry it. That is the entire
+       reason this letter is heavier than a poster M would be.
+
+       The mark carries its own deep ground because a tab icon sits on
+       browser chrome and cannot inherit the site's light or dark theme, and
+       the letter is a path rather than text because a favicon must not
+       depend on a font. -->
   <rect width="32" height="32" rx="2" fill="#0b0b0a"/>
-  <rect x="2.2" y="2.2" width="27.6" height="27.6" rx="1" fill="none" stroke="#c9a227" stroke-width="1"/>
-  <g transform="translate(16 16.2) scale(0.86) translate(-16 -16)">
-    <path d="M4.6 26 L8.9 6 h4.0 L16 17.2 L19.1 6 h4.0 L27.4 26 h-4.4 L20.6 14.2
-             L17.7 26 h-3.4 L11.4 14.2 L9.0 26 Z" fill="#c9a227"/>
-  </g>
+  <path d="M2.8 26.5 L8.2 5.5 h5.6 L16 15.2 L18.2 5.5 h5.6 L29.2 26.5 h-6.0
+           L20.9 15.6 L18.4 26.5 h-4.8 L11.1 15.6 L8.8 26.5 Z" fill="#c9a227"/>
+  <path d="M6.6 24.2 L10.4 9.6 M25.4 24.2 L21.6 9.6 M16 21.4 L13.9 12.6 M16 21.4 L18.1 12.6"
+        stroke="#0b0b0a" stroke-width="2.0"/>
 </svg>
