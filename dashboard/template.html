@@ -183,6 +183,8 @@
   .pill.live::before { content: "● "; }
   .pill.stale { color: var(--down); background: var(--down-wash); }
   .pill.stale::before { content: "○ "; }
+  .pill.idle { color: var(--muted); background: var(--chip); }
+  .pill.idle::before { content: "○ "; }
   .equityspark { display: block; margin: 6px auto 0; overflow: visible; }
   .equityspark path { fill: none; stroke-width: 1.5; }
   .meter {
@@ -604,6 +606,25 @@ function lastBeatTs() {
   return Math.max((LIVE.paper && LIVE.paper.updatedAt) || 0,
     (LIVE.signals && LIVE.signals.meta && LIVE.signals.meta.generatedAt) || 0);
 }
+// A desk writes to the repository on its own heartbeat, but the browser
+// only sees it after the next Pages deploy, which runs every five minutes
+// and can be delayed by GitHub's scheduler. Every budget below is the
+// desk's heartbeat plus that publishing latency — a tighter one goes red on
+// a perfectly healthy desk that simply published just after a deploy.
+const PUBLISH_LAG_MINUTES = 20;
+
+function marketOpen(now = new Date()) {
+  // Regular US session in New York, holidays aside: enough to tell an idle
+  // desk from a dead one, and it never claims a desk IS running.
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York", weekday: "short", hour: "2-digit",
+    minute: "2-digit", hour12: false,
+  }).formatToParts(now).map(p => [p.type, p.value]));
+  if (parts.weekday === "Sat" || parts.weekday === "Sun") return false;
+  const mins = Number(parts.hour) * 60 + Number(parts.minute);
+  return mins >= 9 * 60 + 30 && mins < 16 * 60;
+}
+
 function statusPill(atTs, opts = {}) {
   // Each engine reports its own freshness: one can be publishing happily
   // while the other's shift has died, and a shared pill would hide that.
@@ -614,11 +635,17 @@ function statusPill(atTs, opts = {}) {
   const ageMinutes = ts ? (Date.now() / 1000 - ts) / 60 : Infinity;
   const live = ts && ageMinutes < staleMinutes;
   const el = document.createElement("span");
-  el.className = "pill " + (live ? "live" : "stale");
-  el.textContent = live ? liveLabel : staleLabel;
-  el.title = ts
-    ? `Last update ${ago(ts)}. Stale after ${staleMinutes} minutes.`
-    : `No heartbeat yet. Stale after ${staleMinutes} minutes.`;
+  // A desk that only trades the US session is idle, not broken, when the
+  // session is closed. Saying so beats a red pill that cries wolf nightly.
+  const idle = !live && opts.sessionOnly && !marketOpen();
+  el.className = "pill " + (live ? "live" : idle ? "idle" : "stale");
+  el.textContent = live ? liveLabel : idle ? (opts.idleLabel ?? "market closed") : staleLabel;
+  el.title = idle
+    ? `The US session is closed; this desk trades it only. Last update ${ago(ts)}.`
+    : ts
+      ? `Last update ${ago(ts)}. Stale after ${staleMinutes} minutes, which allows `
+        + `${PUBLISH_LAG_MINUTES} for publishing.`
+      : `No heartbeat yet. Stale after ${staleMinutes} minutes.`;
   return el;
 }
 const OUTLINK = (slug, eventSlug) =>
@@ -788,7 +815,7 @@ function renderDesks() {
     const nOpp = (ar.opportunities || ar.verified || []).length;
     set("desk-ar-sub", `${nOpp} verified cycles · ${ar.pairCount || "~2,100"} pairs`);
     pill("desk-ar-pill", (ar.meta && ar.meta.generatedAt) || ar.updatedAt || ar.t,
-      { liveLabel: "recent", staleLabel: "stale", staleMinutes: 12 });
+      { liveLabel: "recent", staleLabel: "stale", staleMinutes: 30 });
   }
   const stx = LIVE.stocks;
   if (stx && stx.account) {
@@ -798,7 +825,8 @@ function renderDesks() {
     const day = a.day || {};
     set("desk-st-sub", `${stx.meta.market} · today ${money(day.pnl || 0)} ` +
       `over ${day.trades || 0} trades`);
-    pill("desk-st-pill", stx.meta.generatedAt, { liveLabel: "recent", staleLabel: "stale", staleMinutes: 20 });
+    pill("desk-st-pill", stx.meta.generatedAt, { liveLabel: "recent", staleLabel: "stale",
+                                                 staleMinutes: 30, sessionOnly: true });
   }
 }
 
