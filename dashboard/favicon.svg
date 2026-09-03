@@ -1,9 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Moffitt Money">
-  <!-- Tab icons sit on browser chrome, not on the page, so the mark carries
-       its own gold ground and reads the same in a light or a dark tab. The M
-       is a stroked path, not text: a favicon must not depend on a font. -->
-  <rect x="1" y="1" width="30" height="30" rx="7" fill="#a9852e"/>
-  <rect x="1" y="1" width="30" height="30" rx="7" fill="none" stroke="#8a6a22" stroke-width="1.5"/>
-  <path d="M8 24V9l8 8 8-8v15" fill="none" stroke="#0d0d0c" stroke-width="4"
-        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- An Art Deco monogram: the M has splayed stems, pointed apexes and a
+       centre V driven down to the baseline, set inside a single fine rule
+       the way a 1920s poster frames a letter.
+
+       Two constraints shaped it. A tab icon sits on browser chrome rather
+       than on the page, so it cannot inherit the site's light or dark
+       theme — hence its own deep ground. And it is read at 16 pixels, where
+       hairlines fill in: an inline down each stem and a stepped crown were
+       both drawn and both turned to mush at that size, so the detail here
+       is one rule and nothing else. The letter is a path, never text,
+       because a favicon must not depend on a font. -->
+  <rect width="32" height="32" rx="2" fill="#0b0b0a"/>
+  <rect x="2.2" y="2.2" width="27.6" height="27.6" rx="1" fill="none" stroke="#c9a227" stroke-width="1"/>
+  <g transform="translate(16 16.2) scale(0.86) translate(-16 -16)">
+    <path d="M4.6 26 L8.9 6 h4.0 L16 17.2 L19.1 6 h4.0 L27.4 26 h-4.4 L20.6 14.2
+             L17.7 26 h-3.4 L11.4 14.2 L9.0 26 Z" fill="#c9a227"/>
+  </g>
 </svg>
