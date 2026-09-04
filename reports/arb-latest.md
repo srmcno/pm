@@ -7,5 +7,5 @@ Scanned 2026-09-04 08:57 UTC · 2077 pairs · 770 cycles · 0 verified edges
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 3385 across 35851 scans
-- Atomic PnL $228.4379 → one-scan-delay PnL $75.2164 (capture ratio 0.329)
+- Edges replayed: 3390 across 35924 scans
+- Atomic PnL $228.8554 → one-scan-delay PnL $74.0251 (capture ratio 0.323)
