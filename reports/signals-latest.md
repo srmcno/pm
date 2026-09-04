@@ -1,7 +1,17 @@
 # Smart-money signals
 
-Generated 2026-09-04 16:35 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-04 16:43 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-_No qualifying consensus signals in this window._
+## 1. Counter-Strike: FURIA vs Vitality (BO3) - BLAST Open Porto Playoffs — **Vitality**
+
+- Score **4.26** · 3 backers · net $64,430 staked
+- Backers' average entry 0.65 → current price **0.67** (roughly flat +0.02 since entry)
+- Resolves by 2026-09-04
+
+| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
+|---|---|---|---|---|
+| JustADonk | 0.52 | $2,255 | 0.66 | 10.0× |
+| 0x29b52d98ac9ef9414b04164246c95BC63d7 | 0.58 | $10,500 | 0.64 | 10.0× |
+| ExplosiveNinja | 0.48 | $51,675 | 0.64 | 10.0× |
