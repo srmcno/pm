@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788543083,
+  "generatedAt": 1788543988,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 4437.89,
      "avgPrice": 0.66,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 1.5981062114290316
+     "lastTradeAgoH": 1.1,
+     "score": 1.5814541522828303
     },
     {
      "wallet": "0x29b52d98ac9ef9414b04164246c95bc63d74cc6c",
@@ -31,8 +31,8 @@
      "netUsd": 10499.55,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.8,
-     "score": 1.2731917327955942
+     "lastTradeAgoH": 9.0,
+     "score": 1.2599252403138406
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -41,20 +41,20 @@
      "netUsd": 51674.94,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.5,
-     "score": 1.2521786584309378
+     "lastTradeAgoH": 4.8,
+     "score": 1.2391311194546903
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 66612.38,
-   "score": 4.1235,
+   "score": 4.0805,
    "question": "Counter-Strike: FURIA vs Vitality (BO3) - BLAST Open Porto Playoffs",
    "outcome": "Vitality",
    "tokenId": "22152589822203011937108170295396360820613506100789236866072617167888553176612",
-   "currentPrice": 0.395,
+   "currentPrice": 0.335,
    "backersAvgEntry": 0.6467,
-   "driftSinceEntry": -0.2517,
+   "driftSinceEntry": -0.3117,
    "endDate": "2026-09-04T22:50:00Z",
    "slug": "cs2-furia-vit-2026-09-04",
    "eventSlug": "cs2-furia-vit-2026-09-04"
