@@ -1,10 +1,10 @@
 # Arb desk — latest scan
 
-Scanned 2026-09-04 13:47 UTC · 2075 pairs · 770 cycles · 1 verified edges
+Scanned 2026-09-04 13:49 UTC · 2075 pairs · 770 cycles · 1 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→USD1→GMEROBINHOOD→USDT | 110.1 | 23.5 | $5.0 | $0.0118 |
+| USDT→USD1→FATCOIN→USDT | 55.6 | 48.5 | $5.0 | $0.0243 |
 
 ## Latency replay (own recorded ticks)
 
