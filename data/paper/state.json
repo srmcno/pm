@@ -1,8 +1,9 @@
 {
  "bankrollStart": 50.0,
- "cash": 42.0,
+ "cash": 53.8519,
  "createdAt": 1788373839,
- "positions": [
+ "positions": [],
+ "closed": [
   {
    "conditionId": "0xbf1350ee0c80864f0885e41dfa870ddd937e3e3a9d2ad68a150f355038d198fc",
    "outcomeIndex": 1,
@@ -15,10 +16,12 @@
    "openedAt": 1788540212,
    "signalScore": 4.2626,
    "markPrice": 0.9995,
-   "valueUsd": 11.846
+   "valueUsd": 11.846,
+   "settledAt": 1788555158,
+   "settlePrice": 1.0,
+   "pnl": 3.8519
   }
  ],
- "closed": [],
  "equityCurve": [
   {
    "t": 1786587301,
@@ -10534,6 +10537,11 @@
    "t": 1788553646,
    "equity": 53.846,
    "cash": 42.0
+  },
+  {
+   "t": 1788555158,
+   "equity": 53.8519,
+   "cash": 53.8519
   }
  ],
  "log": [
@@ -10544,6 +10552,13 @@
    "outcome": "Vitality",
    "stake": 8.0,
    "price": 0.675
+  },
+  {
+   "t": 1788555158,
+   "action": "SETTLE",
+   "question": "Counter-Strike: FURIA vs Vitality (BO3) - BLAST Open Porto Playoffs",
+   "price": 1.0,
+   "pnl": 3.8519
   }
  ]
 }
