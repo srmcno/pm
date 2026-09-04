@@ -1,29 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 367.5389,
+ "cash": 367.5799,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1788495612,
-   "path": "USDT\u2192USD1\u2192FATCOIN\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0291,
-   "bps": 58.2
-  },
-  {
-   "t": 1788495754,
-   "path": "USDT\u2192USD1\u2192NUDES\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0403,
-   "bps": 80.6
-  },
-  {
-   "t": 1788495811,
-   "path": "USDT\u2192USDC\u2192FUNTOKEN\u2192USDT",
-   "sizeUsd": 10.0,
-   "profitUsd": 0.0051,
-   "bps": 5.1
-  },
   {
    "t": 1788496429,
    "path": "USDT\u2192USDC\u2192FUNTOKEN\u2192USDT",
@@ -1402,13 +1381,30 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0068,
    "bps": 13.6
+  },
+  {
+   "t": 1788525401,
+   "path": "USDT\u2192BTC\u2192ADA\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0149,
+   "bps": 29.8
+  },
+  {
+   "t": 1788525401,
+   "path": "USDT\u2192HYPE\u2192USDC\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0154,
+   "bps": 7.7
+  },
+  {
+   "t": 1788525401,
+   "path": "USDT\u2192USDC\u2192NPC\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0107,
+   "bps": 21.4
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788524245,
-   "equity": 364.0253
-  },
   {
    "t": 1788524247,
    "equity": 364.0253
@@ -3404,6 +3400,10 @@
   {
    "t": 1788525363,
    "equity": 367.5389
+  },
+  {
+   "t": 1788525401,
+   "equity": 367.5799
   }
  ],
  "decay": {
@@ -3425,7 +3425,7 @@
   "USDT\u2192PISTACIO\u2192USD1\u2192USDT|PISTACIOUSDT|PISTACIOUSD1|USD1USDT": 1788524535,
   "USDT\u2192USD1\u2192GG\u2192USDT|USD1USDT|GGUSD1|GGUSDT": 1788524803,
   "USDT\u2192PEPE\u2192USDC\u2192USDT|PEPEUSDT|PEPEUSDC|USDCUSDT": 1788525187,
-  "USDT\u2192HYPE\u2192USDC\u2192USDT|HYPEUSDT|HYPEUSDC|USDCUSDT": 1788525358,
+  "USDT\u2192HYPE\u2192USDC\u2192USDT|HYPEUSDT|HYPEUSDC|USDCUSDT": 1788525401,
   "USDT\u2192APT\u2192USDC\u2192USDT|APTUSDT|APTUSDC|USDCUSDT": 1788525003,
   "USDT\u2192GOLD(XAUT)\u2192USDC\u2192USDT|GOLD(XAUT)USDT|GOLD(XAUT)USDC|USDCUSDT": 1788525185,
   "USDT\u2192ADA\u2192BTC\u2192USDT|ADAUSDT|ADABTC|BTCUSDT": 1788525010,
@@ -3465,15 +3465,16 @@
   "USDT\u2192RAM\u2192USD1\u2192USDT|RAMUSDT|RAMUSD1|USD1USDT": 1788525219,
   "USDT\u2192NUDES\u2192USD1\u2192USDT|NUDESUSDT|NUDESUSD1|USD1USDT": 1788525300,
   "USDT\u2192MOO\u2192USD1\u2192USDT|MOOUSDT|MOOUSD1|USD1USDT": 1788525325,
-  "USDT\u2192USDC\u2192NPC\u2192USDT|USDCUSDT|NPCUSDC|NPCUSDT": 1788525361
+  "USDT\u2192USDC\u2192NPC\u2192USDT|USDCUSDT|NPCUSDC|NPCUSDT": 1788525401,
+  "USDT\u2192BTC\u2192ADA\u2192USDT|BTCUSDT|ADABTC|ADAUSDT": 1788525401
  },
- "tradeCountAll": 4917,
+ "tradeCountAll": 4920,
  "replay": {
-  "edges": 3475,
-  "refillable": 3473,
-  "atomicUsd": 234.3153,
-  "delayedUsd": 72.0171,
-  "captureRatio": 0.307,
-  "scansReplayed": 36719
+  "edges": 3730,
+  "refillable": 3728,
+  "atomicUsd": 245.3125,
+  "delayedUsd": 85.8187,
+  "captureRatio": 0.35,
+  "scansReplayed": 36855
  }
 }
