@@ -1,57 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 371.775,
+ "cash": 372.0077,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1788520391,
-   "path": "USDT\u2192FATCOIN\u2192USD1\u2192USDT",
-   "sizeUsd": 10.0,
-   "profitUsd": 0.0957,
-   "bps": 95.7
-  },
-  {
-   "t": 1788520797,
-   "path": "USDT\u2192USDC\u2192KAS\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.0174,
-   "bps": 8.7
-  },
-  {
-   "t": 1788520900,
-   "path": "USDT\u2192RABBIT\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0741,
-   "bps": 148.2
-  },
-  {
-   "t": 1788521184,
-   "path": "USDT\u2192USD1\u2192PROLOGUE\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0072,
-   "bps": 14.4
-  },
-  {
-   "t": 1788521517,
-   "path": "USDT\u2192USD1\u2192BLUECHIP\u2192USDT",
-   "sizeUsd": 20.0,
-   "profitUsd": 0.24,
-   "bps": 120.0
-  },
-  {
-   "t": 1788521724,
-   "path": "USDT\u2192RABBIT\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0072,
-   "bps": 14.4
-  },
-  {
-   "t": 1788522201,
-   "path": "USDT\u2192USD1\u2192BLUECHIP\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0468,
-   "bps": 93.6
-  },
   {
    "t": 1788522223,
    "path": "USDT\u2192USD1\u2192SUE\u2192USDT",
@@ -1402,213 +1353,58 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0076,
    "bps": 15.2
+  },
+  {
+   "t": 1788529369,
+   "path": "USDT\u2192USD1\u2192GG\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0641,
+   "bps": 128.2
+  },
+  {
+   "t": 1788529381,
+   "path": "USDT\u2192USD1\u2192HOOKR\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0404,
+   "bps": 80.8
+  },
+  {
+   "t": 1788529392,
+   "path": "USDT\u2192USD1\u2192ROBINCAT\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0067,
+   "bps": 13.4
+  },
+  {
+   "t": 1788529394,
+   "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0076,
+   "bps": 3.8
+  },
+  {
+   "t": 1788529422,
+   "path": "USDT\u2192RABBIT\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0928,
+   "bps": 185.6
+  },
+  {
+   "t": 1788529422,
+   "path": "USDT\u2192USD1\u2192ROBINCAT\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0067,
+   "bps": 13.4
+  },
+  {
+   "t": 1788529434,
+   "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0144,
+   "bps": 7.2
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788528286,
-   "equity": 369.3101
-  },
-  {
-   "t": 1788528288,
-   "equity": 369.3101
-  },
-  {
-   "t": 1788528290,
-   "equity": 369.3101
-  },
-  {
-   "t": 1788528292,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528295,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528297,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528299,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528301,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528303,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528305,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528307,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528309,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528311,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528313,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528315,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528317,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528319,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528321,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528323,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528326,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528328,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528330,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528332,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528334,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528336,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528338,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528340,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528342,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528344,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528347,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528349,
-   "equity": 369.3212
-  },
-  {
-   "t": 1788528351,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528353,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528355,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528357,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528359,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528361,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528363,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528365,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528367,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528369,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528371,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528373,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528375,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528377,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528379,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528381,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528383,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528385,
-   "equity": 369.3389
-  },
-  {
-   "t": 1788528387,
-   "equity": 369.3691
-  },
-  {
-   "t": 1788528389,
-   "equity": 369.3691
-  },
   {
    "t": 1788528391,
    "equity": 369.3691
@@ -3404,14 +3200,218 @@
   {
    "t": 1788529330,
    "equity": 371.775
+  },
+  {
+   "t": 1788529333,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529335,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529337,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529339,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529341,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529343,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529345,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529347,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529349,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529351,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529353,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529355,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529357,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529359,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529361,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529363,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529365,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529367,
+   "equity": 371.775
+  },
+  {
+   "t": 1788529369,
+   "equity": 371.8391
+  },
+  {
+   "t": 1788529371,
+   "equity": 371.8391
+  },
+  {
+   "t": 1788529373,
+   "equity": 371.8391
+  },
+  {
+   "t": 1788529375,
+   "equity": 371.8391
+  },
+  {
+   "t": 1788529377,
+   "equity": 371.8391
+  },
+  {
+   "t": 1788529379,
+   "equity": 371.8391
+  },
+  {
+   "t": 1788529381,
+   "equity": 371.8795
+  },
+  {
+   "t": 1788529383,
+   "equity": 371.8795
+  },
+  {
+   "t": 1788529385,
+   "equity": 371.8795
+  },
+  {
+   "t": 1788529388,
+   "equity": 371.8795
+  },
+  {
+   "t": 1788529390,
+   "equity": 371.8795
+  },
+  {
+   "t": 1788529392,
+   "equity": 371.8862
+  },
+  {
+   "t": 1788529394,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529396,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529398,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529400,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529402,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529404,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529406,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529408,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529410,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529412,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529414,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529416,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529418,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529420,
+   "equity": 371.8938
+  },
+  {
+   "t": 1788529422,
+   "equity": 371.9933
+  },
+  {
+   "t": 1788529424,
+   "equity": 371.9933
+  },
+  {
+   "t": 1788529426,
+   "equity": 371.9933
+  },
+  {
+   "t": 1788529428,
+   "equity": 371.9933
+  },
+  {
+   "t": 1788529430,
+   "equity": 371.9933
+  },
+  {
+   "t": 1788529432,
+   "equity": 371.9933
+  },
+  {
+   "t": 1788529434,
+   "equity": 372.0077
   }
  ],
  "decay": {
-  "checked": 14041,
-  "survived": 8771
+  "checked": 14079,
+  "survived": 8802
  },
  "cooldown": {
-  "USDT\u2192RABBIT\u2192USD1\u2192USDT|RABBITUSDT|RABBITUSD1|USD1USDT": 1788529330,
+  "USDT\u2192RABBIT\u2192USD1\u2192USDT|RABBITUSDT|RABBITUSD1|USD1USDT": 1788529422,
   "USDT\u2192USD1\u2192MEMEROBINHOOD\u2192USDT|USD1USDT|MEMEROBINHOODUSD1|MEMEROBINHOODUSDT": 1788528431,
   "USDT\u2192BNBCAT\u2192USD1\u2192USDT|BNBCATUSDT|BNBCATUSD1|USD1USDT": 1788526487,
   "USDT\u2192PEPE\u2192USDC\u2192USDT|PEPEUSDT|PEPEUSDC|USDCUSDT": 1788526227,
@@ -3422,7 +3422,6 @@
   "USDT\u2192UTILITY\u2192USD1\u2192USDT|UTILITYUSDT|UTILITYUSD1|USD1USDT": 1788528698,
   "USDT\u2192USD1\u2192GMEROBINHOOD\u2192USDT|USD1USDT|GMEROBINHOODUSD1|GMEROBINHOODUSDT": 1788528105,
   "USDT\u2192USD1\u2192BNBCAT\u2192USDT|USD1USDT|BNBCATUSD1|BNBCATUSDT": 1788527394,
-  "USDT\u2192USDC\u2192XRP\u2192USDT|USDCUSDT|XRPUSDC|XRPUSDT": 1788525751,
   "USDT\u2192SUI\u2192USDC\u2192USDT|SUIUSDT|SUIUSDC|USDCUSDT": 1788526007,
   "USDT\u2192ZRO\u2192USDC\u2192USDT|ZROUSDT|ZROUSDC|USDCUSDT": 1788526070,
   "USDT\u2192USDC\u2192GOLD(XAUT)\u2192USDT|USDCUSDT|GOLD(XAUT)USDC|GOLD(XAUT)USDT": 1788526170,
@@ -3435,13 +3434,13 @@
   "USDT\u2192USD1\u2192\u65fa\u8d22\u2192USDT|USD1USDT|\u65fa\u8d22USD1|\u65fa\u8d22USDT": 1788527684,
   "USDT\u2192USD1\u2192DELTA\u2192USDT|USD1USDT|DELTAUSD1|DELTAUSDT": 1788527809,
   "USDT\u2192USD1\u2192PROLOGUE\u2192USDT|USD1USDT|PROLOGUEUSD1|PROLOGUEUSDT": 1788528227,
-  "USDT\u2192USDC\u2192HYPE\u2192USDT|USDCUSDT|HYPEUSDC|HYPEUSDT": 1788529254,
+  "USDT\u2192USDC\u2192HYPE\u2192USDT|USDCUSDT|HYPEUSDC|HYPEUSDT": 1788529434,
   "USDT\u2192USD1\u2192FLORK\u2192USDT|USD1USDT|FLORKUSD1|FLORKUSDT": 1788528072,
   "USDT\u2192GG\u2192USD1\u2192USDT|GGUSDT|GGUSD1|USD1USDT": 1788529242,
   "USDT\u2192\u725b\u6765\u2192USD1\u2192USDT|\u725b\u6765USDT|\u725b\u6765USD1|USD1USDT": 1788528292,
   "USDT\u2192PROLOGUE\u2192USD1\u2192USDT|PROLOGUEUSDT|PROLOGUEUSD1|USD1USDT": 1788528351,
   "USDT\u2192USD1\u2192SUE\u2192USDT|USD1USDT|SUEUSD1|SUEUSDT": 1788528500,
-  "USDT\u2192USD1\u2192ROBINCAT\u2192USDT|USD1USDT|ROBINCATUSD1|ROBINCATUSDT": 1788528619,
+  "USDT\u2192USD1\u2192ROBINCAT\u2192USDT|USD1USDT|ROBINCATUSD1|ROBINCATUSDT": 1788529422,
   "USDT\u2192USDC\u2192DOGE\u2192USDT|USDCUSDT|DOGEUSDC|DOGEUSDT": 1788528647,
   "USDT\u2192DELTA\u2192USD1\u2192USDT|DELTAUSDT|DELTAUSD1|USD1USDT": 1788528815,
   "USDT\u2192FUNTOKEN\u2192USDC\u2192USDT|FUNTOKENUSDT|FUNTOKENUSDC|USDCUSDT": 1788528690,
@@ -3451,9 +3450,11 @@
   "USDT\u2192XCN\u2192USDC\u2192USDT|XCNUSDT|XCNUSDC|USDCUSDT": 1788529006,
   "USDT\u2192USD1\u2192NUDES\u2192USDT|USD1USDT|NUDESUSD1|NUDESUSDT": 1788529068,
   "USDT\u2192FONE\u2192USD1\u2192USDT|FONEUSDT|FONEUSD1|USD1USDT": 1788529156,
-  "USDT\u2192USD1\u2192SAYLORMOON\u2192USDT|USD1USDT|SAYLORMOONUSD1|SAYLORMOONUSDT": 1788529244
+  "USDT\u2192USD1\u2192SAYLORMOON\u2192USDT|USD1USDT|SAYLORMOONUSD1|SAYLORMOONUSDT": 1788529244,
+  "USDT\u2192USD1\u2192GG\u2192USDT|USD1USDT|GGUSD1|GGUSDT": 1788529369,
+  "USDT\u2192USD1\u2192HOOKR\u2192USDT|USD1USDT|HOOKRUSD1|HOOKRUSDT": 1788529381
  },
- "tradeCountAll": 5019,
+ "tradeCountAll": 5026,
  "replay": {
   "edges": 4049,
   "refillable": 4047,
