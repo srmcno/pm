@@ -1,43 +1,8 @@
 {
  "bankrollStart": 20.0,
- "cash": 372.0077,
+ "cash": 372.2223,
  "createdAt": 1786597058,
  "trades": [
-  {
-   "t": 1788522223,
-   "path": "USDT\u2192USD1\u2192SUE\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0169,
-   "bps": 33.8
-  },
-  {
-   "t": 1788522350,
-   "path": "USDT\u2192USD1\u2192MEMEROBINHOOD\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0059,
-   "bps": 11.8
-  },
-  {
-   "t": 1788522480,
-   "path": "USDT\u2192USD1\u2192MORTY\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0066,
-   "bps": 13.2
-  },
-  {
-   "t": 1788522605,
-   "path": "USDT\u2192USD1\u2192RABBIT\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0074,
-   "bps": 14.8
-  },
-  {
-   "t": 1788523003,
-   "path": "USDT\u2192EYE\u2192USD1\u2192USDT",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0245,
-   "bps": 49.0
-  },
   {
    "t": 1788523098,
    "path": "USDT\u2192MICRODUCK\u2192USD1\u2192USDT",
@@ -1402,233 +1367,44 @@
    "sizeUsd": 20.0,
    "profitUsd": 0.0144,
    "bps": 7.2
+  },
+  {
+   "t": 1788529481,
+   "path": "USDT\u2192USD1\u2192PROLOGUE\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0111,
+   "bps": 22.2
+  },
+  {
+   "t": 1788529505,
+   "path": "USDT\u2192RABBIT\u2192USD1\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0503,
+   "bps": 100.6
+  },
+  {
+   "t": 1788529512,
+   "path": "USDT\u2192USD1\u2192PROLOGUE\u2192USDT",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0111,
+   "bps": 22.2
+  },
+  {
+   "t": 1788529520,
+   "path": "USDT\u2192USDC\u2192HYPE\u2192USDT",
+   "sizeUsd": 20.0,
+   "profitUsd": 0.0061,
+   "bps": 3.1
+  },
+  {
+   "t": 1788529548,
+   "path": "USDT\u2192RABBIT\u2192USD1\u2192USDT",
+   "sizeUsd": 10.0,
+   "profitUsd": 0.136,
+   "bps": 136.0
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788528391,
-   "equity": 369.3691
-  },
-  {
-   "t": 1788528393,
-   "equity": 369.3691
-  },
-  {
-   "t": 1788528395,
-   "equity": 369.3691
-  },
-  {
-   "t": 1788528397,
-   "equity": 369.3691
-  },
-  {
-   "t": 1788528399,
-   "equity": 369.3691
-  },
-  {
-   "t": 1788528401,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528403,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528405,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528409,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528411,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528413,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528415,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528417,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528419,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528421,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528423,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528425,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528427,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528429,
-   "equity": 369.3812
-  },
-  {
-   "t": 1788528431,
-   "equity": 369.3904
-  },
-  {
-   "t": 1788528433,
-   "equity": 369.3904
-  },
-  {
-   "t": 1788528435,
-   "equity": 369.3904
-  },
-  {
-   "t": 1788528437,
-   "equity": 369.3904
-  },
-  {
-   "t": 1788528439,
-   "equity": 369.3904
-  },
-  {
-   "t": 1788528441,
-   "equity": 369.3904
-  },
-  {
-   "t": 1788528443,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528445,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528447,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528449,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528451,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528453,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528455,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528457,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528459,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528461,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528463,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528465,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528467,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528470,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528472,
-   "equity": 369.3955
-  },
-  {
-   "t": 1788528474,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528476,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528478,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528480,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528482,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528484,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528486,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528488,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528490,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528492,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528494,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528496,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528498,
-   "equity": 369.4053
-  },
-  {
-   "t": 1788528500,
-   "equity": 369.4837
-  },
-  {
-   "t": 1788528502,
-   "equity": 369.4837
-  },
-  {
-   "t": 1788528504,
-   "equity": 369.4837
-  },
   {
    "t": 1788528506,
    "equity": 369.4837
@@ -3404,19 +3180,242 @@
   {
    "t": 1788529434,
    "equity": 372.0077
+  },
+  {
+   "t": 1788529436,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529438,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529440,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529442,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529444,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529446,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529449,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529451,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529453,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529455,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529457,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529459,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529461,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529463,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529465,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529467,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529469,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529471,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529473,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529475,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529477,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529479,
+   "equity": 372.0077
+  },
+  {
+   "t": 1788529481,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529483,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529485,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529487,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529489,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529491,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529493,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529495,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529497,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529499,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529501,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529503,
+   "equity": 372.0188
+  },
+  {
+   "t": 1788529505,
+   "equity": 372.0691
+  },
+  {
+   "t": 1788529507,
+   "equity": 372.0691
+  },
+  {
+   "t": 1788529510,
+   "equity": 372.0691
+  },
+  {
+   "t": 1788529512,
+   "equity": 372.0802
+  },
+  {
+   "t": 1788529514,
+   "equity": 372.0802
+  },
+  {
+   "t": 1788529516,
+   "equity": 372.0802
+  },
+  {
+   "t": 1788529518,
+   "equity": 372.0802
+  },
+  {
+   "t": 1788529520,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529522,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529524,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529526,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529528,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529530,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529532,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529534,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529536,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529538,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529540,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529542,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529544,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529546,
+   "equity": 372.0863
+  },
+  {
+   "t": 1788529548,
+   "equity": 372.2223
   }
  ],
  "decay": {
-  "checked": 14079,
-  "survived": 8802
+  "checked": 14114,
+  "survived": 8831
  },
  "cooldown": {
-  "USDT\u2192RABBIT\u2192USD1\u2192USDT|RABBITUSDT|RABBITUSD1|USD1USDT": 1788529422,
+  "USDT\u2192RABBIT\u2192USD1\u2192USDT|RABBITUSDT|RABBITUSD1|USD1USDT": 1788529548,
   "USDT\u2192USD1\u2192MEMEROBINHOOD\u2192USDT|USD1USDT|MEMEROBINHOODUSD1|MEMEROBINHOODUSDT": 1788528431,
   "USDT\u2192BNBCAT\u2192USD1\u2192USDT|BNBCATUSDT|BNBCATUSD1|USD1USDT": 1788526487,
   "USDT\u2192PEPE\u2192USDC\u2192USDT|PEPEUSDT|PEPEUSDC|USDCUSDT": 1788526227,
   "USDT\u2192HYPE\u2192USDC\u2192USDT|HYPEUSDT|HYPEUSDC|USDCUSDT": 1788528928,
-  "USDT\u2192ZEC\u2192USDC\u2192USDT|ZECUSDT|ZECUSDC|USDCUSDT": 1788525906,
   "USDT\u2192MOO\u2192USD1\u2192USDT|MOOUSDT|MOOUSD1|USD1USDT": 1788526803,
   "USDT\u2192MEMEROBINHOOD\u2192USD1\u2192USDT|MEMEROBINHOODUSDT|MEMEROBINHOODUSD1|USD1USDT": 1788529225,
   "USDT\u2192UTILITY\u2192USD1\u2192USDT|UTILITYUSDT|UTILITYUSD1|USD1USDT": 1788528698,
@@ -3433,8 +3432,8 @@
   "USDT\u2192SUPRA\u2192USDC\u2192USDT|SUPRAUSDT|SUPRAUSDC|USDCUSDT": 1788527579,
   "USDT\u2192USD1\u2192\u65fa\u8d22\u2192USDT|USD1USDT|\u65fa\u8d22USD1|\u65fa\u8d22USDT": 1788527684,
   "USDT\u2192USD1\u2192DELTA\u2192USDT|USD1USDT|DELTAUSD1|DELTAUSDT": 1788527809,
-  "USDT\u2192USD1\u2192PROLOGUE\u2192USDT|USD1USDT|PROLOGUEUSD1|PROLOGUEUSDT": 1788528227,
-  "USDT\u2192USDC\u2192HYPE\u2192USDT|USDCUSDT|HYPEUSDC|HYPEUSDT": 1788529434,
+  "USDT\u2192USD1\u2192PROLOGUE\u2192USDT|USD1USDT|PROLOGUEUSD1|PROLOGUEUSDT": 1788529512,
+  "USDT\u2192USDC\u2192HYPE\u2192USDT|USDCUSDT|HYPEUSDC|HYPEUSDT": 1788529520,
   "USDT\u2192USD1\u2192FLORK\u2192USDT|USD1USDT|FLORKUSD1|FLORKUSDT": 1788528072,
   "USDT\u2192GG\u2192USD1\u2192USDT|GGUSDT|GGUSD1|USD1USDT": 1788529242,
   "USDT\u2192\u725b\u6765\u2192USD1\u2192USDT|\u725b\u6765USDT|\u725b\u6765USD1|USD1USDT": 1788528292,
@@ -3454,7 +3453,7 @@
   "USDT\u2192USD1\u2192GG\u2192USDT|USD1USDT|GGUSD1|GGUSDT": 1788529369,
   "USDT\u2192USD1\u2192HOOKR\u2192USDT|USD1USDT|HOOKRUSD1|HOOKRUSDT": 1788529381
  },
- "tradeCountAll": 5026,
+ "tradeCountAll": 5031,
  "replay": {
   "edges": 4049,
   "refillable": 4047,
