@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 49.2162,
+ "cash": 41.3462,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -16,6 +16,20 @@
    "signalScore": 4.6917,
    "markPrice": 0.605,
    "valueUsd": 9.2275
+  },
+  {
+   "conditionId": "0xe5fe14c266a5d0587e507410f520bbc91f3a135adf6ae189d9a425e4e8ef320e",
+   "outcomeIndex": 0,
+   "tokenId": "65823424579563943414436186196477915628552888446430502905349810721388993910299",
+   "question": "Counter-Strike: Spirit vs Team Falcons - Map 1 Winner",
+   "outcome": "Spirit",
+   "shares": 11.007,
+   "entryPrice": 0.715,
+   "costUsd": 7.87,
+   "openedAt": 1788617359,
+   "signalScore": 5.3933,
+   "markPrice": 0.72,
+   "valueUsd": 7.925
   }
  ],
  "closed": [
@@ -10894,6 +10908,11 @@
    "t": 1788617056,
    "equity": 58.4437,
    "cash": 49.2162
+  },
+  {
+   "t": 1788617359,
+   "equity": 58.4987,
+   "cash": 41.3462
   }
  ],
  "log": [
@@ -10934,6 +10953,14 @@
    "outcome": "Vitality",
    "stake": 9.38,
    "price": 0.615
+  },
+  {
+   "t": 1788617359,
+   "action": "BUY",
+   "question": "Counter-Strike: Spirit vs Team Falcons - Map 1 Winner",
+   "outcome": "Spirit",
+   "stake": 7.87,
+   "price": 0.715
   }
  ]
 }
