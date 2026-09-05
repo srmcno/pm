@@ -1,8 +1,23 @@
 {
  "bankrollStart": 50.0,
- "cash": 53.8519,
+ "cash": 45.2319,
  "createdAt": 1788373839,
- "positions": [],
+ "positions": [
+  {
+   "conditionId": "0x7915924c24972065ce1ad9ed89ae7b978185a473da6864cebe7bcacfa9ca7e9e",
+   "outcomeIndex": 0,
+   "tokenId": "78823608187135825880781190708659417652815449913200811981619466822923266552572",
+   "question": "LoL: Invictus Gaming vs Top Esports - Game 1 Winner",
+   "outcome": "Invictus Gaming",
+   "shares": 13.3643,
+   "entryPrice": 0.645,
+   "costUsd": 8.62,
+   "openedAt": 1788590019,
+   "signalScore": 5.3342,
+   "markPrice": 0.345,
+   "valueUsd": 4.6107
+  }
+ ],
  "closed": [
   {
    "conditionId": "0xbf1350ee0c80864f0885e41dfa870ddd937e3e3a9d2ad68a150f355038d198fc",
@@ -10717,6 +10732,11 @@
    "t": 1788589866,
    "equity": 53.8519,
    "cash": 53.8519
+  },
+  {
+   "t": 1788590019,
+   "equity": 49.8426,
+   "cash": 45.2319
   }
  ],
  "log": [
@@ -10734,6 +10754,14 @@
    "question": "Counter-Strike: FURIA vs Vitality (BO3) - BLAST Open Porto Playoffs",
    "price": 1.0,
    "pnl": 3.8519
+  },
+  {
+   "t": 1788590019,
+   "action": "BUY",
+   "question": "LoL: Invictus Gaming vs Top Esports - Game 1 Winner",
+   "outcome": "Invictus Gaming",
+   "stake": 8.62,
+   "price": 0.645
   }
  ]
 }
