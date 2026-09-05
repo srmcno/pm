@@ -1,12 +1,12 @@
 # Paper portfolio
 
-Updated 2026-09-05 17:39 UTC · started with $50.00 (virtual)
+Updated 2026-09-05 18:04 UTC · started with $50.00 (virtual)
 
-**Equity $61.66 (+23.3%)** · cash $52.35 · 1 open · 3 settled
+**Equity $57.46 (+14.9%)** · cash $52.35 · 1 open · 3 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs | Vitality | 15.25 | 0.61 | 0.61 | $9.30 |
+| Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs | Vitality | 15.25 | 0.61 | 0.34 | $5.11 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
