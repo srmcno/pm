@@ -10,5 +10,5 @@ Closest approach: USD→IDEX→EUR→USD at 230.4 bps against a 99.7 bps fee hur
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 83 across 17099 scans
-- Atomic PnL $4.42 → one-scan-delay PnL $7.3452 (capture ratio 1.662)
+- Edges replayed: 78 across 14712 scans
+- Atomic PnL $3.8868 → one-scan-delay PnL $7.6465 (capture ratio 1.967)
