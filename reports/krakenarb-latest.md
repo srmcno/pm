@@ -10,5 +10,5 @@ Closest approach: USD→ALKIMI→EUR→USD at -13.0 bps against a 99.7 bps fee h
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 78 across 14863 scans
+- Edges replayed: 78 across 14896 scans
 - Atomic PnL $3.8868 → one-scan-delay PnL $7.6465 (capture ratio 1.967)
