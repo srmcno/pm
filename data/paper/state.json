@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 41.3462,
+ "cash": 52.3532,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -16,20 +16,6 @@
    "signalScore": 4.6917,
    "markPrice": 0.605,
    "valueUsd": 9.2275
-  },
-  {
-   "conditionId": "0xe5fe14c266a5d0587e507410f520bbc91f3a135adf6ae189d9a425e4e8ef320e",
-   "outcomeIndex": 0,
-   "tokenId": "65823424579563943414436186196477915628552888446430502905349810721388993910299",
-   "question": "Counter-Strike: Spirit vs Team Falcons - Map 1 Winner",
-   "outcome": "Spirit",
-   "shares": 11.007,
-   "entryPrice": 0.715,
-   "costUsd": 7.87,
-   "openedAt": 1788617359,
-   "signalScore": 5.3933,
-   "markPrice": 0.9995,
-   "valueUsd": 11.0015
   }
  ],
  "closed": [
@@ -66,6 +52,23 @@
    "settledAt": 1788600426,
    "settlePrice": 1.0,
    "pnl": 4.7443
+  },
+  {
+   "conditionId": "0xe5fe14c266a5d0587e507410f520bbc91f3a135adf6ae189d9a425e4e8ef320e",
+   "outcomeIndex": 0,
+   "tokenId": "65823424579563943414436186196477915628552888446430502905349810721388993910299",
+   "question": "Counter-Strike: Spirit vs Team Falcons - Map 1 Winner",
+   "outcome": "Spirit",
+   "shares": 11.007,
+   "entryPrice": 0.715,
+   "costUsd": 7.87,
+   "openedAt": 1788617359,
+   "signalScore": 5.3933,
+   "markPrice": 0.9995,
+   "valueUsd": 11.0015,
+   "settledAt": 1788622154,
+   "settlePrice": 1.0,
+   "pnl": 3.137
   }
  ],
  "equityCurve": [
@@ -10938,6 +10941,11 @@
    "t": 1788621250,
    "equity": 61.5752,
    "cash": 41.3462
+  },
+  {
+   "t": 1788622154,
+   "equity": 61.5807,
+   "cash": 52.3532
   }
  ],
  "log": [
@@ -10986,6 +10994,13 @@
    "outcome": "Spirit",
    "stake": 7.87,
    "price": 0.715
+  },
+  {
+   "t": 1788622154,
+   "action": "SETTLE",
+   "question": "Counter-Strike: Spirit vs Team Falcons - Map 1 Winner",
+   "price": 1.0,
+   "pnl": 3.137
   }
  ]
 }
