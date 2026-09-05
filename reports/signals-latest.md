@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-09-05 14:09 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-05 14:13 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Spirit vs Team Falcons - Map 1 Winner — **Spirit**
 
-- Score **5.39** · 3 backers · net $4,161 staked
+- Score **5.38** · 3 backers · net $4,161 staked
 - Backers' average entry 0.59 → current price **0.72** (already moved +0.13 since entry)
 - Resolves by 2026-09-05
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs — **Vitality**
 
-- Score **4.67** · 3 backers · net $74,588 staked
+- Score **4.66** · 3 backers · net $74,588 staked
 - Backers' average entry 0.61 → current price **0.60** (roughly flat -0.00 since entry)
 - Resolves by 2026-09-05
 
