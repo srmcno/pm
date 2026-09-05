@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-09-05 18:20 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-05 18:35 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs — **Vitality**
 
-- Score **7.87** · 5 backers · net $80,198 staked
-- Backers' average entry 0.60 → current price **0.30** (moved against them -0.30 since entry)
+- Score **7.78** · 5 backers · net $80,198 staked
+- Backers' average entry 0.60 → current price **0.12** (moved against them -0.48 since entry)
 - Resolves by 2026-09-05
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
