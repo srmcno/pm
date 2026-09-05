@@ -2,22 +2,7 @@
  "bankrollStart": 50.0,
  "cash": 52.3532,
  "createdAt": 1788373839,
- "positions": [
-  {
-   "conditionId": "0xec7f9a8c0f7d5ee3d881a6169d78a9a0a1b8b0f84e3006faf39152b705c0ab50",
-   "outcomeIndex": 1,
-   "tokenId": "501265140809899391871121113260806085408444408360662959824305401680471566308",
-   "question": "Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs",
-   "outcome": "Vitality",
-   "shares": 15.252,
-   "entryPrice": 0.615,
-   "costUsd": 9.38,
-   "openedAt": 1788617056,
-   "signalScore": 4.6917,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0076
-  }
- ],
+ "positions": [],
  "closed": [
   {
    "conditionId": "0xbf1350ee0c80864f0885e41dfa870ddd937e3e3a9d2ad68a150f355038d198fc",
@@ -69,6 +54,23 @@
    "settledAt": 1788622154,
    "settlePrice": 1.0,
    "pnl": 3.137
+  },
+  {
+   "conditionId": "0xec7f9a8c0f7d5ee3d881a6169d78a9a0a1b8b0f84e3006faf39152b705c0ab50",
+   "outcomeIndex": 1,
+   "tokenId": "501265140809899391871121113260806085408444408360662959824305401680471566308",
+   "question": "Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs",
+   "outcome": "Vitality",
+   "shares": 15.252,
+   "entryPrice": 0.615,
+   "costUsd": 9.38,
+   "openedAt": 1788617056,
+   "signalScore": 4.6917,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0076,
+   "settledAt": 1788636026,
+   "settlePrice": 0.0,
+   "pnl": -9.38
   }
  ],
  "equityCurve": [
@@ -11011,6 +11013,11 @@
    "t": 1788635120,
    "equity": 52.3608,
    "cash": 52.3532
+  },
+  {
+   "t": 1788636026,
+   "equity": 52.3532,
+   "cash": 52.3532
   }
  ],
  "log": [
@@ -11066,6 +11073,13 @@
    "question": "Counter-Strike: Spirit vs Team Falcons - Map 1 Winner",
    "price": 1.0,
    "pnl": 3.137
+  },
+  {
+   "t": 1788636026,
+   "action": "SETTLE",
+   "question": "Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs",
+   "price": 0.0,
+   "pnl": -9.38
   }
  ]
 }
