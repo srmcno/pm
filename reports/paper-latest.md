@@ -1,12 +1,12 @@
 # Paper portfolio
 
-Updated 2026-09-05 06:46 UTC · started with $50.00 (virtual)
+Updated 2026-09-05 07:01 UTC · started with $50.00 (virtual)
 
-**Equity $49.84 (-0.3%)** · cash $45.23 · 1 open · 1 settled
+**Equity $58.53 (+17.1%)** · cash $45.23 · 1 open · 1 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| LoL: Invictus Gaming vs Top Esports - Game 1 Winner | Invictus Gaming | 13.36 | 0.65 | 0.34 | $4.61 |
+| LoL: Invictus Gaming vs Top Esports - Game 1 Winner | Invictus Gaming | 13.36 | 0.65 | 0.99 | $13.30 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
