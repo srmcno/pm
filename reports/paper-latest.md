@@ -1,13 +1,13 @@
 # Paper portfolio
 
-Updated 2026-09-05 14:28 UTC · started with $50.00 (virtual)
+Updated 2026-09-05 14:44 UTC · started with $50.00 (virtual)
 
-**Equity $61.30 (+22.6%)** · cash $41.35 · 2 open · 2 settled
+**Equity $59.65 (+19.3%)** · cash $41.35 · 2 open · 2 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs | Vitality | 15.25 | 0.61 | 0.60 | $9.23 |
-| Counter-Strike: Spirit vs Team Falcons - Map 1 Winner | Spirit | 11.01 | 0.71 | 0.97 | $10.73 |
+| Counter-Strike: Spirit vs Team Falcons - Map 1 Winner | Spirit | 11.01 | 0.71 | 0.82 | $9.08 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
