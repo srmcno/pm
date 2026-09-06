@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788706362,
+  "generatedAt": 1788707878,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -9,72 +9,21 @@
  },
  "signals": [
   {
-   "conditionId": "0xe90998971549abaaf98d3f33afb1288f8a4bbb27f9498b7da8d5be79b0cc28f7",
-   "outcomeIndex": 0,
-   "title": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8016,
-     "netUsd": 662.15,
-     "avgPrice": 0.6383,
-     "conviction": 10.0,
-     "lastTradeAgoH": 3.0,
-     "score": 2.2387607156137137
-    },
-    {
-     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
-     "name": "HMLSF",
-     "quality": 0.6149,
-     "netUsd": 72561.67,
-     "avgPrice": 0.6404,
-     "conviction": 10.0,
-     "lastTradeAgoH": 3.1,
-     "score": 1.711617876973867
-    },
-    {
-     "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
-     "name": "ExplosiveNinja",
-     "quality": 0.4781,
-     "netUsd": 44799.82,
-     "avgPrice": 0.64,
-     "conviction": 10.0,
-     "lastTradeAgoH": 7.1,
-     "score": 1.1228484967054022
-    },
-    {
-     "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
-     "name": "JustADonk",
-     "quality": 0.5241,
-     "netUsd": 9974.41,
-     "avgPrice": 0.64,
-     "conviction": 10.0,
-     "lastTradeAgoH": 11.6,
-     "score": 1.020567313322421
-    }
-   ],
-   "backerCount": 4,
-   "contested": true,
-   "totalNetUsd": 127998.05,
-   "score": 6.0938,
-   "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
-   "outcome": "Spirit",
-   "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
-   "currentPrice": 0.755,
-   "backersAvgEntry": 0.6397,
-   "driftSinceEntry": 0.1153,
-   "endDate": "2026-09-06T20:00:00Z",
-   "slug": "cs2-ts7-mouz-2026-09-06",
-   "eventSlug": "cs2-ts7-mouz-2026-09-06"
-  },
-  {
    "conditionId": "0xcd4ed181dc3d8f18a05866d926b52f6b15737c08f08758845aa9ce9939313a7b",
    "outcomeIndex": 1,
    "title": "Will Gr\u00fcne win at least 7% of all valid second votes?",
    "category": "Politics",
    "backers": [
+    {
+     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
+     "name": "Bigggggggg",
+     "quality": 0.7228,
+     "netUsd": 2134.8,
+     "avgPrice": 0.8885,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.1,
+     "score": 2.1858768413895153
+    },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
      "name": "e46m3",
@@ -82,8 +31,8 @@
      "netUsd": 367.79,
      "avgPrice": 0.8702,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.1,
-     "score": 2.2193241708765994
+     "lastTradeAgoH": 2.5,
+     "score": 2.180722896447012
     },
     {
      "wallet": "0xb1ca909e848cc24ec4e220ce1c453bc290c51705",
@@ -92,30 +41,20 @@
      "netUsd": 13575.0,
      "avgPrice": 0.905,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.9,
-     "score": 1.3980179655578764
-    },
-    {
-     "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
-     "name": "Bigggggggg",
-     "quality": 0.7228,
-     "netUsd": 2006.76,
-     "avgPrice": 0.8876,
-     "conviction": 10.0,
-     "lastTradeAgoH": 15.1,
-     "score": 1.2194714307963321
+     "lastTradeAgoH": 8.3,
+     "score": 1.373701880573916
     }
    ],
    "backerCount": 3,
    "contested": false,
-   "totalNetUsd": 15949.55,
-   "score": 4.8368,
+   "totalNetUsd": 16077.59,
+   "score": 5.7403,
    "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
    "outcome": "No",
    "tokenId": "57016096009833294099156229938777535913517779872506839649972312180616246598404",
-   "currentPrice": 0.903,
-   "backersAvgEntry": 0.8876,
-   "driftSinceEntry": 0.0154,
+   "currentPrice": 0.9,
+   "backersAvgEntry": 0.8879,
+   "driftSinceEntry": 0.0121,
    "endDate": "2026-09-06T23:59:00Z",
    "slug": "will-grune-win-at-least-7-of-all-valid-second-votes-sachsen-anhalt",
    "eventSlug": "sachsen-anhalt-parliamentary-election-grune-vote-share"

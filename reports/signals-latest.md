@@ -1,30 +1,17 @@
 # Smart-money signals
 
-Generated 2026-09-06 14:52 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-06 15:17 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs — **Spirit**
+## 1. Will Grüne win at least 7% of all valid second votes? — **No**
 
-- Score **6.09** · 4 backers · net $127,998 staked
-- Backers' average entry 0.64 → current price **0.76** (already moved +0.12 since entry)
+- Score **5.74** · 3 backers · net $16,078 staked
+- Backers' average entry 0.89 → current price **0.90** (roughly flat +0.01 since entry)
 - Resolves by 2026-09-06
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x076daa87 | 0.80 | $662 | 0.6383 | 10.0× |
-| HMLSF | 0.61 | $72,562 | 0.6404 | 10.0× |
-| ExplosiveNinja | 0.48 | $44,800 | 0.64 | 10.0× |
-| JustADonk | 0.52 | $9,974 | 0.64 | 10.0× |
-
-## 2. Will Grüne win at least 7% of all valid second votes? — **No**
-
-- Score **4.84** · 3 backers · net $15,950 staked
-- Backers' average entry 0.89 → current price **0.90** (roughly flat +0.02 since entry)
-- Resolves by 2026-09-06
-
-| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
-|---|---|---|---|---|
+| Bigggggggg | 0.72 | $2,135 | 0.8885 | 10.0× |
 | e46m3 | 0.77 | $368 | 0.8702 | 10.0× |
 | abdkxrhxr | 0.61 | $13,575 | 0.905 | 10.0× |
-| Bigggggggg | 0.72 | $2,007 | 0.8876 | 10.0× |
