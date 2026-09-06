@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788707878,
+  "generatedAt": 1788708815,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 2134.8,
      "avgPrice": 0.8885,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.1,
-     "score": 2.1858768413895153
+     "lastTradeAgoH": 1.3,
+     "score": 2.1630752528861508
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -31,8 +31,8 @@
      "netUsd": 367.79,
      "avgPrice": 0.8702,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.5,
-     "score": 2.180722896447012
+     "lastTradeAgoH": 2.8,
+     "score": 2.157975070410738
     },
     {
      "wallet": "0xb1ca909e848cc24ec4e220ce1c453bc290c51705",
@@ -41,20 +41,20 @@
      "netUsd": 13575.0,
      "avgPrice": 0.905,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.3,
-     "score": 1.373701880573916
+     "lastTradeAgoH": 8.5,
+     "score": 1.3593723518401595
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 16077.59,
-   "score": 5.7403,
+   "score": 5.6804,
    "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
    "outcome": "No",
    "tokenId": "57016096009833294099156229938777535913517779872506839649972312180616246598404",
-   "currentPrice": 0.9,
+   "currentPrice": 0.868,
    "backersAvgEntry": 0.8879,
-   "driftSinceEntry": 0.0121,
+   "driftSinceEntry": -0.0199,
    "endDate": "2026-09-06T23:59:00Z",
    "slug": "will-grune-win-at-least-7-of-all-valid-second-votes-sachsen-anhalt",
    "eventSlug": "sachsen-anhalt-parliamentary-election-grune-vote-share"
