@@ -1,11 +1,12 @@
 # Paper portfolio
 
-Updated 2026-09-06 05:14 UTC · started with $50.00 (virtual)
+Updated 2026-09-06 05:34 UTC · started with $50.00 (virtual)
 
-**Equity $52.35 (+4.7%)** · cash $52.35 · 0 open · 4 settled
+**Equity $52.23 (+4.5%)** · cash $43.97 · 1 open · 4 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
+| Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 0.65 | $8.25 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|

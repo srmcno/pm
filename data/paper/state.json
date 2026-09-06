@@ -1,8 +1,23 @@
 {
  "bankrollStart": 50.0,
- "cash": 52.3532,
+ "cash": 43.9732,
  "createdAt": 1788373839,
- "positions": [],
+ "positions": [
+  {
+   "conditionId": "0xe90998971549abaaf98d3f33afb1288f8a4bbb27f9498b7da8d5be79b0cc28f7",
+   "outcomeIndex": 0,
+   "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
+   "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
+   "outcome": "Spirit",
+   "shares": 12.7939,
+   "entryPrice": 0.655,
+   "costUsd": 8.38,
+   "openedAt": 1788672888,
+   "signalScore": 4.5211,
+   "markPrice": 0.645,
+   "valueUsd": 8.2521
+  }
+ ],
  "closed": [
   {
    "conditionId": "0xbf1350ee0c80864f0885e41dfa870ddd937e3e3a9d2ad68a150f355038d198fc",
@@ -11198,6 +11213,11 @@
    "t": 1788671655,
    "equity": 52.3532,
    "cash": 52.3532
+  },
+  {
+   "t": 1788672889,
+   "equity": 52.2253,
+   "cash": 43.9732
   }
  ],
  "log": [
@@ -11260,6 +11280,14 @@
    "question": "Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs",
    "price": 0.0,
    "pnl": -9.38
+  },
+  {
+   "t": 1788672888,
+   "action": "BUY",
+   "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
+   "outcome": "Spirit",
+   "stake": 8.38,
+   "price": 0.655
   }
  ]
 }
