@@ -1,14 +1,13 @@
 # Paper portfolio
 
-Updated 2026-09-06 14:07 UTC · started with $50.00 (virtual)
+Updated 2026-09-06 14:22 UTC · started with $50.00 (virtual)
 
-**Equity $66.74 (+33.5%)** · cash $39.06 · 3 open · 5 settled
+**Equity $66.81 (+33.6%)** · cash $51.24 · 2 open · 6 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 0.64 | $8.12 |
-| LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner | Ninjas in Pyjamas | 12.19 | 0.48 | 1.00 | $12.18 |
-| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.88 | $7.38 |
+| Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 0.62 | $8.00 |
+| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.91 | $7.57 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
@@ -17,3 +16,4 @@ Updated 2026-09-06 14:07 UTC · started with $50.00 (virtual)
 | Counter-Strike: Spirit vs Team Falcons - Map 1 Winner | Spirit | 0.71 | 1.00 | +3.14 |
 | Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs | Vitality | 0.61 | 0.00 | -9.38 |
 | LoL: T1 vs Dplus KIA - Game 2 Winner | Dplus KIA | 0.46 | 1.00 | +8.43 |
+| LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner | Ninjas in Pyjamas | 0.48 | 1.00 | +6.28 |

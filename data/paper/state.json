@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 39.0557,
+ "cash": 51.2413,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -14,22 +14,8 @@
    "costUsd": 8.38,
    "openedAt": 1788672888,
    "signalScore": 4.5211,
-   "markPrice": 0.635,
-   "valueUsd": 8.1241
-  },
-  {
-   "conditionId": "0xde11b7d0000f6904cf014e36bf8d307b83d282e21433049d3efb4d1a388bbc39",
-   "outcomeIndex": 0,
-   "tokenId": "29096908928594358312719889619165881755428094247728737838893603978724636821616",
-   "question": "LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner",
-   "outcome": "Ninjas in Pyjamas",
-   "shares": 12.1856,
-   "entryPrice": 0.485,
-   "costUsd": 5.91,
-   "openedAt": 1788693280,
-   "signalScore": 6.0517,
-   "markPrice": 0.9995,
-   "valueUsd": 12.1795
+   "markPrice": 0.625,
+   "valueUsd": 7.9962
   },
   {
    "conditionId": "0xcd4ed181dc3d8f18a05866d926b52f6b15737c08f08758845aa9ce9939313a7b",
@@ -42,8 +28,8 @@
    "costUsd": 7.44,
    "openedAt": 1788700210,
    "signalScore": 5.1941,
-   "markPrice": 0.884,
-   "valueUsd": 7.3774
+   "markPrice": 0.907,
+   "valueUsd": 7.5694
   }
  ],
  "closed": [
@@ -131,6 +117,23 @@
    "settledAt": 1788697595,
    "settlePrice": 1.0,
    "pnl": 8.4325
+  },
+  {
+   "conditionId": "0xde11b7d0000f6904cf014e36bf8d307b83d282e21433049d3efb4d1a388bbc39",
+   "outcomeIndex": 0,
+   "tokenId": "29096908928594358312719889619165881755428094247728737838893603978724636821616",
+   "question": "LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner",
+   "outcome": "Ninjas in Pyjamas",
+   "shares": 12.1856,
+   "entryPrice": 0.485,
+   "costUsd": 5.91,
+   "openedAt": 1788693280,
+   "signalScore": 6.0517,
+   "markPrice": 0.9995,
+   "valueUsd": 12.1795,
+   "settledAt": 1788704553,
+   "settlePrice": 1.0,
+   "pnl": 6.2756
   }
  ],
  "equityCurve": [
@@ -11438,6 +11441,11 @@
    "t": 1788703649,
    "equity": 66.7367,
    "cash": 39.0557
+  },
+  {
+   "t": 1788704553,
+   "equity": 66.8069,
+   "cash": 51.2413
   }
  ],
  "log": [
@@ -11539,6 +11547,13 @@
    "outcome": "No",
    "stake": 7.44,
    "price": 0.8915
+  },
+  {
+   "t": 1788704553,
+   "action": "SETTLE",
+   "question": "LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner",
+   "price": 1.0,
+   "pnl": 6.2756
   }
  ]
 }
