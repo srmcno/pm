@@ -1406,10 +1406,6 @@
  ],
  "equityCurve": [
   {
-   "t": 1788714383,
-   "equity": 426.6459
-  },
-  {
    "t": 1788714385,
    "equity": 426.6459
   },
@@ -3404,6 +3400,10 @@
   {
    "t": 1788715423,
    "equity": 426.7971
+  },
+  {
+   "t": 1788716001,
+   "equity": 426.7971
   }
  ],
  "decay": {
@@ -3411,7 +3411,6 @@
   "survived": 10136
  },
  "cooldown": {
-  "USDT\u2192USD1\u2192STONKEX\u2192USDT|USD1USDT|STONKEXUSD1|STONKEXUSDT": 1788711901,
   "USDT\u2192ORBIO\u2192USD1\u2192USDT|ORBIOUSDT|ORBIOUSD1|USD1USDT": 1788712659,
   "USDT\u2192COPPERINU\u2192USD1\u2192USDT|COPPERINUUSDT|COPPERINUUSD1|USD1USDT": 1788712729,
   "USDT\u2192EGG\u2192USD1\u2192USDT|EGGUSDT|EGGUSD1|USD1USDT": 1788713538,
@@ -3422,11 +3421,11 @@
  },
  "tradeCountAll": 5669,
  "replay": {
-  "edges": 5000,
-  "refillable": 4996,
-  "atomicUsd": 416.1272,
-  "delayedUsd": 382.0799,
+  "edges": 5002,
+  "refillable": 4998,
+  "atomicUsd": 416.2547,
+  "delayedUsd": 382.0238,
   "captureRatio": 0.918,
-  "scansReplayed": 38793
+  "scansReplayed": 38829
  }
 }
