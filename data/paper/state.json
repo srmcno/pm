@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 46.4957,
+ "cash": 39.0557,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -30,6 +30,20 @@
    "signalScore": 6.0517,
    "markPrice": 0.9995,
    "valueUsd": 12.1795
+  },
+  {
+   "conditionId": "0xcd4ed181dc3d8f18a05866d926b52f6b15737c08f08758845aa9ce9939313a7b",
+   "outcomeIndex": 1,
+   "tokenId": "57016096009833294099156229938777535913517779872506839649972312180616246598404",
+   "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
+   "outcome": "No",
+   "shares": 8.3455,
+   "entryPrice": 0.8915,
+   "costUsd": 7.44,
+   "openedAt": 1788700210,
+   "signalScore": 5.1941,
+   "markPrice": 0.8815,
+   "valueUsd": 7.3566
   }
  ],
  "closed": [
@@ -11399,6 +11413,11 @@
    "t": 1788699403,
    "equity": 66.7993,
    "cash": 46.4957
+  },
+  {
+   "t": 1788700211,
+   "equity": 66.7159,
+   "cash": 39.0557
   }
  ],
  "log": [
@@ -11492,6 +11511,14 @@
    "question": "LoL: T1 vs Dplus KIA - Game 2 Winner",
    "price": 1.0,
    "pnl": 8.4325
+  },
+  {
+   "t": 1788700210,
+   "action": "BUY",
+   "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
+   "outcome": "No",
+   "stake": 7.44,
+   "price": 0.8915
   }
  ]
 }
