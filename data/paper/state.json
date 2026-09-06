@@ -1,22 +1,8 @@
 {
  "bankrollStart": 50.0,
- "cash": 51.2413,
+ "cash": 64.0352,
  "createdAt": 1788373839,
  "positions": [
-  {
-   "conditionId": "0xe90998971549abaaf98d3f33afb1288f8a4bbb27f9498b7da8d5be79b0cc28f7",
-   "outcomeIndex": 0,
-   "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
-   "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
-   "outcome": "Spirit",
-   "shares": 12.7939,
-   "entryPrice": 0.655,
-   "costUsd": 8.38,
-   "openedAt": 1788672888,
-   "signalScore": 4.5211,
-   "markPrice": 0.9995,
-   "valueUsd": 12.7875
-  },
   {
    "conditionId": "0xcd4ed181dc3d8f18a05866d926b52f6b15737c08f08758845aa9ce9939313a7b",
    "outcomeIndex": 1,
@@ -28,8 +14,8 @@
    "costUsd": 7.44,
    "openedAt": 1788700210,
    "signalScore": 5.1941,
-   "markPrice": 0.0095,
-   "valueUsd": 0.0793
+   "markPrice": 0.0065,
+   "valueUsd": 0.0542
   }
  ],
  "closed": [
@@ -134,6 +120,23 @@
    "settledAt": 1788704553,
    "settlePrice": 1.0,
    "pnl": 6.2756
+  },
+  {
+   "conditionId": "0xe90998971549abaaf98d3f33afb1288f8a4bbb27f9498b7da8d5be79b0cc28f7",
+   "outcomeIndex": 0,
+   "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
+   "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
+   "outcome": "Spirit",
+   "shares": 12.7939,
+   "entryPrice": 0.655,
+   "costUsd": 8.38,
+   "openedAt": 1788672888,
+   "signalScore": 4.5211,
+   "markPrice": 0.9995,
+   "valueUsd": 12.7875,
+   "settledAt": 1788720249,
+   "settlePrice": 1.0,
+   "pnl": 4.4139
   }
  ],
  "equityCurve": [
@@ -11521,6 +11524,11 @@
    "t": 1788719345,
    "equity": 64.1081,
    "cash": 51.2413
+  },
+  {
+   "t": 1788720249,
+   "equity": 64.0894,
+   "cash": 64.0352
   }
  ],
  "log": [
@@ -11629,6 +11637,13 @@
    "question": "LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner",
    "price": 1.0,
    "pnl": 6.2756
+  },
+  {
+   "t": 1788720249,
+   "action": "SETTLE",
+   "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
+   "price": 1.0,
+   "pnl": 4.4139
   }
  ]
 }

@@ -1,13 +1,12 @@
 # Paper portfolio
 
-Updated 2026-09-06 18:29 UTC · started with $50.00 (virtual)
+Updated 2026-09-06 18:44 UTC · started with $50.00 (virtual)
 
-**Equity $64.11 (+28.2%)** · cash $51.24 · 2 open · 6 settled
+**Equity $64.09 (+28.2%)** · cash $64.04 · 1 open · 7 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 1.00 | $12.79 |
-| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.01 | $0.08 |
+| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.01 | $0.05 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
@@ -17,3 +16,4 @@ Updated 2026-09-06 18:29 UTC · started with $50.00 (virtual)
 | Counter-Strike: MOUZ vs Vitality (BO3) - BLAST Open Porto Playoffs | Vitality | 0.61 | 0.00 | -9.38 |
 | LoL: T1 vs Dplus KIA - Game 2 Winner | Dplus KIA | 0.46 | 1.00 | +8.43 |
 | LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner | Ninjas in Pyjamas | 0.48 | 1.00 | +6.28 |
+| Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 0.66 | 1.00 | +4.41 |
