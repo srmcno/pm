@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 43.9732,
+ "cash": 36.9332,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -16,6 +16,20 @@
    "signalScore": 4.5211,
    "markPrice": 0.635,
    "valueUsd": 8.1241
+  },
+  {
+   "conditionId": "0xa7348264393db93ab548eb8485eb1f199320ab46b93ed33576f200d86faf7e72",
+   "outcomeIndex": 1,
+   "tokenId": "2873812110673562209906537456107377901629950800217928249302797312484356047741",
+   "question": "LoL: T1 vs Dplus KIA - Game 2 Winner",
+   "outcome": "Dplus KIA",
+   "shares": 15.4725,
+   "entryPrice": 0.455,
+   "costUsd": 7.04,
+   "openedAt": 1788687299,
+   "signalScore": 6.7487,
+   "markPrice": 0.145,
+   "valueUsd": 2.2435
   }
  ],
  "closed": [
@@ -11293,6 +11307,11 @@
    "t": 1788687025,
    "equity": 52.0973,
    "cash": 43.9732
+  },
+  {
+   "t": 1788687299,
+   "equity": 47.3008,
+   "cash": 36.9332
   }
  ],
  "log": [
@@ -11363,6 +11382,14 @@
    "outcome": "Spirit",
    "stake": 8.38,
    "price": 0.655
+  },
+  {
+   "t": 1788687299,
+   "action": "BUY",
+   "question": "LoL: T1 vs Dplus KIA - Game 2 Winner",
+   "outcome": "Dplus KIA",
+   "stake": 7.04,
+   "price": 0.455
   }
  ]
 }
