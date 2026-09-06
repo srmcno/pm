@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788678619,
+  "generatedAt": 1788680092,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -15,14 +15,24 @@
    "category": "Esports",
    "backers": [
     {
+     "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
+     "name": "ExplosiveNinja",
+     "quality": 0.4781,
+     "netUsd": 34495.27,
+     "avgPrice": 0.64,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.5,
+     "score": 1.4222090755797072
+    },
+    {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
      "name": "HMLSF",
      "quality": 0.6149,
      "netUsd": 935.78,
      "avgPrice": 0.67,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.5,
-     "score": 1.421183501193292
+     "lastTradeAgoH": 7.9,
+     "score": 1.3971596647710116
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -31,24 +41,14 @@
      "netUsd": 9974.41,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.9,
-     "score": 1.4069977785129228
-    },
-    {
-     "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
-     "name": "ExplosiveNinja",
-     "quality": 0.4781,
-     "netUsd": 31839.56,
-     "avgPrice": 0.64,
-     "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.4025277784898218
+     "lastTradeAgoH": 4.3,
+     "score": 1.383213739049247
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 42749.75,
-   "score": 4.2307,
+   "totalNetUsd": 45405.46,
+   "score": 4.2026,
    "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
    "outcome": "Spirit",
    "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
