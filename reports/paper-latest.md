@@ -1,14 +1,14 @@
 # Paper portfolio
 
-Updated 2026-09-06 11:41 UTC · started with $50.00 (virtual)
+Updated 2026-09-06 11:56 UTC · started with $50.00 (virtual)
 
-**Equity $65.40 (+30.8%)** · cash $31.02 · 3 open · 4 settled
+**Equity $66.79 (+33.6%)** · cash $31.02 · 3 open · 4 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 0.64 | $8.12 |
 | LoL: T1 vs Dplus KIA - Game 2 Winner | Dplus KIA | 15.47 | 0.46 | 1.00 | $15.46 |
-| LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner | Ninjas in Pyjamas | 12.19 | 0.48 | 0.89 | $10.78 |
+| LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner | Ninjas in Pyjamas | 12.19 | 0.48 | 1.00 | $12.18 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
