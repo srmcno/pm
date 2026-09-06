@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788693280,
+  "generatedAt": 1788693975,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 1099.75,
      "avgPrice": 0.5644,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.5255691475302853
+     "lastTradeAgoH": 0.3,
+     "score": 2.505190026239848
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -31,8 +31,8 @@
      "netUsd": 39187.11,
      "avgPrice": 0.624,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 2.298885437878266
+     "lastTradeAgoH": 0.3,
+     "score": 2.280335454712232
     },
     {
      "wallet": "0xf23c5bc7b547867eb6532920144562718aa49f81",
@@ -41,14 +41,14 @@
      "netUsd": 337.49,
      "avgPrice": 0.6694,
      "conviction": 7.17,
-     "lastTradeAgoH": 0.2,
-     "score": 1.227286925389343
+     "lastTradeAgoH": 0.4,
+     "score": 1.217383799539419
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 40624.35,
-   "score": 6.0517,
+   "score": 6.0029,
    "question": "LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner",
    "outcome": "Ninjas in Pyjamas",
    "tokenId": "29096908928594358312719889619165881755428094247728737838893603978724636821616",
@@ -72,8 +72,8 @@
      "netUsd": 44799.82,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.5,
-     "score": 1.3064979523554703
+     "lastTradeAgoH": 3.7,
+     "score": 1.2959556631994607
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -82,8 +82,8 @@
      "netUsd": 935.78,
      "avgPrice": 0.67,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.6,
-     "score": 1.1994605577019395
+     "lastTradeAgoH": 11.8,
+     "score": 1.1897819661605409
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -92,14 +92,14 @@
      "netUsd": 9974.41,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 8.0,
-     "score": 1.1874879905962041
+     "lastTradeAgoH": 8.2,
+     "score": 1.1779060071391434
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 55710.01,
-   "score": 3.6934,
+   "score": 3.6636,
    "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
    "outcome": "Spirit",
    "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
