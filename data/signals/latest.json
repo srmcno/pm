@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788687934,
+  "generatedAt": 1788688839,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -8,57 +8,6 @@
   "source": "watch.py"
  },
  "signals": [
-  {
-   "conditionId": "0xa7348264393db93ab548eb8485eb1f199320ab46b93ed33576f200d86faf7e72",
-   "outcomeIndex": 1,
-   "title": "LoL: T1 vs Dplus KIA - Game 2 Winner",
-   "category": "Esports",
-   "backers": [
-    {
-     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-     "name": "0x076daa87",
-     "quality": 0.8016,
-     "netUsd": 877.7,
-     "avgPrice": 0.4408,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.5081492886862113
-    },
-    {
-     "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
-     "name": "0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616",
-     "quality": 0.7295,
-     "netUsd": 4350.84,
-     "avgPrice": 0.1715,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.2,
-     "score": 2.286916733692483
-    },
-    {
-     "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
-     "name": "HMLSF",
-     "quality": 0.6149,
-     "netUsd": 4182.44,
-     "avgPrice": 0.49,
-     "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.9394273591523334
-    }
-   ],
-   "backerCount": 3,
-   "contested": true,
-   "totalNetUsd": 9410.98,
-   "score": 6.7345,
-   "question": "LoL: T1 vs Dplus KIA - Game 2 Winner",
-   "outcome": "Dplus KIA",
-   "tokenId": "2873812110673562209906537456107377901629950800217928249302797312484356047741",
-   "currentPrice": 0.145,
-   "backersAvgEntry": 0.3674,
-   "driftSinceEntry": -0.2224,
-   "endDate": "2026-09-06T12:00:00Z",
-   "slug": "lol-t1-dk-2026-09-06-game2",
-   "eventSlug": "lol-t1-dk-2026-09-06"
-  },
   {
    "conditionId": "0xe90998971549abaaf98d3f33afb1288f8a4bbb27f9498b7da8d5be79b0cc28f7",
    "outcomeIndex": 0,
@@ -72,8 +21,8 @@
      "netUsd": 44799.82,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.0,
-     "score": 1.3897943607033203
+     "lastTradeAgoH": 2.3,
+     "score": 1.375312883984201
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -82,8 +31,8 @@
      "netUsd": 935.78,
      "avgPrice": 0.67,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.1,
-     "score": 1.275932745225351
+     "lastTradeAgoH": 10.4,
+     "score": 1.2626376917501074
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -92,14 +41,14 @@
      "netUsd": 9974.41,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.5,
-     "score": 1.2631968613177689
+     "lastTradeAgoH": 6.8,
+     "score": 1.2500345140985873
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 55710.01,
-   "score": 3.9289,
+   "score": 3.888,
    "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
    "outcome": "Spirit",
    "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",

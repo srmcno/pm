@@ -1,13 +1,13 @@
 # Paper portfolio
 
-Updated 2026-09-06 09:45 UTC · started with $50.00 (virtual)
+Updated 2026-09-06 10:00 UTC · started with $50.00 (virtual)
 
-**Equity $47.30 (-5.4%)** · cash $36.93 · 2 open · 4 settled
+**Equity $60.52 (+21.0%)** · cash $36.93 · 2 open · 4 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 0.64 | $8.12 |
-| LoL: T1 vs Dplus KIA - Game 2 Winner | Dplus KIA | 15.47 | 0.46 | 0.14 | $2.24 |
+| LoL: T1 vs Dplus KIA - Game 2 Winner | Dplus KIA | 15.47 | 0.46 | 1.00 | $15.46 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
