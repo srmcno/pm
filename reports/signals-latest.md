@@ -1,13 +1,13 @@
 # Smart-money signals
 
-Generated 2026-09-06 08:04 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-06 08:20 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs — **Spirit**
 
-- Score **4.12** · 3 backers · net $45,405 staked
-- Backers' average entry 0.65 → current price **0.62** (moved against them -0.03 since entry)
+- Score **4.07** · 3 backers · net $45,405 staked
+- Backers' average entry 0.65 → current price **0.64** (roughly flat -0.01 since entry)
 - Resolves by 2026-09-06
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
