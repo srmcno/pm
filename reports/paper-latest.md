@@ -1,13 +1,13 @@
 # Paper portfolio
 
-Updated 2026-09-06 17:58 UTC · started with $50.00 (virtual)
+Updated 2026-09-06 18:14 UTC · started with $50.00 (virtual)
 
-**Equity $62.95 (+25.9%)** · cash $51.24 · 2 open · 6 settled
+**Equity $64.23 (+28.5%)** · cash $51.24 · 2 open · 6 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 0.91 | $11.58 |
-| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.02 | $0.13 |
+| Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 12.79 | 0.66 | 1.00 | $12.79 |
+| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.02 | $0.20 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
