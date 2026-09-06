@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788701840,
+  "generatedAt": 1788702744,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 662.15,
      "avgPrice": 0.6383,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.7,
-     "score": 2.3590533690766082
+     "lastTradeAgoH": 2.0,
+     "score": 2.3344993588987513
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -31,8 +31,8 @@
      "netUsd": 72561.67,
      "avgPrice": 0.6404,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.8035861944004439
+     "lastTradeAgoH": 2.1,
+     "score": 1.784813717967965
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -41,8 +41,8 @@
      "netUsd": 44799.82,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.9,
-     "score": 1.183181172798697
+     "lastTradeAgoH": 6.1,
+     "score": 1.1708661302736016
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -51,14 +51,14 @@
      "netUsd": 9974.41,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.4,
-     "score": 1.0754042368492824
+     "lastTradeAgoH": 10.6,
+     "score": 1.0642109815702623
     }
    ],
    "backerCount": 4,
    "contested": true,
    "totalNetUsd": 127998.05,
-   "score": 6.4212,
+   "score": 6.3544,
    "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
    "outcome": "Spirit",
    "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
@@ -82,8 +82,8 @@
      "netUsd": 367.79,
      "avgPrice": 0.8702,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.9,
-     "score": 2.3385724637143177
+     "lastTradeAgoH": 1.1,
+     "score": 2.3142316273312162
     },
     {
      "wallet": "0xb1ca909e848cc24ec4e220ce1c453bc290c51705",
@@ -92,8 +92,8 @@
      "netUsd": 13575.0,
      "avgPrice": 0.905,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.6,
-     "score": 1.4731359938013073
+     "lastTradeAgoH": 6.9,
+     "score": 1.4578029807125346
     },
     {
      "wallet": "0x511f9c771449162349795d17becf8b37031acbe1",
@@ -102,20 +102,20 @@
      "netUsd": 2006.76,
      "avgPrice": 0.8876,
      "conviction": 10.0,
-     "lastTradeAgoH": 13.8,
-     "score": 1.284995831510354
+     "lastTradeAgoH": 14.1,
+     "score": 1.2716210596043842
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 15949.55,
-   "score": 5.0967,
+   "score": 5.0437,
    "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
    "outcome": "No",
    "tokenId": "57016096009833294099156229938777535913517779872506839649972312180616246598404",
-   "currentPrice": 0.8815,
+   "currentPrice": 0.881,
    "backersAvgEntry": 0.8876,
-   "driftSinceEntry": -0.0061,
+   "driftSinceEntry": -0.0066,
    "endDate": "2026-09-06T23:59:00Z",
    "slug": "will-grune-win-at-least-7-of-all-valid-second-votes-sachsen-anhalt",
    "eventSlug": "sachsen-anhalt-parliamentary-election-grune-vote-share"

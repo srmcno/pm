@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-09-06 13:37 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-06 13:52 UTC · window 48h · 55 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs — **Spirit**
 
-- Score **6.42** · 4 backers · net $127,998 staked
+- Score **6.35** · 4 backers · net $127,998 staked
 - Backers' average entry 0.64 → current price **0.64** (roughly flat -0.00 since entry)
 - Resolves by 2026-09-06
 
@@ -19,7 +19,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Grüne win at least 7% of all valid second votes? — **No**
 
-- Score **5.10** · 3 backers · net $15,950 staked
+- Score **5.04** · 3 backers · net $15,950 staked
 - Backers' average entry 0.89 → current price **0.88** (roughly flat -0.01 since entry)
 - Resolves by 2026-09-06
 
