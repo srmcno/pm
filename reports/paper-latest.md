@@ -1,12 +1,12 @@
 # Paper portfolio
 
-Updated 2026-09-06 19:40 UTC · started with $50.00 (virtual)
+Updated 2026-09-06 19:55 UTC · started with $50.00 (virtual)
 
 **Equity $64.08 (+28.2%)** · cash $64.04 · 1 open · 7 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.01 | $0.05 |
+| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.01 | $0.04 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
