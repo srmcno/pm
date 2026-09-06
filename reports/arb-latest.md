@@ -1,10 +1,10 @@
 # Arb desk — latest scan
 
-Scanned 2026-09-06 12:11 UTC · 2069 pairs · 778 cycles · 1 verified edges
+Scanned 2026-09-06 12:13 UTC · 2069 pairs · 778 cycles · 1 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→USD1→DELTA→USDT | 164.0 | 34.3 | $10.0 | $0.0343 |
+| USDT→FONE→USD1→USDT | 151.1 | 17.7 | $5.0 | $0.0088 |
 
 ## Latency replay (own recorded ticks)
 
