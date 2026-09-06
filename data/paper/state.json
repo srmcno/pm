@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 36.9332,
+ "cash": 31.0232,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -30,6 +30,20 @@
    "signalScore": 6.7487,
    "markPrice": 0.9995,
    "valueUsd": 15.4648
+  },
+  {
+   "conditionId": "0xde11b7d0000f6904cf014e36bf8d307b83d282e21433049d3efb4d1a388bbc39",
+   "outcomeIndex": 0,
+   "tokenId": "29096908928594358312719889619165881755428094247728737838893603978724636821616",
+   "question": "LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner",
+   "outcome": "Ninjas in Pyjamas",
+   "shares": 12.1856,
+   "entryPrice": 0.485,
+   "costUsd": 5.91,
+   "openedAt": 1788693280,
+   "signalScore": 6.0517,
+   "markPrice": 0.395,
+   "valueUsd": 4.8133
   }
  ],
  "closed": [
@@ -11342,6 +11356,11 @@
    "t": 1788692460,
    "equity": 60.5221,
    "cash": 36.9332
+  },
+  {
+   "t": 1788693280,
+   "equity": 59.4254,
+   "cash": 31.0232
   }
  ],
  "log": [
@@ -11420,6 +11439,14 @@
    "outcome": "Dplus KIA",
    "stake": 7.04,
    "price": 0.455
+  },
+  {
+   "t": 1788693280,
+   "action": "BUY",
+   "question": "LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner",
+   "outcome": "Ninjas in Pyjamas",
+   "stake": 5.91,
+   "price": 0.485
   }
  ]
 }
