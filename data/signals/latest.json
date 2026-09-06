@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788673161,
+  "generatedAt": 1788674066,
   "hours": 48,
   "watchlistSize": 55,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 935.78,
      "avgPrice": 0.67,
      "conviction": 10.0,
-     "lastTradeAgoH": 6.0,
-     "score": 1.5138578682806683
+     "lastTradeAgoH": 6.3,
+     "score": 1.4980836659271148
     },
     {
      "wallet": "0x01e6e3c5cfe50943e7721398054cb1e22032e7e0",
@@ -31,8 +31,8 @@
      "netUsd": 9974.41,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 1.498747104696027
+     "lastTradeAgoH": 2.7,
+     "score": 1.483130354536299
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -41,14 +41,14 @@
      "netUsd": 31839.56,
      "avgPrice": 0.64,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 1.4939856191450727
+     "lastTradeAgoH": 0.5,
+     "score": 1.4784184830463198
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 42749.75,
-   "score": 4.5066,
+   "score": 4.4596,
    "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
    "outcome": "Spirit",
    "tokenId": "46214028756127479277894493426066364156179406361211424240313352820576368747443",
