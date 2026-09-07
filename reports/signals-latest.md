@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-09-07 21:28 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-07 21:44 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Will Stefany Shaheen be the Democratic nominee for NH-01? — **No**
 
-- Score **4.28** · 3 backers · net $1,607 staked
+- Score **4.23** · 3 backers · net $1,607 staked
 - Backers' average entry 0.85 → current price **0.84** (roughly flat -0.00 since entry)
 - Resolves by 2026-09-08
 
