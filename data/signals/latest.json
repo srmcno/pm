@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788814727,
+  "generatedAt": 1788815632,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 630.03,
      "avgPrice": 0.8555,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.8,
-     "score": 1.6324450702085604
+     "lastTradeAgoH": 2.0,
+     "score": 1.6154352046141263
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -31,8 +31,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.3,
-     "score": 1.3980106419698448
+     "lastTradeAgoH": 7.6,
+     "score": 1.3834435526671356
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,20 +41,20 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.1,
-     "score": 1.3387971574789785
+     "lastTradeAgoH": 14.4,
+     "score": 1.3248470649934665
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1606.86,
-   "score": 4.3693,
+   "score": 4.3237,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",
-   "currentPrice": 0.845,
+   "currentPrice": 0.835,
    "backersAvgEntry": 0.8485,
-   "driftSinceEntry": -0.0035,
+   "driftSinceEntry": -0.0135,
    "endDate": "2026-09-08T00:00:00Z",
    "slug": "will-stefany-shaheen-be-the-democratic-nominee-for-nh-01",
    "eventSlug": "nh-01-democratic-primary-winner"

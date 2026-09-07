@@ -1,12 +1,12 @@
 # Paper portfolio
 
-Updated 2026-09-07 20:58 UTC · started with $50.00 (virtual)
+Updated 2026-09-07 21:13 UTC · started with $50.00 (virtual)
 
-**Equity $63.92 (+27.8%)** · cash $53.79 · 1 open · 8 settled
+**Equity $63.80 (+27.6%)** · cash $53.79 · 1 open · 8 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Stefany Shaheen be the Democratic nominee for NH-01? | No | 11.99 | 0.85 | 0.84 | $10.13 |
+| Will Stefany Shaheen be the Democratic nominee for NH-01? | No | 11.99 | 0.85 | 0.83 | $10.01 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
