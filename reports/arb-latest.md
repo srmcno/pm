@@ -1,10 +1,9 @@
 # Arb desk — latest scan
 
-Scanned 2026-09-07 04:40 UTC · 2066 pairs · 778 cycles · 1 verified edges
+Scanned 2026-09-07 04:50 UTC · 2066 pairs · 778 cycles · 0 verified edges
 
 | cycle | screen bps | verified bps | size | profit |
 |---|---|---|---|---|
-| USDT→AGISOL→USD1→USDT | 22.5 | 22.5 | $5.0 | $0.0113 |
 
 ## Latency replay (own recorded ticks)
 
