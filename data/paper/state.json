@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 53.7852,
+ "cash": 45.1752,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -16,6 +16,20 @@
    "signalScore": 4.5487,
    "markPrice": 0.845,
    "valueUsd": 10.1301
+  },
+  {
+   "conditionId": "0x42ec61e0269cd99507c19b4c2a2ecff6d342bc1cac858c03e46885c7c91117fb",
+   "outcomeIndex": 1,
+   "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
+   "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
+   "outcome": "FURIA",
+   "shares": 9.9538,
+   "entryPrice": 0.865,
+   "costUsd": 8.61,
+   "openedAt": 1788818759,
+   "signalScore": 4.7743,
+   "markPrice": 0.855,
+   "valueUsd": 8.5105
   }
  ],
  "closed": [
@@ -12041,6 +12055,11 @@
    "t": 1788817445,
    "equity": 63.9153,
    "cash": 53.7852
+  },
+  {
+   "t": 1788818760,
+   "equity": 63.8158,
+   "cash": 45.1752
   }
  ],
  "log": [
@@ -12171,6 +12190,14 @@
    "outcome": "No",
    "stake": 10.25,
    "price": 0.855
+  },
+  {
+   "t": 1788818759,
+   "action": "BUY",
+   "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
+   "outcome": "FURIA",
+   "stake": 8.61,
+   "price": 0.865
   }
  ]
 }
