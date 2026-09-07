@@ -1,16 +1,16 @@
 {
- "updatedAt": 1788752804,
+ "updatedAt": 1788754020,
  "equity": 1000.0,
  "peakEquity": 1000.0,
  "day": {
-  "date": "2026-09-06",
+  "date": "2026-09-07",
   "start_equity": 1000.0,
   "pnl": 0.0,
   "halted": false,
   "trades": 0
  },
  "week": {
-  "start": "2026-09-02",
+  "start": "2026-09-07",
   "start_equity": 1000.0
  },
  "haltReason": "",
