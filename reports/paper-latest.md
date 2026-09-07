@@ -1,12 +1,11 @@
 # Paper portfolio
 
-Updated 2026-09-07 16:21 UTC · started with $50.00 (virtual)
+Updated 2026-09-07 16:37 UTC · started with $50.00 (virtual)
 
-**Equity $64.04 (+28.1%)** · cash $64.04 · 1 open · 7 settled
+**Equity $64.04 (+28.1%)** · cash $64.04 · 0 open · 8 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
-| Will Grüne win at least 7% of all valid second votes? | No | 8.35 | 0.89 | 0.00 | $0.00 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
@@ -17,3 +16,4 @@ Updated 2026-09-07 16:21 UTC · started with $50.00 (virtual)
 | LoL: T1 vs Dplus KIA - Game 2 Winner | Dplus KIA | 0.46 | 1.00 | +8.43 |
 | LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner | Ninjas in Pyjamas | 0.48 | 1.00 | +6.28 |
 | Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 0.66 | 1.00 | +4.41 |
+| Will Grüne win at least 7% of all valid second votes? | No | 0.89 | 0.00 | -7.44 |

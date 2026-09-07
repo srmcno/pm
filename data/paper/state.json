@@ -2,22 +2,7 @@
  "bankrollStart": 50.0,
  "cash": 64.0352,
  "createdAt": 1788373839,
- "positions": [
-  {
-   "conditionId": "0xcd4ed181dc3d8f18a05866d926b52f6b15737c08f08758845aa9ce9939313a7b",
-   "outcomeIndex": 1,
-   "tokenId": "57016096009833294099156229938777535913517779872506839649972312180616246598404",
-   "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
-   "outcome": "No",
-   "shares": 8.3455,
-   "entryPrice": 0.8915,
-   "costUsd": 7.44,
-   "openedAt": 1788700210,
-   "signalScore": 5.1941,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0042
-  }
- ],
+ "positions": [],
  "closed": [
   {
    "conditionId": "0xbf1350ee0c80864f0885e41dfa870ddd937e3e3a9d2ad68a150f355038d198fc",
@@ -137,6 +122,23 @@
    "settledAt": 1788720249,
    "settlePrice": 1.0,
    "pnl": 4.4139
+  },
+  {
+   "conditionId": "0xcd4ed181dc3d8f18a05866d926b52f6b15737c08f08758845aa9ce9939313a7b",
+   "outcomeIndex": 1,
+   "tokenId": "57016096009833294099156229938777535913517779872506839649972312180616246598404",
+   "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
+   "outcome": "No",
+   "shares": 8.3455,
+   "entryPrice": 0.8915,
+   "costUsd": 7.44,
+   "openedAt": 1788700210,
+   "signalScore": 5.1941,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0042,
+   "settledAt": 1788799021,
+   "settlePrice": 0.0,
+   "pnl": -7.44
   }
  ],
  "equityCurve": [
@@ -11919,6 +11921,11 @@
    "t": 1788798114,
    "equity": 64.0394,
    "cash": 64.0352
+  },
+  {
+   "t": 1788799021,
+   "equity": 64.0352,
+   "cash": 64.0352
   }
  ],
  "log": [
@@ -12034,6 +12041,13 @@
    "question": "Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs",
    "price": 1.0,
    "pnl": 4.4139
+  },
+  {
+   "t": 1788799021,
+   "action": "SETTLE",
+   "question": "Will Gr\u00fcne win at least 7% of all valid second votes?",
+   "price": 0.0,
+   "pnl": -7.44
   }
  ]
 }
