@@ -63,6 +63,31 @@ test('stale data cannot open or close paper positions',()=>{
   const m=market();let p=advancePaper(null,[m],now);p=advancePaper(p,[m],now+60);assert.equal(p.positions.length,0);
 });
 test('token screening never equates reported liquidity with safety',()=>{
-  const t=evaluateToken({chainId:'solana',dexId:'pumpswap',baseToken:{symbol:'TEST'},liquidity:{usd:200000},pairCreatedAt:(now-48*3600)*1000,txns:{h1:{buys:100,sells:80}},volume:{h1:10000}},now);
+  const t=evaluateToken({chainId:'solana',dexId:'pumpswap',baseToken:{symbol:'TEST'},liquidity:{usd:200000},pairCreatedAt:(now-48*3600)*1000,txns:{h1:{buys:100,sells:80}},volume:{h1:10000},priceChange:{h1:0}},now);
   assert.equal(t.blocks.length,0);assert.equal(t.executionAllowed,false);assert.equal(t.checks.length,5);
+});
+test('missing token fields remain unknown rather than looking like measured zero',()=>{
+  const t=evaluateToken({chainId:'solana',dexId:'pumpswap'},now);
+  assert.equal(t.liquidity,null);assert.equal(t.change,null);assert.equal(t.buys,null);
+  assert.equal(t.status,'incomplete');assert.ok(t.blocks.includes('Liquidity not reported'));
+});
+test('stale execution quotes do not erase a completed chart setup',()=>{
+  const m=market();m.quote.at=now-100;
+  const s=analyzeMarket(m,{},now);assert.equal(s.status,'stale');assert.equal(s.setup,'breakout');
+  assert.equal(s.strategy,'Volume breakout');assert.equal(s.plan,undefined);
+});
+test('fast repeated scans preserve the original confirmation time',()=>{
+  const m=market();let p=advancePaper(null,[m],now);
+  m.quote.at=now+20;p=advancePaper(p,[m],now+20);assert.equal(p.pending[0].at,now);
+  m.quote.at=now+35;p=advancePaper(p,[m],now+35);assert.equal(p.positions.length,1);
+});
+test('a loss realized at a historical stop blocks entries in that same cycle',()=>{
+  const m=market(), other={...market(),product:'ETH-USD'};
+  const p=advancePaper(null,[],now-1), s=analyzeMarket(other,{},now);
+  Object.assign(p,{cash:0,equity:1280,peak:1280,dayStart:1280,
+    positions:[{id:'old',product:'BTC-USD',quantity:10,entry:100,stop:100,target:150,
+      openedAt:now-100*3600,cost:1000,entryFee:6,mark:128,markAt:now-1}],
+    pending:[{id:s.id,at:now-60}]});
+  const result=advancePaper(p,[m,other],now);
+  assert.equal(result.positions.length,0);assert.equal(result.dailyHalt,true);assert.equal(result.drawdownHalt,true);
 });

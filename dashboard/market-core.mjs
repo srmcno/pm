@@ -1,6 +1,7 @@
 // Shared by the browser, collector, simulator, and offline tests.
 // All prices and sizes are spot USD. Scores are rules, never probabilities.
 export const VERSION = '3.0.0';
+export const MODEL_VERSION = '2026-09-08-scanner-v2';
 export const PRODUCTS = ['BTC-USD', 'ETH-USD', 'SOL-USD', 'LINK-USD', 'AVAX-USD', 'DOGE-USD'];
 export const DEFAULTS = Object.freeze({equity: 1000, riskPct: 1.5, feeBps: 60,
   slippageBps: 10, maxWeight: 0.25, minNetR: 1.25, minNotional: 10});
@@ -70,7 +71,7 @@ export function positionPlan({entry, stop, target, askSize = null}, overrides = 
       'Position below minimum after risk and depth limits' : 'Too little reward after fees and slippage'};
 }
 export function analyzeMarket(m, overrides = {}, now = Date.now() / 1000) {
-  const b = candles(m.candles, now), p = {...DEFAULTS, ...overrides};
+  const b = candles(m.candles, now).slice(-300), p = {...DEFAULTS, ...overrides};
   const out = {product: m.product, status: 'waiting', strategy: 'No setup', score: 0,
     reasons: [], source: 'Coinbase Exchange', at: m.quote?.at || 0, bars: b,
     eligibility: 'U.S. spot access depends on your account and state'};
@@ -89,6 +90,9 @@ export function analyzeMarket(m, overrides = {}, now = Date.now() / 1000) {
   const reclaim = bullish && prev.c <= prev20 && last.c > e20 && rvol >= 1.1 && last.c - e20 <= a;
   Object.assign(out, {regime: bullish ? 'Uptrend' : 'Defensive', atr: a, ema20: e20,
     ema50: e50, relativeVolume: rvol, trigger: high, signalAt: last.t + 3600,
+    setup: breakout ? 'breakout' : reclaim ? 'reclaim' : null,
+    strategy: breakout ? 'Volume breakout' : reclaim ? 'Trend reclaim' : 'No setup',
+    modelVersion: MODEL_VERSION,
     score: Math.round(clamp((bullish ? 35 : 0) + Math.min(rvol, 3) * 10 +
       (breakout ? 30 : reclaim ? 25 : 0), 0, 95))});
   if (!a || a <= 0) return {...out, status: 'unavailable', reasons: ['Invalid volatility estimate']};
@@ -109,22 +113,31 @@ export function analyzeMarket(m, overrides = {}, now = Date.now() / 1000) {
     id: `${m.product}:${last.t}:${breakout ? 'breakout' : 'reclaim'}`};
 }
 export function evaluateToken(pair, now = Date.now() / 1000) {
-  const liquidity = Number(pair.liquidity?.usd || 0);
+  const number = x => x !== null && x !== undefined && x !== '' && finite(Number(x)) && Number(x) >= 0 ? Number(x) : null;
+  const liquidity = number(pair.liquidity?.usd);
   const ageHours = ageSeconds(Number(pair.pairCreatedAt || 0) / 1000, now) / 3600;
-  const buys = Number(pair.txns?.h1?.buys || 0), sells = Number(pair.txns?.h1?.sells || 0);
-  const volume = Number(pair.volume?.h1 || 0), change = Number(pair.priceChange?.h1 || 0);
-  const blocks = [];
-  if (pair.chainId !== 'solana' || !['pumpfun', 'pumpswap'].includes(pair.dexId)) blocks.push('Not a verified Pump venue pair');
-  if (liquidity < 100000) blocks.push('Under $100,000 reported liquidity');
-  if (!finite(ageHours) || ageHours < 24) blocks.push('Less than 24 hours of pool history');
-  if (buys + sells < 100) blocks.push('Thin hourly transaction activity');
-  if (sells < 20) blocks.push('Too little observed selling');
-  if (volume > liquidity * 5) blocks.push('Unusual volume relative to liquidity');
-  if (change > 80 || change < -30) blocks.push('Extreme one-hour move');
+  const buys = number(pair.txns?.h1?.buys), sells = number(pair.txns?.h1?.sells);
+  const volume = number(pair.volume?.h1);
+  const rawChange = pair.priceChange?.h1;
+  const change = rawChange != null && finite(Number(rawChange)) ? Number(rawChange) : null;
+  const rules = [];
+  const rule = (name, actual, threshold, passed, reason) => rules.push({name, actual, threshold,
+    passed: actual !== null && !!passed, state: actual === null ? 'unknown' : passed ? 'pass' : 'excluded', reason});
+  rule('Venue', pair.dexId || null, 'Solana Pump.fun or PumpSwap', pair.chainId === 'solana' && ['pumpfun','pumpswap'].includes(pair.dexId), 'Not a verified Pump venue pair');
+  rule('Liquidity', liquidity, 'At least $100,000 reported', liquidity >= 100000, liquidity === null ? 'Liquidity not reported' : 'Under $100,000 reported liquidity');
+  rule('Pool history', finite(ageHours) ? ageHours : null, 'At least 24 hours', ageHours >= 24, finite(ageHours) ? 'Less than 24 hours of pool history' : 'Pool creation date not reported');
+  const activity = buys !== null && sells !== null ? buys + sells : null;
+  rule('Hourly activity', activity, 'At least 100 transactions', activity >= 100, activity === null ? 'Hourly activity not reported' : 'Thin hourly transaction activity');
+  rule('Hourly sells', sells, 'At least 20 sells', sells >= 20, sells === null ? 'Hourly sells not reported' : 'Too little observed selling');
+  const ratio = liquidity > 0 && volume !== null ? volume / liquidity : null;
+  rule('Volume / liquidity', ratio, 'No more than 5 times per hour', ratio <= 5, ratio === null ? 'Volume / liquidity cannot be assessed' : 'Unusual volume relative to liquidity');
+  rule('One-hour move', change, 'Between -30% and +80%', change >= -30 && change <= 80, change === null ? 'One-hour change not reported' : 'Extreme one-hour move');
+  const blocks = rules.filter(r => !r.passed).map(r => r.reason);
   return {address: pair.baseToken?.address || '', symbol: pair.baseToken?.symbol || '?',
     name: pair.baseToken?.name || '', pair: pair.pairAddress, dex: pair.dexId,
     liquidity, ageHours: finite(ageHours) ? ageHours : null, buys, sells, volume, change,
-    price: Number(pair.priceUsd || 0), blocks, status: blocks.length ? 'filtered' : 'review',
+    price: number(pair.priceUsd), blocks, rules,
+    status: !blocks.length ? 'review' : rules.some(r => r.state === 'unknown') ? 'incomplete' : 'filtered',
     // A traded sell and reported liquidity prove neither sellability nor legal eligibility.
     checks: ['Mint and freeze authorities unverified', 'Holder concentration unverified',
       'Sell simulation unverified', 'Pool liquidity ownership unverified', 'U.S. account eligibility unverified'],
@@ -133,14 +146,16 @@ export function evaluateToken(pair, now = Date.now() / 1000) {
 
 // Deterministic paper accounting. New entries require a candidate on TWO
 // distinct scans. No historical fill is invented when a trigger was missed.
-export function advancePaper(previous, markets, now = Date.now() / 1000) {
+export function advancePaper(previous, markets, now = Date.now() / 1000, options = {}) {
+  const model = {...DEFAULTS, ...options};
   const p = previous ? structuredClone(previous) : {version: VERSION, start: 1000,
     cash: 1000, positions: [], closed: [], pending: [], equity: 1000, peak: 1000,
     curve: [], startedAt: now, day: '', dayStart: 1000};
   if (p.updatedAt >= now) return p;
   const fresh = markets.filter(m => quoteUsable(m.quote, now));
   const freshByProduct = new Map(fresh.map(m => [m.product, m]));
-  const fee = DEFAULTS.feeBps / 10000, slip = DEFAULTS.slippageBps / 10000;
+  const fee = model.feeBps / 10000, slip = model.slippageBps / 10000;
+  const priorEquity = p.equity;
   const markEquity = () => p.cash + p.positions.reduce((s, x) => s + x.quantity * x.mark * (1 - fee), 0);
   for (const x of p.positions) {
     const m = freshByProduct.get(x.product);
@@ -148,11 +163,11 @@ export function advancePaper(previous, markets, now = Date.now() / 1000) {
   }
   p.equity = markEquity();
   const day = new Date(now * 1000).toISOString().slice(0, 10);
-  if (p.day !== day) { p.day = day; p.dayStart = p.equity; p.dailyHalt = false; }
+  if (p.day !== day) { p.day = day; p.dayStart = priorEquity; p.dailyHalt = false; }
   p.peak = Math.max(p.peak, p.equity);
   if (p.equity <= p.dayStart * 0.95) p.dailyHalt = true;
   if (p.equity <= p.peak * 0.85) p.drawdownHalt = true;
-  const halted = p.dailyHalt || p.drawdownHalt;
+  let halted = p.dailyHalt || p.drawdownHalt;
   const hasStaleExposure = p.positions.some(x => !freshByProduct.has(x.product));
   for (const x of [...p.positions]) {
     const m = freshByProduct.get(x.product);
@@ -174,14 +189,20 @@ export function advancePaper(previous, markets, now = Date.now() / 1000) {
     } else if (history.length) x.checkedThrough = history.at(-1).t + 3600;
   }
   p.equity = markEquity();
+  // An adverse stop fill can breach a limit after the initial mark.
+  if (p.equity <= p.dayStart * 0.95) p.dailyHalt = true;
+  if (p.equity <= p.peak * 0.85) p.drawdownHalt = true;
+  halted = p.dailyHalt || p.drawdownHalt;
   const oldPending = new Map(p.pending.map(x => [x.id, x]));
   const pending = [];
   for (const m of fresh) {
     if (halted || hasStaleExposure || p.positions.some(x => x.product === m.product) || p.positions.length >= 3) continue;
-    const signal = analyzeMarket(m, {equity: p.equity}, now);
+    const signal = analyzeMarket(m, {...model, equity: p.equity}, now);
+    if (Array.isArray(options.strategies) && !options.strategies.includes(signal.setup)) continue;
     if (signal.status !== 'candidate' || p.closed.some(x => x.id === signal.id)) continue;
     const old = oldPending.get(signal.id);
-    if (!old || now - old.at < 30 || now - old.at > 900) { pending.push({id: signal.id, at: now}); continue; }
+    if (!old || now - old.at > 900) { pending.push({id: signal.id, at: now}); continue; }
+    if (now - old.at < 30) { pending.push(old); continue; }
     const plan = signal.plan;
     const existingRisk = p.positions.reduce((s, x) => s + Math.max(0,
       x.quantity * (x.mark * (1 - fee) - x.stop * (1 - slip) * (1 - fee))), 0);

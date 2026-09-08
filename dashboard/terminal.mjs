@@ -1,4 +1,4 @@
-import {PRODUCTS, DEFAULTS, VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.0.0';
+import {PRODUCTS, DEFAULTS, VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.0';
 const $ = id => document.getElementById(id);
 const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const names = {BTC:'Bitcoin', ETH:'Ethereum', SOL:'Solana', LINK:'Chainlink', AVAX:'Avalanche', DOGE:'Dogecoin'};
@@ -119,7 +119,7 @@ function render() {
   const p = model();
   signals = markets.map(m => analyzeMarket(m, p));
   const fresh = markets.filter(m => quoteUsable(m.quote));
-  const streamed = fresh.filter(m => m.quote.source.includes('WebSocket')).length;
+  const streamed = fresh.filter(m => String(m.quote.source || '').includes('WebSocket')).length;
   const label = paused ? 'Paused' : document.hidden ? 'Background' : streamed ? `${streamed}/${PRODUCTS.length} streaming` : fresh.length ? 'REST quotes' : 'Offline / stale';
   $('connection').textContent = label;
   $('connection').className = `badge ${fresh.length && !paused ? 'good' : 'amber'}`;
@@ -196,7 +196,7 @@ function renderPaper() {
 }
 function renderTokens() {
   const tokens=snapshot?.tokens||[];
-  $('tokens').innerHTML=tokens.map((t,i)=>`<tr><td><strong>${escape(t.symbol)}</strong><small>${escape(t.dex)} · ${t.ageHours===null?'age unknown':t.ageHours.toFixed(0)+'h old'}</small></td><td>${money(t.liquidity,0)}</td><td class="${t.change>=0?'positive':'negative'}">${t.change>0?'+':''}${t.change.toFixed(1)}%</td><td>${t.buys} / ${t.sells}</td><td>${badge(t.blocks.length?`${t.blocks.length} filters failed`:'Further review',t.blocks.length?'muted':'amber')}</td><td><button class="row-action" data-token="${i}" aria-label="Review ${escape(t.symbol)} checks">Checks ↗</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No Pump venue pairs in the latest available discovery sample. No substitute tokens are fabricated.</td></tr>';
+  $('tokens').innerHTML=tokens.map((t,i)=>`<tr><td><strong>${escape(t.symbol)}</strong><small>${escape(t.dex)} · ${t.ageHours===null?'age unknown':t.ageHours.toFixed(0)+'h old'}</small></td><td>${money(t.liquidity,0)}</td><td class="${t.change>=0?'positive':'negative'}">${t.change>0?'+':''}${Number.isFinite(t.change)?t.change.toFixed(1)+'%':'Not reported'}</td><td>${t.buys??'?'} / ${t.sells??'?'}</td><td>${badge(t.blocks.length?`${t.blocks.length} filters failed`:'Further review',t.blocks.length?'muted':'amber')}</td><td><button class="row-action" data-token="${i}" aria-label="Review ${escape(t.symbol)} checks">Checks ↗</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No Pump venue pairs in the latest available discovery sample. No substitute tokens are fabricated.</td></tr>';
   $('token-asof').textContent=`Sample ${since(snapshot?.tokenUpdatedAt)}. At least $100,000 reported liquidity, 24h age, 100 hourly trades and 20 sells required for review. Mint authority, holders and sellability remain unverified.`;
 }
 function choose(product) { if(!PRODUCTS.includes(product))return;selected=product;$('product').value=product;render(); }
