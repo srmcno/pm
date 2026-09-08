@@ -1,275 +1,91 @@
-# Polymarket Wallet Intelligence
+# Moffitt Money 3.0
 
-A study of every wallet that topped a Polymarket leaderboard, traced trade-by-trade
-across the trailing 90 days — plus the tools the study feeds: an interactive
-dashboard, a smart-money signal engine, and a paper-trading simulator with an
-honest out-of-sample backtest.
+[Open the opportunity desk](https://srmcno.github.io/pm/)
 
-Everything runs on Polymarket's public APIs. No keys, no accounts, no real money.
+A U.S. spot-market research app with streaming quotes, explicit trade plans, an isolated forward paper ledger, and a tested Python execution laboratory. The active experience excludes MEXC and the offshore Polymarket platform. Nothing in the new scanner places real orders or connects a wallet.
 
-## What's here
+## What changed on September 8, 2026
 
-| Piece | Path | What it does |
+- New responsive opportunity terminal with live connection health, completed-hour charts, market filters, a position planner, light/dark themes, and CSV ledger export.
+- Volume-confirmed breakouts and trend-reclaim setups on BTC, ETH, SOL, LINK, AVAX and DOGE USD spot products. Product status and two-sided quote freshness are checked. No setup is described as a proven edge.
+- The browser connects directly to Coinbase Exchange public WebSocket quotes. REST is an explicitly labeled fallback. Scheduled snapshots and paper records are separate from live quotes.
+- Pump.fun/PumpSwap discovery from a bounded DEX Screener profile sample. Thin liquidity, young pools, extreme moves and weak sell activity are filtered. Missing mint, freeze, holder, liquidity-ownership and sell-simulation checks remain visible. Execution is disabled because token safety and account/jurisdiction eligibility are not established.
+- Corrected auction lookahead: replay decisions and share sizing use prior completed sessions, while fills use the subsequent auction print. Live auction decisions use the same information boundary.
+- Corrected drawdowns at zero/negative equity, fee-inclusive cash sizing, daily rounding by actual regulatory fee type, and entry-plus-exit fees in realized trade reporting.
+- Invalid/nonfinite risk settings and corrupt persisted account state now fail closed. An explicit empty desk list stays empty after save/load.
+- Validation is versioned. Prior results do not authorize trading after these calculation changes. Fresh walk-forward validation runs when the desk code changes and weekly thereafter.
+- Retired legacy offshore, optimistic arb and earlier stock simulation workflows. Historical source, measurements and wallet research remain available. The wallet build now writes `wallets.html`, never the new homepage.
+
+## Strategies and honest limits
+
+| Rule | Entry | Exit / sizing |
 |---|---|---|
-| Data pipeline | `scripts/fetch_data.py` | Pulls leaderboards (week/month/all-time × PnL/volume × 10 categories), then every candidate wallet's 90-day trades, open positions, portfolio value, and daily PnL series. Timestamp-cursor pagination gets past the API's 5,500-row offset cap. |
-| Re-fetch helper | `scripts/refetch_capped.py` | Re-pulls any wallet whose history hit the pagination cap. |
-| Analyzer | `scripts/analyze.py` | Per-wallet 90-day metrics (volume, sizing, timing, category mix, entry-price appetite, drawdown, win-day rate) and archetype classification. Writes `data/analyzed.json`. |
-| Dashboard | `dashboard/index.html` (built by `scripts/build_dashboard.py`) | Self-contained explorer: ranked cohort table with expandable per-wallet profiles, plus aggregate views. No external dependencies. |
-| Signal engine | `scripts/signals.py` | Finds outcomes that several historically profitable wallets are independently net-buying right now. Writes `data/signals/latest.json` + `reports/signals-latest.md`. |
-| Paper trader | `scripts/papertrade.py` | Simulates the copy strategy with a virtual bankroll — live loop and out-of-sample backtest. Writes `reports/paper-latest.md` / `reports/backtest-latest.md`. |
-| Live executor | `scripts/livetrade.py` | The only tool that can touch real money — ships disarmed. `plan` is a keyless dry run; `execute` needs your keys, two explicit flags, and enforces hard caps + a STOP file. See the arming checklist in its docstring. |
-| Consensus engine | `scripts/pmx/` | A second-generation pipeline that runs alongside the above and publishes to the same site: specialty-weighted voting instead of a flat backer count, calibration-gated fractional-Kelly sizing (minimum stakes until the probability model is fitted from settled outcomes), near-real-time on-chain fill detection (0-2 s measured) instead of polling, and active exits instead of holding to resolution. Its own shift (`engine-shift.yml`) feeds the dashboard's **Consensus engine** panel. Architecture and measurements: **[`docs/ENGINE.md`](docs/ENGINE.md)**. |
-| Stocks desk | `scripts/stocks/` | Intraday long/short trading of digital-asset proxy equities (MSTR, COIN, IBIT, ETHA and peers) against their 24/7 crypto reference prices. Betas fitted daily; entries on dislocation, exits on reversion; flat before the close; self-halting past a daily drawdown limit. Paper account by default; Alpaca execution ships disarmed and is subject to the pattern day trader rule below $25,000 equity. Page: `stocks.html`. |
+| Volume breakout | Completed hourly close above the previous 20-hour high; 20 EMA above 50 EMA; at least 1.5x relative volume | Initial stop at least 2 ATR below the signal; initial 3R price target; reject excessive chase |
+| Trend reclaim | Hourly close regains 20 EMA in an established uptrend; at least 1.1x volume | Same cost-aware risk sizing and exit conditions |
+| Shared paper account | A candidate must survive two separate scans, 30 seconds to 15 minutes apart | Starts at $1,000; 1.5% planned risk per idea; 25% position cap; 3% combined modeled open risk; at most 3 positions |
 
-## Desk system (2026 rebuild) — what actually trades
+Paper costs default to **60 bps taker fee and 10 bps slippage per side**. These are assumptions, not a promise of your account's fee tier. The browser planner can use your actual fees. Its settings are local and never alter the shared paper account.
 
-Everything above was the first generation. Its live paper records, measured
-over sixteen days of continuous shifts, were the reason for the rebuild:
-the intraday lead-lag desk lost 4.2% over 239 trades with 81% stopped out,
-the MEXC triangle desk's paper gains inverted under its own one-scan
-latency replay, and the Kraken trial's gains came from 22%-per-cycle prints
-on illiquid books that would never have filled. None of it was a coding
-bug. All of it was measurement — optimistic fills, fees counted on some
-legs and not others, parameters picked from a 216-point grid on five days
-of data. So the second generation, `scripts/desk/`, is built so that the
-measurement is hard to fake, and it runs only on venues a US resident can
-legally use.
+For one unit, with fee fraction `f` and slippage fraction `s`:
 
-| Piece | Path | What it does |
-|---|---|---|
-| Cost model | `desk/core/money.py` | Verified 2026 fee schedules, including the per-day per-fee-type cent rounding that costs any active US equity day $0.03 and takes a $40 daily strategy to zero. Kalshi's quadratic fee with per-series maker/taker treatment. |
-| Replay | `desk/backtest/engine.py` | Event-driven, lookahead-safe (a desk cannot see the current bar at the open), targets differenced with a no-trade band, fills in the auction or across the spread according to what the desk declares it will do live. |
-| Statistics | `desk/backtest/metrics.py` | Deflated Sharpe, t-stat, minimum track-record length, and a one-word verdict that refuses small or over-searched samples. |
-| Walk-forward | `desk/backtest/walkforward.py` | Rolling folds scored only on untouched windows; fixed parameters by default because the per-fold search was shown to pick noise. |
-| Risk | `desk/core/risk.py` | Allocation gated on each desk's latest walk-forward verdict and its capital floor; daily/weekly/drawdown loss halts that flatten and survive restarts; a **turnover budget** — the brake the June 2026 PDT repeal removed. |
-| Runner | `desk/runner.py` | Reconciles every pending order before deciding, books only confirmed fills at the venue's price, acts only inside the auction submission windows on the venue's clock. Paper and live share the path. |
-| Venues | `desk/venues/alpaca.py`, `desk/venues/kalshi.py` | Client-side enforcement of every order rule that would otherwise be a rejection: fractional-vs-auction, crypto TIF, MOC/MOO cutoffs, Kalshi's per-market tick grid and fixed-point quantities. Ship disarmed. |
-| Desks | `desk/desks/` | `overnight` (validated; needs $2,000 of its own capital, so $4,000 under a two-desk preset), `trend` (marginal by a hair: p 0.101 on the strictly out-of-sample run, re-tested Mondays), `xsect` (marginal, $100+ — off while its walk-forward statistic fails; naming it in the config is not enough), `reversion` (marginal, opt-in, $500+), `kalshi-bias` (tested and rejected — the study is in its docstring). |
-| Operator | `desk/cli.py`, `docs/RUNBOOK.md`, `dashboard/desk.html` | `status`, `validate`, `run`, `watch`, `halt`; the real-money runbook; a dashboard that leads with each desk's out-of-sample verdict. |
-
-Start here:
-
-```bash
-cd scripts
-python3 -m desk.cli --equity 500 costs      # what trading costs at your size
-python3 -m desk.cli validate                # walk-forward every desk, write evidence
-python3 -m desk.cli --equity 500 status     # what your account is allowed to run
-python3 -m desk.cli run                     # one paper cycle
+```
+entry fill = ask * (1 + s)
+cash cost = entry fill * (1 + f)
+stop proceeds = stop * (1 - s) * (1 - f)
+net risk = cash cost - stop proceeds
+net reward = target * (1 - s) * (1 - f) - cash cost
+quantity = min(risk budget / net risk, capital cap / cash cost, 10% of visible ask size if supplied)
 ```
 
-Real orders need credentials, `--live`, `--i-accept-total-loss`,
-`--real-money`, and `"live": true` in the committed `data/desk/config.json`
-all at once, plus the absence of `data/desk/STOP`. Read
-[`docs/RUNBOOK.md`](docs/RUNBOOK.md) first — its opening section is the
-measured table of what an account size can and cannot run.
+This is a risk/reward calculation, **not expected value**. No calibrated success probability is available. The displayed breakeven win rate is the win rate the planned payoff would require, not a forecast. Portfolio correlation and gaps can produce losses beyond planned risk.
 
-## Quick start
+The paper ledger marks positions at modeled liquidation proceeds. It pays fees on both sides, uses conservative adverse stop fills, gives stops priority when a completed bar is ambiguous, and has 48-hour time exits. It does not invent target fills that were not observed. New entries stop after a 5% UTC-day loss or a 15% peak drawdown. A drawdown halt persists. An existing position with stale quotes prevents new portfolio entries.
 
-```bash
-pip install requests
+GitHub Actions schedules are best effort. Five-minute scans are not continuous execution. An intrahour move, incomplete bar, network outage or delayed job can be missed. This app is unsuitable for latency arbitrage. Fresh quotes do not make delayed ledger snapshots real-time.
 
-# 1. Fetch the cohort (≈300 MB into data/raw/, ~30–90 min)
-python3 scripts/fetch_data.py
-python3 scripts/refetch_capped.py     # deep-fetch high-frequency wallets
+## U.S. access review
 
-# 2. Analyze and build the dashboard
-python3 scripts/analyze.py
-python3 scripts/build_dashboard.py    # -> dashboard/index.html, open in a browser
+Reviewed **2026-09-08**. Platform access is conditional on current account, identity, location, state and product restrictions. A public API response is not a legal authorization to trade.
 
-# 3. Smart-money signals (live)
-python3 scripts/signals.py --live --hours 48
+| Venue | Treatment | Primary source |
+|---|---|---|
+| Coinbase spot | Public market data and conditional U.S. spot research; enter your actual fee tier | [Advanced fees](https://help.coinbase.com/coinbase/trading-and-funding/advanced-trade/advanced-trade-fees) |
+| Alpaca | Existing paper/live adapter retains explicit arming gates; broker/account rules apply | [Intraday margin update](https://alpaca.markets/blog/finra-retires-the-pdt-rule-introducing-alpacas-new-intraday-margin-framework/) |
+| Kalshi | Separate existing research desk, currently subject to its evidence and account gates | [Fee schedule](https://kalshi.com/fee-schedule), [rounding API](https://docs.kalshi.com/getting_started/fee_rounding) |
+| Polymarket US | Separate U.S. venue; the offshore wallet signals do not map automatically to its contracts | [Official U.S. site](https://polymarket.us/) |
+| MEXC | Excluded; order submission is blocked | [Terms](https://www.mexc.com/terms) |
+| Pump.fun/PumpSwap | Discovery only; eligibility not established, no execution | [Terms](https://pump.fun/docs/terms-and-conditions), [fees](https://pump.fun/docs/fees) |
 
-# 4. Paper-trade the signals with a virtual $20
-python3 scripts/papertrade.py init --bankroll 20
-python3 scripts/papertrade.py trade   # act on the latest signals
-python3 scripts/papertrade.py mark    # mark to market / settle / report
+FINRA's new intraday-margin rules took effect June 4, 2026, with a broker transition period. Do not assume every broker adopted them immediately. [FINRA Notice 26-10](https://www.finra.org/rules-guidance/notices/26-10).
 
-# 5. The honest test: out-of-sample backtest of the copy strategy
-python3 scripts/papertrade.py backtest --bankroll 20
+## Code map
+
+| Path | Responsibility |
+|---|---|
+| `dashboard/market-core.mjs` | Shared pure signal, sizing, token-screen and paper-accounting rules |
+| `dashboard/terminal.mjs` | Direct WebSocket/REST feeds and UI; no keys or trading calls |
+| `scripts/collect-opportunities.mjs` | Bounded public-data collection and atomic paper-state publication |
+| `data/opportunities/paper.json` | Complete shared paper ledger, separate from earlier simulations |
+| `dashboard/data/opportunities.json` | Published snapshot, original source times and source errors |
+| `scripts/desk/` | Existing U.S. desk allocation, broker adapters, reconciliation, backtesting and validation |
+| `scripts/build_dashboard.py` | Archived wallet-research rebuild only |
+| `tests/market-core.test.mjs`, `scripts/tests/`, `tests/test_engine.py` | Offline regression coverage |
+| `scripts/check_site.py` | Local links, unique IDs and embedded JavaScript integrity |
+
+## Run and verify
+
+Node 22+ and Python 3.12:
+
+```sh
+python -m pip install 'requests>=2.31,<3'
+python -m unittest discover -s scripts/tests
+python -m unittest discover -s tests
+node --test tests/market-core.test.mjs
+python scripts/check_site.py
+node scripts/collect-opportunities.mjs
+python -m http.server 8765 --directory dashboard
 ```
 
-## How the signal engine thinks
+`U.S. opportunity scan` collects on a five-minute best-effort schedule. `Deploy dashboard to GitHub Pages` verifies and publishes `dashboard/`, and records the actual deployed commit in `build-info.json`. CI covers changes and pull requests. The watchdog recovers missing scans. Data commits from workflow tokens are published by the scheduled Pages workflow because such commits do not trigger push workflows.
 
-1. **Watchlist** — wallets qualify on realized 90-day PnL and win-day rate.
-   Market-maker/HFT and crypto-scalper archetypes are excluded: their order
-   flow is inventory management, not opinion.
-2. **Stance, not trades** — a wallet's stance in a market is its best-net
-   outcome minus whatever it spent on the other side. A trader who bought both
-   sides has hedged, not spoken.
-3. **Consensus with dominance** — a signal needs ≥2 independent qualified
-   backers, and if the other side of the market also has real backing, the
-   winning side must beat it by 1.5×; otherwise the market is contested and
-   emits nothing.
-4. **No chasing** — signals whose price has already moved >15¢ past the
-   backers' average entry are dropped; the move already happened.
-5. **Short horizon only** — with a max-days rail set (the watcher uses 3),
-   markets resolving further out are skipped, and a market with *no*
-   parseable end date counts as too far out: an unknown horizon can lock
-   capital for weeks.
-
-Scoring per backer: `wallet quality × √conviction × recency decay`, where
-conviction is the net stake relative to that wallet's own median trade.
-
-## How the backtest stays honest
-
-- **Out-of-sample split**: the watchlist qualifies on the *first half* of the
-  90-day window only; the strategy then trades the *second half*. (Residual
-  look-ahead: archetype labels come from the full window.)
-- **Real fills**: entries are taken from actual CLOB price history at signal
-  time *plus a copy delay* (default 1 h), +1¢ slippage. If nothing traded within
-  2 h of the intended fill, the trade is skipped — resolved markets can't be
-  entered, exactly like real life.
-- **The latency cost is measured** — the report shows the average difference
-  between the fill and the price when the signal fired.
-
-The verdict line in `reports/backtest-latest.md` is computed from the
-results table.
-
-### Results on the full dataset (Jun 28 – Aug 12 window)
-
-| config | result | note |
-|---|---|---|
-| ≥2 backers, 1 h delay | −1.9% | coin flip (49% win rate) |
-| ≥2 backers, 3 h delay | −26.2% | latency is fatal |
-| ≥3 backers, 1 h delay | +42.3% | promising but concentrated — one window, not proof |
-
-Full breakdown: `reports/backtest-summary.md`. The live paper account runs the
-strict config to accumulate a real out-of-sample record before any conclusion.
-
-## The live site
-
-The dashboard deploys to **https://srmcno.github.io/pm/** (GitHub Pages).
-Human pushes touching `dashboard/` deploy on push; the watcher's own data
-pushes use the workflow token, which GitHub never lets trigger on-push
-workflows, so the watcher explicitly dispatches the deploy after each
-publish. It stays live end to end:
-
-- The v2 consensus engine (`engine-shift.yml`) runs its own back-to-back
-  ~2-hour shifts on a separate concurrency group, detecting fills from
-  Polygon logs and republishing `dashboard/data/engine.json` on every signal
-  and every 10-minute heartbeat. Both engines are live on the page at once,
-  free to disagree.
-- A cloud watcher (`watch-shift.yml`) runs back-to-back ~2-hour shifts,
-  polling the global trade feed every 45 s, and every ~15 minutes it
-  re-prices standing signals, re-marks the paper account, and pushes the data
-  — each push redeploys the site. Note the feed it polls is itself the
-  bottleneck: `data-api /trades` was measured serving data **~260 s behind
-  block time** and not advancing between rapid polls, so this watcher's real
-  reaction time is minutes, not the sub-minute its poll interval suggests.
-  That measurement is what the v2 engine's on-chain feed exists to fix; see
-  [`docs/ENGINE.md`](docs/ENGINE.md) §3.1.
-- A watchdog (`watch-watchdog.yml`) checks twice an hour that a shift is
-  actually running and dispatches one if GitHub dropped the scheduled start.
-- The stocks desk (`stocks-shift.yml`) trades US regular sessions on
-  weekday crons, publishing `dashboard/data/stocks.json` and its own page.
-- The landing page carries a navigation bar and an overview strip with one
-  status card per desk (smart money, engine v2, arb, stocks), each with its
-  own live/stale pill, so a dead pipeline is visible instead of being masked
-  by the others still publishing. Data files re-fetch every 60 s.
-
-## The arb desk
-
-A second page of the app — **https://srmcno.github.io/pm/arb.html** — runs a
-micro-cap arbitrage scanner on MEXC spot (chosen over Pionex for its full
-public market-data API and ~2,100 listed pairs). The full universe is
-re-screened every **2 seconds** (one bulk book-ticker call plus pure CPU
-over ~740 cycles); candidate legs get their depth fetched in parallel, so
-a screen hit is depth-verified within a second or two. Heavy extras (Gate
-comparison, volumes, the tape) refresh on a slower timer so they never sit
-between an edge and its execution:
-
-- **Triangular cycles** (USDT → coin → USDC/USD1/BTC/ETH → USDT) priced by
-  crossing real bids and asks net of each pair's actual taker fee, then
-  re-verified by walking live order-book depth at size. Fees kill almost
-  everything — what survives is small and dies in seconds, so the page also
-  measures edge survival scan-to-scan.
-- **Microstructure board** — spread, depth within 1%, book imbalance, taker
-  aggression, print sizes: the flow behind the candles.
-- **Cross-venue gaps vs Gate.io**, guarded against the same-ticker-
-  different-token trap (price-ratio and volume filters), published as intel
-  only — capturing one needs funded accounts on both venues.
-- A **$20 paper account** (same stake as the Polymarket bot) executes
-  verified cycles at the largest depth-verified size that fits, re-striking
-  a persisting edge every 30 s against freshly walked depth — atomic fills
-  assumed, an upper bound, clearly labeled.
-- **Real money (ships disarmed)**: `scripts/arblive.py` can fire verified
-  triangles as real IOC orders with automatic unwind if a leg fails, under
-  hard rails (`data/arb/live-config.json`: $20 bankroll, $10/cycle,
-  $40/day, 10 bps minimum edge, `data/arb/STOP` kill file). Arming needs
-  MEXC repo secrets (spot-trade-only API key, never withdrawal) — see the
-  checklist in the file's docstring, and read the latency-capture ratio
-  first: if a one-scan delay already kills the edges, real money is a
-  donation to faster bots.
-- **Historical testing, the honest way**: books aren't archived anywhere
-  public and candles can't see spreads, so the desk records its own tick
-  history every scan (`data/arb/history/`) and continuously replays it with
-  one scan of latency (`arb.py backtest`) — the capture ratio between
-  atomic and delayed PnL is the measured cost of being ~25 s slow.
-  `arb-watch.yml` runs everything in self-chaining ~2-hour shifts like the
-  Polymarket watcher.
-
-### The event-driven engine (`engine/`)
-
-The scanner above is a REST polling loop: by the time it sees an edge, the edge
-is a historical artifact — its own latency replay measures how much survives one
-scan of delay. `engine/` is the rewrite that removes the polling: WebSocket L2
-deltas into an in-memory book, cycle re-evaluation triggered only by the books
-that actually mutated, and IOC leg chaining driven off private fill pushes
-instead of `sleep`-and-poll.
-
-```bash
-python3 -m unittest discover -s tests    # 62 tests, stdlib only
-python3 -m engine selftest               # full pipeline vs a simulated venue
-python3 -m engine plan                   # universe + connection-pool arithmetic
-
-pip install -r requirements-engine.txt
-python3 -m engine run                    # paper: real feeds, no orders
-```
-
-| Piece | Path | What it does |
-|---|---|---|
-| L2 book | `engine/book.py` | delta apply in ~1.7 µs, sequence-gap detection, non-blocking resync state machine |
-| Shared memory | `engine/shm.py` | seqlock slab; ingestion processes publish, compute reads without locks |
-| Connection pool | `engine/feed.py` | MEXC allows 30 subs/socket, so 2,100 pairs is 70 sockets — sharded, self-recycling |
-| Graph engine | `engine/graph.py` | −ln(rate) edges net of taker fees; symbol→cycles inverted index (1.3 µs/frame) plus a background Bellman-Ford sweep for longer routes |
-| Sizer | `engine/sizing.py` | depth walking with lot/notional quantization, bisection for the largest size that holds the edge |
-| Execution | `engine/execution.py` | FOK leg 1, IOC legs 2-3 sized from actual fills, continue-vs-exit decision on the live book, two-hop unwind |
-| Risk | `engine/risk.py` | rails re-checked per leg, inventory ledger, kill switch |
-| Telemetry | `engine/telemetry.py` | T+25/100/500 ms edge decay, edge survival distribution, tick-to-trade breakdown |
-
-Three things worth knowing before believing any of it — all detailed in
-[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md):
-
-1. **MEXC has no order-entry WebSocket.** Orders are REST-only; the private WS
-   carries fills. The recoverable latency is the pre-warmed keep-alive pool plus
-   taking fills from the push instead of polling — which is worth ~1 s per
-   triangle against the current `arblive.py`.
-2. **Where the process runs dominates everything the code does.** Compute is
-   tens of microseconds; RTT from a GitHub Actions runner to MEXC is 150-250 ms.
-   Sub-100 ms tick-to-trade needs a VPS in the venue's metro, in any language.
-3. **The decay telemetry is the stop condition.** If capture at T+100 ms is
-   already near zero, the edge dies before any router could reach it and the
-   correct action is to stop — not to optimize further.
-
-It ships disarmed, under the same rails as the rest of the desk.
-
-## Data sources
-
-- `https://data-api.polymarket.com/v1/leaderboard` — trader rankings
-- `https://data-api.polymarket.com/activity` — per-wallet trade history
-- `https://data-api.polymarket.com/positions`, `/value` — holdings
-- `https://user-pnl-api.polymarket.com/user-pnl` — daily PnL series
-- `https://gamma-api.polymarket.com/markets` — market metadata & resolution
-- `https://clob.polymarket.com/prices-history`, `/midpoint` — prices
-
-## Limitations
-
-- The cohort is leaderboard-seeded: a strong wallet that never surfaced on any
-  leaderboard window doesn't appear.
-- Category classification is keyword-based on event slugs; a small share of
-  volume lands in "Other".
-- 90-day PnL comes from Polymarket's own per-user PnL series (realized +
-  mark-to-market).
-- Signals are inputs for review, not trade instructions. Past profitability
-  of a wallet is a weak predictor of its future trades' value; the backtest
-  exists to measure exactly that. Nothing ships armed.
+Existing desk operation is documented in [the runbook](docs/RUNBOOK.md). Corrected replay results supersede all historical performance claims in older studies. Real orders still require all existing explicit arming gates and valid evidence. No real orders were needed to develop or test this release.

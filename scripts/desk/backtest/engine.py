@@ -99,6 +99,7 @@ class Engine:
         self._halted_today = False
         self._current_day = None
         self._day_raw_fees = 0.0
+        self._day_fee_components = {"sec": 0.0, "taf": 0.0, "cat": 0.0}
         self._day_traded = False
 
     def _close_fee_day(self):
@@ -106,12 +107,14 @@ class Engine:
         if self.desk.meta.asset_class != "equity":
             self._day_raw_fees, self._day_traded = 0.0, False
             return
-        extra = money.daily_fee_floor(self._day_raw_fees, self._day_traded)
+        extra = money.daily_fee_floor(self._day_raw_fees, self._day_traded,
+                                      self._day_fee_components)
         if extra > 0:
             self.cash -= extra
             self.result.fees_paid += extra
             self.result.fee_floor_paid += extra
         self._day_raw_fees, self._day_traded = 0.0, False
+        self._day_fee_components = {"sec": 0.0, "taf": 0.0, "cat": 0.0}
 
     # ------------------------------------------------------------- pricing
     def _fill_price(self, symbol, ref, side):
@@ -173,6 +176,16 @@ class Engine:
         fill_px = self._fill_price(symbol, ref_price, side)
         notional = abs(delta) * fill_px
         fees = self._fees(symbol, delta, fill_px, side)
+        if delta > 0 and not self.allow_short and notional + fees > self.cash:
+            # Spot cash buys cannot borrow their fees. Round down at the
+            # same precision as the venue and recompute actual charges.
+            delta = money.round_shares(delta * max(0, self.cash) / (notional + fees),
+                                       self.desk.meta.fractional, "long")
+            notional = delta * fill_px
+            fees = self._fees(symbol, delta, fill_px, side)
+            if delta <= 0 or notional + fees > self.cash + 1e-8:
+                return 0.0
+            target_shares = pos.shares + delta
 
         # Cash: buying costs cash, selling raises it; shorts raise cash on
         # open and consume it on cover, which the sign of delta handles.
@@ -182,6 +195,9 @@ class Engine:
         slip = abs(delta) * abs(fill_px - ref_price)
         self.result.fees_paid += fees
         self._day_raw_fees += fees
+        if self.desk.meta.asset_class == "equity":
+            for kind, value in money.equity_fee_components(delta, fill_px, side).items():
+                self._day_fee_components[kind] += value
         self._day_traded = True
         self.result.slippage_paid += slip
         self.result.turnover += notional
@@ -202,11 +218,12 @@ class Engine:
             self.positions[symbol] = pos
         return notional
 
-    def _apply(self, view, decision, t, event):
+    def _apply(self, view, decision, t, event, sizing_view=None):
         """Turn target weights into trades at this event's prices."""
         marks = {s: view.price_now(s) for s in self.series}
         marks = {s: p for s, p in marks.items() if p}
-        eq = self.equity(marks)
+        sizing_marks = {s: sizing_view.price_now(s) for s in self.series} if sizing_view else marks
+        eq = self.equity(sizing_marks)
         if eq <= 0:
             return
 
@@ -232,7 +249,10 @@ class Engine:
             if not px or abs(w) < 1e-9:
                 continue
             side = "long" if w > 0 else "short"
-            raw = abs(eq * w) / px
+            known_px = sizing_marks.get(sym)
+            if not known_px or known_px <= 0:
+                continue
+            raw = abs(eq * w) / known_px
             held = abs((self.positions.get(sym) or Position(sym)).shares)
             # Whole-share hysteresis, identical to the live runner: a held
             # position whose unrounded target is within one share of it stays
@@ -302,9 +322,15 @@ class Engine:
                 if self._halted_today:
                     continue
 
-                decision = self.desk.decide(view)
+                # Auction instructions are submitted BEFORE their print.
+                # Keep the actual print for fills, but withhold today's OHLC
+                # and open price from decisions in both MOO and MOC replay.
+                decision_view = View(self.series, i, event, t, auction_cutoff=True) \
+                    if self.desk.meta.execution_style == money.AUCTION else view
+                decision = self.desk.decide(decision_view)
                 if decision is not None:
-                    self._apply(view, decision, t, event)
+                    self._apply(view, decision, t, event,
+                                sizing_view=decision_view if self.desk.meta.execution_style == money.AUCTION else None)
 
             close_marks = {s: self.series[s][i].c for s in symbols}
             eq = self.equity(close_marks)

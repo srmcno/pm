@@ -105,7 +105,11 @@ def max_drawdown(equity_curve):
     """Deepest peak-to-trough fraction of an equity curve (negative)."""
     peak, mdd = None, 0.0
     for v in equity_curve:
+        if not math.isfinite(v):
+            raise ValueError("equity curve contains a non-finite value")
         if v <= 0:
+            if peak is not None and peak > 0:
+                mdd = min(mdd, v / peak - 1.0)
             continue
         peak = v if peak is None else max(peak, v)
         mdd = min(mdd, v / peak - 1.0)
@@ -183,7 +187,9 @@ def compute(returns, equity_curve=None, periods_per_year=252, n_trials=1,
     total = (equity_curve[-1] / equity_curve[0] - 1) if len(equity_curve) > 1 else 0.0
     s.total_return_pct = round(total * 100, 4)
     years = s.n / periods_per_year
-    if years > 0 and equity_curve[-1] > 0 and equity_curve[0] > 0:
+    if equity_curve[-1] <= 0:
+        s.cagr_pct = -100.0
+    elif years > 0 and equity_curve[0] > 0:
         s.cagr_pct = round(((equity_curve[-1] / equity_curve[0]) ** (1 / years) - 1) * 100, 3)
     s.ann_vol_pct = round(sd * math.sqrt(periods_per_year) * 100, 3)
     s.sharpe = round(mean / sd * math.sqrt(periods_per_year), 3) if sd > 0 else 0.0

@@ -409,6 +409,7 @@ class MexcRouter:
 
     async def submit(self, req: OrderRequest) -> OrderResult:
         """Send one IOC/FOK limit. Returns at the ack, not at the fill."""
+        raise OrderRejected("MEXC execution is disabled for U.S. residents")
         params = {
             "symbol": req.symbol,
             "side": req.side.wire,

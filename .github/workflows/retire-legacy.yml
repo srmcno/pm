@@ -1,0 +1,47 @@
+name: Stop retired legacy shifts
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [claude/polymarket-wallets-analysis-m81p4j]
+    paths: ['.github/workflows/retire-legacy.yml']
+permissions:
+  actions: write
+  contents: write
+jobs:
+  stop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Cancel obsolete running and queued research shifts
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          repo='${{ github.repository }}'
+          names=['arb-watch','watch-shift','engine-shift','autotrade','stocks-shift','kraken-watch','refresh-dashboard']
+          for name in names:
+            raw=subprocess.check_output(['gh','api',f'repos/{repo}/actions/workflows/{name}.yml/runs?per_page=30'],text=True)
+            for run in json.loads(raw).get('workflow_runs',[]):
+              if run['status'] in ('in_progress','queued','pending','waiting'):
+                subprocess.run(['gh','api','-X','POST',f'repos/{repo}/actions/runs/{run["id"]}/cancel'],check=False)
+          PY
+      - name: Remove only merged branches preserved in the default branch
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, urllib.parse
+          repo='${{ github.repository }}'
+          default='${{ github.event.repository.default_branch }}'
+          candidates=['claude/app-profitability-live-n0eas7','claude/crypto-arbitrage-low-latency-btfyvw','claude/polymarket-consensus-optimization-urfhfe','copilot/fix-bot-stale-message','copilot/fix-github-actions-job','codex/us-opportunity-terminal-20260908']
+          branches=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/branches?per_page=100'],text=True))
+          for branch in branches:
+            name=branch['name']
+            if name==default or name not in candidates or branch.get('protected'): continue
+            ref=urllib.parse.quote(name,safe='')
+            base=urllib.parse.quote(default,safe='')
+            compare=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/compare/{base}...{ref}'],text=True))
+            if compare.get('status') in ('behind','identical'):
+              subprocess.run(['gh','api','-X','DELETE',f'repos/{repo}/git/refs/heads/{ref}'],check=True)
+              print(f'Removed merged branch: {name}')
+            else: print(f'Preserved unmerged work: {name}')
+          PY

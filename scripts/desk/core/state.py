@@ -108,7 +108,7 @@ def load(name="state.json", bankroll=1000.0):
     try:
         with open(_path(name)) as f:
             blob = json.load(f)
-    except (OSError, ValueError):
+    except FileNotFoundError:
         now = int(time.time())
         return DeskState(bankroll_start=float(bankroll), cash=float(bankroll),
                          created_at=now, updated_at=now)

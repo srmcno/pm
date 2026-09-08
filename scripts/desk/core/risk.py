@@ -29,6 +29,7 @@ fund them below it instead of letting the fees quietly eat the account.
 """
 import datetime as _dt
 import json
+import math
 import os
 import time
 from dataclasses import dataclass, field, asdict
@@ -134,7 +135,7 @@ class RiskManager:
         try:
             with open(self.state_path) as f:
                 blob = json.load(f)
-        except (OSError, ValueError):
+        except FileNotFoundError:
             return
         self.peak_equity = blob.get("peakEquity", self.peak_equity)
         self.day = blob.get("day", self.day)
@@ -246,6 +247,8 @@ class RiskManager:
         refusing it would trap the exposure they are meant to limit. It is
         still counted against turnover, and the STOP file still holds it.
         """
+        if not all(math.isfinite(x) for x in (notional, current_notional, reserved, self.equity)):
+            return False, "non-finite risk input"
         if reducing:
             if self.stop_file_present():
                 return False, "STOP file present"
@@ -313,6 +316,10 @@ class RiskManager:
                         "no validation record for this desk — run `desk.cli validate`"))
                     continue
                 if v.get("stale"):
+                    if v.get("modelCompatible") is False:
+                        out.append(DeskAllocation(d.meta.name, 0.0, False,
+                            "validation uses an older calculation model; re-run desk.cli validate"))
+                        continue
                     out.append(DeskAllocation(
                         d.meta.name, 0.0, False,
                         f"validation record is {v.get('ageDays', '?')} days old "

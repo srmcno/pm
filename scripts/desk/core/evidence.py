@@ -16,6 +16,7 @@ import time
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")
 PATH = os.path.join(BASE, "data", "desk", "evidence.json")
 MAX_AGE_DAYS = 30
+MODEL_VERSION = "2026-09-08-auction-cutoff-v2"
 
 
 def load(path=None):
@@ -33,6 +34,7 @@ def verdicts(path=None, now=None, max_age_days=MAX_AGE_DAYS):
     gen = int(blob.get("generatedAt") or 0)
     now = now or time.time()
     age = (now - gen) / 86400.0 if gen else float("inf")
+    compatible = blob.get("modelVersion") == MODEL_VERSION
     out = {}
     for name, d in (blob.get("desks") or {}).items():
         out[name] = {
@@ -41,6 +43,7 @@ def verdicts(path=None, now=None, max_age_days=MAX_AGE_DAYS):
             "date": time.strftime("%Y-%m-%d", time.gmtime(gen)) if gen else "never",
             "ageDays": round(age, 1) if gen else None,
             "maxAgeDays": max_age_days,
-            "stale": age > max_age_days,
+            "stale": age < -1 / 1440 or age > max_age_days or not compatible,
+            "modelCompatible": compatible,
         }
     return out

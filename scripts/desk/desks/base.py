@@ -54,11 +54,12 @@ class View:
     from a desk, which is the point.
     """
 
-    def __init__(self, series, index, event, timestamp):
+    def __init__(self, series, index, event, timestamp, auction_cutoff=False):
         self._series = series          # {symbol: [Bar]} aligned, full history
         self._i = index                # index of the CURRENT bar
         self.event = event
         self.timestamp = timestamp
+        self.auction_cutoff = auction_cutoff
 
     @property
     def index(self):
@@ -73,7 +74,7 @@ class View:
             return []
         # close event: the current bar is complete and visible.
         # open event: it is not — only its open price is knowable.
-        end = self._i + 1 if self.event == CLOSE else self._i
+        end = self._i + 1 if self.event == CLOSE and not self.auction_cutoff else self._i
         return s[:end]
 
     def closes(self, symbol):
@@ -88,6 +89,8 @@ class View:
         s = self._series.get(symbol)
         if not s or self._i >= len(s):
             return None
+        if self.auction_cutoff:
+            return s[self._i - 1].c if self._i > 0 else None
         return s[self._i].o
 
     def price_now(self, symbol):

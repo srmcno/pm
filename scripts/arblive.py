@@ -151,6 +151,7 @@ def spent_today():
 
 def execute_opps(opps, info):
     """Fire verified triangles under the rails. Called from arb.py --execute."""
+    raise RuntimeError("MEXC execution is disabled: this repository is U.S.-only and MEXC excludes U.S. residents.")
     if os.path.exists(STOP):
         print("  live: STOP file present — not trading", flush=True)
         return 0

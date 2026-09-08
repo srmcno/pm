@@ -7,6 +7,9 @@ name: Desk walk-forward validation
 # anyone having to notice first.
 on:
   workflow_dispatch: {}
+  push:
+    branches: [claude/polymarket-wallets-analysis-m81p4j]
+    paths: ['scripts/desk/**', '.github/workflows/desk-validate.yml']
   schedule:
     - cron: "30 6 * * 1"     # Mondays, before the US session
 

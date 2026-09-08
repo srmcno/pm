@@ -4,6 +4,7 @@
 <title>Moffitt Money — Desk System</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="legacy.css?v=3.0.0">
 <style>
   :root {
     --gold-line: rgba(169, 133, 46, 0.55);
@@ -104,14 +105,15 @@
   }
   .card .note { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
 </style>
+<div class="archive-banner"><strong>Calculation model updated September 8, 2026.</strong> Older validation results are inactive until replayed with the corrected auction timing. <a href="./">Open the live opportunity desk →</a></div>
 <nav class="topnav" aria-label="Site">
   <a class="brand" href="./">Moffitt Money</a>
   <div class="navlinks">
-    <a href="./#desks">Overview</a>
+    <a href="./">Overview</a>
     <a href="desk.html">Desk System</a>
-    <a href="./#signals">Signals</a>
-    <a href="./#engine">Engine</a>
-    <a href="arb.html">Arb Desk</a>
+    <a href="wallets.html#signals">Signals</a>
+    <a href="wallets.html#engine">Engine</a>
+    <a href="./#discovery">Token radar</a>
     <a href="stocks.html">Stocks</a>
   </div>
 </nav>
@@ -151,8 +153,7 @@
 <section>
   <h2>Risk</h2>
   <p class="sectionnote">Live limits. The turnover budget is the important one: the pattern-day-trader
-    rule was repealed in June 2026, and it had been the main thing stopping a small account from grinding
-    itself away on spread. The brake is now internal.</p>
+    rules changed in June 2026, with a broker transition period through October 2027. Confirm your broker's current account requirements. Turnover and exposure limits also apply here.</p>
   <div class="card" id="risk"></div>
 </section>
 
@@ -259,14 +260,18 @@ function render() {
   const modeLabel = live ? "REAL ORDERS ARMED"
     : mode === "live-paper-endpoint" ? "mirroring to the broker's paper endpoint"
     : "paper only, no orders";
-  const pill = el("span", "pill " + (mins < 90 ? "live" : "stale"),
-    mins < 90 ? "system live" : "system stale");
+  const pill = el("span", "pill " + (mins >= 0 && mins < 30 ? "live" : "stale"),
+    mins >= 0 && mins < 30 ? "recent snapshot" : "stale snapshot");
   asof.append(pill, `Updated ${ago(d.updatedAt)} · preset ${d.config.preset} · ` +
     modeLabel);
 
   const acct = d.account || {};
   const cfg = d.config || {};
-  const ev = (d.evidence || {}).desks || {};
+  const evidenceCurrent = d.evidence?.modelVersion === '2026-09-08-auction-cutoff-v2' &&
+    Date.now()/1000 - (d.evidence.generatedAt || 0) >= -60 &&
+    Date.now()/1000 - (d.evidence.generatedAt || 0) < 30*86400;
+  const ev = Object.fromEntries(Object.entries((d.evidence || {}).desks || {}).map(([name,v]) =>
+    [name, evidenceCurrent ? v : {...v, verdict:'needs-revalidation', notes:[...(v.notes || []),'Historic result; timing and fee model changed.']} ]));
   const validated = Object.values(ev).filter(x => x.verdict === "validated" && (x.declared || "validated") === "validated").length;
   // Marked equity from the last cycle, not the cash left after buying.
   const equity = (d.cycle && typeof d.cycle.equity === "number") ? d.cycle.equity : acct.cash;

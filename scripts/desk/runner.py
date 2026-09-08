@@ -29,6 +29,7 @@ so the only thing that changes when the account is armed is which object
 receives the order.
 """
 import datetime as _dt
+import math
 import time
 from dataclasses import dataclass, field
 
@@ -310,7 +311,7 @@ class LiveBroker:
 # ------------------------------------------------------------------- runner
 class Runner:
     def __init__(self, cfg=None, st=None, broker=None, rm=None,
-                 series_loader=None, clock=None, verdicts=None):
+                 series_loader=None, clock=None, verdicts=None, quote_loader=None):
         self.cfg = cfg or cfgmod.load()
         self.st = st or statemod.load(bankroll=self.cfg.equity)
         self.rm = rm or risk.RiskManager(self.st.cash, self.cfg.limits)
@@ -318,6 +319,9 @@ class Runner:
         self.live = broker is not None and not isinstance(broker, PaperBroker)
         self._load = series_loader or self._default_loader
         self._clock = clock                     # () -> aware datetime, for tests
+        self._quote_loader = quote_loader
+        self._use_quote_feed = quote_loader is not None or series_loader is None
+        self._quotes = {}
         # None: read data/desk/evidence.json on every cycle, so a Monday
         # validation that fails a desk switches it off at the next cycle.
         self._verdicts = verdicts
@@ -364,11 +368,13 @@ class Runner:
         """Live: the venue's equity is the truth. Paper: local book."""
         if self.live and hasattr(self.broker.venue, "account"):
             try:
-                eq = float(self.broker.venue.account().get("equity") or 0)
-                if eq > 0:
+                raw = self.broker.venue.account().get("equity")
+                eq = float(raw)
+                if math.isfinite(eq):
                     return eq
-            except Exception:                                 # noqa: BLE001
-                pass
+                raise ValueError("non-finite venue equity")
+            except Exception as e:
+                raise risk.Halted("cannot verify current broker equity; no new cycle") from e
         return self.st.equity(marks) if self.st.positions else self.st.cash
 
     # ----------------------------------------------------------- reconcile
@@ -540,7 +546,7 @@ class Runner:
         p.update({"shares": filled, "entry": px, "cost": filled * px,
                   "openFee": fees, "liveOpen": True, "liveQty": filled})
         self.st.cash -= filled * px + fees_cash
-        self._note_fee(p["symbol"], fees)
+        self._note_fee(p["symbol"], fees, filled, px, "buy")
         # Turnover is counted where the fill is confirmed, so an auction
         # order that fills long after submission still spends its budget.
         self.rm.record_trade(filled * px)
@@ -562,10 +568,11 @@ class Runner:
                                "side": p.get("side", "long"), "shares": take,
                                "entry": p.get("entry", 0.0), "exit": px,
                                "openedAt": p.get("openedAt", 0), "closedAt": int(time.time()),
-                               "pnl": round(pnl, 6), "fees": round(fees, 6), "reason": reason})
+                               "pnl": round(pnl, 6), "fees": round(fees + open_fee, 6),
+                               "entryFee": round(open_fee, 6), "exitFee": round(fees, 6), "reason": reason})
         self.st.trade_count += 1
         self.rm.record_trade(take * px)
-        self._note_fee(p["symbol"], fees)
+        self._note_fee(p["symbol"], fees, take, px, "sell")
         p["shares"] = max(0.0, p["shares"] - take)
         p["openFee"] = max(0.0, float(p.get("openFee", 0.0)) - open_fee)
         p["cost"] = p["shares"] * float(p.get("entry") or px)
@@ -574,7 +581,7 @@ class Runner:
             self.st.positions.remove(p)
         statemod.journal("close_confirmed", {"symbol": p["symbol"], "shares": take, "price": px})
 
-    def _note_fee(self, symbol, fees):
+    def _note_fee(self, symbol, fees, shares=None, price=None, side=None):
         """Paper only: accumulate the day's raw regulatory fees so the
         per-day, per-fee-type cent rounding the replay charges is charged
         here too. Live, the broker does the rounding."""
@@ -587,6 +594,10 @@ class Runner:
         fd["date"] = fd.get("date") or getattr(self, "_today", None)
         fd["raw"] = fd.get("raw", 0.0) + fees
         fd["traded"] = True
+        if shares is not None and price is not None and side:
+            components = fd.setdefault("components", {"sec": 0.0, "taf": 0.0, "cat": 0.0})
+            for kind, value in money.equity_fee_components(shares, price, side).items():
+                components[kind] += value
 
     def _pending_notional(self):
         """Notional of orders already at the venue but not yet filled: it
@@ -646,13 +657,7 @@ class Runner:
                     # 24/7 venues serve the candle still forming. The replay
                     # decided on completed bars, so the live loop does too.
                     s = completed_bars(s, d.meta.interval, now_ts)
-                # Equity desks keep today's forming bar on purpose. Their
-                # close decisions are made at 15:30-15:48 for orders that
-                # fill at 16:00: the session so far is the best available
-                # proxy for the close the replay decided on, and the only
-                # alternative — deciding on yesterday's close — is a full
-                # session staler. The runbook lists this as the one known
-                # gap between replay and live.
+                # Auction decisions below use prior completed sessions only.
                 if s:
                     series[sym] = s
             if not series:
@@ -667,6 +672,24 @@ class Runner:
                 notes.append(f"{d.meta.name}: warming up ({length}/{d.meta.warmup_bars})")
                 continue
             bar_ts = aligned[list(aligned)[0]][-1].t
+            auction = d.meta.execution_style == money.AUCTION
+            if auction:
+                # Exactly the same information boundary as auction replay.
+                # Only PRIOR sessions are knowable before today's auction.
+                session_date = self.now_et().date()
+                aligned = {sym: [b for b in seq if _dt.datetime.fromtimestamp(
+                    b.t, self.now_et().tzinfo).date() < session_date]
+                    for sym, seq in aligned.items()}
+                if any(len(seq) < d.meta.warmup_bars for seq in aligned.values()):
+                    notes.append(f"{d.meta.name}: not enough completed sessions")
+                    continue
+                bar_ts = int(self.now_et().replace(hour=0, minute=0, second=0,
+                                                   microsecond=0).timestamp())
+                # Placeholder contains no future price. View withholds it.
+                aligned = {sym: seq + [bars.Bar(bar_ts, seq[-1].c, seq[-1].c,
+                                                seq[-1].c, seq[-1].c)]
+                           for sym, seq in aligned.items()}
+                length = min(len(seq) for seq in aligned.values())
             prev = self.st.decisions.get(d.meta.name) or {}
             if prev.get("barTs") == bar_ts and prev.get("event") == ev:
                 # Same bar, same event: the replay decided exactly once here.
@@ -675,7 +698,8 @@ class Runner:
                 weights = dict(prev.get("weights") or {})
                 note = "unchanged, already decided on this bar: " + str(prev.get("note", ""))
             else:
-                view = deskbase.View(aligned, length - 1, ev, bar_ts)
+                view = deskbase.View(aligned, length - 1, ev, bar_ts,
+                                     auction_cutoff=auction)
                 decision = d.decide(view)
                 weights = dict((decision.weights or {}) if decision else {})
                 note = decision.note if decision else ""
@@ -697,8 +721,30 @@ class Runner:
 
     def marks(self, symbols):
         out = {}
+        self._quotes = {}
         for sym in symbols:
             m = self._symbol_meta.get(sym)
+            if self._use_quote_feed:
+                try:
+                    if self._quote_loader:
+                        q = self._quote_loader(sym)
+                    elif m and m.asset_class == "crypto":
+                        from .venues.alpaca import AlpacaVenue
+                        q = AlpacaVenue.latest_crypto_quote(sym)
+                    elif self.live and hasattr(self.broker.venue, "latest_quote"):
+                        q = self.broker.venue.latest_quote(sym)
+                    else:
+                        q = None
+                    if q:
+                        ts = _dt.datetime.fromisoformat(q["ts"].replace("Z", "+00:00")).timestamp()
+                        bid, ask = float(q["bid"]), float(q["ask"])
+                        age = self.now_et().timestamp() - ts
+                        if math.isfinite(bid) and math.isfinite(ask) and 0 < bid <= ask and -5 <= age <= 30:
+                            self._quotes[sym] = {"bid": bid, "ask": ask, "at": ts}
+                            out[sym] = bid
+                            continue
+                except Exception:
+                    pass  # Historical mark below stays an estimate, never an entry quote.
             src = "alpaca" if (m and m.asset_class == "crypto") else "yahoo"
             s = self._load(sym, m.interval if m else "1d", src)
             if s:
@@ -836,7 +882,8 @@ class Runner:
             # session starts, exactly where the replay charges it.
             fd = self.st.fee_day
             if fd.get("date") and fd["date"] != today:
-                extra = money.daily_fee_floor(fd.get("raw", 0.0), bool(fd.get("traded")))
+                extra = money.daily_fee_floor(fd.get("raw", 0.0), bool(fd.get("traded")),
+                                              fd.get("components"))
                 if extra > 0:
                     self.st.cash -= extra
                     statemod.journal("fee_floor", {"date": fd["date"], "extra": round(extra, 6)})
@@ -902,7 +949,29 @@ class Runner:
     # ------------------------------------------------------------- effects
     def _execute(self, order, executed, refused):
         """Risk check, journal, submit, book. The only path to a venue."""
+        if self._use_quote_feed and order.order_type not in ("cls", "opg"):
+            quote = self._quotes.get(order.symbol)
+            if quote and -5 <= self.now_et().timestamp() - quote["at"] <= 30:
+                order.ref_price = quote["ask"] if order.side == "buy" else quote["bid"]
+            elif not order.reducing or not self.live:
+                refused.append({"symbol": order.symbol, "reason": "fresh two-sided quote unavailable"})
+                return
+        if (not math.isfinite(order.shares) or not math.isfinite(order.ref_price)
+                or order.shares <= 0 or order.ref_price <= 0):
+            refused.append({"symbol": order.symbol, "reason": "invalid order size or price"})
+            return
         notional = order.shares * order.ref_price
+        if order.side == "buy":
+            # Gross weights alone do not reserve fees or existing holdings
+            # in inactive desks. Never fund a new buy with imaginary cash.
+            pending_buys = sum(float(p.get("targetShares", 0)) * float(p.get("entry", 0))
+                               for p in self.st.positions
+                               if p.get("liveCid") and not p.get("liveOpen"))
+            required = notional + self._est_fee(order.symbol, order.shares,
+                                                order.ref_price, "buy")
+            if required > max(0, self.st.cash - pending_buys):
+                refused.append({"symbol": order.symbol, "reason": "insufficient cash after fees and pending buys"})
+                return
         held_qty, symbols = 0.0, set()
         for p in self.st.positions:
             if p.get("shares", 0.0) > 0 and p.get("liveOpen"):
@@ -1001,7 +1070,7 @@ class Runner:
                               "openFee": fees, "liveOpen": True, "liveQty": filled})
                     self.st.cash -= filled * px + fees
                     self.rm.record_trade(filled * px)
-                    self._note_fee(order.symbol, fees)
+                    self._note_fee(order.symbol, fees, filled, px, "buy")
                 else:
                     self._book_open(p, filled, px)
             elif res.get("status") in FAILED and filled > 0:

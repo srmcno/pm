@@ -1,57 +1,26 @@
-name: Watcher watchdog
-
-# GitHub silently skips scheduled runs under load; a skipped shift means a
-# dark watcher, a stale site, and missed signals until the next cron fires.
-# Twice an hour, start a shift if none is running or queued.
+name: Dashboard watchdog
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "20,50 * * * *"
-
+    - cron: '20,50 * * * *'
 permissions:
   actions: write
-
 jobs:
   ensure:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Start a shift if none is active
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Recover a missing opportunity scan
         run: |
-          for st in in_progress queued; do
-            n=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/watch-shift.yml/runs?status=$st&per_page=1" --jq '.total_count')
-            if [ "$n" != "0" ]; then
-              echo "A shift is $st — nothing to do."
-              exit 0
-            fi
-          done
-          echo "No active shift — dispatching one."
-          gh workflow run watch-shift.yml --ref "${GITHUB_REF_NAME}"
-
-      - name: Free the Pages queue if a deploy is wedged
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # A deploy that enters the github-pages environment queue and never
-          # leaves sits in "waiting" forever, and because it holds the "pages"
-          # concurrency group every later deploy queues behind it and is
-          # cancelled by the next one. That is not theoretical: one wedged on
-          # 2026-08-30 and the site served that day's data for three days
-          # while every desk kept committing on time. Nothing recovers from
-          # it on its own, so cancel it and let the schedule publish again.
-          runs=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/jekyll-gh-pages.yml/runs?status=waiting&per_page=20" \
-                   --jq '.workflow_runs[] | "\(.id) \(.created_at)"' || true)
-          [ -z "$runs" ] && { echo "No waiting deploy."; exit 0; }
-          now=$(date -u +%s)
-          echo "$runs" | while read -r id created; do
-            age=$(( (now - $(date -u -d "$created" +%s)) / 60 ))
-            if [ "$age" -ge 15 ]; then
-              echo "::warning::Pages deploy $id has been waiting ${age}m — cancelling it."
-              gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/runs/$id/cancel" || true
-            else
-              echo "Pages deploy $id is waiting but only ${age}m old — leaving it."
-            fi
-          done
+          gh api 'repos/${{ github.repository }}/actions/workflows/opportunities.yml/runs?per_page=1' > /tmp/runs.json
+          python3 - <<'PYCODE'
+          import json, datetime, subprocess
+          with open('/tmp/runs.json') as f: runs=json.load(f).get('workflow_runs', [])
+          run=runs[0] if runs else {}
+          active=run.get('status') in ('in_progress','queued','pending','waiting')
+          age=(datetime.datetime.now(datetime.timezone.utc)-datetime.datetime.fromisoformat(run.get('created_at','1970-01-01T00:00:00Z').replace('Z','+00:00'))).total_seconds()
+          if not active and age>900:
+            subprocess.run(['gh','workflow','run','opportunities.yml','--repo','${{ github.repository }}','--ref','${{ github.event.repository.default_branch }}'],check=True)
+          PYCODE
