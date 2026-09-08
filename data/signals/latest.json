@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788877238,
+  "generatedAt": 1788878144,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.7915,
-     "netUsd": 5023.44,
-     "avgPrice": 0.6483,
+     "netUsd": 5117.24,
+     "avgPrice": 0.6501,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.0,
-     "score": 2.3961603685581654
+     "lastTradeAgoH": 0.1,
+     "score": 2.488298369901184
     },
     {
      "wallet": "0x1610db79f753a80207e1d66716be9e91e627ae49",
@@ -31,8 +31,8 @@
      "netUsd": 2649.16,
      "avgPrice": 0.6588,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.4,
-     "score": 1.805583026210346
+     "lastTradeAgoH": 0.7,
+     "score": 1.7867690856031404
     },
     {
      "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
@@ -41,8 +41,8 @@
      "netUsd": 20105.95,
      "avgPrice": 0.83,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.7,
-     "score": 1.54718189522648
+     "lastTradeAgoH": 2.9,
+     "score": 1.5310604608405856
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -51,20 +51,20 @@
      "netUsd": 24037.84,
      "avgPrice": 0.8375,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.2,
-     "score": 1.1586053089913027
+     "lastTradeAgoH": 3.4,
+     "score": 1.1465327921620398
     }
    ],
    "backerCount": 4,
    "contested": true,
-   "totalNetUsd": 51816.39,
-   "score": 6.9075,
+   "totalNetUsd": 51910.19,
+   "score": 6.9527,
    "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
    "outcome": "FURIA",
    "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
-   "currentPrice": 0.69,
-   "backersAvgEntry": 0.7437,
-   "driftSinceEntry": -0.0537,
+   "currentPrice": 0.735,
+   "backersAvgEntry": 0.7441,
+   "driftSinceEntry": -0.0091,
    "endDate": "2026-09-08T17:50:00Z",
    "slug": "cs2-gl1-furia-2026-09-08",
    "eventSlug": "cs2-gl1-furia-2026-09-08"
@@ -82,8 +82,8 @@
      "netUsd": 722.91,
      "avgPrice": 0.8495,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.5,
-     "score": 0.9614103707763136
+     "lastTradeAgoH": 14.7,
+     "score": 0.9513925995897397
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -92,8 +92,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 24.7,
-     "score": 0.6780947426013558
+     "lastTradeAgoH": 24.9,
+     "score": 0.6710290834606976
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -102,14 +102,14 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 31.5,
-     "score": 0.6493736790279144
+     "lastTradeAgoH": 31.7,
+     "score": 0.6426072896391328
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1699.74,
-   "score": 2.2889,
+   "score": 2.265,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",
