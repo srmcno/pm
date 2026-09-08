@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 32.4396,
+ "cash": 39.9305,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -28,22 +28,8 @@
    "costUsd": 8.61,
    "openedAt": 1788818759,
    "signalScore": 4.7743,
-   "markPrice": 0.735,
-   "valueUsd": 7.316
-  },
-  {
-   "conditionId": "0x162ea59ddf373ba7024ab0b12d9186e4bd07ab8adc8399bad6905a02f0f49b87",
-   "outcomeIndex": 1,
-   "tokenId": "3457846670248566605379575947998867889174807474183771080619478298449332920144",
-   "question": "Counter-Strike: GamerLegion vs FURIA - Map 2 Winner",
-   "outcome": "FURIA",
-   "shares": 7.4909,
-   "entryPrice": 0.825,
-   "costUsd": 6.18,
-   "openedAt": 1788874002,
-   "signalScore": 5.5747,
-   "markPrice": 0.9995,
-   "valueUsd": 7.4872
+   "markPrice": 0.945,
+   "valueUsd": 9.4063
   }
  ],
  "closed": [
@@ -216,6 +202,23 @@
    "settledAt": 1788870282,
    "settlePrice": 1.0,
    "pnl": 0.6744
+  },
+  {
+   "conditionId": "0x162ea59ddf373ba7024ab0b12d9186e4bd07ab8adc8399bad6905a02f0f49b87",
+   "outcomeIndex": 1,
+   "tokenId": "3457846670248566605379575947998867889174807474183771080619478298449332920144",
+   "question": "Counter-Strike: GamerLegion vs FURIA - Map 2 Winner",
+   "outcome": "FURIA",
+   "shares": 7.4909,
+   "entryPrice": 0.825,
+   "costUsd": 6.18,
+   "openedAt": 1788874002,
+   "signalScore": 5.5747,
+   "markPrice": 0.9995,
+   "valueUsd": 7.4872,
+   "settledAt": 1788879051,
+   "settlePrice": 1.0,
+   "pnl": 1.3109
   }
  ],
  "equityCurve": [
@@ -12423,6 +12426,11 @@
    "t": 1788878144,
    "equity": 57.253,
    "cash": 32.4396
+  },
+  {
+   "t": 1788879051,
+   "equity": 59.347,
+   "cash": 39.9305
   }
  ],
  "log": [
@@ -12599,6 +12607,13 @@
    "outcome": "FURIA",
    "stake": 6.18,
    "price": 0.825
+  },
+  {
+   "t": 1788879051,
+   "action": "SETTLE",
+   "question": "Counter-Strike: GamerLegion vs FURIA - Map 2 Winner",
+   "price": 1.0,
+   "pnl": 1.3109
   }
  ]
 }

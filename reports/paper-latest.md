@@ -1,14 +1,13 @@
 # Paper portfolio
 
-Updated 2026-09-08 14:35 UTC · started with $50.00 (virtual)
+Updated 2026-09-08 14:50 UTC · started with $50.00 (virtual)
 
-**Equity $57.25 (+14.5%)** · cash $32.44 · 3 open · 10 settled
+**Equity $59.35 (+18.7%)** · cash $39.93 · 2 open · 11 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Stefany Shaheen be the Democratic nominee for NH-01? | No | 11.99 | 0.85 | 0.83 | $10.01 |
-| Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B | FURIA | 9.95 | 0.86 | 0.73 | $7.32 |
-| Counter-Strike: GamerLegion vs FURIA - Map 2 Winner | FURIA | 7.49 | 0.82 | 1.00 | $7.49 |
+| Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B | FURIA | 9.95 | 0.86 | 0.94 | $9.41 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
@@ -22,3 +21,4 @@ Updated 2026-09-08 14:35 UTC · started with $50.00 (virtual)
 | Will Grüne win at least 7% of all valid second votes? | No | 0.89 | 0.00 | -7.44 |
 | Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B | FaZe | 0.76 | 0.00 | -7.23 |
 | LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner | Invictus Gaming | 0.90 | 1.00 | +0.67 |
+| Counter-Strike: GamerLegion vs FURIA - Map 2 Winner | FURIA | 0.82 | 1.00 | +1.31 |
