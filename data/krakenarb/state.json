@@ -1,36 +1,8 @@
 {
  "bankrollStart": 40.0,
- "cash": 79.1394,
+ "cash": 79.199,
  "createdAt": 1786666692,
  "trades": [
-  {
-   "t": 1787104160,
-   "path": "USD\u2192ELX\u2192EUR\u2192USD",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0214,
-   "bps": 42.8
-  },
-  {
-   "t": 1787104440,
-   "path": "USD\u2192ELX\u2192EUR\u2192USD",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0209,
-   "bps": 41.8
-  },
-  {
-   "t": 1787104550,
-   "path": "USD\u2192ELX\u2192EUR\u2192USD",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0214,
-   "bps": 42.8
-  },
-  {
-   "t": 1787104660,
-   "path": "USD\u2192ELX\u2192EUR\u2192USD",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0214,
-   "bps": 42.8
-  },
   {
    "t": 1787104830,
    "path": "USD\u2192ELX\u2192EUR\u2192USD",
@@ -1402,57 +1374,37 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0092,
    "bps": 18.4
+  },
+  {
+   "t": 1788866513,
+   "path": "USD\u2192EUR\u2192DUAL\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0113,
+   "bps": 22.6
+  },
+  {
+   "t": 1788866543,
+   "path": "USD\u2192EUR\u2192DUAL\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0136,
+   "bps": 27.2
+  },
+  {
+   "t": 1788866573,
+   "path": "USD\u2192EUR\u2192DUAL\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0172,
+   "bps": 34.4
+  },
+  {
+   "t": 1788866603,
+   "path": "USD\u2192EUR\u2192DUAL\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0175,
+   "bps": 35.0
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788861475,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861485,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861495,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861505,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861515,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861525,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861535,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861545,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861555,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861565,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861575,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788861585,
-   "equity": 78.8319
-  },
   {
    "t": 1788861595,
    "equity": 78.8319
@@ -3404,16 +3356,64 @@
   {
    "t": 1788866483,
    "equity": 79.1394
+  },
+  {
+   "t": 1788866493,
+   "equity": 79.1394
+  },
+  {
+   "t": 1788866503,
+   "equity": 79.1394
+  },
+  {
+   "t": 1788866513,
+   "equity": 79.1507
+  },
+  {
+   "t": 1788866523,
+   "equity": 79.1507
+  },
+  {
+   "t": 1788866533,
+   "equity": 79.1507
+  },
+  {
+   "t": 1788866543,
+   "equity": 79.1643
+  },
+  {
+   "t": 1788866553,
+   "equity": 79.1643
+  },
+  {
+   "t": 1788866563,
+   "equity": 79.1643
+  },
+  {
+   "t": 1788866573,
+   "equity": 79.1815
+  },
+  {
+   "t": 1788866583,
+   "equity": 79.1815
+  },
+  {
+   "t": 1788866593,
+   "equity": 79.1815
+  },
+  {
+   "t": 1788866603,
+   "equity": 79.199
   }
  ],
  "decay": {
-  "checked": 683,
-  "survived": 554
+  "checked": 695,
+  "survived": 566
  },
  "cooldown": {
-  "USD\u2192EUR\u2192DUAL\u2192USD|ZEURZUSD|DUALEUR|DUALUSD": 1788866483
+  "USD\u2192EUR\u2192DUAL\u2192USD|ZEURZUSD|DUALEUR|DUALUSD": 1788866603
  },
- "tradeCountAll": 273,
+ "tradeCountAll": 277,
  "replay": {
   "edges": 191,
   "refillable": 191,
