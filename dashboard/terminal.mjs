@@ -1,4 +1,4 @@
-import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.2';
+import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.3';
 const $ = id => document.getElementById(id);
 const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const names = {BTC:'Bitcoin', ETH:'Ethereum', SOL:'Solana', LINK:'Chainlink', AVAX:'Avalanche', DOGE:'Dogecoin'};
@@ -215,7 +215,7 @@ function renderTokens() {
   $('token-summary').textContent=`${passed} pass market rules · ${tokens.length-passed-missing} excluded · ${missing} missing data`;
   $('tokens').innerHTML=shown.map(({t,i})=>{
     const label=t.status==='review'?'Market screen passed':t.status==='incomplete'?'Missing data':'Excluded';
-    const reason=t.status==='review'?'Security and eligibility still unverified':(t.blocks||[])[0]||'Criteria not met';
+    const reason=t.status==='review'?'Security and eligibility still unverified':(t.status==='incomplete'?(t.rules||[]).find(r=>r.state==='unknown')?.reason:null)||(t.blocks||[])[0]||'Criteria not met';
     return `<tr><td><strong>${escape(t.symbol)}</strong><small>${escape(t.dex)} · ${Number.isFinite(t.ageHours)?t.ageHours<1?'under 1h':t.ageHours.toFixed(0)+'h old':'age not reported'}</small></td><td>${Number.isFinite(t.liquidity)?money(t.liquidity,0):'Not reported'}</td><td class="${t.change>=0?'positive':'negative'}">${Number.isFinite(t.change)?(t.change>0?'+':'')+t.change.toFixed(1)+'%':'Not reported'}</td><td>${t.buys??'?'} / ${t.sells??'?'}</td><td>${badge(label,t.status==='review'?'amber':'muted')}<div class="token-reason">${escape(reason)}</div></td><td><button class="row-action" data-token="${i}" aria-label="Review ${escape(t.symbol)} checks">Details ↗</button></td></tr>`;
   }).join('')||`<tr><td colspan="6" class="empty">${tokens.length ? filter==='review' ? 'No tokens currently meet every market rule in this sample. This is a screening outcome, not a system error.' : 'No sampled tokens match this category.' : 'No Pump pools are available in the current discovery sample.'}</td></tr>`;
   $('show-all-tokens').hidden=shown.length>0 || tokens.length===0 || filter==='all';
@@ -239,7 +239,7 @@ function renderBacktest(){
   $('strategy-evidence').textContent=losing ? `Research only: the current scanner lost ${Math.abs(r.returnPct).toFixed(2)}% in the 90-day replay after modeled costs. It has not demonstrated a profitable edge. See the backtests below.` : 'Research only: a positive historical sample does not establish a profitable edge. Review the backtests and limitations below.';
   $('strategy-evidence').classList.toggle('failed-evidence',losing);
   $('backtest-summary').classList.toggle('failed-evidence',losing);
-  $('backtest-summary').textContent=`${r.assessment}. ${new Date(backtest.start*1000).toLocaleDateString()} to ${new Date(backtest.end*1000).toLocaleDateString()}, across ${backtest.products.length} markets. ${backtest.dataIssues?.length?"Data gaps affect the full-universe replay; a high-coverage comparison is included. ":""}This is a fixed-rule historical replay, not live profit or a forecast.`;
+  $('backtest-summary').textContent=`${r.assessment}. ${new Date(backtest.start*1000).toISOString().slice(0,10)} to ${new Date(backtest.end*1000).toISOString().slice(0,10)} (UTC), across ${backtest.products.length} markets. ${backtest.dataIssues?.length?"Data gaps affect the full-universe replay; a high-coverage comparison is included. ":""}This is a fixed-rule historical replay, not live profit or a forecast.`;
   const metrics=[['90-DAY NET RETURN',percent(r.returnPct),'After all modeled costs'],['MAX DRAWDOWN',percent(r.maxDrawdownPct),'Loss from the preceding equity peak'],['COMPLETED TRADES',String(r.trades),`${r.forcedExits} end-of-window liquidations`],['FEES PAID',money(r.feesUsd),'Spread and slippage are additional modeled costs']];
   $('backtest-metrics').innerHTML=metrics.map(([label,value,sub],i)=>`<div class="metric"><span>${label}</span><strong class="${i<2 && value.startsWith('-')?'negative':''}">${escape(value)}</strong><small>${escape(sub)}</small></div>`).join('');
   $('backtest-rows').innerHTML=backtest.runs.map(x=>`<tr><td><strong>${escape(x.name)}</strong></td><td class="${x.returnPct>=0?'positive':'negative'}">${percent(x.returnPct)}</td><td>${percent(x.maxDrawdownPct)}</td><td>${x.trades}</td><td>${percent(x.winRatePct)}</td><td>${money(x.feesUsd)}</td><td>${percent(x.benchmarkReturnPct)}</td></tr>`).join('');
