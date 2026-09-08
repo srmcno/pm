@@ -1,14 +1,14 @@
 # Paper portfolio
 
-Updated 2026-09-08 15:31 UTC · started with $50.00 (virtual)
+Updated 2026-09-08 15:46 UTC · started with $50.00 (virtual)
 
-**Equity $60.39 (+20.8%)** · cash $33.54 · 3 open · 11 settled
+**Equity $58.75 (+17.5%)** · cash $33.54 · 3 open · 11 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Stefany Shaheen be the Democratic nominee for NH-01? | No | 11.99 | 0.85 | 0.83 | $10.01 |
 | Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B | FURIA | 9.95 | 0.86 | 1.00 | $9.95 |
-| Counter-Strike: G2 vs Astralis (BO3) - FISSURE PLAYGROUND Group A | Astralis | 14.20 | 0.45 | 0.48 | $6.89 |
+| Counter-Strike: G2 vs Astralis (BO3) - FISSURE PLAYGROUND Group A | Astralis | 14.20 | 0.45 | 0.37 | $5.25 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
