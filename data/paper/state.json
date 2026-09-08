@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 33.5405,
+ "cash": 43.4943,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -18,20 +18,6 @@
    "valueUsd": 10.0102
   },
   {
-   "conditionId": "0x42ec61e0269cd99507c19b4c2a2ecff6d342bc1cac858c03e46885c7c91117fb",
-   "outcomeIndex": 1,
-   "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
-   "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
-   "outcome": "FURIA",
-   "shares": 9.9538,
-   "entryPrice": 0.865,
-   "costUsd": 8.61,
-   "openedAt": 1788818759,
-   "signalScore": 4.7743,
-   "markPrice": 0.9995,
-   "valueUsd": 9.9488
-  },
-  {
    "conditionId": "0x726e25c3283dff77dfe54ed33ec67c8b2444cab5fccd7d245b5eb77aeeddda86",
    "outcomeIndex": 1,
    "tokenId": "4635726842589697588871141996333291015091229222999671816141218764657615327442",
@@ -42,8 +28,8 @@
    "costUsd": 6.39,
    "openedAt": 1788880906,
    "signalScore": 5.9342,
-   "markPrice": 0.37,
-   "valueUsd": 5.254
+   "markPrice": 0.445,
+   "valueUsd": 6.319
   }
  ],
  "closed": [
@@ -233,6 +219,23 @@
    "settledAt": 1788879051,
    "settlePrice": 1.0,
    "pnl": 1.3109
+  },
+  {
+   "conditionId": "0x42ec61e0269cd99507c19b4c2a2ecff6d342bc1cac858c03e46885c7c91117fb",
+   "outcomeIndex": 1,
+   "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
+   "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
+   "outcome": "FURIA",
+   "shares": 9.9538,
+   "entryPrice": 0.865,
+   "costUsd": 8.61,
+   "openedAt": 1788818759,
+   "signalScore": 4.7743,
+   "markPrice": 0.9995,
+   "valueUsd": 9.9488,
+   "settledAt": 1788883296,
+   "settlePrice": 1.0,
+   "pnl": 1.3438
   }
  ],
  "equityCurve": [
@@ -12465,6 +12468,11 @@
    "t": 1788882389,
    "equity": 58.7535,
    "cash": 33.5405
+  },
+  {
+   "t": 1788883296,
+   "equity": 59.8235,
+   "cash": 43.4943
   }
  ],
  "log": [
@@ -12656,6 +12664,13 @@
    "outcome": "Astralis",
    "stake": 6.39,
    "price": 0.45
+  },
+  {
+   "t": 1788883296,
+   "action": "SETTLE",
+   "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
+   "price": 1.0,
+   "pnl": 1.3438
   }
  ]
 }
