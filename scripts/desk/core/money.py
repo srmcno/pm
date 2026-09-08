@@ -61,7 +61,15 @@ def equity_buy_fees(shares: float, price: float) -> float:
     return shares * CAT_PER_SHARE
 
 
-def daily_fee_floor(raw_fees_today: float, traded_today: bool) -> float:
+def equity_fee_components(shares: float, price: float, side: str) -> dict:
+    """Raw per-type fees; only fees actually accrued get cent rounding."""
+    shares = abs(shares)
+    return {"sec": shares * price * SEC_FEE_PER_DOLLAR if side == "sell" else 0.0,
+            "taf": min(shares * FINRA_TAF_PER_SHARE, FINRA_TAF_CAP) if side == "sell" else 0.0,
+            "cat": shares * CAT_PER_SHARE}
+
+
+def daily_fee_floor(raw_fees_today: float, traded_today: bool, components=None) -> float:
     """Extra charge from rounding each fee type up to the cent, once a day.
 
     Returns the amount to ADD to the day's accrued raw fees. On a day with
@@ -71,6 +79,10 @@ def daily_fee_floor(raw_fees_today: float, traded_today: bool) -> float:
     """
     if not traded_today:
         return 0.0
+    if components is not None:
+        total = sum(math.ceil(max(0, v) * 100 - 1e-10) / 100
+                    for v in components.values())
+        return max(0.0, total - raw_fees_today)
     floor = FEE_ROUNDING_FLOOR * FEE_TYPES_PER_DAY
     return max(0.0, floor - raw_fees_today)
 
@@ -273,7 +285,7 @@ def round_shares(shares: float, fractional_ok: bool, side: str) -> float:
         return 0.0
     if side == "short" or not fractional_ok:
         return float(int(shares))
-    return round(shares, 6)
+    return math.floor(shares * 1e6) / 1e6
 
 
 def position_notional(equity: float, weight: float, price: float,

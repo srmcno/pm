@@ -13,6 +13,7 @@ $5,000 it is a rounding error and the same strategy can run freely. A
 preset is a coherent set of answers to that, not a difficulty slider.
 """
 import json
+import math
 import os
 from dataclasses import dataclass, asdict, field, fields
 
@@ -151,6 +152,7 @@ class Config:
     # Desks the operator named in the config file, as opposed to inherited
     # from the preset. A marginal desk runs only if it is in here.
     explicit_desks: tuple = ()
+    desks_explicit: bool = False
     notes: str = ""
 
     def to_dict(self):
@@ -176,10 +178,14 @@ def load(path=None, equity=None, preset=None):
     try:
         with open(path) as f:
             raw = json.load(f)
-    except (OSError, ValueError):
+    except FileNotFoundError:
         pass
 
+    if not isinstance(raw, dict):
+        raise ValueError("desk config must be a JSON object")
     eq = float(equity if equity is not None else raw.get("equity", 1000.0))
+    if not math.isfinite(eq) or eq <= 0:
+        raise ValueError("equity must be a finite positive number")
     name = preset or raw.get("preset") or preset_for_equity(eq).name
     p = PRESETS.get(name) or preset_for_equity(eq)
 
@@ -196,6 +202,15 @@ def load(path=None, equity=None, preset=None):
         except (TypeError, ValueError):
             continue
     limits = RiskLimits(**base)
+    for key, value in base.items():
+        if not math.isfinite(value) or value <= 0:
+            raise ValueError(f"risk limit {key} must be finite and positive")
+        if key in ("daily_loss_halt", "weekly_loss_halt", "max_drawdown_halt",
+                   "max_desk_weight", "max_position_weight", "max_gross_exposure") and value > 1:
+            raise ValueError(f"risk limit {key} must be at most 1 in this unlevered system")
+    if "desks" in raw and (not isinstance(raw["desks"], list)
+                          or any(not isinstance(n, str) for n in raw["desks"])):
+        raise ValueError("desks must be a list of names")
     cfg = Config(
         preset=p.name,
         equity=eq,
@@ -205,8 +220,9 @@ def load(path=None, equity=None, preset=None):
         # anything but the boolean false stays on the paper endpoint.
         live=raw.get("live", False) is True,
         venue_paper=raw.get("venuePaper", True) is not False,
-        desks=tuple(raw.get("desks") or p.desks),
+        desks=tuple(raw["desks"] if "desks" in raw else p.desks),
         explicit_desks=tuple(raw.get("desks") or ()),
+        desks_explicit="desks" in raw,
         limits=limits,
         desk_params=raw.get("deskParams") or {},
         notes=p.notes,
@@ -225,7 +241,7 @@ def save(cfg, path=None):
     blob = {"preset": cfg.preset, "equity": cfg.equity, "live": cfg.live,
             "venuePaper": cfg.venue_paper, "limits": cfg.limits.to_dict(),
             "deskParams": cfg.desk_params}
-    if cfg.explicit_desks:
+    if cfg.explicit_desks or cfg.desks_explicit:
         blob["desks"] = list(cfg.explicit_desks)
     with open(tmp, "w") as f:
         json.dump(blob, f, indent=1)

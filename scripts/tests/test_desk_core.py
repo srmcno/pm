@@ -428,6 +428,7 @@ class TestRiskGates(unittest.TestCase):
         fd, path = tempfile.mkstemp(suffix=".json")
         with open(path, "w") as f:
             json.dump({"generatedAt": int(time.time()) - 5 * 86400,
+                       "modelVersion": evidence.MODEL_VERSION,
                        "desks": {"a": {"verdict": "validated"}, "b": {"verdict": "weak"}}}, f)
         v = evidence.verdicts(path)
         self.assertEqual(v["a"]["verdict"], "validated")

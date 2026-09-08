@@ -145,7 +145,8 @@ def cmd_validate(args):
     This is what the dashboard reads and what decides whether a desk is
     allowed to trade. A desk whose verdict is not 'validated' stays off.
     """
-    out = {"generatedAt": int(time.time()), "folds": args.folds, "desks": {}}
+    out = {"generatedAt": int(time.time()), "modelVersion": evidence.MODEL_VERSION,
+           "folds": args.folds, "desks": {}}
     for name, cls in sorted(deskbase.all_desks().items()):
         d = cls()
         # Replay each desk at the size it claims to work from, unless the

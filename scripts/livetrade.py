@@ -216,6 +216,7 @@ def reconcile_state(state):
 
 
 def cmd_execute(args, cfg):
+    raise SystemExit("Offshore Polymarket execution is disabled for U.S. use. Polymarket US is a separate venue and API.")
     if os.path.exists(STOP):
         raise SystemExit("STOP file present (data/live/STOP) — trading halted. "
                          "Delete it only if you mean it.")

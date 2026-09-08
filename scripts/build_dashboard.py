@@ -25,7 +25,7 @@ def main():
               .replace("/*__SIGNALS__*/", enc(read_optional("data", "signals", "latest.json")))
               .replace("/*__PAPER__*/", enc(read_optional("dashboard", "data", "paper.json")))
               .replace("/*__ENGINE__*/", enc(read_optional("dashboard", "data", "engine.json"))))
-    out_path = os.path.join(BASE, "dashboard", "index.html")
+    out_path = os.path.join(BASE, "dashboard", "wallets.html")
     with open(out_path, "w") as f:
         f.write(out)
     print(f"Wrote {out_path} ({os.path.getsize(out_path)/1e6:.2f} MB)")

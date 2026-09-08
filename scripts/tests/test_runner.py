@@ -773,9 +773,10 @@ class TestRoundSix(Base):
         self.settle(r, at(1, 16, 5))                      # filled: a tiny CAT fee today
         cash_after_fill = r.st.cash
         raw = r.st.fee_day.get("raw", 0.0)
+        components = dict(r.st.fee_day.get("components", {}))
         self.assertTrue(r.st.fee_day.get("traded"))
         self.settle(r, at(2, 9, 10))                      # new session: floor charged
-        extra = money.daily_fee_floor(raw, True)
+        extra = money.daily_fee_floor(raw, True, components)
         self.assertGreater(extra, 0.0)
         self.assertAlmostEqual(cash_after_fill - r.st.cash, extra, places=6)
         self.assertEqual(r.st.fee_day, {})
@@ -857,8 +858,9 @@ class TestRoundSeven(Base):
         v.script["close2"] = [("filled", 2.0, 100.0)]
         r.reconcile()
         self.assertEqual(r.st.positions, [])
-        entry_fee_charged = -sum(c["pnl"] + c["fees"] for c in r.st.closed)
+        entry_fee_charged = sum(c["entryFee"] for c in r.st.closed)
         self.assertAlmostEqual(entry_fee_charged, 1.0, places=6)
+        self.assertAlmostEqual(sum(c["pnl"] + c["fees"] for c in r.st.closed), 0, places=6)
 
 
 if __name__ == "__main__":

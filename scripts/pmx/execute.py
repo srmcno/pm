@@ -166,6 +166,7 @@ class ExecutionClient:
         return self._post(plan, "FAK", post_only=False)
 
     def _post(self, plan, order_type, post_only):
+        raise Rejected("Offshore Polymarket execution is disabled in this U.S.-only repository")
         from py_clob_client.clob_types import (OrderArgs, OrderType,
                                                PartialCreateOrderOptions)
         args = OrderArgs(token_id=plan["tokenId"], price=plan["limit"],

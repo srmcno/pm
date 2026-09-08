@@ -1,3 +1,5 @@
+> **Historical technical reference.** September 8, 2026: the active U.S. application and current method are described in the [README](../README.md). MEXC and offshore Polymarket execution are blocked. Earlier performance measurements below use the previous timing/fee model and do not authorize trading. New desk validation must match `2026-09-08-auction-cutoff-v2`.
+
 # Running this with real money
 
 Everything here is verified against live venue APIs and fee schedules as of
