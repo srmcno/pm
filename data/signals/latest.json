@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788868469,
+  "generatedAt": 1788869375,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 722.91,
      "avgPrice": 0.8495,
      "conviction": 10.0,
-     "lastTradeAgoH": 12.0,
-     "score": 1.0641226887100335
+     "lastTradeAgoH": 12.3,
+     "score": 1.053022480681096
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -31,8 +31,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 22.3,
-     "score": 0.7505390233251166
+     "lastTradeAgoH": 22.5,
+     "score": 0.7427099079598164
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,14 +41,14 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 29.1,
-     "score": 0.7187495437008187
+     "lastTradeAgoH": 29.3,
+     "score": 0.7112520346819534
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1699.74,
-   "score": 2.5334,
+   "score": 2.507,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",
