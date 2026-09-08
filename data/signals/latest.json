@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788859886,
+  "generatedAt": 1788860643,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -18,11 +18,11 @@
      "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
      "name": "0x076daa87",
      "quality": 0.7915,
-     "netUsd": 265.27,
-     "avgPrice": 0.77,
-     "conviction": 9.51,
+     "netUsd": 416.25,
+     "avgPrice": 0.8265,
+     "conviction": 10.0,
      "lastTradeAgoH": 0.1,
-     "score": 2.4315375576348908
+     "score": 2.4899693161682497
     },
     {
      "wallet": "0xf201a19b43471261a3c1ba9247335d55270e527e",
@@ -31,8 +31,8 @@
      "netUsd": 15149.59,
      "avgPrice": 0.594,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.182485666640774
+     "lastTradeAgoH": 0.5,
+     "score": 2.1632969479727624
     },
     {
      "wallet": "0x67ac9e1ad7d7e74ef0215d14fc8edb538e4fedf1",
@@ -41,20 +41,20 @@
      "netUsd": 4462.48,
      "avgPrice": 0.663,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.1,
-     "score": 1.5724700774329066
+     "lastTradeAgoH": 0.3,
+     "score": 1.5586447009867148
     }
    ],
    "backerCount": 3,
    "contested": true,
-   "totalNetUsd": 19877.34,
-   "score": 6.1865,
+   "totalNetUsd": 20028.32,
+   "score": 6.2119,
    "question": "LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner",
    "outcome": "Invictus Gaming",
    "tokenId": "24162028251342796537180363336508956838886474981006948308022816754501676084847",
    "currentPrice": 0.785,
-   "backersAvgEntry": 0.6757,
-   "driftSinceEntry": 0.1093,
+   "backersAvgEntry": 0.6945,
+   "driftSinceEntry": 0.0905,
    "endDate": "2026-09-08T13:00:00Z",
    "slug": "lol-ig1-lgd-2026-09-08-game1",
    "eventSlug": "lol-ig1-lgd-2026-09-08"
@@ -72,8 +72,8 @@
      "netUsd": 1210.23,
      "avgPrice": 0.5794,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.3,
-     "score": 2.469591605296329
+     "lastTradeAgoH": 0.5,
+     "score": 2.447878611134102
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -82,8 +82,8 @@
      "netUsd": 43426.32,
      "avgPrice": 0.72,
      "conviction": 10.0,
-     "lastTradeAgoH": 2.4,
-     "score": 1.1957846850095206
+     "lastTradeAgoH": 2.6,
+     "score": 1.1852711791208512
     },
     {
      "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
@@ -92,14 +92,14 @@
      "netUsd": 512.64,
      "avgPrice": 0.72,
      "conviction": 10.0,
-     "lastTradeAgoH": 17.3,
-     "score": 0.8395735855502733
+     "lastTradeAgoH": 17.6,
+     "score": 0.8321919373770623
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 45149.19,
-   "score": 4.5049,
+   "score": 4.4653,
    "question": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
    "outcome": "FaZe",
    "tokenId": "40512667404719026439753288185318192012062231034408344529153741537613773958732",
@@ -123,8 +123,8 @@
      "netUsd": 794.18,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 3.4,
-     "score": 2.1756517132785818
+     "lastTradeAgoH": 3.6,
+     "score": 2.1565230796825876
     },
     {
      "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
@@ -133,8 +133,8 @@
      "netUsd": 2142.36,
      "avgPrice": 0.83,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.0,
-     "score": 0.9645554048817088
+     "lastTradeAgoH": 14.2,
+     "score": 0.9560748991047919
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -143,14 +143,14 @@
      "netUsd": 3037.84,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.1,
-     "score": 0.6749955087827844
+     "lastTradeAgoH": 16.4,
+     "score": 0.6690608540365105
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 5974.38,
-   "score": 3.8152,
+   "score": 3.7817,
    "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
    "outcome": "FURIA",
    "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
@@ -174,8 +174,8 @@
      "netUsd": 722.91,
      "avgPrice": 0.8495,
      "conviction": 10.0,
-     "lastTradeAgoH": 9.6,
-     "score": 1.1753434648967136
+     "lastTradeAgoH": 9.9,
+     "score": 1.1650096810689818
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -184,8 +184,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 19.9,
-     "score": 0.828984425926018
+     "lastTradeAgoH": 20.1,
+     "score": 0.8216958791225281
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -194,14 +194,14 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 26.7,
-     "score": 0.793872349541124
+     "lastTradeAgoH": 26.9,
+     "score": 0.7868925130150474
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1699.74,
-   "score": 2.7982,
+   "score": 2.7736,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",
