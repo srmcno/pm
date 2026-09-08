@@ -6,9 +6,9 @@ Scanned 2026-09-08 09:27 UTC · 1469 pairs · 1350 cycles · 0 verified edges ·
 |---|---|---|---|---|---|
 | — | — | — | — | — | — |
 
-Closest approach: USD→QUAI→EUR→USD at 210.7 bps against a 99.7 bps fee hurdle.
+Closest approach: USD→QUAI→EUR→USD at 210.9 bps against a 99.7 bps fee hurdle.
 
 ## Latency replay (own recorded ticks)
 
-- Edges replayed: 105 across 15558 scans
+- Edges replayed: 105 across 15591 scans
 - Atomic PnL $10.7542 → one-scan-delay PnL $13.7355 (capture ratio 1.277)
