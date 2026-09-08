@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-09-08 05:46 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-08 05:52 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B — **FaZe**
 
-- Score **3.86** · 3 backers · net $17,375 staked
+- Score **3.85** · 3 backers · net $17,375 staked
 - Backers' average entry 0.72 → current price **0.74** (already moved +0.03 since entry)
 - Resolves by 2026-09-08
 
@@ -18,7 +18,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B — **FURIA**
 
-- Score **3.46** · 3 backers · net $5,396 staked
+- Score **3.44** · 3 backers · net $5,396 staked
 - Backers' average entry 0.83 → current price **0.84** (roughly flat +0.01 since entry)
 - Resolves by 2026-09-08
 
@@ -30,7 +30,7 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 3. Will Stefany Shaheen be the Democratic nominee for NH-01? — **No**
 
-- Score **3.27** · 3 backers · net $1,700 staked
+- Score **3.26** · 3 backers · net $1,700 staked
 - Backers' average entry 0.85 → current price **0.83** (roughly flat -0.01 since entry)
 - Resolves by 2026-09-08
 
