@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788862456,
+  "generatedAt": 1788863365,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 794.18,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 4.1,
-     "score": 2.111718073606858
+     "lastTradeAgoH": 4.3,
+     "score": 2.0896416873067296
     },
     {
      "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
@@ -31,8 +31,8 @@
      "netUsd": 2142.36,
      "avgPrice": 0.83,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.7,
-     "score": 0.9362110070524298
+     "lastTradeAgoH": 15.0,
+     "score": 0.9264236419166946
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -41,14 +41,14 @@
      "netUsd": 3037.84,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 16.9,
-     "score": 0.6551601098652259
+     "lastTradeAgoH": 17.1,
+     "score": 0.6483109154322232
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 5974.38,
-   "score": 3.7031,
+   "score": 3.6644,
    "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
    "outcome": "FURIA",
    "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
@@ -72,8 +72,8 @@
      "netUsd": 722.91,
      "avgPrice": 0.8495,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.4,
-     "score": 1.1408048551014978
+     "lastTradeAgoH": 10.6,
+     "score": 1.1288786188348987
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -82,8 +82,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 20.6,
-     "score": 0.8046239130474392
+     "lastTradeAgoH": 20.8,
+     "score": 0.7962121896489573
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -92,14 +92,14 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 27.4,
-     "score": 0.7705436391454595
+     "lastTradeAgoH": 27.6,
+     "score": 0.7624881987666088
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1699.74,
-   "score": 2.716,
+   "score": 2.6876,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",
