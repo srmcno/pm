@@ -1,24 +1,36 @@
 # Smart-money signals
 
-Generated 2026-09-08 09:18 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-08 09:31 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
-## 1. Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B — **FaZe**
+## 1. LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner — **Invictus Gaming**
 
-- Score **4.54** · 3 backers · net $44,924 staked
-- Backers' average entry 0.69 → current price **0.43** (moved against them -0.26 since entry)
+- Score **6.19** · 3 backers · net $19,877 staked
+- Backers' average entry 0.68 → current price **0.79** (already moved +0.11 since entry)
 - Resolves by 2026-09-08
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
 |---|---|---|---|---|
-| 0x076daa87 | 0.79 | $985 | 0.6359 | 10.0× |
+| 0x076daa87 | 0.79 | $265 | 0.77 | 9.51× |
+| 0xF201A19b43471261A3c1Ba9247335d55270e527e-1763824114616 | 0.70 | $15,150 | 0.594 | 10.0× |
+| fkcvffcjt | 0.50 | $4,462 | 0.663 | 10.0× |
+
+## 2. Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B — **FaZe**
+
+- Score **4.50** · 3 backers · net $45,149 staked
+- Backers' average entry 0.67 → current price **0.36** (moved against them -0.31 since entry)
+- Resolves by 2026-09-08
+
+| backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
+|---|---|---|---|---|
+| 0x076daa87 | 0.79 | $1,210 | 0.5794 | 10.0× |
 | ExplosiveNinja | 0.42 | $43,426 | 0.72 | 10.0× |
 | Wiretransferxyz | 0.55 | $513 | 0.72 | 10.0× |
 
-## 2. Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B — **FURIA**
+## 3. Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B — **FURIA**
 
-- Score **3.85** · 3 backers · net $5,974 staked
+- Score **3.82** · 3 backers · net $5,974 staked
 - Backers' average entry 0.83 → current price **0.84** (roughly flat +0.01 since entry)
 - Resolves by 2026-09-08
 
@@ -28,10 +40,10 @@ Each signal marks an outcome that several qualified wallets have independently n
 | Wiretransferxyz | 0.55 | $2,142 | 0.83 | 10.0× |
 | ExplosiveNinja | 0.42 | $3,038 | 0.82 | 10.0× |
 
-## 3. Will Stefany Shaheen be the Democratic nominee for NH-01? — **No**
+## 4. Will Stefany Shaheen be the Democratic nominee for NH-01? — **No**
 
-- Score **2.82** · 3 backers · net $1,700 staked
-- Backers' average entry 0.85 → current price **0.83** (roughly flat -0.01 since entry)
+- Score **2.80** · 3 backers · net $1,700 staked
+- Backers' average entry 0.85 → current price **0.84** (roughly flat -0.01 since entry)
 - Resolves by 2026-09-08
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
