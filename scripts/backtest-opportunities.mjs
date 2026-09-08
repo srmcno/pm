@@ -60,17 +60,19 @@ export async function collectHistory(days=90) {
       console.log(JSON.stringify({collected:product,...quality[product]}));
     }
   }));
-  if (PRODUCTS.some(p=>quality[p].fiveMinute.pct<98 || quality[p].hourly.pct<98)) {
-    throw new Error('Historical coverage below 98%; refusing to publish a performance claim.');
-  }
-  return {schema:1,provider:'Coinbase Exchange',collectedAt:Date.now()/1000,start,end,days,series,quality};
+  const highCoverageProducts=PRODUCTS.filter(p=>quality[p].fiveMinute.pct>=98 && quality[p].hourly.pct>=98);
+  if(!highCoverageProducts.length)throw new Error('No market has sufficient historical coverage for comparison.');
+  const dataIssues=PRODUCTS.filter(p=>!highCoverageProducts.includes(p)).map(p=>
+    `${p}: ${quality[p].fiveMinute.pct.toFixed(2)}% five-minute coverage. Missing scans remain missing.`);
+  return {schema:1,provider:'Coinbase Exchange',collectedAt:Date.now()/1000,start,end,days,
+    series:Object.fromEntries(PRODUCTS.map(p=>[p,series[p]])),quality,highCoverageProducts,dataIssues};
 }
 // Quotes use the first traded price in the current five-minute interval.
 // Only hourly candles already completed at that timestamp enter the model.
 // Spread is an explicit assumption; historical order books are not available.
 export function replay(data, {start=data.start,end=data.end,cadence=STEP,spreadBps=10,...options}={}) {
   const model={...DEFAULTS,...options}, fee=model.feeBps/10000, slip=model.slippageBps/10000;
-  const products=Object.keys(data.series), index={}, scanMaps={};
+  const products=PRODUCTS.filter(p=>data.series[p]), index={}, scanMaps={};
   for(const product of products){index[product]=0;scanMaps[product]=new Map(data.series[product].scans.map(r=>[r[0],r]));}
   let p=null, peak=1000, maxDrawdown=0, exposed=0, steps=0, missing=0;
   const curve=[];
@@ -133,8 +135,14 @@ export function runReport(data) {
     ['Middle 30 days',{start:data.start+30*DAY,end:data.start+60*DAY}],
     ['Last 30 days',{start:data.start+60*DAY}]];
   const runs=scenarios.map(([name,options])=>{const result=replay(data,options);console.log(JSON.stringify({name,returnPct:result.returnPct,trades:result.trades}));return {name,...result};});
+  const highCoverageProducts=data.highCoverageProducts||Object.keys(data.series);
+  if(highCoverageProducts.length<Object.keys(data.series).length){
+    const comparison={...data,series:Object.fromEntries(highCoverageProducts.map(p=>[p,data.series[p]]))};
+    runs.push({name:'High-coverage markets only',products:highCoverageProducts,...replay(comparison)});
+  }
   return {schema:1,modelVersion:MODEL_VERSION,generatedAt:Date.now()/1000,start:data.start,end:data.end,
     provider:data.provider,products:Object.keys(data.series),quality:data.quality,runs,
+    dataIssues:data.dataIssues||[],highCoverageProducts,
     methodology:['Fixed rules with no parameter search or selection of the best result.',
       'Actual five-minute opens drive scheduled scans. Only completed hourly candles inform entries.',
       'Two distinct scans confirm an entry. The same paper-account function controls sizing, fees, halts and exits.',
@@ -152,6 +160,8 @@ function markdown(report) {
   return `# Scanner historical replay\n\n${iso(report.start)} through ${iso(report.end)}. Model ${report.modelVersion}.\n\n`+
     '| Scenario | Net return | Max drawdown | Trades | Win rate | Profit factor | Fees | Buy and hold |\n|---|---:|---:|---:|---:|---:|---:|---:|\n'+
     report.runs.map(r=>`| ${r.name} | ${n(r.returnPct)}% | ${n(r.maxDrawdownPct)}% | ${r.trades} | ${n(r.winRatePct)}% | ${n(r.profitFactor)} | $${n(r.feesUsd)} | ${n(r.benchmarkReturnPct)}% |`).join('\n')+
+    '\n\n## Data coverage\n\n'+Object.entries(report.quality).map(([p,q])=>`- ${p}: ${q.fiveMinute.pct.toFixed(4)}% of five-minute intervals, ${q.fiveMinute.missing} missing. Hourly coverage ${q.hourly.pct.toFixed(2)}%.`).join('\n')+
+    '\n\n'+(report.dataIssues.length?'The full-universe replay is data-limited. The high-coverage comparison includes '+report.highCoverageProducts.join(', ')+'. No prices were filled into the gaps.':'All markets have at least 98% coverage.')+
     '\n\n## Method\n\n'+report.methodology.map(s=>'- '+s).join('\n')+'\n\n## Limits\n\n'+report.limitations.map(s=>'- '+s).join('\n')+
     '\n\nInputs: `data/opportunities/backtest-inputs.json.gz`. SHA-256: `'+report.inputSha256+'`.\n'+
     '\nSource: [Coinbase candle API](https://docs.cdp.coinbase.com/api-reference/exchange-api/rest-api/products/get-product-candles).\n';

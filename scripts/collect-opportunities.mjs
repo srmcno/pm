@@ -45,29 +45,45 @@ for (let i = 0; i < PRODUCTS.length; i += 2) {
   }));
   markets.push(...batch);
 }
+// Discovery endpoints must not age otherwise usable execution quotes out.
+const evaluatedAt = Date.now() / 1000;
+const previous = await read(ledgerPath, null);
+const paper = advancePaper(previous, markets, evaluatedAt);
 let tokens = old.tokens || [], tokenUpdatedAt = old.tokenUpdatedAt || 0;
+let discovery = old.discovery || {};
 try {
-  const profiles = await get('https://api.dexscreener.com/token-profiles/latest/v1');
-  if (!Array.isArray(profiles)) throw new Error('Invalid token profile response');
-  const addresses = [...new Set(profiles.filter(x => x.chainId === 'solana' &&
-    /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(x.tokenAddress)).map(x => x.tokenAddress))].slice(0, 30);
+  const feeds = ['token-profiles/latest/v1','token-profiles/recent-updates/v1','token-boosts/top/v1'];
+  const responses = await Promise.allSettled(feeds.map(feed => get('https://api.dexscreener.com/'+feed)));
+  const profiles = [], sources = [];
+  responses.forEach((r,i)=>{
+    if(r.status==='fulfilled' && Array.isArray(r.value)){profiles.push(...r.value);sources.push(feeds[i]);}
+    else errors.push({source:'DEX Screener '+feeds[i],message:r.reason?.message || 'Invalid profile response'});
+  });
+  if(!sources.length)throw new Error('All discovery lists unavailable');
+  const retained=tokens.map(t=>t.address);
+  const addresses = [...new Set([...retained,...profiles.filter(x => x.chainId === 'solana').map(x => x.tokenAddress)])]
+    .filter(x=>/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(x)).slice(0,120);
   if (addresses.length) {
-    const pairs = await get(`https://api.dexscreener.com/tokens/v1/solana/${addresses.join(',')}`);
-    if (!Array.isArray(pairs)) throw new Error('Invalid token pair response');
+    const pairs=[];
+    for(let i=0;i<addresses.length;i+=30){
+      const batch=await get(`https://api.dexscreener.com/tokens/v1/solana/${addresses.slice(i,i+30).join(',')}`);
+      if(!Array.isArray(batch))throw new Error('Invalid token pair response');
+      pairs.push(...batch);
+    }
     const byToken = new Map();
     for (const pair of pairs.filter(x => ['pumpfun', 'pumpswap'].includes(x.dexId))) {
       const x = evaluateToken(pair);
-      if (!byToken.has(x.address) || byToken.get(x.address).liquidity < x.liquidity) byToken.set(x.address, x);
+      if (!byToken.has(x.address) || (byToken.get(x.address).liquidity ?? -1) < (x.liquidity ?? -1)) byToken.set(x.address, x);
     }
-    tokens = [...byToken.values()].sort((a, b) => a.blocks.length - b.blocks.length || b.liquidity - a.liquidity).slice(0, 20);
+    tokens = [...byToken.values()].sort((a, b) => a.blocks.length - b.blocks.length || (b.liquidity ?? -1) - (a.liquidity ?? -1)).slice(0,60);
   } else tokens = [];
   tokenUpdatedAt = Date.now() / 1000;
+  discovery={sources,addressesRequested:addresses.length,tokensReturned:tokens.length,
+    note:'Latest and updated profiles, top paid boosts, and previously observed tokens. This is a discovery sample, not a complete market ranking or endorsement.'};
 } catch (e) { errors.push({source: 'DEX Screener', message: e.message}); }
 const now = Date.now() / 1000;
-const previous = await read(ledgerPath, null);
-const paper = advancePaper(previous, markets, now);
-const payload = {version: VERSION, generatedAt: now, markets, tokens, tokenUpdatedAt, errors,
-  signals: markets.map(m => analyzeMarket(m, {}, now)).map(({bars, ...s}) => s),
+const payload = {version: VERSION, generatedAt: now, evaluatedAt, markets, tokens, tokenUpdatedAt, discovery, errors,
+  signals: markets.map(m => analyzeMarket(m, {}, evaluatedAt)).map(({bars, ...s}) => s),
   paper, policy: {reviewedAt: '2026-09-08', country: 'US', leverage: false,
     excluded: ['MEXC', 'Polymarket offshore'], pumpExecution: false},
   notes: ['Quotes require a provider timestamp under 30 seconds to qualify for entry.',
@@ -76,8 +92,8 @@ const payload = {version: VERSION, generatedAt: now, markets, tokens, tokenUpdat
     'DEX Screener profiles are a discovery sample, not every token or proof of safety.']};
 await atomic(ledgerPath, paper);
 await atomic(snapshotPath, payload);
-console.log(JSON.stringify({markets: markets.length, current: markets.filter(m => now - (m.quote?.at || 0) < 30).length,
+console.log(JSON.stringify({markets: markets.length, current: markets.filter(m => evaluatedAt - (m.quote?.at || 0) < 30).length,
   tokens: tokens.length, errors, paperEquity: paper.equity}));
 // Publish failed-source diagnostics too. A partial outage must not silently
 // republish an old timestamp as a successful scan.
-if (!markets.some(m => now - (m.quote?.at || 0) < 30 && m.status === 'online')) process.exitCode = 1;
+if (!markets.some(m => evaluatedAt - (m.quote?.at || 0) < 30 && m.status === 'online')) process.exitCode = 1;

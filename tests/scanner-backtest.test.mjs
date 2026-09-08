@@ -34,3 +34,10 @@ test('strategy-specific replay excludes entries from the other rule',()=>{
   assert.equal(replay(fixture(),{strategies:['reclaim']}).trades,0);
   assert.equal(replay(fixture(),{strategies:['breakout']}).trades,1);
 });
+test('historical allocation uses live product order, independent of download completion order',()=>{
+  const data=fixture();
+  for(const product of ['ETH-USD','SOL-USD'])data.series[product]=structuredClone(data.series['BTC-USD']);
+  const before=replay(data);
+  data.series=Object.fromEntries(Object.entries(data.series).reverse());
+  assert.deepEqual(replay(data).ledger,before.ledger);
+});

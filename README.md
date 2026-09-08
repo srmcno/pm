@@ -74,15 +74,29 @@ FINRA's new intraday-margin rules took effect June 4, 2026, with a broker transi
 
 ## Run and verify
 
+## Scanner replay and screening fixes
+
+The earlier 377 tests were code and accounting checks. The existing U.S. desk laboratory had historical walk-forward results, but the new breakout/reclaim scanner initially had only forward paper tracking. These are different types of evidence.
+
+The scanner now has a separate [90-day historical replay report](reports/scanner-backtest.md), also displayed on the homepage. It uses actual Coinbase five-minute opens and completed hourly candles, fixed rules, two-scan confirmation, the same paper account, and modeled fees, spread, and slippage. Results include each strategy, higher costs, slower scans, three chronological slices, and a high-coverage universe comparison when data are incomplete. A losing result is retained. These are experimental strategies with no established profitable edge.
+
+Raw inputs are preserved in `data/opportunities/backtest-inputs.json.gz`; the report records their SHA-256. Missing observations remain missing. Current Pump profiles cannot reconstruct disappeared tokens, so no Pump historical profitability claim is made.
+
+Token screening now distinguishes excluded pools from missing data, shows the observed value and required threshold, and starts with pools passing the market rules. Passing those rules does not resolve the separate security and U.S. eligibility checks. Missing liquidity is not displayed as measured zero. Discovery includes paid promotions, which are neither endorsements nor evidence of safety.
+
+The browser keeps its quote connection available in background/embedded tabs. When streaming cannot connect, the app identifies delayed snapshots and retains chart setups while withholding entry plans. CSV export includes a preview/copy fallback.
+
 Node 22+ and Python 3.12:
 
 ```sh
 python -m pip install 'requests>=2.31,<3'
 python -m unittest discover -s scripts/tests
 python -m unittest discover -s tests
-node --test tests/market-core.test.mjs
+node --test tests/market-core.test.mjs tests/scanner-backtest.test.mjs
 python scripts/check_site.py
 node scripts/collect-opportunities.mjs
+node scripts/backtest-opportunities.mjs --collect  # download and replay 90 days
+node scripts/backtest-opportunities.mjs            # reproduce from committed inputs
 python -m http.server 8765 --directory dashboard
 ```
 

@@ -1,4 +1,4 @@
-import {PRODUCTS, DEFAULTS, VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.0';
+import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.1';
 const $ = id => document.getElementById(id);
 const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const names = {BTC:'Bitcoin', ETH:'Ethereum', SOL:'Solana', LINK:'Chainlink', AVAX:'Avalanche', DOGE:'Dogecoin'};
@@ -8,11 +8,12 @@ const signed = n => `${n > 0 ? '+' : ''}${money(n)}`;
 const since = t => {const a = ageSeconds(t); return !Number.isFinite(a) ? 'unknown age' : a < 60 ? `${Math.floor(a)}s ago` : a < 3600 ? `${Math.floor(a/60)}m ago` : `${Math.floor(a/3600)}h ago`;};
 const stamp = t => t > 0 ? new Date(t * 1000).toLocaleString() : 'not available';
 const badge = (label, cls = 'muted') => `<span class="badge ${cls}">${escape(label)}</span>`;
-const stateLabel = {candidate:'Paper candidate', waiting:'Watching', stale:'Stale data', unavailable:'Unavailable', 'cost-blocked':'Cost blocked'};
+const stateLabel = {candidate:'Paper candidate', waiting:'Watching', stale:'Live quote needed', unavailable:'Unavailable', 'cost-blocked':'Cost blocked'};
 let markets = PRODUCTS.map(product => ({product, candles: [], status:'unavailable'}));
 let snapshot = null, signals = [], selected = 'BTC-USD', paused = false;
 let ws = null, reconnect = null, attempts = 0, disposed = false, lastChart = '', snapshotBusy = false, directBusy = false;
 let restBusy = false, snapshotError = '', historyError = '', modelError = '';
+let backtest = null, backtestBusy = false, lastHistoryAttempt = 0;
 try { const saved = JSON.parse(localStorage.getItem('mm-model-v3') || 'null');
   if (saved) for (const [id, key] of [['capital','equity'],['risk','riskPct'],['fee','feeBps'],['slippage','slippageBps']]) {
     const el = $(id), n = saved[key];
@@ -55,13 +56,17 @@ async function loadSnapshot() {
   } catch (e) { snapshotError = `Shared ledger unavailable (${e.message}). Public quotes can still connect.`; }
   finally { snapshotBusy = false; render(); }
 }
-async function loadHistories() {
-  if (directBusy || paused || document.hidden) return;
+async function loadHistories(force = false) {
+  if (directBusy || disposed || (paused && !force)) return;
+  const lastHour = Math.floor(Date.now()/3600000)*3600 - 3600;
+  const needed = markets.filter(m => force || !m.candles.some(r => r[0] === lastHour));
+  if (!needed.length || (!force && Date.now()-lastHistoryAttempt<120000)) return;
+  lastHistoryAttempt = Date.now();
   directBusy = true;
   let failures = 0;
   try {
-    for (let i = 0; i < PRODUCTS.length; i += 2) {
-      await Promise.all(PRODUCTS.slice(i,i+2).map(async product => {
+    for (let i = 0; i < needed.length; i += 2) {
+      await Promise.all(needed.slice(i,i+2).map(async ({product}) => {
         try {
           const base = `https://api.exchange.coinbase.com/products/${product}`;
           const info = await get(base);
@@ -75,8 +80,8 @@ async function loadHistories() {
     historyError = failures ? `${failures} market histories could not refresh directly. Last available candles retain their original dates.` : '';
   } finally { directBusy = false; render(); }
 }
-async function restQuotes() {
-  if (restBusy || paused || document.hidden) return;
+async function restQuotes(force = false) {
+  if (restBusy || disposed || (paused && !force)) return;
   const missing = markets.filter(m => !quoteUsable(m.quote));
   if (!missing.length) return;
   restBusy = true;
@@ -91,11 +96,12 @@ async function restQuotes() {
   } finally { restBusy = false; render(); }
 }
 function connect() {
-  if (paused || document.hidden || disposed || ws) return;
+  if (paused || disposed || ws) return;
   clearTimeout(reconnect);
   const socket = new WebSocket('wss://ws-feed.exchange.coinbase.com');
   ws = socket;
-  socket.onopen = () => { attempts = 0; socket.send(JSON.stringify({type:'subscribe',product_ids:PRODUCTS,channels:['ticker','heartbeat']})); render(); };
+  const connectTimeout = setTimeout(() => { if(socket.readyState === WebSocket.CONNECTING) socket.close(); },12000);
+  socket.onopen = () => { clearTimeout(connectTimeout); attempts = 0; socket.send(JSON.stringify({type:'subscribe',product_ids:PRODUCTS,channels:['ticker','heartbeat']})); render(); };
   socket.onmessage = e => {
     try {
       const t = JSON.parse(e.data);
@@ -109,9 +115,10 @@ function connect() {
   };
   socket.onerror = () => socket.close();
   socket.onclose = () => {
+    clearTimeout(connectTimeout);
     if (ws !== socket) return;
     ws = null; render();
-    if (!paused && !document.hidden && !disposed) reconnect = setTimeout(connect, Math.min(60000,1000 * 2 ** Math.min(attempts++,6)));
+    if (!paused && !disposed) reconnect = setTimeout(connect, Math.min(60000,1000 * 2 ** Math.min(attempts++,6)));
   };
 }
 function disconnect() { clearTimeout(reconnect); const socket = ws; ws = null; socket?.close(); }
@@ -120,15 +127,20 @@ function render() {
   signals = markets.map(m => analyzeMarket(m, p));
   const fresh = markets.filter(m => quoteUsable(m.quote));
   const streamed = fresh.filter(m => String(m.quote.source || '').includes('WebSocket')).length;
-  const label = paused ? 'Paused' : document.hidden ? 'Background' : streamed ? `${streamed}/${PRODUCTS.length} streaming` : fresh.length ? 'REST quotes' : 'Offline / stale';
+  const quoted = markets.filter(m => Number.isFinite(m.quote?.at));
+  const newest = quoted.length ? Math.max(...quoted.map(m=>m.quote.at)) : 0;
+  const delayed = !fresh.length && newest > 0;
+  const label = paused ? 'Live requests paused' : streamed ? `${streamed}/${PRODUCTS.length} streaming` :
+    fresh.length ? `${fresh.length}/${PRODUCTS.length} live REST` : delayed ? 'Delayed snapshot' : 'Connecting / no quotes';
   $('connection').textContent = label;
   $('connection').className = `badge ${fresh.length && !paused ? 'good' : 'amber'}`;
-  $('connection-detail').textContent = paused ? 'Live requests paused. Displayed quotes retain their timestamps.' : streamed ?
+  $('connection-detail').textContent = paused ? 'Live requests are paused. The shared snapshot can still update.' : streamed ?
     'Direct Coinbase quotes. Entry checks expire after 30 seconds without a fresh quote.' : fresh.length ?
-    'Using public REST quotes. This connection is polling, not streaming.' :
-    'No qualifying live quotes. New paper candidates are withheld until fresh data arrives.';
+    'Live public REST quotes are refreshing. The WebSocket feed will be used when available.' : delayed ?
+    `Live quotes have not connected. Last saved quote: ${since(newest)}. Chart setups remain visible; new entry plans require a fresh quote.` :
+    'Connecting to Coinbase. No price or trade is invented while the source is unavailable.';
   $('clock').textContent = new Date().toLocaleTimeString('en-US', {hour12:false,timeZone:'UTC'}) + ' UTC';
-  const notice = [snapshotError, historyError, modelError].filter(Boolean).join(' ');
+  const notice = [snapshotError, markets.every(m=>m.candles.length<60) ? historyError : '', modelError].filter(Boolean).join(' ');
   $('notice').hidden = !notice; $('notice').textContent = notice;
   $('ticker').innerHTML = markets.map((m,i) => {
     const s = signals[i], q = m.quote, last = s.bars?.at(-1)?.c;
@@ -138,10 +150,10 @@ function render() {
   }).join('');
   const text = $('search').value.toLowerCase(), only = $('only-candidates').checked;
   const shown = signals.filter(s => (s.product.toLowerCase().includes(text) || s.strategy.toLowerCase().includes(text)) && (!only || s.status==='candidate'));
-  $('scan-count').textContent = `${signals.filter(s=>s.status==='candidate').length} candidates / ${PRODUCTS.length} markets`;
+  $('scan-count').textContent = `${signals.filter(s=>s.status==='candidate').length} current candidates · ${signals.filter(s=>s.setup).length} chart setups`;
   $('setups').innerHTML = shown.map(s => {
     const m = markets.find(x=>x.product===s.product), live=quoteUsable(m.quote);
-    return `<tr><td><strong>${escape(s.product.replace('-',' / '))}</strong><small>${escape(s.strategy)}</small></td><td>${price(m.quote?.price)}<small>${live?'Quote ': 'Stale · '}${since(m.quote?.at)}</small></td><td><span class="${s.regime==='Uptrend'?'positive':'quiet'}">${escape(s.regime||'Unknown')}</span></td><td>${Number.isFinite(s.relativeVolume)?s.relativeVolume.toFixed(2)+'×':'—'}</td><td>${badge(stateLabel[s.status],s.status==='candidate'?'good':s.status==='stale'?'amber':'muted')}</td><td><button class="row-action" data-product="${s.product}" aria-label="Inspect ${s.product} plan">Inspect ↗</button></td></tr>`;
+    return `<tr><td><strong>${escape(s.product.replace('-',' / '))}</strong><small>${escape(s.strategy)}</small></td><td>${price(m.quote?.price)}<small>${live?'Quote ': 'Delayed · '}${since(m.quote?.at)}</small></td><td><span class="${s.regime==='Uptrend'?'positive':'quiet'}">${escape(s.regime||'Unknown')}</span></td><td>${Number.isFinite(s.relativeVolume)?s.relativeVolume.toFixed(2)+'×':'—'}</td><td>${badge(stateLabel[s.status],s.status==='candidate'?'good':s.status==='stale'?'amber':'muted')}</td><td><button class="row-action" data-product="${s.product}" aria-label="Inspect ${s.product} plan">Inspect ↗</button></td></tr>`;
   }).join('') || '<tr><td colspan="6" class="empty">No markets match. Waiting is a valid strategy.</td></tr>';
   renderPlan(); renderChart();
   if (snapshot) $('paper-asof').textContent = 'Snapshot ' + since(snapshot.paper?.updatedAt);
@@ -157,7 +169,7 @@ function renderPlan() {
   } else {
     content += `<p class="plan-explain">${escape(s.reasons[0] || 'No qualifying entry.')}</p><div class="plan-rows"><div><span>20-hour high</span><b>${price(s.trigger)}</b></div><div><span>Hourly ATR</span><b>${price(s.atr)}</b></div><div><span>20-hour EMA</span><b>${price(s.ema20)}</b></div><div><span>50-hour EMA</span><b>${price(s.ema50)}</b></div></div>`;
   }
-  content += `<ul class="plan-reasons">${s.reasons.map(r=>`<li>${escape(r)}</li>`).join('')}</ul><p class="plan-tagline">Candle through ${escape(stamp(s.signalAt))}. A stop is a trigger, not a guaranteed fill. This plan cannot place a trade.</p>`;
+  content += `<ul class="plan-reasons">${(s.plan ? s.reasons : s.reasons.slice(1)).map(r=>`<li>${escape(r)}</li>`).join('')}</ul><p class="plan-tagline">Candle through ${escape(stamp(s.signalAt))}. A stop is a trigger, not a guaranteed fill. This plan cannot place a trade.</p>`;
   $('plan').innerHTML = content;
 }
 function renderChart() {
@@ -192,12 +204,42 @@ function renderPaper() {
     const gain=x.open?x.quantity*x.mark*(1-DEFAULTS.feeBps/10000)-x.cost:x.pnl;
     return `<tr><td><strong>${escape(x.product)}</strong><small>${escape(x.strategy)}</small></td><td>${badge(x.open?'Open · paper':'Closed · paper',x.open?'amber':'muted')}</td><td>${price(x.entry)}</td><td>${price(x.open?x.mark:x.exit)}<small>${escape(stamp(x.open?x.markAt:x.closedAt))}</small></td><td class="${gain>=0?'positive':'negative'}">${signed(gain)}</td><td>${x.open?'Stop '+price(x.stop):escape(x.reason)}</td></tr>`;
   }).join('')||'<tr><td colspan="6" class="empty">No trades yet. The model waits for fresh data and a setup that survives the next scan.</td></tr>';
-  $('paper-note').textContent=`Simulated fills include ${DEFAULTS.feeBps} bps fees and ${DEFAULTS.slippageBps} bps slippage per side. ${p.staleMarks?.length?'Stale marks retained for '+p.staleMarks.join(', ')+'. ':''}Scheduled scans can miss intrahour moves. Stops take priority in ambiguous completed bars; losses can exceed planned risk.`;
+  $('paper-note').textContent=`Simulated fills include ${DEFAULTS.feeBps} bps fees and ${DEFAULTS.slippageBps} bps slippage per side. ${p.staleMarks?.length?'Stale marks retained for '+p.staleMarks.join(', ')+'. ':''}P&L includes the purchase fee and estimated selling costs, so an unchanged price begins below breakeven. ${p.pending?.length || 0} setups await a confirming scan. Scheduled scans can miss intrahour moves; losses can exceed planned risk.`;
 }
 function renderTokens() {
-  const tokens=snapshot?.tokens||[];
-  $('tokens').innerHTML=tokens.map((t,i)=>`<tr><td><strong>${escape(t.symbol)}</strong><small>${escape(t.dex)} · ${t.ageHours===null?'age unknown':t.ageHours.toFixed(0)+'h old'}</small></td><td>${money(t.liquidity,0)}</td><td class="${t.change>=0?'positive':'negative'}">${t.change>0?'+':''}${Number.isFinite(t.change)?t.change.toFixed(1)+'%':'Not reported'}</td><td>${t.buys??'?'} / ${t.sells??'?'}</td><td>${badge(t.blocks.length?`${t.blocks.length} filters failed`:'Further review',t.blocks.length?'muted':'amber')}</td><td><button class="row-action" data-token="${i}" aria-label="Review ${escape(t.symbol)} checks">Checks ↗</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No Pump venue pairs in the latest available discovery sample. No substitute tokens are fabricated.</td></tr>';
-  $('token-asof').textContent=`Sample ${since(snapshot?.tokenUpdatedAt)}. At least $100,000 reported liquidity, 24h age, 100 hourly trades and 20 sells required for review. Mint authority, holders and sellability remain unverified.`;
+  const tokens=snapshot?.tokens||[], filter=$('token-filter').value;
+  const passed=tokens.filter(t=>t.status==='review').length;
+  const missing=tokens.filter(t=>t.status==='incomplete').length;
+  const shown=tokens.map((t,i)=>({t,i})).filter(({t})=>filter==='all'||t.status===filter);
+  $('token-summary').textContent=`${passed} pass market rules · ${tokens.length-passed-missing} excluded · ${missing} missing data`;
+  $('tokens').innerHTML=shown.map(({t,i})=>{
+    const label=t.status==='review'?'Market screen passed':t.status==='incomplete'?'Missing data':'Excluded';
+    const reason=t.status==='review'?'Security and eligibility still unverified':(t.blocks||[])[0]||'Criteria not met';
+    return `<tr><td><strong>${escape(t.symbol)}</strong><small>${escape(t.dex)} · ${Number.isFinite(t.ageHours)?t.ageHours<1?'under 1h':t.ageHours.toFixed(0)+'h old':'age not reported'}</small></td><td>${Number.isFinite(t.liquidity)?money(t.liquidity,0):'Not reported'}</td><td class="${t.change>=0?'positive':'negative'}">${Number.isFinite(t.change)?(t.change>0?'+':'')+t.change.toFixed(1)+'%':'Not reported'}</td><td>${t.buys??'?'} / ${t.sells??'?'}</td><td>${badge(label,t.status==='review'?'amber':'muted')}<div class="token-reason">${escape(reason)}</div></td><td><button class="row-action" data-token="${i}" aria-label="Review ${escape(t.symbol)} checks">Details ↗</button></td></tr>`;
+  }).join('')||`<tr><td colspan="6" class="empty">${tokens.length ? filter==='review' ? 'No tokens currently meet every market rule in this sample. This is a screening outcome, not a system error.' : 'No sampled tokens match this category.' : 'No Pump pools are available in the current discovery sample.'}</td></tr>`;
+  $('show-all-tokens').hidden=shown.length>0 || tokens.length===0 || filter==='all';
+  const sourceIssue=(snapshot?.errors||[]).some(e=>e.source.startsWith('DEX'));
+  $('token-asof').textContent=`Sample updated ${since(snapshot?.tokenUpdatedAt)}. ${tokens.length} observed Pump pools. At least $100,000 reported liquidity, 24 hours of history, 100 hourly transactions and 20 sells are required. ${sourceIssue?'A discovery source did not refresh; source timestamps are retained. ':''}The sample includes paid promotions and does not rank safety or predict returns.`;
+}
+async function loadBacktest() {
+  if(backtestBusy)return;backtestBusy=true;
+  try{
+    const data=await get('data/scanner-backtest.json?t='+Date.now());
+    if(data.modelVersion!==MODEL_VERSION || !Array.isArray(data.runs) || !data.runs.length)throw new Error('A replay of the current model is required');
+    backtest=data;renderBacktest();
+  }catch(e){
+    if(!backtest){$('backtest-summary').textContent='Historical results for the current scanner have not loaded. Code tests alone are not evidence of profitability.';$('backtest-rows').innerHTML='<tr><td colspan="7" class="empty">The latest completed replay will appear here when published.</td></tr>';}
+  }finally{backtestBusy=false;}
+}
+function renderBacktest(){
+  if(!backtest)return;
+  const r=backtest.runs[0], percent=n=>Number.isFinite(n)?n.toFixed(2)+'%':'Not available';
+  $('backtest-summary').textContent=`${r.assessment}. ${new Date(backtest.start*1000).toLocaleDateString()} to ${new Date(backtest.end*1000).toLocaleDateString()}, across ${backtest.products.length} markets. ${backtest.dataIssues?.length?"Data gaps affect the full-universe replay; a high-coverage comparison is included. ":""}This is a fixed-rule historical replay, not live profit or a forecast.`;
+  const metrics=[['90-DAY NET RETURN',percent(r.returnPct),'After all modeled costs'],['MAX DRAWDOWN',percent(r.maxDrawdownPct),'Loss from the preceding equity peak'],['COMPLETED TRADES',String(r.trades),`${r.forcedExits} end-of-window liquidations`],['FEES PAID',money(r.feesUsd),'Spread and slippage are additional modeled costs']];
+  $('backtest-metrics').innerHTML=metrics.map(([label,value,sub])=>`<div class="metric"><span>${label}</span><strong>${escape(value)}</strong><small>${escape(sub)}</small></div>`).join('');
+  $('backtest-rows').innerHTML=backtest.runs.map(x=>`<tr><td><strong>${escape(x.name)}</strong></td><td class="${x.returnPct>=0?'positive':'negative'}">${percent(x.returnPct)}</td><td>${percent(x.maxDrawdownPct)}</td><td>${x.trades}</td><td>${percent(x.winRatePct)}</td><td>${money(x.feesUsd)}</td><td>${percent(x.benchmarkReturnPct)}</td></tr>`).join('');
+  const coverage=Math.min(...Object.values(backtest.quality).map(x=>x.fiveMinute.pct));
+  $('backtest-note').textContent=`Default replay: 60 bps fees and 10 bps slippage per side, plus a modeled 10 bps bid/ask spread. Five-minute data coverage: ${coverage.toFixed(2)}% or better. Buy and hold has greater exposure. The 30-day slices each start fresh; they are not added together. No Pump.fun backtest or profitability claim is provided.`;
 }
 function choose(product) { if(!PRODUCTS.includes(product))return;selected=product;$('product').value=product;render(); }
 document.addEventListener('click', e=>{
@@ -206,27 +248,37 @@ document.addEventListener('click', e=>{
     const t=snapshot?.tokens?.[Number(token.dataset.token)];if(!t)return;
     const valid=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(t.pair||'');
     $('token-detail').hidden=false;
-    $('token-detail').innerHTML=`<strong>${escape(t.name)} · ${escape(t.symbol)}</strong><p>Mint: ${escape(t.address)}</p><ul>${[...t.blocks,...t.checks].map(x=>`<li>${escape(x)}</li>`).join('')}</ul><p>Execution is disabled. A successful historical sell does not guarantee you can sell now. Pump fees vary by pool and are not included in a spot trade plan.</p>${valid?`<a href="https://dexscreener.com/solana/${t.pair}" target="_blank" rel="noopener noreferrer">Inspect public pool data ↗</a>`:''}`;
+    const rules=t.rules||[];
+    const observed=r=>r.actual===null?'Not reported':r.name==='Liquidity'?money(r.actual,0):typeof r.actual==='number'?r.actual.toFixed(r.name==='Pool history'||r.name==='Volume / liquidity'||r.name==='One-hour move'?1:0):r.actual;
+    const checks=rules.length?`<div class="table-scroll"><table class="check-table"><thead><tr><th>Market rule</th><th>Observed</th><th>Required</th><th>Outcome</th></tr></thead><tbody>${rules.map(r=>`<tr><td>${escape(r.name)}</td><td>${escape(observed(r))}</td><td>${escape(r.threshold)}</td><td>${escape(r.state==='pass'?'Met':r.state==='unknown'?'Unknown':'Not met')}</td></tr>`).join('')}</tbody></table></div>`:`<ul>${(t.blocks||[]).map(x=>`<li>${escape(x)}</li>`).join('')}</ul>`;
+    $('token-detail').innerHTML=`<strong>${escape(t.name)} · ${escape(t.symbol)}</strong><p>Mint: ${escape(t.address)}</p>${checks}<p>Separate security and access checks:</p><ul>${(t.checks||[]).map(x=>`<li>${escape(x)}</li>`).join('')}</ul><p>Execution is disabled. Passing market rules does not establish token safety, sellability, or U.S. eligibility.</p>${valid?`<a href="https://dexscreener.com/solana/${t.pair}" target="_blank" rel="noopener noreferrer">Inspect public pool data ↗</a>`:''}`;
   }
 });
+$('token-filter').addEventListener('change',renderTokens);
+$('show-all-tokens').addEventListener('click',()=>{$('token-filter').value='all';renderTokens();});
 $('product').addEventListener('change',e=>choose(e.target.value));
 for(const id of ['search','only-candidates'])$(id).addEventListener('input',render);
 for(const id of ['capital','risk','fee','slippage'])$(id).addEventListener('input',()=>{const p=model();if(!modelError)try{localStorage.setItem('mm-model-v3',JSON.stringify(p));}catch{}render();});
 $('theme').addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('mm-theme',next);}catch{}renderChart();});
 $('pause').addEventListener('click',()=>{paused=!paused;$('pause').textContent=paused?'Resume live':'Pause live';if(paused)disconnect();else{connect();restQuotes();loadHistories();}render();});
-$('refresh').addEventListener('click',async()=>{$('refresh').disabled=true;try{await Promise.allSettled([loadSnapshot(),loadHistories(),restQuotes()]);}finally{$('refresh').disabled=false;}});
+$('refresh').addEventListener('click',async()=>{$('refresh').disabled=true;try{connect();await Promise.allSettled([loadSnapshot(),loadHistories(true),restQuotes(true),loadBacktest()]);}finally{$('refresh').disabled=false;}});
 $('export').addEventListener('click',()=>{
-  const p=snapshot?.paper;if(!p)return;
+  const p=snapshot?.paper;if(!p){$('export-status').textContent='The paper ledger has not loaded yet.';return;}
   const rows=[['product','strategy','state','opened_utc','closed_utc','quantity','entry_usd','exit_usd','net_pnl_usd','reason'],
     ...(p.positions||[]).map(x=>[x.product,x.strategy,'open',new Date(x.openedAt*1000).toISOString(),'',x.quantity,x.entry,'','','Open paper position']),
     ...(p.closed||[]).map(x=>[x.product,x.strategy,'closed',new Date(x.openedAt*1000).toISOString(),new Date(x.closedAt*1000).toISOString(),x.quantity,x.entry,x.exit,x.pnl,x.reason])];
   const csv=rows.map(row=>row.map(x=>{const s=String(x??'');return '"'+(/^[=+@\t\r]/.test(s)?"'":'')+s.replaceAll('"','""')+'"';}).join(',')).join('\r\n');
-  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=`Moffitt-Money-paper-${new Date().toISOString().slice(0,10)}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=`Moffitt-Money-paper-${new Date().toISOString().slice(0,10)}.csv`;a.hidden=true;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+  $('csv-preview').value=csv;$('export-fallback').hidden=false;$('export-status').textContent='CSV ready. If the download did not start, open the preview below to copy it.';
 });
-document.addEventListener('visibilitychange',()=>{if(document.hidden)disconnect();else{connect();loadSnapshot();restQuotes();loadHistories();}render();});
+$('copy-csv').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('csv-preview').value);$('export-status').textContent='CSV copied.';}catch{$('export-fallback').open=true;$('csv-preview').focus();$('csv-preview').select();$('export-status').textContent='CSV selected. Use your device’s Copy command.';}});
+// Keep the socket alive in background and embedded tabs. Hidden-tab status
+// is not evidence that the user cannot see the app in an embedded browser.
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){connect();loadSnapshot();restQuotes();loadHistories();}render();});
 window.addEventListener('pagehide',()=>{disposed=true;disconnect();});
 window.addEventListener('pageshow',()=>{if(disposed){disposed=false;connect();}});
-setInterval(()=>{if(!document.hidden){render();if(!paused)restQuotes();}},15000);
-setInterval(()=>{if(!document.hidden)render();},3000);
-setInterval(()=>{if(!document.hidden){loadSnapshot();loadHistories();}},60000);
-render();connect();loadSnapshot();loadHistories();restQuotes();
+setInterval(()=>{if(!disposed){render();if(!paused){connect();restQuotes();}}},15000);
+setInterval(()=>{if(!document.hidden && !disposed)render();},3000);
+setInterval(()=>{if(!disposed){loadSnapshot();loadHistories();}},60000);
+setInterval(()=>{if(!disposed)loadBacktest();},300000);
+render();connect();loadSnapshot();loadHistories();restQuotes();loadBacktest();
