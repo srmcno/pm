@@ -1,15 +1,15 @@
 # Paper portfolio
 
-Updated 2026-09-08 09:44 UTC · started with $50.00 (virtual)
+Updated 2026-09-08 09:59 UTC · started with $50.00 (virtual)
 
-**Equity $59.15 (+18.3%)** · cash $31.88 · 4 open · 8 settled
+**Equity $59.92 (+19.8%)** · cash $31.88 · 4 open · 8 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Stefany Shaheen be the Democratic nominee for NH-01? | No | 11.99 | 0.85 | 0.84 | $10.07 |
 | Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B | FURIA | 9.95 | 0.86 | 0.84 | $8.41 |
-| Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B | FaZe | 9.58 | 0.76 | 0.36 | $3.50 |
-| LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner | Invictus Gaming | 6.74 | 0.90 | 0.79 | $5.29 |
+| Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B | FaZe | 9.58 | 0.76 | 0.29 | $2.83 |
+| LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner | Invictus Gaming | 6.74 | 0.90 | 1.00 | $6.74 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
