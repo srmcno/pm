@@ -1,10 +1,10 @@
 # Kraken viability trial — latest scan
 
-Scanned 2026-09-08 11:05 UTC · 1469 pairs · 1350 cycles · 1 verified edges · median fee hurdle 99.7 bps
+Scanned 2026-09-08 11:07 UTC · 1469 pairs · 1350 cycles · 1 verified edges · median fee hurdle 99.7 bps
 
 | cycle | screen bps | fee hurdle bps | verified bps | size | profit |
 |---|---|---|---|---|---|
-| USD→EUR→DUAL→USD | 69.6 | 99.7 | 26.4 | $5.0 | $0.0132 |
+| USD→EUR→DUAL→USD | 52.7 | 99.7 | 10.2 | $5.0 | $0.0051 |
 
 ## Latency replay (own recorded ticks)
 
