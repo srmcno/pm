@@ -1,4 +1,4 @@
-import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.1';
+import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.2';
 const $ = id => document.getElementById(id);
 const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const names = {BTC:'Bitcoin', ETH:'Ethereum', SOL:'Solana', LINK:'Chainlink', AVAX:'Avalanche', DOGE:'Dogecoin'};
@@ -14,6 +14,7 @@ let snapshot = null, signals = [], selected = 'BTC-USD', paused = false;
 let ws = null, reconnect = null, attempts = 0, disposed = false, lastChart = '', snapshotBusy = false, directBusy = false;
 let restBusy = false, snapshotError = '', historyError = '', modelError = '';
 let backtest = null, backtestBusy = false, lastHistoryAttempt = 0;
+let exportUrl = null;
 try { const saved = JSON.parse(localStorage.getItem('mm-model-v3') || 'null');
   if (saved) for (const [id, key] of [['capital','equity'],['risk','riskPct'],['fee','feeBps'],['slippage','slippageBps']]) {
     const el = $(id), n = saved[key];
@@ -234,9 +235,13 @@ async function loadBacktest() {
 function renderBacktest(){
   if(!backtest)return;
   const r=backtest.runs[0], percent=n=>Number.isFinite(n)?n.toFixed(2)+'%':'Not available';
+  const losing=r.returnPct<0;
+  $('strategy-evidence').textContent=losing ? `Research only: the current scanner lost ${Math.abs(r.returnPct).toFixed(2)}% in the 90-day replay after modeled costs. It has not demonstrated a profitable edge. See the backtests below.` : 'Research only: a positive historical sample does not establish a profitable edge. Review the backtests and limitations below.';
+  $('strategy-evidence').classList.toggle('failed-evidence',losing);
+  $('backtest-summary').classList.toggle('failed-evidence',losing);
   $('backtest-summary').textContent=`${r.assessment}. ${new Date(backtest.start*1000).toLocaleDateString()} to ${new Date(backtest.end*1000).toLocaleDateString()}, across ${backtest.products.length} markets. ${backtest.dataIssues?.length?"Data gaps affect the full-universe replay; a high-coverage comparison is included. ":""}This is a fixed-rule historical replay, not live profit or a forecast.`;
   const metrics=[['90-DAY NET RETURN',percent(r.returnPct),'After all modeled costs'],['MAX DRAWDOWN',percent(r.maxDrawdownPct),'Loss from the preceding equity peak'],['COMPLETED TRADES',String(r.trades),`${r.forcedExits} end-of-window liquidations`],['FEES PAID',money(r.feesUsd),'Spread and slippage are additional modeled costs']];
-  $('backtest-metrics').innerHTML=metrics.map(([label,value,sub])=>`<div class="metric"><span>${label}</span><strong>${escape(value)}</strong><small>${escape(sub)}</small></div>`).join('');
+  $('backtest-metrics').innerHTML=metrics.map(([label,value,sub],i)=>`<div class="metric"><span>${label}</span><strong class="${i<2 && value.startsWith('-')?'negative':''}">${escape(value)}</strong><small>${escape(sub)}</small></div>`).join('');
   $('backtest-rows').innerHTML=backtest.runs.map(x=>`<tr><td><strong>${escape(x.name)}</strong></td><td class="${x.returnPct>=0?'positive':'negative'}">${percent(x.returnPct)}</td><td>${percent(x.maxDrawdownPct)}</td><td>${x.trades}</td><td>${percent(x.winRatePct)}</td><td>${money(x.feesUsd)}</td><td>${percent(x.benchmarkReturnPct)}</td></tr>`).join('');
   const coverage=Math.min(...Object.values(backtest.quality).map(x=>x.fiveMinute.pct));
   $('backtest-note').textContent=`Default replay: 60 bps fees and 10 bps slippage per side, plus a modeled 10 bps bid/ask spread. Five-minute data coverage: ${coverage.toFixed(2)}% or better. Buy and hold has greater exposure. The 30-day slices each start fresh; they are not added together. No Pump.fun backtest or profitability claim is provided.`;
@@ -268,10 +273,20 @@ $('export').addEventListener('click',()=>{
     ...(p.positions||[]).map(x=>[x.product,x.strategy,'open',new Date(x.openedAt*1000).toISOString(),'',x.quantity,x.entry,'','','Open paper position']),
     ...(p.closed||[]).map(x=>[x.product,x.strategy,'closed',new Date(x.openedAt*1000).toISOString(),new Date(x.closedAt*1000).toISOString(),x.quantity,x.entry,x.exit,x.pnl,x.reason])];
   const csv=rows.map(row=>row.map(x=>{const s=String(x??'');return '"'+(/^[=+@\t\r]/.test(s)?"'":'')+s.replaceAll('"','""')+'"';}).join(',')).join('\r\n');
-  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=`Moffitt-Money-paper-${new Date().toISOString().slice(0,10)}.csv`;a.hidden=true;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
-  $('csv-preview').value=csv;$('export-fallback').hidden=false;$('export-status').textContent='CSV ready. If the download did not start, open the preview below to copy it.';
+  $('csv-preview').value=csv;$('export-fallback').hidden=false;$('export-fallback').open=true;
+  $('export-status').textContent='CSV ready. Choose Download CSV or copy the preview below.';
+  const download=$('download-csv');download.hidden=true;
+  try {
+    if(exportUrl)URL.revokeObjectURL(exportUrl);
+    exportUrl=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+    download.href=exportUrl;download.download=`Moffitt-Money-paper-${new Date().toISOString().slice(0,10)}.csv`;download.hidden=false;
+  } catch {$('export-status').textContent='CSV ready to copy below. This browser could not prepare a download.';}
 });
-$('copy-csv').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('csv-preview').value);$('export-status').textContent='CSV copied.';}catch{$('export-fallback').open=true;$('csv-preview').focus();$('csv-preview').select();$('export-status').textContent='CSV selected. Use your device’s Copy command.';}});
+$('copy-csv').addEventListener('click',async()=>{
+  $('export-fallback').open=true;$('csv-preview').focus();$('csv-preview').select();
+  $('export-status').textContent='CSV selected. Use your device’s Copy command if automatic copying is unavailable.';
+  try{await Promise.race([navigator.clipboard.writeText($('csv-preview').value),new Promise((_,reject)=>setTimeout(()=>reject(new Error('Clipboard unavailable')),2000))]);$('export-status').textContent='CSV copied.';}catch{}
+});
 // Keep the socket alive in background and embedded tabs. Hidden-tab status
 // is not evidence that the user cannot see the app in an embedded browser.
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){connect();loadSnapshot();restQuotes();loadHistories();}render();});
