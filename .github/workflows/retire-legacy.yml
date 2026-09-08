@@ -20,11 +20,26 @@ jobs:
           import json, subprocess
           repo='${{ github.repository }}'
           names=['arb-watch','watch-shift','engine-shift','autotrade','stocks-shift','kraken-watch','refresh-dashboard']
+          active={'in_progress','queued','pending','waiting','requested'}
+          runs={}
           for name in names:
-            raw=subprocess.check_output(['gh','api',f'repos/{repo}/actions/workflows/{name}.yml/runs?per_page=30'],text=True)
-            for run in json.loads(raw).get('workflow_runs',[]):
-              if run['status'] in ('in_progress','queued','pending','waiting'):
-                subprocess.run(['gh','api','-X','POST',f'repos/{repo}/actions/runs/{run["id"]}/cancel'],check=False)
+            for status in sorted(active):
+              page=1
+              while True:
+                endpoint=f'repos/{repo}/actions/workflows/{name}.yml/runs?status={status}&per_page=100&page={page}'
+                raw=subprocess.check_output(['gh','api',endpoint],text=True)
+                batch=json.loads(raw).get('workflow_runs',[])
+                runs.update({run['id']:run for run in batch})
+                if len(batch)<100: break
+                page+=1
+          for run_id in runs:
+            endpoint=f'repos/{repo}/actions/runs/{run_id}'
+            result=subprocess.run(['gh','api','-X','POST',endpoint+'/cancel'],capture_output=True,text=True)
+            if result.returncode:
+              current=json.loads(subprocess.check_output(['gh','api',endpoint],text=True))
+              if current.get('status') in active:
+                raise RuntimeError(f'Could not cancel retired run {run_id}: {result.stderr}')
+            print(f'Cancelled or already completed retired run: {run_id}')
           PY
       - name: Remove only merged branches preserved in the default branch
         run: |
