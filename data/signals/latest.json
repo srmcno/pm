@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788850373,
+  "generatedAt": 1788851277,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -21,8 +21,8 @@
      "netUsd": 789.87,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 0.7,
-     "score": 2.4286885154800295
+     "lastTradeAgoH": 1.0,
+     "score": 2.4034097136904444
     },
     {
      "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
@@ -31,8 +31,8 @@
      "netUsd": 2142.36,
      "avgPrice": 0.83,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.4,
-     "score": 1.076736970390461
+     "lastTradeAgoH": 11.6,
+     "score": 1.065529843465566
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -41,14 +41,14 @@
      "netUsd": 3037.84,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 13.5,
-     "score": 0.7535001260431229
+     "lastTradeAgoH": 13.8,
+     "score": 0.745657382845193
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 5970.07,
-   "score": 4.2589,
+   "score": 4.2146,
    "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
    "outcome": "FURIA",
    "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
@@ -72,8 +72,8 @@
      "netUsd": 427.56,
      "avgPrice": 0.72,
      "conviction": 10.0,
-     "lastTradeAgoH": 11.8,
-     "score": 1.5277708915674677
+     "lastTradeAgoH": 12.1,
+     "score": 1.5118692157034475
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -82,8 +82,8 @@
      "netUsd": 16434.33,
      "avgPrice": 0.72,
      "conviction": 10.0,
-     "lastTradeAgoH": 1.9,
-     "score": 1.2236461112287467
+     "lastTradeAgoH": 2.1,
+     "score": 1.2109098927679636
     },
     {
      "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
@@ -92,21 +92,21 @@
      "netUsd": 512.64,
      "avgPrice": 0.72,
      "conviction": 10.0,
-     "lastTradeAgoH": 14.7,
-     "score": 0.9372192767258637
+     "lastTradeAgoH": 15.0,
+     "score": 0.927464308075613
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 17374.53,
-   "score": 3.6886,
+   "score": 3.6502,
    "question": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
    "outcome": "FaZe",
    "tokenId": "40512667404719026439753288185318192012062231034408344529153741537613773958732",
-   "currentPrice": 0.745,
+   "currentPrice": 0.735,
    "backersAvgEntry": 0.72,
-   "driftSinceEntry": 0.025,
-   "endDate": "2026-09-08T13:00:00Z",
+   "driftSinceEntry": 0.015,
+   "endDate": "2026-09-08T13:20:00Z",
    "slug": "cs2-all-faze-2026-09-08",
    "eventSlug": "cs2-all-faze-2026-09-08"
   },
@@ -123,8 +123,8 @@
      "netUsd": 722.91,
      "avgPrice": 0.8495,
      "conviction": 10.0,
-     "lastTradeAgoH": 7.0,
-     "score": 1.3120405060778415
+     "lastTradeAgoH": 7.3,
+     "score": 1.2983842419329543
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -133,8 +133,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 17.2,
-     "score": 0.9253985564281015
+     "lastTradeAgoH": 17.5,
+     "score": 0.9157666227588755
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -143,14 +143,14 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 24.0,
-     "score": 0.8862028082528828
+     "lastTradeAgoH": 24.3,
+     "score": 0.8769788402584648
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1699.74,
-   "score": 3.1236,
+   "score": 3.0911,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",
