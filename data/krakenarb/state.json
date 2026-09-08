@@ -1,22 +1,8 @@
 {
  "bankrollStart": 40.0,
- "cash": 79.046,
+ "cash": 79.0622,
  "createdAt": 1786666692,
  "trades": [
-  {
-   "t": 1787098985,
-   "path": "USD\u2192EAT\u2192EUR\u2192USD",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.0227,
-   "bps": 45.4
-  },
-  {
-   "t": 1787099015,
-   "path": "USD\u2192EAT\u2192EUR\u2192USD",
-   "sizeUsd": 5.0,
-   "profitUsd": 0.013,
-   "bps": 26.0
-  },
   {
    "t": 1787099925,
    "path": "USD\u2192EAT\u2192EUR\u2192USD",
@@ -1402,49 +1388,23 @@
    "sizeUsd": 5.0,
    "profitUsd": 0.0077,
    "bps": 15.4
+  },
+  {
+   "t": 1788865895,
+   "path": "USD\u2192EUR\u2192DUAL\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0079,
+   "bps": 15.8
+  },
+  {
+   "t": 1788865965,
+   "path": "USD\u2192EUR\u2192DUAL\u2192USD",
+   "sizeUsd": 5.0,
+   "profitUsd": 0.0083,
+   "bps": 16.6
   }
  ],
  "equityCurve": [
-  {
-   "t": 1788860875,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860885,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860895,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860905,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860915,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860925,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860935,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860945,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860955,
-   "equity": 78.8319
-  },
-  {
-   "t": 1788860965,
-   "equity": 78.8319
-  },
   {
    "t": 1788860975,
    "equity": 78.8319
@@ -3404,16 +3364,56 @@
   {
    "t": 1788865865,
    "equity": 79.046
+  },
+  {
+   "t": 1788865875,
+   "equity": 79.046
+  },
+  {
+   "t": 1788865885,
+   "equity": 79.046
+  },
+  {
+   "t": 1788865895,
+   "equity": 79.0539
+  },
+  {
+   "t": 1788865905,
+   "equity": 79.0539
+  },
+  {
+   "t": 1788865915,
+   "equity": 79.0539
+  },
+  {
+   "t": 1788865925,
+   "equity": 79.0539
+  },
+  {
+   "t": 1788865935,
+   "equity": 79.0539
+  },
+  {
+   "t": 1788865945,
+   "equity": 79.0539
+  },
+  {
+   "t": 1788865955,
+   "equity": 79.0539
+  },
+  {
+   "t": 1788865965,
+   "equity": 79.0622
   }
  ],
  "decay": {
-  "checked": 647,
-  "survived": 521
+  "checked": 652,
+  "survived": 525
  },
  "cooldown": {
-  "USD\u2192EUR\u2192DUAL\u2192USD|ZEURZUSD|DUALEUR|DUALUSD": 1788865865
+  "USD\u2192EUR\u2192DUAL\u2192USD|ZEURZUSD|DUALEUR|DUALUSD": 1788865965
  },
- "tradeCountAll": 260,
+ "tradeCountAll": 262,
  "replay": {
   "edges": 105,
   "refillable": 105,
