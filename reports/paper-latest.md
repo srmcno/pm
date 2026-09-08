@@ -1,14 +1,13 @@
 # Paper portfolio
 
-Updated 2026-09-08 12:09 UTC · started with $50.00 (virtual)
+Updated 2026-09-08 12:24 UTC · started with $50.00 (virtual)
 
-**Equity $56.70 (+13.4%)** · cash $31.88 · 3 open · 9 settled
+**Equity $54.41 (+8.8%)** · cash $38.62 · 2 open · 10 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Stefany Shaheen be the Democratic nominee for NH-01? | No | 11.99 | 0.85 | 0.84 | $10.07 |
-| Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B | FURIA | 9.95 | 0.86 | 0.81 | $8.01 |
-| LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner | Invictus Gaming | 6.74 | 0.90 | 1.00 | $6.74 |
+| Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B | FURIA | 9.95 | 0.86 | 0.57 | $5.72 |
 
 | settled market | side | entry | settle | PnL |
 |---|---|---|---|---|
@@ -21,3 +20,4 @@ Updated 2026-09-08 12:09 UTC · started with $50.00 (virtual)
 | Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 0.66 | 1.00 | +4.41 |
 | Will Grüne win at least 7% of all valid second votes? | No | 0.89 | 0.00 | -7.44 |
 | Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B | FaZe | 0.76 | 0.00 | -7.23 |
+| LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner | Invictus Gaming | 0.90 | 1.00 | +0.67 |

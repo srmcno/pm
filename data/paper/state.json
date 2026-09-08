@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 31.8752,
+ "cash": 38.6196,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -28,22 +28,8 @@
    "costUsd": 8.61,
    "openedAt": 1788818759,
    "signalScore": 4.7743,
-   "markPrice": 0.805,
-   "valueUsd": 8.0128
-  },
-  {
-   "conditionId": "0xd9939a4e16553228965d42077fc7c1cb5e3d57fc7f6d0d9a538f388fbd0009b8",
-   "outcomeIndex": 0,
-   "tokenId": "24162028251342796537180363336508956838886474981006948308022816754501676084847",
-   "question": "LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner",
-   "outcome": "Invictus Gaming",
-   "shares": 6.7444,
-   "entryPrice": 0.9,
-   "costUsd": 6.07,
-   "openedAt": 1788859886,
-   "signalScore": 6.1865,
-   "markPrice": 0.9995,
-   "valueUsd": 6.741
+   "markPrice": 0.575,
+   "valueUsd": 5.7234
   }
  ],
  "closed": [
@@ -199,6 +185,23 @@
    "settledAt": 1788864272,
    "settlePrice": 0.0,
    "pnl": -7.23
+  },
+  {
+   "conditionId": "0xd9939a4e16553228965d42077fc7c1cb5e3d57fc7f6d0d9a538f388fbd0009b8",
+   "outcomeIndex": 0,
+   "tokenId": "24162028251342796537180363336508956838886474981006948308022816754501676084847",
+   "question": "LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner",
+   "outcome": "Invictus Gaming",
+   "shares": 6.7444,
+   "entryPrice": 0.9,
+   "costUsd": 6.07,
+   "openedAt": 1788859886,
+   "signalScore": 6.1865,
+   "markPrice": 0.9995,
+   "valueUsd": 6.741,
+   "settledAt": 1788870282,
+   "settlePrice": 1.0,
+   "pnl": 0.6744
   }
  ],
  "equityCurve": [
@@ -12356,6 +12359,11 @@
    "t": 1788869375,
    "equity": 56.6992,
    "cash": 31.8752
+  },
+  {
+   "t": 1788870282,
+   "equity": 54.4132,
+   "cash": 38.6196
   }
  ],
  "log": [
@@ -12517,6 +12525,13 @@
    "question": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
    "price": 0.0,
    "pnl": -7.23
+  },
+  {
+   "t": 1788870282,
+   "action": "SETTLE",
+   "question": "LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner",
+   "price": 1.0,
+   "pnl": 0.6744
   }
  ]
 }
