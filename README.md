@@ -86,6 +86,8 @@ node scripts/collect-opportunities.mjs
 python -m http.server 8765 --directory dashboard
 ```
 
+`U.S. desk paper cycle` runs one decision cycle on a five-minute best-effort schedule, loading the current code and saving its book after each scan. Configured Alpaca credentials supply quotes; this workflow does not arm broker orders. Missing execution quotes block entries. Conflicting state writes fail instead of silently overwriting another writer.
+
 `U.S. opportunity scan` collects on a five-minute best-effort schedule. `Deploy dashboard to GitHub Pages` verifies and publishes `dashboard/`, and records the actual deployed commit in `build-info.json`. CI covers changes and pull requests. The watchdog recovers missing scans. Data commits from workflow tokens are published by the scheduled Pages workflow because such commits do not trigger push workflows.
 
 Existing desk operation is documented in [the runbook](docs/RUNBOOK.md). Corrected replay results supersede all historical performance claims in older studies. Real orders still require all existing explicit arming gates and valid evidence. No real orders were needed to develop or test this release.
