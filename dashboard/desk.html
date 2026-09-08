@@ -124,9 +124,9 @@
   <h1>Desk System</h1>
   <div class="rule"><div class="dia"></div></div>
   <p class="lede">Several strategies on US-regulated venues, each one allowed to trade only after it
-    survives walk-forward testing out of sample with every real cost charged — commissions, spreads,
+    survives walk-forward testing out of sample with modeled trading costs charged — commissions, spreads,
     regulatory fees, and the per-day fee floor that decides whether a small account is viable at all.
-    <a href="./">← Wallet intelligence</a></p>
+    <a href="./">← Opportunity desk</a></p>
   <p class="asof" id="asof">Loading…</p>
 </header>
 
@@ -152,7 +152,7 @@
 
 <section>
   <h2>Risk</h2>
-  <p class="sectionnote">Live limits. The turnover budget is the important one: the pattern-day-trader
+  <p class="sectionnote">Last recorded decision limits. The turnover budget is the important one: the pattern-day-trader
     rules changed in June 2026, with a broker transition period through October 2027. Confirm your broker's current account requirements. Turnover and exposure limits also apply here.</p>
   <div class="card" id="risk"></div>
 </section>
@@ -325,17 +325,17 @@ function render() {
 
   const tb = risk.turnover || {};
   const lim = risk.limits || {};
-  fill("risk", table([["Limit", 1], ["Value", 0], ["Status", 1]], [
+  fill("risk", typeof risk.canTrade === "boolean" ? table([["Limit", 1], ["Value", 0], ["Status", 1]], [
     [["Can trade", "l"], [risk.canTrade ? "yes" : "no", risk.canTrade ? "pos" : "neg"],
      [risk.haltReason || "no halt in force", "l"]],
     [["Turnover budget", "l"], [`$${num(tb.usedUsd, 0)} / $${num(tb.allowanceUsd, 0)}`, ""],
      [`${num(tb.utilizationPct, 1)}% used · ${tb.refusedTrades || 0} trades refused`, "l"]],
-    [["Daily loss halt", "l"], [`${num((lim.daily_loss_halt || 0) * 100, 1)}%`, ""],
+    [["Daily loss halt", "l"], [`${num(Number.isFinite(lim.daily_loss_halt) ? lim.daily_loss_halt * 100 : null, 1)}%`, ""],
      [`day P&L $${num((risk.day || {}).pnl)}`, "l"]],
-    [["Drawdown halt", "l"], [`${num((lim.max_drawdown_halt || 0) * 100, 1)}%`, ""],
+    [["Drawdown halt", "l"], [`${num(Number.isFinite(lim.max_drawdown_halt) ? lim.max_drawdown_halt * 100 : null, 1)}%`, ""],
      [`now ${num(risk.drawdownPct, 1)}% from peak`, "l"]],
-    [["Max position", "l"], [`${num((lim.max_position_weight || 0) * 100, 1)}%`, ""], ["of equity", "l"]],
-  ]), "No risk telemetry.");
+    [["Max position", "l"], [`${num(Number.isFinite(lim.max_position_weight) ? lim.max_position_weight * 100 : null, 1)}%`, ""], ["of equity", "l"]],
+  ]) : null, "No current risk telemetry. This evidence snapshot does not authorize trading.");
 
   const pos = acct.positions || [];
   const recent = acct.recent || [];
