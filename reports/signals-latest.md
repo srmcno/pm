@@ -1,12 +1,12 @@
 # Smart-money signals
 
-Generated 2026-09-08 04:42 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
+Generated 2026-09-08 04:57 UTC · window 48h · 54 qualified wallets watched · minimum 3 independent backers per signal.
 
 Each signal marks an outcome that several qualified wallets have independently net-bought within the window. Signals are inputs for review, not trade instructions.
 
 ## 1. Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B — **FURIA**
 
-- Score **3.62** · 3 backers · net $5,396 staked
+- Score **3.58** · 3 backers · net $5,396 staked
 - Backers' average entry 0.83 → current price **0.84** (roughly flat +0.01 since entry)
 - Resolves by 2026-09-08
 
@@ -18,8 +18,8 @@ Each signal marks an outcome that several qualified wallets have independently n
 
 ## 2. Will Stefany Shaheen be the Democratic nominee for NH-01? — **No**
 
-- Score **3.42** · 3 backers · net $1,700 staked
-- Backers' average entry 0.85 → current price **0.83** (roughly flat -0.01 since entry)
+- Score **3.38** · 3 backers · net $1,700 staked
+- Backers' average entry 0.85 → current price **0.83** (roughly flat -0.02 since entry)
 - Resolves by 2026-09-08
 
 | backer | 90d PnL rank quality | net stake | their entry | conviction ×median |
