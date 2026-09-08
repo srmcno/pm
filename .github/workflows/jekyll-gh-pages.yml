@@ -1,22 +1,12 @@
-# Publishes dashboard/ as the GitHub Pages site root (no Jekyll build —
-# the dashboard is a single self-contained HTML file).
+# Publishes the verified dashboard directory with the checked-out commit recorded.
 name: Deploy dashboard to GitHub Pages
 
 on:
   push:
     branches: ["claude/polymarket-wallets-analysis-m81p4j"]
     paths: ["dashboard/**", ".github/workflows/jekyll-gh-pages.yml"]
-  # The desks commit fresh dashboard data every minute or two. Deploying on
-  # each of those commits does not publish the site FASTER — it publishes it
-  # never: only one run may be queued in the "pages" concurrency group, so
-  # every queued deploy was cancelled by the next one before a runner picked
-  # it up, and the site served three-day-old data while the bots ran fine.
-  # Five minutes is the shortest interval GitHub schedules, and a deploy
-  # takes about one, so these never overlap. The interval is also a floor on
-  # how stale the published data can look: a desk that writes a fresh scan
-  # the second after a deploy is not visible until the next one, so every
-  # freshness budget on the dashboard has to cover this on top of the desk's
-  # own heartbeat.
+  # Data commits from workflow tokens do not trigger push workflows.
+  # Scheduled publishing is best effort; source timestamps remain visible.
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch: {}
@@ -59,6 +49,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: dashboard
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
