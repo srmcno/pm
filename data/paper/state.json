@@ -32,20 +32,6 @@
    "valueUsd": 8.411
   },
   {
-   "conditionId": "0x95a5beea0030946971bd00ca2105a85733c705c2dfb11ae0db2d85e9ad9ecd1f",
-   "outcomeIndex": 1,
-   "tokenId": "40512667404719026439753288185318192012062231034408344529153741537613773958732",
-   "question": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
-   "outcome": "FaZe",
-   "shares": 9.5762,
-   "entryPrice": 0.755,
-   "costUsd": 7.23,
-   "openedAt": 1788846363,
-   "signalScore": 3.8642,
-   "markPrice": 0.0005,
-   "valueUsd": 0.0048
-  },
-  {
    "conditionId": "0xd9939a4e16553228965d42077fc7c1cb5e3d57fc7f6d0d9a538f388fbd0009b8",
    "outcomeIndex": 0,
    "tokenId": "24162028251342796537180363336508956838886474981006948308022816754501676084847",
@@ -196,6 +182,23 @@
    "settledAt": 1788799021,
    "settlePrice": 0.0,
    "pnl": -7.44
+  },
+  {
+   "conditionId": "0x95a5beea0030946971bd00ca2105a85733c705c2dfb11ae0db2d85e9ad9ecd1f",
+   "outcomeIndex": 1,
+   "tokenId": "40512667404719026439753288185318192012062231034408344529153741537613773958732",
+   "question": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
+   "outcome": "FaZe",
+   "shares": 9.5762,
+   "entryPrice": 0.755,
+   "costUsd": 7.23,
+   "openedAt": 1788846363,
+   "signalScore": 3.8642,
+   "markPrice": 0.0005,
+   "valueUsd": 0.0048,
+   "settledAt": 1788864272,
+   "settlePrice": 0.0,
+   "pnl": -7.23
   }
  ],
  "equityCurve": [
@@ -12328,6 +12331,11 @@
    "t": 1788863365,
    "equity": 57.1022,
    "cash": 31.8752
+  },
+  {
+   "t": 1788864272,
+   "equity": 57.0974,
+   "cash": 31.8752
   }
  ],
  "log": [
@@ -12482,6 +12490,13 @@
    "outcome": "Invictus Gaming",
    "stake": 6.07,
    "price": 0.9
+  },
+  {
+   "t": 1788864272,
+   "action": "SETTLE",
+   "question": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
+   "price": 0.0,
+   "pnl": -7.23
   }
  ]
 }

@@ -1,14 +1,13 @@
 # Paper portfolio
 
-Updated 2026-09-08 10:29 UTC · started with $50.00 (virtual)
+Updated 2026-09-08 10:44 UTC · started with $50.00 (virtual)
 
-**Equity $57.10 (+14.2%)** · cash $31.88 · 4 open · 8 settled
+**Equity $57.10 (+14.2%)** · cash $31.88 · 3 open · 9 settled
 
 | market | side | shares | entry | mark | value |
 |---|---|---|---|---|---|
 | Will Stefany Shaheen be the Democratic nominee for NH-01? | No | 11.99 | 0.85 | 0.84 | $10.07 |
 | Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B | FURIA | 9.95 | 0.86 | 0.84 | $8.41 |
-| Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B | FaZe | 9.58 | 0.76 | 0.00 | $0.00 |
 | LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner | Invictus Gaming | 6.74 | 0.90 | 1.00 | $6.74 |
 
 | settled market | side | entry | settle | PnL |
@@ -21,3 +20,4 @@ Updated 2026-09-08 10:29 UTC · started with $50.00 (virtual)
 | LoL: Ninjas in Pyjamas vs LGD Gaming - Game 2 Winner | Ninjas in Pyjamas | 0.48 | 1.00 | +6.28 |
 | Counter-Strike: Spirit vs MOUZ (BO5) - BLAST Open Porto Playoffs | Spirit | 0.66 | 1.00 | +4.41 |
 | Will Grüne win at least 7% of all valid second votes? | No | 0.89 | 0.00 | -7.44 |
+| Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B | FaZe | 0.76 | 0.00 | -7.23 |
