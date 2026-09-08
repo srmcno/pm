@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788879958,
+  "generatedAt": 1788880906,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -8,6 +8,67 @@
   "source": "watch.py"
  },
  "signals": [
+  {
+   "conditionId": "0x726e25c3283dff77dfe54ed33ec67c8b2444cab5fccd7d245b5eb77aeeddda86",
+   "outcomeIndex": 1,
+   "title": "Counter-Strike: G2 vs Astralis (BO3) - FISSURE PLAYGROUND Group A",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x52ecea7b3159f09db589e4f4ee64872fd0bba6f3",
+     "name": "fkigedgjdgwbg",
+     "quality": 0.5693,
+     "netUsd": 19159.91,
+     "avgPrice": 0.55,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.4,
+     "score": 1.773564032551726
+    },
+    {
+     "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
+     "name": "Wiretransferxyz",
+     "quality": 0.547,
+     "netUsd": 9988.07,
+     "avgPrice": 0.54,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.3,
+     "score": 1.7071517657074786
+    },
+    {
+     "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
+     "name": "ExplosiveNinja",
+     "quality": 0.4182,
+     "netUsd": 5849.81,
+     "avgPrice": 0.29,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.6,
+     "score": 1.2365878475752539
+    },
+    {
+     "wallet": "0x79ae097215202b5d01f98e4479fb219102469a4a",
+     "name": "CORGI8",
+     "quality": 0.4102,
+     "netUsd": 1866.8,
+     "avgPrice": 0.3,
+     "conviction": 10.0,
+     "lastTradeAgoH": 1.5,
+     "score": 1.2168555045674803
+    }
+   ],
+   "backerCount": 4,
+   "contested": true,
+   "totalNetUsd": 36864.59,
+   "score": 5.9342,
+   "question": "Counter-Strike: G2 vs Astralis (BO3) - FISSURE PLAYGROUND Group A",
+   "outcome": "Astralis",
+   "tokenId": "4635726842589697588871141996333291015091229222999671816141218764657615327442",
+   "currentPrice": 0.485,
+   "backersAvgEntry": 0.42,
+   "driftSinceEntry": 0.065,
+   "endDate": "2026-09-08T19:45:00Z",
+   "slug": "cs2-g2-ast10-2026-09-08",
+   "eventSlug": "cs2-g2-ast10-2026-09-08"
+  },
   {
    "conditionId": "0xf64108affb6c655b7a50d662d2c508bef1897e40bb3106f7405552c177c92d78",
    "outcomeIndex": 1,
@@ -21,8 +82,8 @@
      "netUsd": 722.91,
      "avgPrice": 0.8495,
      "conviction": 10.0,
-     "lastTradeAgoH": 15.2,
-     "score": 0.9316259893426113
+     "lastTradeAgoH": 15.5,
+     "score": 0.9215558468863388
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -31,8 +92,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 25.4,
-     "score": 0.657087446366847
+     "lastTradeAgoH": 25.7,
+     "score": 0.649984849115549
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -41,14 +102,14 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 32.2,
-     "score": 0.6292561580014286
+     "lastTradeAgoH": 32.5,
+     "score": 0.6224543950353348
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1699.74,
-   "score": 2.218,
+   "score": 2.194,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",

@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 39.9305,
+ "cash": 33.5405,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -28,8 +28,22 @@
    "costUsd": 8.61,
    "openedAt": 1788818759,
    "signalScore": 4.7743,
-   "markPrice": 0.9935,
-   "valueUsd": 9.8891
+   "markPrice": 0.9995,
+   "valueUsd": 9.9488
+  },
+  {
+   "conditionId": "0x726e25c3283dff77dfe54ed33ec67c8b2444cab5fccd7d245b5eb77aeeddda86",
+   "outcomeIndex": 1,
+   "tokenId": "4635726842589697588871141996333291015091229222999671816141218764657615327442",
+   "question": "Counter-Strike: G2 vs Astralis (BO3) - FISSURE PLAYGROUND Group A",
+   "outcome": "Astralis",
+   "shares": 14.2,
+   "entryPrice": 0.45,
+   "costUsd": 6.39,
+   "openedAt": 1788880906,
+   "signalScore": 5.9342,
+   "markPrice": 0.485,
+   "valueUsd": 6.887
   }
  ],
  "closed": [
@@ -12436,6 +12450,11 @@
    "t": 1788879958,
    "equity": 59.8298,
    "cash": 39.9305
+  },
+  {
+   "t": 1788880906,
+   "equity": 60.3865,
+   "cash": 33.5405
   }
  ],
  "log": [
@@ -12619,6 +12638,14 @@
    "question": "Counter-Strike: GamerLegion vs FURIA - Map 2 Winner",
    "price": 1.0,
    "pnl": 1.3109
+  },
+  {
+   "t": 1788880906,
+   "action": "BUY",
+   "question": "Counter-Strike: G2 vs Astralis (BO3) - FISSURE PLAYGROUND Group A",
+   "outcome": "Astralis",
+   "stake": 6.39,
+   "price": 0.45
   }
  ]
 }
