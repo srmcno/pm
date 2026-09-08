@@ -1,6 +1,6 @@
 {
  "bankrollStart": 50.0,
- "cash": 38.6196,
+ "cash": 32.4396,
  "createdAt": 1788373839,
  "positions": [
   {
@@ -28,8 +28,22 @@
    "costUsd": 8.61,
    "openedAt": 1788818759,
    "signalScore": 4.7743,
-   "markPrice": 0.605,
-   "valueUsd": 6.022
+   "markPrice": 0.645,
+   "valueUsd": 6.4202
+  },
+  {
+   "conditionId": "0x162ea59ddf373ba7024ab0b12d9186e4bd07ab8adc8399bad6905a02f0f49b87",
+   "outcomeIndex": 1,
+   "tokenId": "3457846670248566605379575947998867889174807474183771080619478298449332920144",
+   "question": "Counter-Strike: GamerLegion vs FURIA - Map 2 Winner",
+   "outcome": "FURIA",
+   "shares": 7.4909,
+   "entryPrice": 0.825,
+   "costUsd": 6.18,
+   "openedAt": 1788874002,
+   "signalScore": 5.5747,
+   "markPrice": 0.81,
+   "valueUsd": 6.0676
   }
  ],
  "closed": [
@@ -12379,6 +12393,11 @@
    "t": 1788873000,
    "equity": 54.7118,
    "cash": 38.6196
+  },
+  {
+   "t": 1788874002,
+   "equity": 54.9976,
+   "cash": 32.4396
   }
  ],
  "log": [
@@ -12547,6 +12566,14 @@
    "question": "LoL: Invictus Gaming vs LGD Gaming - Game 1 Winner",
    "price": 1.0,
    "pnl": 0.6744
+  },
+  {
+   "t": 1788874002,
+   "action": "BUY",
+   "question": "Counter-Strike: GamerLegion vs FURIA - Map 2 Winner",
+   "outcome": "FURIA",
+   "stake": 6.18,
+   "price": 0.825
   }
  ]
 }
