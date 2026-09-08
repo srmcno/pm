@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generatedAt": 1788845247,
+  "generatedAt": 1788846363,
   "hours": 48,
   "watchlistSize": 54,
   "minBackers": 3,
@@ -8,6 +8,57 @@
   "source": "watch.py"
  },
  "signals": [
+  {
+   "conditionId": "0x95a5beea0030946971bd00ca2105a85733c705c2dfb11ae0db2d85e9ad9ecd1f",
+   "outcomeIndex": 1,
+   "title": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
+   "category": "Esports",
+   "backers": [
+    {
+     "wallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+     "name": "0x076daa87",
+     "quality": 0.7915,
+     "netUsd": 427.56,
+     "avgPrice": 0.72,
+     "conviction": 10.0,
+     "lastTradeAgoH": 10.7,
+     "score": 1.6004787367886366
+    },
+    {
+     "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
+     "name": "ExplosiveNinja",
+     "quality": 0.4182,
+     "netUsd": 16434.33,
+     "avgPrice": 0.72,
+     "conviction": 10.0,
+     "lastTradeAgoH": 0.7,
+     "score": 1.2818804136046902
+    },
+    {
+     "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
+     "name": "Wiretransferxyz",
+     "quality": 0.547,
+     "netUsd": 512.64,
+     "avgPrice": 0.72,
+     "conviction": 10.0,
+     "lastTradeAgoH": 13.6,
+     "score": 0.9818222957299539
+    }
+   ],
+   "backerCount": 3,
+   "contested": true,
+   "totalNetUsd": 17374.53,
+   "score": 3.8642,
+   "question": "Counter-Strike: Alliance vs FaZe (BO3) - FISSURE PLAYGROUND Group B",
+   "outcome": "FaZe",
+   "tokenId": "40512667404719026439753288185318192012062231034408344529153741537613773958732",
+   "currentPrice": 0.745,
+   "backersAvgEntry": 0.72,
+   "driftSinceEntry": 0.025,
+   "endDate": "2026-09-08T12:00:00Z",
+   "slug": "cs2-all-faze-2026-09-08",
+   "eventSlug": "cs2-all-faze-2026-09-08"
+  },
   {
    "conditionId": "0x42ec61e0269cd99507c19b4c2a2ecff6d342bc1cac858c03e46885c7c91117fb",
    "outcomeIndex": 1,
@@ -21,8 +72,8 @@
      "netUsd": 216.06,
      "avgPrice": 0.85,
      "conviction": 7.75,
-     "lastTradeAgoH": 8.2,
-     "score": 1.5630233577785675
+     "lastTradeAgoH": 8.5,
+     "score": 1.5430712881241806
     },
     {
      "wallet": "0x30c7ac0158499ddc6761047f7f69bcf7d036ac3b",
@@ -31,8 +82,8 @@
      "netUsd": 2142.36,
      "avgPrice": 0.83,
      "conviction": 10.0,
-     "lastTradeAgoH": 10.0,
-     "score": 1.142564642196498
+     "lastTradeAgoH": 10.3,
+     "score": 1.1279797486232224
     },
     {
      "wallet": "0x73e3fec494611d73c170cb2f23850fd998b21be9",
@@ -41,14 +92,14 @@
      "netUsd": 3037.84,
      "avgPrice": 0.82,
      "conviction": 10.0,
-     "lastTradeAgoH": 12.1,
-     "score": 0.7995663059616847
+     "lastTradeAgoH": 12.4,
+     "score": 0.7893598029363419
     }
    ],
    "backerCount": 3,
    "contested": true,
    "totalNetUsd": 5396.26,
-   "score": 3.5052,
+   "score": 3.4604,
    "question": "Counter-Strike: GamerLegion vs FURIA (BO3) - FISSURE PLAYGROUND Group B",
    "outcome": "FURIA",
    "tokenId": "1033166527382422275173213457146590357623021907137470609698171564984757510550",
@@ -72,8 +123,8 @@
      "netUsd": 722.91,
      "avgPrice": 0.8495,
      "conviction": 10.0,
-     "lastTradeAgoH": 5.6,
-     "score": 1.3922537561151263
+     "lastTradeAgoH": 5.9,
+     "score": 1.3744815687832168
     },
     {
      "wallet": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
@@ -82,8 +133,8 @@
      "netUsd": 638.76,
      "avgPrice": 0.85,
      "conviction": 10.0,
-     "lastTradeAgoH": 15.8,
-     "score": 0.9819739635493399
+     "lastTradeAgoH": 16.1,
+     "score": 0.9694390178480957
     },
     {
      "wallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
@@ -92,14 +143,14 @@
      "netUsd": 338.07,
      "avgPrice": 0.84,
      "conviction": 10.0,
-     "lastTradeAgoH": 22.6,
-     "score": 0.940381933907038
+     "lastTradeAgoH": 22.9,
+     "score": 0.9283779124996379
     }
    ],
    "backerCount": 3,
    "contested": false,
    "totalNetUsd": 1699.74,
-   "score": 3.3146,
+   "score": 3.2723,
    "question": "Will Stefany Shaheen be the Democratic nominee for NH-01?",
    "outcome": "No",
    "tokenId": "58505084289769106248839357302571790669599355923993038386108173464966089202625",
