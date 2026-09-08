@@ -49,13 +49,22 @@ jobs:
         working-directory: scripts
         run: python3 -m desk.cli validate --folds 5
 
+      - name: Publish the refreshed evidence to the strategy page
+        working-directory: scripts
+        run: python3 -m desk.cli publish
+
       - name: Commit evidence
         run: |
           git config user.name "sharp-money-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/desk/evidence.json reports/desk-evidence.md dashboard/data || true
+          git add data/desk/evidence.json reports/desk-evidence.md dashboard/data/desk.json
           git diff --cached --quiet && exit 0
           git commit -m "auto: desk validation $(date -u +'%Y-%m-%d')"
-          git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" || git rebase --abort || true
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-          gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}" || true
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" || { git rebase --abort; exit 1; }
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              gh workflow run jekyll-gh-pages.yml --ref "${GITHUB_REF_NAME}"
+              exit 0
+            fi
+          done
+          exit 1
