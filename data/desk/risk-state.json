@@ -1,9 +1,9 @@
 {
- "updatedAt": 1789012583,
+ "updatedAt": 1789013924,
  "equity": 1000.0,
  "peakEquity": 1000.0,
  "day": {
-  "date": "2026-09-09",
+  "date": "2026-09-10",
   "start_equity": 1000.0,
   "pnl": 0.0,
   "halted": false,
