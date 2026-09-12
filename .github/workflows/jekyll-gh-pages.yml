@@ -40,12 +40,12 @@ jobs:
           node-version: '22'
       - name: Verify the site before publishing
         run: |
-          node --test tests/market-core.test.mjs tests/scanner-backtest.test.mjs tests/data-client.test.mjs
+          node --test tests/market-core.test.mjs tests/scanner-backtest.test.mjs tests/data-client.test.mjs tests/outcomes.test.mjs
           python3 scripts/check_site.py
           python3 - <<'PY'
           import json, subprocess, datetime
           with open('dashboard/build-info.json','w') as f:
-            json.dump({'version':'4.0.0','commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},f)
+            json.dump({'version':'4.1.0','commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},f)
           PY
       - name: Setup Pages
         uses: actions/configure-pages@v5

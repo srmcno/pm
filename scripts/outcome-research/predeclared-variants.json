@@ -1,0 +1,26 @@
+{
+  "declaredAt": "2026-09-12T22:09:18.304401+00:00",
+  "sourceModelSha256": "c557ccceb4c6e8d218f9a8cbd349a0d0ee3d863f6330088a0d0720af403dbf7f",
+  "inputSha256": "cb9f51f14deecd39a11c81911422a04ee9bfbd63d24330011b72efb1b88f2975",
+  "baseline": {
+    "minNetR": 1.25,
+    "maxHoldingHours": 48
+  },
+  "variants": [
+    {
+      "id": "net-r-two",
+      "changes": {
+        "minNetR": 2
+      },
+      "hypothesis": "Require at least 2 reward per unit of loss after modeled costs to reduce fee-dominated entries. All other rules unchanged."
+    },
+    {
+      "id": "seven-day-exit",
+      "changes": {
+        "maxHoldingHours": 168
+      },
+      "hypothesis": "Allow the existing 3R target longer to develop; current 48-hour time exits outnumber target exits. All other rules unchanged."
+    }
+  ],
+  "evaluation": "Full 90 days and the same three chronological 30-day slices each starting at $1,000. These are retrospective sensitivity checks, not untouched holdouts. No further threshold choices or parameter search after results. Preserve fees, sizing, quotes, halts, confirmation, missing data, and liquidation accounting."
+}

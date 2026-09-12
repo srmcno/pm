@@ -6,3 +6,4 @@ data/cache/
 data/stocks/cache/
 dist/
 .sites-runtime/
+scripts/outcome-research/results.json

@@ -6,5 +6,5 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 await mkdir(path.join(root, 'dist'), { recursive: true });
 await cp(path.join(root, 'dashboard'), path.join(root, 'dist'), { recursive: true, filter: source => !source.endsWith('/template.html') });
 const commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
-await writeFile(path.join(root, 'dist/build-info.json'), JSON.stringify({ version: '4.0.0', commit, builtAt: new Date().toISOString() }));
+await writeFile(path.join(root, 'dist/build-info.json'), JSON.stringify({ version: '4.1.0', commit, builtAt: new Date().toISOString() }));
 console.log('Built Moffitt Money static site.');

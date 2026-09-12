@@ -1,3 +1,4 @@
+import {assessEvidence,applyEvidence,summarizeTrades,POLICY_VERSION} from './outcomes.mjs?v=4.1.0';
 import {publishedJson, publicationHealth} from './data-client.mjs?v=4.0.0';
 import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.3';
 const $ = id => document.getElementById(id);
@@ -9,7 +10,7 @@ const signed = n => `${n > 0 ? '+' : ''}${money(n)}`;
 const since = t => {const a = ageSeconds(t); return !Number.isFinite(a) ? 'unknown age' : a < 60 ? `${Math.floor(a)}s ago` : a < 3600 ? `${Math.floor(a/60)}m ago` : `${Math.floor(a/3600)}h ago`;};
 const stamp = t => t > 0 ? new Date(t * 1000).toLocaleString() : 'not available';
 const badge = (label, cls = 'muted') => `<span class="badge ${cls}">${escape(label)}</span>`;
-const stateLabel = {candidate:'Paper candidate', waiting:'Watching', stale:'Live quote needed', unavailable:'Unavailable', 'cost-blocked':'Cost blocked'};
+const stateLabel = {candidate:'Paper candidate', waiting:'Watching', stale:'Live quote needed', unavailable:'Unavailable', 'cost-blocked':'Cost blocked', 'evidence-held':'Evidence held'};
 let markets = PRODUCTS.map(product => ({product, candles: [], status:'unavailable'}));
 let snapshot = null, signals = [], selected = 'BTC-USD', paused = false;
 let ws = null, reconnect = null, attempts = 0, disposed = false, lastChart = '', snapshotBusy = false, directBusy = false;
@@ -126,8 +127,8 @@ function connect() {
 }
 function disconnect() { clearTimeout(reconnect); const socket = ws; ws = null; socket?.close(); }
 function render() {
-  const p = model();
-  signals = markets.map(m => analyzeMarket(m, p));
+  const p = model(), evidence = assessEvidence(backtest);
+  signals = markets.map(m => applyEvidence(analyzeMarket(m, p), evidence));
   const fresh = markets.filter(m => quoteUsable(m.quote));
   const streamed = fresh.filter(m => String(m.quote.source || '').includes('WebSocket')).length;
   const quoted = markets.filter(m => Number.isFinite(m.quote?.at));
@@ -143,7 +144,7 @@ function render() {
     `Live quotes have not connected. Last saved quote: ${since(newest)}. Chart setups remain visible; new entry plans require a fresh quote.` :
     'Connecting to Coinbase. No price or trade is invented while the source is unavailable.';
   $('clock').textContent = new Date().toLocaleTimeString('en-US', {hour12:false,timeZone:'UTC'}) + ' UTC';
-  renderHealth();
+  renderHealth(); renderOutcomeOverview();
   const notice = [snapshotError, markets.every(m=>m.candles.length<60) ? historyError : '', modelError].filter(Boolean).join(' ');
   $('notice').hidden = !notice; $('notice').textContent = notice;
   updateRegion('ticker', markets.map((m,i) => {
@@ -153,11 +154,11 @@ function render() {
     return `<button class="ticker-card ${selected === m.product ? 'active' : ''}" data-product="${m.product}" aria-label="Inspect ${m.product}"><span class="ticker-name">${m.product.split('-')[0]} <span class="${live ? 'positive' : 'quiet'}">${live ? '●' : '○'}</span></span><strong>${price(q?.price)}</strong><small class="${live && change !== null ? change>=0 ? 'positive' : 'negative' : 'quiet'}">${live && change!==null ? `${change>=0?'+':''}${change.toFixed(2)}% vs 1h close` : `Quote ${since(q?.at)}`}</small></button>`;
   }).join(''));
   const text = $('search').value.toLowerCase(), only = $('only-candidates').checked;
-  const shown = signals.filter(s => (s.product.toLowerCase().includes(text) || s.strategy.toLowerCase().includes(text)) && (!only || s.status==='candidate'));
-  $('scan-count').textContent = `${signals.filter(s=>s.status==='candidate').length} current candidates · ${signals.filter(s=>s.setup).length} chart setups`;
+  const shown = signals.filter(s => (s.product.toLowerCase().includes(text) || s.strategy.toLowerCase().includes(text)) && (!only || !!s.setup));
+  $('scan-count').textContent = `${signals.filter(s=>s.status==='candidate').length} paper-eligible · ${signals.filter(s=>s.status==='evidence-held').length} held by evidence · ${signals.filter(s=>s.setup).length} chart setups`;
   updateRegion('setups', shown.map(s => {
     const m = markets.find(x=>x.product===s.product), live=quoteUsable(m.quote);
-    return `<tr><td><strong>${escape(s.product.replace('-',' / '))}</strong><small>${escape(s.strategy)}</small></td><td>${price(m.quote?.price)}<small>${live?'Quote ': 'Delayed · '}${since(m.quote?.at)}</small></td><td><span class="${s.regime==='Uptrend'?'positive':'quiet'}">${escape(s.regime||'Unknown')}</span></td><td>${Number.isFinite(s.relativeVolume)?s.relativeVolume.toFixed(2)+'×':'—'}</td><td>${badge(stateLabel[s.status],s.status==='candidate'?'good':s.status==='stale'?'amber':'muted')}</td><td><button class="row-action" data-product="${s.product}" aria-label="Inspect ${s.product} plan">Inspect ↗</button></td></tr>`;
+    return `<tr><td><strong>${escape(s.product.replace('-',' / '))}</strong><small>${escape(s.strategy)}</small></td><td>${price(m.quote?.price)}<small>${live?'Quote ': 'Delayed · '}${since(m.quote?.at)}</small></td><td><span class="${s.regime==='Uptrend'?'positive':'quiet'}">${escape(s.regime||'Unknown')}</span></td><td>${Number.isFinite(s.relativeVolume)?s.relativeVolume.toFixed(2)+'×':'—'}</td><td>${badge(stateLabel[s.status],s.status==='candidate'?'good':['stale','evidence-held'].includes(s.status)?'amber':'muted')}</td><td><button class="row-action" data-product="${s.product}" aria-label="Inspect ${s.product} plan">Inspect ↗</button></td></tr>`;
   }).join('') || '<tr><td colspan="6" class="empty">No markets match. Waiting is a valid strategy.</td></tr>');
   renderPlan(); renderChart();
 
@@ -166,6 +167,7 @@ function renderPlan() {
   const s = signals.find(s=>s.product===selected);
   if (!s) return;
   let content = `<div class="plan-heading"><strong>${escape(selected.replace('-',' / '))}</strong>${badge(stateLabel[s.status],s.status==='candidate'?'good':'muted')}</div>`;
+  if (s.hypotheticalPlan) content += '<p class="plan-explain">Hypothetical sizing only. Recorded outcomes hold new paper entries for this strategy.</p>';
   if (modelError) content += `<p class="plan-explain">${escape(modelError)}</p>`;
   else if (s.plan && Number.isFinite(s.plan.netR)) {
     const p = s.plan;
@@ -203,6 +205,11 @@ function renderPaper() {
   const closed=p.closed||[],wins=closed.filter(x=>x.pnl>0).length, pnl=p.equity-p.start;
   const metrics=[['SIMULATED EQUITY',money(p.equity),`${signed(pnl)} since ${stamp(p.startedAt)}`],['CASH AVAILABLE',money(p.cash),'Fixed model; planner settings do not change it'],['CLOSED TRADES',String(closed.length),closed.length?`${wins} wins · ${(wins/closed.length*100).toFixed(1)}% observed win rate`:'No performance claim before observed results'],['OPEN RISK',String(p.positions?.length||0)+' positions',p.drawdownHalt?'Drawdown halt active':p.dailyHalt?'Daily loss halt active':'3% combined modeled risk cap']];
   $('paper-metrics').innerHTML=metrics.map(([label,value,sub])=>`<div class="metric"><span>${label}</span><strong>${escape(value)}</strong><small>${escape(sub)}</small></div>`).join('');
+  renderEquity('paper-curve',p.curve,'Forward paper equity');
+  const observed=summarizeTrades(closed);
+  const policy=p.entryPolicy;
+  $('paper-entry-status').textContent=policy?.version===POLICY_VERSION ? policy.state==='held'?'New entries held':'Paper entry gate active' : 'New gate awaiting collector scan';
+  $('paper-outcome-note').textContent=`${closed.length} closed trades. ${closed.length ? 'Average realized result '+signed(observed.expectancy)+' per closed trade; '+money(observed.fees)+' recorded entry/exit fees.' : 'No realized payoff statistics yet.'} The curve shows retained scan history and includes open-position marks. ${policy?.reason||'The collector will apply the new evidence gate on its next successful run.'}`;
   const rows=[...(p.positions||[]).map(x=>({...x,open:true})),...closed.slice(-10).reverse()];
   $('paper-rows').innerHTML=rows.map(x=>{
     const gain=x.open?x.quantity*x.mark*(1-DEFAULTS.feeBps/10000)-x.cost:x.pnl;
@@ -230,7 +237,7 @@ async function loadBacktest() {
   try{
     const data=await publishedJson('data/scanner-backtest.json', d => d.modelVersion === MODEL_VERSION && Array.isArray(d.runs) && d.runs.length > 0);
     if(data.modelVersion!==MODEL_VERSION || !Array.isArray(data.runs) || !data.runs.length)throw new Error('A replay of the current model is required');
-    backtest=data;renderBacktest();
+    backtest=data;renderBacktest();renderOutcomes();render();
   }catch(e){
     if(!backtest){$('backtest-summary').textContent='Historical results for the current scanner have not loaded. Code tests alone are not evidence of profitability.';$('backtest-rows').innerHTML='<tr><td colspan="7" class="empty">The latest completed replay will appear here when published.</td></tr>';}
   }finally{backtestBusy=false;}
@@ -301,6 +308,50 @@ setInterval(()=>{if(!disposed){loadSnapshot();loadHistories();}},60000);
 setInterval(()=>{if(!disposed)loadBacktest();},300000);
 window.addEventListener('online',()=>{connect();loadSnapshot();restQuotes();loadHistories();});
 
+
+function renderOutcomeOverview() {
+  const policy=assessEvidence(backtest), base=backtest?.runs?.find(r=>r.name==='Combined · 90 days');
+  const paper=snapshot?.paper;
+  $('outcome-verdict').textContent=!backtest?'Evidence required before entry':policy.state==='held'?'New paper entries are held':'Paper-research gate passed';
+  const items=[['Historical result',base?base.returnPct.toFixed(2)+'%':'Not loaded',base?`${base.trades} closed trades in the 90-day replay`:'Awaiting a matching replay',base?.returnPct<0],['Forward result',paper?signed(paper.equity-paper.start):'Not loaded',paper?`${paper.closed.length} closed · ${paper.positions.length} open · simulated`:'Awaiting the shared book',paper&&paper.equity<paper.start],['Strategy decision',policy.state==='held'?'Needs revision':'Paper only',policy.allowedStrategies.length?`${policy.allowedStrategies.length} strategies pass the checks`:'No strategy passes the outcome checks',false]];
+  $('outcome-overview').innerHTML=items.map(([label,value,note,negative])=>`<div><span>${escape(label)}</span><strong class="${negative?'negative':''}">${escape(value)}</strong><small>${escape(note)}</small></div>`).join('');
+}
+function renderEquity(id, points, label) {
+  const rows=(Array.isArray(points)?points:[]).filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.equity));
+  if(rows.length<2){$(id).innerHTML='<p class="empty">At least two recorded equity points are needed to draw this curve.</p>';return;}
+  const stride=Math.max(1,Math.ceil(rows.length/250));
+  const sampled=rows.filter((_,i)=>i%stride===0||i===rows.length-1);
+  const width=900,height=230,left=76,right=20,top=20,bottom=36;
+  const lo=Math.min(...rows.map(p=>p.equity)),hi=Math.max(...rows.map(p=>p.equity)),pad=Math.max((hi-lo)*.15,1),min=lo-pad,max=hi+pad;
+  const first=rows[0].t,last=rows.at(-1).t;
+  const x=t=>left+(t-first)/Math.max(1,last-first)*(width-left-right),y=n=>top+(max-n)/(max-min)*(height-top-bottom);
+  const line=sampled.map((p,i)=>`${i?'L':'M'}${x(p.t).toFixed(2)},${y(p.equity).toFixed(2)}`).join(' ');
+  const ticks=Array.from({length:4},(_,i)=>{const value=max-(max-min)*i/3;return `<line x1="${left}" x2="${width-right}" y1="${y(value)}" y2="${y(value)}" stroke="var(--line)"/><text x="${left-12}" y="${y(value)+5}" text-anchor="end" fill="var(--quiet)" font-size="14">${escape(money(value,0))}</text>`;}).join('');
+  const date=t=>new Date(t*1000).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const color=rows.at(-1).equity<rows[0].equity?'var(--red)':'var(--teal)';
+  $(id).innerHTML=`<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escape(label)}: ${escape(money(rows[0].equity))} to ${escape(money(rows.at(-1).equity))}, ${date(first)} through ${date(last)}"><title>${escape(label)}</title>${ticks}<path d="${line}" fill="none" stroke="${color}" stroke-width="2.5"/><circle cx="${x(last)}" cy="${y(rows.at(-1).equity)}" r="4" fill="${color}"/><text x="${left}" y="${height-5}" fill="var(--quiet)" font-size="14">${date(first)}</text><text x="${width-right}" y="${height-5}" text-anchor="end" fill="var(--quiet)" font-size="14">${date(last)}</text></svg>`;
+}
+function renderOutcomes() {
+  if(!backtest)return;
+  const base=backtest.runs.find(r=>r.name==='Combined · 90 days'),policy=assessEvidence(backtest),s=summarizeTrades(base?.ledger);
+  if(!base)return;
+  $('strategy-reviews').innerHTML=policy.strategies.map(r=>`<article class="strategy-review"><div class="between"><h3>${escape(r.name)}</h3>${badge(r.status==='needs-revision'?'Needs revision':r.allowed?'Paper eligible':'Insufficient evidence',r.allowed?'good':'amber')}</div><strong class="${r.returnPct<0?'negative':''}">${Number.isFinite(r.returnPct)?r.returnPct.toFixed(2)+'%':'Unavailable'}</strong><p>${r.trades} trades · ${Number.isFinite(r.profitFactor)?r.profitFactor.toFixed(2):'Unknown'} profit factor</p><p class="quiet">${escape(r.reason)}</p></article>`).join('');
+  renderEquity('historical-curve',base.curve,'Historical model equity');
+  const halt=base.drawdownHalt&&base.ledger?.length?Math.max(...base.ledger.map(t=>t.closedAt)):null;
+  $('historical-curve-note').textContent=`${money(base.finalEquity)} ending equity. ${halt?'The loss halt left this book in cash after '+new Date(halt*1000).toLocaleDateString()+'. ':''}The three 30-day scenarios restart their books and are not additive. Equity is sampled from the recorded hourly curve.`;
+  const max=Math.max(1,...s.exits.map(x=>Math.abs(x.pnl)));
+  const attribution=s.exits.map(e=>`<div class="attribution-row"><div class="between"><span>${escape(e.reason)} <small>(${e.trades})</small></span><b class="${e.pnl<0?'negative':'positive'}">${signed(e.pnl)}</b></div><div class="attribution-track"><span style="width:${Math.abs(e.pnl)/max*100}%;background:${e.pnl<0?'var(--red)':'var(--teal)'}"></span></div></div>`).join('');
+  $('outcome-diagnosis').innerHTML=`<div class="payoff-comparison"><div><span>Observed win rate</span><strong>${s.winRate?.toFixed(1)??'Unknown'}%</strong></div><div><span>Win rate needed at observed payoffs</span><strong>${s.empiricalBreakeven?.toFixed(1)??'Unknown'}%</strong></div></div><p class="small quiet">Average winner ${money(s.averageWin)}; average loss ${money(s.averageLoss)}. These describe past closed trades and are not forecasts.</p><div class="diagnostic-fact"><span>Average realized result / trade</span><b class="negative">${signed(s.expectancy)}</b></div><div class="diagnostic-fact"><span>Recorded fees</span><b>${money(s.fees)}</b></div><div class="diagnostic-fact"><span>Same trades with recorded fees added back</span><b class="${s.beforeRecordedFees<0?'negative':'positive'}">${signed(s.beforeRecordedFees)}</b></div><p class="small quiet">The fee add-back keeps spread and slippage. It is not a zero-fee strategy replay.</p><h4>Net result by exit</h4>${attribution}`;
+  $('evidence-checks').innerHTML=policy.checks.map(c=>`<div class="evidence-check"><span aria-hidden="true" class="${c.pass?'positive':'negative'}">${c.pass?'✓':'×'}</span><span>${escape(c.label)}</span><small>${c.pass?'Met':'Not met'}</small></div>`).join('')+`<p class="gate-decision">${escape(policy.reason)}</p><p class="small quiet">Research policy: 30 trades and 1.15 profit factor are chosen screening thresholds, not statistical proof or permission for real trading. Supporting reports must match the model, costs and chronological windows.</p>`;
+}
+async function loadExperiments() {
+  try {
+    const data=await publishedJson('data/outcome-experiments.json',d=>d.modelVersion===MODEL_VERSION&&Array.isArray(d.runs));
+    const names={baseline:'Original rules','net-r-two':'Minimum net reward / risk: 2.0','seven-day-exit':'Time exit: 7 days'};
+    $('experiments').innerHTML=`<table><thead><tr><th>Rule set</th><th>90-day return</th><th>First / middle / last 30 days</th><th>Trades</th><th>Decision</th></tr></thead><tbody>${Object.entries(names).map(([id,name])=>{const all=data.runs.filter(r=>r.variant===id),full=all.find(r=>r.window==='Full 90 days'),slices=all.filter(r=>r.window!=='Full 90 days');if(!full)return '';return `<tr><td><strong>${escape(name)}</strong></td><td class="${full.returnPct<0?'negative':'positive'}">${full.returnPct.toFixed(2)}%</td><td>${slices.map(r=>r.returnPct.toFixed(2)+'%').join(' / ')}</td><td>${full.trades}</td><td>${badge(id==='baseline'?'Needs revision':'Not adopted','amber')}</td></tr>`;}).join('')}</tbody></table>`;
+  } catch { $('experiments').innerHTML='<p class="empty">The saved rule comparison could not load. Current entry checks still use the matching baseline replay.</p>'; }
+}
+
 function updateRegion(id, html) {
   const el = $(id), active = document.activeElement;
   const product = el.contains(active) ? active?.dataset?.product : null;
@@ -340,7 +391,7 @@ const views = {
   markets: ['Market overview', 'Live prices, completed-hour setups, and the cost of taking a position.'],
   paper: ['Paper performance', 'Follow the shared model, its positions, and its results after costs.'],
   discovery: ['Token radar', 'Review the observed pools and see exactly which screening rules they meet.'],
-  backtests: ['Strategy evidence', 'Inspect the historical results before interpreting a current setup.'],
+  backtests: ['Outcomes & decisions', 'See what worked, what failed, and why a new paper entry is allowed or held.'],
   health: ['Data health', 'Check each source separately. Fresh prices and fresh paper results are different.']
 };
 function showView(view, moveFocus = false) {
@@ -369,4 +420,4 @@ if (document.modelContext?.registerTool) {
   window.addEventListener('pagehide',()=>lifetime.abort(),{once:true});
 }
 
-render();connect();loadSnapshot();loadHistories();restQuotes();loadBacktest();
+render();connect();loadSnapshot();loadHistories();restQuotes();loadBacktest();loadExperiments();

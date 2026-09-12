@@ -19,3 +19,9 @@ The source check may run with fresh credentials when its retained token expires.
 ## Verification
 
 The September 12 rebuild passes offline calculation, fallback/rollback regression checks and local resource/embedded JavaScript checks. Optional WebMCP is feature-detected; no supported browser WebMCP context was available for end-to-end validation. No browser-based visual QA was requested or run.
+
+## Outcome policy, September 12
+
+`dashboard/outcomes.mjs` validates replay model, costs, ledger accounting, chronology and coverage before allowing a strategy to start a new shared paper position. The current failed standalone replays hold both strategies. The collector always marks and manages existing positions even when a replay is missing or unreadable. This policy is separate from the frozen baseline model so past losing results remain reproducible. Minimum 30 trades and 1.15 profit factor are explicit research screening thresholds, not proof of an edge.
+
+The Outcomes view compares realized payoffs, exit contributions, original equity and bounded rule experiments. Both tested variants lost money and were not adopted. See reports/outcome-review.md.

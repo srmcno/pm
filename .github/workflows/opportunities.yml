@@ -5,7 +5,7 @@ on:
     - cron: '2-57/5 * * * *'
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/collect-opportunities.mjs', 'dashboard/market-core.mjs', '.github/workflows/opportunities.yml']
+    paths: ['scripts/collect-opportunities.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
 permissions:
   contents: write
 concurrency:

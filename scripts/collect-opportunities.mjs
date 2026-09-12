@@ -1,6 +1,7 @@
 import {readFile, writeFile, mkdir, rename} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
+import {assessEvidence, applyEvidence} from '../dashboard/outcomes.mjs';
 import {PRODUCTS, VERSION, analyzeMarket, evaluateToken, advancePaper} from '../dashboard/market-core.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -48,7 +49,12 @@ for (let i = 0; i < PRODUCTS.length; i += 2) {
 // Discovery endpoints must not age otherwise usable execution quotes out.
 const evaluatedAt = Date.now() / 1000;
 const previous = await read(ledgerPath, null);
-const paper = advancePaper(previous, markets, evaluatedAt);
+let evidenceReport = null;
+try { evidenceReport = await read(path.join(root, 'dashboard/data/scanner-backtest.json'), null); }
+catch (error) { errors.push({source:'Strategy evidence',message:'Replay report could not be read; new entries held. Existing positions still use their exit rules.'}); }
+const entryPolicy = assessEvidence(evidenceReport, evaluatedAt);
+const paper = advancePaper(previous, markets, evaluatedAt, {strategies:entryPolicy.allowedStrategies});
+paper.entryPolicy = entryPolicy;
 let tokens = old.tokens || [], tokenUpdatedAt = old.tokenUpdatedAt || 0;
 let discovery = old.discovery || {};
 try {
@@ -83,7 +89,7 @@ try {
 } catch (e) { errors.push({source: 'DEX Screener', message: e.message}); }
 const now = Date.now() / 1000;
 const payload = {version: VERSION, generatedAt: now, evaluatedAt, markets, tokens, tokenUpdatedAt, discovery, errors,
-  signals: markets.map(m => analyzeMarket(m, {}, evaluatedAt)).map(({bars, ...s}) => s),
+  signals: markets.map(m => applyEvidence(analyzeMarket(m, {}, evaluatedAt), entryPolicy)).map(({bars, ...s}) => s),
   paper, policy: {reviewedAt: '2026-09-08', country: 'US', leverage: false,
     excluded: ['MEXC', 'Polymarket offshore'], pumpExecution: false},
   notes: ['Quotes require a provider timestamp under 30 seconds to qualify for entry.',

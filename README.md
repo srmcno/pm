@@ -1,8 +1,15 @@
-# Moffitt Money 4.0
+# Moffitt Money 4.1
 
 [Open Moffitt Money](https://moffitt-money.smoffitt74743.chatgpt.site) · [GitHub Pages mirror](https://srmcno.github.io/pm/)
 
 A U.S. spot-market research app with streaming quotes, explicit trade plans, an isolated forward paper ledger, and a tested Python execution laboratory. The active experience excludes MEXC and the offshore Polymarket platform. Nothing in the new scanner places real orders or connects a wallet.
+
+## Outcome-driven update, September 12, 2026
+
+- Recorded results now control paper-entry eligibility. Both losing standalone strategies are held; existing positions continue through the original mark/exit rules. Missing or malformed evidence holds entries without preventing exits.
+- Outcomes includes per-strategy verdicts, historical and forward equity curves, realized win rate versus observed payoff breakeven, recorded fee impact and net outcome by exit reason.
+- Two predeclared rule changes were tested on the same full history and chronological slices. Neither established profitability, so neither was adopted. Read [the complete outcome review](reports/outcome-review.md).
+- Mobile navigation keeps all five main views visible at the bottom. Archive links remain in the footer and desktop research navigation.
 
 ## Sites workspace, September 12, 2026
 
