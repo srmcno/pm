@@ -5,10 +5,6 @@
  "closed": [],
  "equityCurve": [
   {
-   "t": 1788729307,
-   "equity": 1000.0
-  },
-  {
    "t": 1788729607,
    "equity": 1000.0
   },
@@ -4003,10 +3999,14 @@
   {
    "t": 1789243850,
    "equity": 1000.0
+  },
+  {
+   "t": 1789244711,
+   "equity": 1000.0
   }
  ],
  "createdAt": 1788367069,
- "updatedAt": 1789243850,
+ "updatedAt": 1789244711,
  "tradeCount": 0,
  "mode": "paper",
  "decisions": {},
