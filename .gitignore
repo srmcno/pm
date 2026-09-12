@@ -4,3 +4,5 @@ __pycache__/
 node_modules/
 data/cache/
 data/stocks/cache/
+dist/
+.sites-runtime/

@@ -1,8 +1,17 @@
-# Moffitt Money 3.0
+# Moffitt Money 4.0
 
-[Open the opportunity desk](https://srmcno.github.io/pm/)
+[Open Moffitt Money](https://moffitt-money.smoffitt74743.chatgpt.site) · [GitHub Pages mirror](https://srmcno.github.io/pm/)
 
 A U.S. spot-market research app with streaming quotes, explicit trade plans, an isolated forward paper ledger, and a tested Python execution laboratory. The active experience excludes MEXC and the offshore Polymarket platform. Nothing in the new scanner places real orders or connects a wallet.
+
+## Sites workspace, September 12, 2026
+
+- Five focused views: Markets, Paper Ledger, Token Radar, Backtests, and Data Health. Responsive navigation, larger text and controls, and a consistent strategy/archive shell.
+- Browser snapshots load from this repository's default branch every minute, independently of Sites or Pages publishing. Coinbase streams and REST fallback retain their original freshness rules. A bundled snapshot is only a labeled fallback; loaded account data never roll backward.
+- Data Health separates quotes, scan publication, paper-book time, token discovery and fixed-period backtests. Upstream errors are displayed.
+- Retired stock/wallet experiments are marked historical, with their saved dates and no recurring retired-feed polling.
+- Pages publishes on completion of the active data workflows, with the scheduled fallback retained.
+- The Sites source is linked in `.openai/hosting.json`. See [publication and maintenance](docs/SITES.md). Data updates do not require redeployment; interface changes do.
 
 ## What changed on September 8, 2026
 

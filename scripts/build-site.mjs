@@ -1,0 +1,10 @@
+import { cp, mkdir, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+await mkdir(path.join(root, 'dist'), { recursive: true });
+await cp(path.join(root, 'dashboard'), path.join(root, 'dist'), { recursive: true, filter: source => !source.endsWith('/template.html') });
+const commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+await writeFile(path.join(root, 'dist/build-info.json'), JSON.stringify({ version: '4.0.0', commit, builtAt: new Date().toISOString() }));
+console.log('Built Moffitt Money static site.');

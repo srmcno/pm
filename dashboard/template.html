@@ -346,8 +346,10 @@
     tr.mainrow td { transition: background 0.12s ease; }
   }
 </style>
+<link rel="stylesheet" href="archive.css?v=4.0.0">
 
 <div class="archive-banner"><strong>Archived research</strong> Historical simulations and offshore observations are not U.S. trade recommendations. <a href="./">Open the U.S. opportunity desk →</a></div>
+<aside class="historical-notice"><strong>Historical archive · collection stopped September 8, 2026.</strong><span>These records are preserved research. They are not current trading signals.</span><a href="./">Open current markets ↗</a></aside>
 <nav class="topnav" aria-label="Site">
   <a class="brand" href="./">Moffitt Money</a>
   <div class="navlinks">
@@ -394,14 +396,14 @@
         <div class="desk-sub" id="desk-st-sub">Crypto lead-lag equities</div>
       </a>
     </div>
-    <p class="asof">Each card has its own heartbeat. Freshness windows: Smart Money 40 min, Engine v2 40 min, Arb 12 min, Stocks 20 min.</p>
+    <p class="asof">Historical experiments. Collection ended September 8, 2026; each record retains its source date.</p>
   </section>
 
   <div class="tiles" id="tiles"></div>
 
 
   <section id="signals">
-    <h2>Live signals</h2>
+    <h2>Archived signals</h2>
     <p class="asof" id="sig-asof"></p>
     <div class="tablewrap">
       <table class="main" id="sigtable">
@@ -503,7 +505,8 @@
 <script id="signals-snapshot" type="application/json">/*__SIGNALS__*/</script>
 <script id="paper-snapshot" type="application/json">/*__PAPER__*/</script>
 <script id="engine-snapshot" type="application/json">/*__ENGINE__*/</script>
-<script>
+<script type="module">
+import {publishedResponse} from "./data-client.mjs?v=4.0.0";
 "use strict";
 /* Theme: black by default; the toggle flips and remembers the choice. */
 (function () {
@@ -656,31 +659,12 @@ function marketOpen(now = new Date()) {
 }
 
 function statusPill(atTs, opts = {}) {
-  // Each engine reports its own freshness: one can be publishing happily
-  // while the other's shift has died, and a shared pill would hide that.
-  const staleMinutes = opts.staleMinutes ?? 40;
-  const liveLabel = opts.liveLabel ?? "updating";
-  const staleLabel = opts.staleLabel ?? "stale";
-  const ts = atTs != null ? atTs : lastBeatTs();
-  const ageMinutes = ts ? (Date.now() / 1000 - ts) / 60 : Infinity;
-  const live = ts && ageMinutes < staleMinutes;
-  const el = document.createElement("span");
-  // A desk that only trades the US session is idle, not broken, when the
-  // session is closed. Saying so beats a red pill that cries wolf nightly.
-  const idle = !live && opts.sessionOnly && !marketOpen();
-  el.className = "pill " + (live ? "live" : idle ? "idle" : "stale");
-  el.textContent = live ? liveLabel : idle ? (opts.idleLabel ?? "market closed") : staleLabel;
-  el.title = idle
-    ? `The US session is closed; this desk trades it only. Last update ${ago(ts)}.`
-    : ts
-      ? `Last update ${ago(ts)}. Stale after ${staleMinutes} minutes, which allows `
-        + `${PUBLISH_LAG_MINUTES} for publishing.`
-      : `No heartbeat yet. Stale after ${staleMinutes} minutes.`;
+  const el = document.createElement('span');
+  el.className = 'pill'; el.textContent = 'Archived';
+  const ts = atTs || lastBeatTs();
+  el.title = ts ? 'Saved ' + new Date(ts * 1000).toLocaleString() : 'Historical record';
   return el;
 }
-const OUTLINK = (slug, eventSlug) =>
-  eventSlug ? `https://polymarket.com/event/${eventSlug}` :
-  slug ? `https://polymarket.com/market/${slug}` : null;
 
 function renderSignals() {
   const body = document.getElementById("sigbody");
@@ -966,23 +950,23 @@ function renderEngine() {
 async function refreshLive() {
   const bust = "?t=" + Math.floor(Date.now() / 60000);
   try {
-    const r = await fetch("data/signals.json" + bust, { cache: "no-store" });
+    const r = await publishedResponse("data/signals.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.signals = await r.json();
   } catch (e) { /* offline snapshot stays */ }
   try {
-    const r = await fetch("data/paper.json" + bust, { cache: "no-store" });
+    const r = await publishedResponse("data/paper.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.paper = await r.json();
   } catch (e) { /* offline snapshot stays */ }
   try {
-    const r = await fetch("data/engine.json" + bust, { cache: "no-store" });
+    const r = await publishedResponse("data/engine.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.engine = await r.json();
   } catch (e) { /* offline snapshot stays */ }
   try {
-    const r = await fetch("data/arb.json" + bust, { cache: "no-store" });
+    const r = await publishedResponse("data/arb.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.arb = await r.json();
   } catch (e) { /* card stays in its last state */ }
   try {
-    const r = await fetch("data/stocks.json" + bust, { cache: "no-store" });
+    const r = await publishedResponse("data/stocks.json" + bust, { cache: "no-store" });
     if (r.ok) LIVE.stocks = await r.json();
   } catch (e) { /* card stays in its last state */ }
   // Always re-render: "x min ago" and the live/stale pill must keep ticking
@@ -997,7 +981,7 @@ renderEngine();
 renderLedger();
 renderDesks();
 refreshLive();
-setInterval(refreshLive, 60000);
+// Historical archive: source loaded once.
 
 function tiles(list) {
   const t = document.getElementById("tiles");

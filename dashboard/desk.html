@@ -105,6 +105,7 @@
   }
   .card .note { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
 </style>
+<link rel="stylesheet" href="archive.css?v=4.0.0">
 <div class="archive-banner"><strong>Calculation model updated September 8, 2026.</strong> Older validation results are inactive until replayed with the corrected auction timing. <a href="./">Open the live opportunity desk →</a></div>
 <nav class="topnav" aria-label="Site">
   <a class="brand" href="./">Moffitt Money</a>
@@ -164,7 +165,8 @@
 
 <p class="foot" id="notes"></p>
 </div>
-<script>
+<script type="module">
+import {publishedResponse} from "./data-client.mjs?v=4.0.0";
 (function () {
   let saved = null;
   try { saved = localStorage.getItem("mm-theme"); } catch (e) { /* private mode */ }
@@ -391,7 +393,7 @@ function render() {
 
 async function refresh() {
   try {
-    const r = await fetch("data/desk.json?t=" + Math.floor(Date.now() / 60000), { cache: "no-store" });
+    const r = await publishedResponse("data/desk.json?t=" + Math.floor(Date.now() / 60000), { cache: "no-store" });
     if (r.ok) DATA = await r.json();
   } catch (e) { /* keep last */ }
   render();

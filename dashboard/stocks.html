@@ -82,8 +82,10 @@
     margin: 46px auto 0; text-align: center; }
   a { color: var(--accent); }
 </style>
+<link rel="stylesheet" href="archive.css?v=4.0.0">
 
 <div class="archive-banner"><strong>Archived research</strong> Historical simulations and offshore observations are not U.S. trade recommendations. <a href="./">Open the U.S. opportunity desk →</a></div>
+<aside class="historical-notice"><strong>Historical archive · collection stopped September 8, 2026.</strong><span>These records are preserved research. They are not current trading signals.</span><a href="./">Open current markets ↗</a></aside>
 <nav class="topnav" aria-label="Site">
   <a class="brand" href="./">Moffitt Money</a>
   <div class="navlinks">
@@ -91,7 +93,7 @@
     <a href="./">Overview</a>
     <a href="wallets.html#signals">Signals</a>
     <a href="wallets.html#engine">Engine</a>
-    <a href="./#cohort">Wallets</a>
+    <a href="wallets.html#cohort">Wallets</a>
     <a href="./#discovery">Token radar</a>
     <a href="stocks.html">Stocks</a>
   </div>
@@ -156,7 +158,8 @@
     subject to the pattern day trader rule below $25,000 account equity.</p>
 </div>
 
-<script>
+<script type="module">
+import {publishedResponse} from "./data-client.mjs?v=4.0.0";
 const $ = id => document.getElementById(id);
 const fmt = (v, d=2) => v == null ? "—" : Number(v).toFixed(d);
 const money = v => (v >= 0 ? "+" : "−") + "$" + Math.abs(v).toFixed(2);
@@ -178,19 +181,12 @@ function marketOpen(now = new Date()) {
 }
 
 function pill(ts) {
-  const live = ts && (Date.now() / 1000 - ts) / 60 < FRESH_MINUTES;
-  // This desk only trades the regular session. Outside it the desk is idle
-  // by design, and a red "stale" every evening trains you to ignore the one
-  // that means something.
-  const idle = !live && !marketOpen();
-  const el = document.createElement("span");
-  el.className = "pill " + (live ? "live" : idle ? "idle" : "stale");
-  el.textContent = live ? "desk live" : idle ? "market closed" : "desk stale";
-  el.title = live ? `Published ${Math.round((Date.now() / 1000 - ts) / 60)} minutes ago.`
-    : idle ? "The US session is closed; this desk trades it only."
-    : `No publish for ${FRESH_MINUTES}+ minutes during the session.`;
+  const el = document.createElement('span');
+  el.className = 'pill idle'; el.textContent = 'Archived';
+  el.title = ts ? 'Saved ' + new Date(ts * 1000).toLocaleString() : 'Historical record';
   return el;
 }
+
 function ago(ts) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - ts) / 60));
   return m < 2 ? "just now" : m < 90 ? `${m} min ago`
@@ -353,11 +349,11 @@ function render(d) {
 
 async function refresh() {
   try {
-    const r = await fetch("data/stocks.json?t=" + Math.floor(Date.now() / 30000),
+    const r = await publishedResponse("data/stocks.json?t=" + Math.floor(Date.now() / 30000),
                           { cache: "no-store" });
     if (r.ok) render(await r.json());
   } catch (e) { /* keep last render */ }
 }
 refresh();
-setInterval(refresh, 30000);
+// Historical archive: source loaded once.
 </script>

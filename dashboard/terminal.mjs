@@ -1,3 +1,4 @@
+import {publishedJson, publicationHealth} from './data-client.mjs?v=4.0.0';
 import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.3';
 const $ = id => document.getElementById(id);
 const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -50,8 +51,9 @@ async function loadSnapshot() {
   if (snapshotBusy) return;
   snapshotBusy = true;
   try {
-    const data = await get(`data/opportunities.json?t=${Date.now()}`);
+    const data = await publishedJson('data/opportunities.json', d => Array.isArray(d.markets) && d.generatedAt > 0 && d.version === VERSION);
     if (!Array.isArray(data.markets) || !data.generatedAt || data.version !== VERSION) throw new Error('Incompatible or missing snapshot');
+    if (snapshot && snapshot.generatedAt > data.generatedAt) { snapshotError = 'The source returned an older snapshot. Keeping the newer loaded record.'; return; }
     snapshot = data; data.markets.forEach(mergeMarket); snapshotError = '';
     renderPaper(); renderTokens();
   } catch (e) { snapshotError = `Shared ledger unavailable (${e.message}). Public quotes can still connect.`; }
@@ -141,23 +143,24 @@ function render() {
     `Live quotes have not connected. Last saved quote: ${since(newest)}. Chart setups remain visible; new entry plans require a fresh quote.` :
     'Connecting to Coinbase. No price or trade is invented while the source is unavailable.';
   $('clock').textContent = new Date().toLocaleTimeString('en-US', {hour12:false,timeZone:'UTC'}) + ' UTC';
+  renderHealth();
   const notice = [snapshotError, markets.every(m=>m.candles.length<60) ? historyError : '', modelError].filter(Boolean).join(' ');
   $('notice').hidden = !notice; $('notice').textContent = notice;
-  $('ticker').innerHTML = markets.map((m,i) => {
+  updateRegion('ticker', markets.map((m,i) => {
     const s = signals[i], q = m.quote, last = s.bars?.at(-1)?.c;
     const change = last && q?.price ? (q.price/last-1)*100 : null;
     const live = quoteUsable(q);
     return `<button class="ticker-card ${selected === m.product ? 'active' : ''}" data-product="${m.product}" aria-label="Inspect ${m.product}"><span class="ticker-name">${m.product.split('-')[0]} <span class="${live ? 'positive' : 'quiet'}">${live ? '●' : '○'}</span></span><strong>${price(q?.price)}</strong><small class="${live && change !== null ? change>=0 ? 'positive' : 'negative' : 'quiet'}">${live && change!==null ? `${change>=0?'+':''}${change.toFixed(2)}% vs 1h close` : `Quote ${since(q?.at)}`}</small></button>`;
-  }).join('');
+  }).join(''));
   const text = $('search').value.toLowerCase(), only = $('only-candidates').checked;
   const shown = signals.filter(s => (s.product.toLowerCase().includes(text) || s.strategy.toLowerCase().includes(text)) && (!only || s.status==='candidate'));
   $('scan-count').textContent = `${signals.filter(s=>s.status==='candidate').length} current candidates · ${signals.filter(s=>s.setup).length} chart setups`;
-  $('setups').innerHTML = shown.map(s => {
+  updateRegion('setups', shown.map(s => {
     const m = markets.find(x=>x.product===s.product), live=quoteUsable(m.quote);
     return `<tr><td><strong>${escape(s.product.replace('-',' / '))}</strong><small>${escape(s.strategy)}</small></td><td>${price(m.quote?.price)}<small>${live?'Quote ': 'Delayed · '}${since(m.quote?.at)}</small></td><td><span class="${s.regime==='Uptrend'?'positive':'quiet'}">${escape(s.regime||'Unknown')}</span></td><td>${Number.isFinite(s.relativeVolume)?s.relativeVolume.toFixed(2)+'×':'—'}</td><td>${badge(stateLabel[s.status],s.status==='candidate'?'good':s.status==='stale'?'amber':'muted')}</td><td><button class="row-action" data-product="${s.product}" aria-label="Inspect ${s.product} plan">Inspect ↗</button></td></tr>`;
-  }).join('') || '<tr><td colspan="6" class="empty">No markets match. Waiting is a valid strategy.</td></tr>';
+  }).join('') || '<tr><td colspan="6" class="empty">No markets match. Waiting is a valid strategy.</td></tr>');
   renderPlan(); renderChart();
-  if (snapshot) $('paper-asof').textContent = 'Snapshot ' + since(snapshot.paper?.updatedAt);
+
 }
 function renderPlan() {
   const s = signals.find(s=>s.product===selected);
@@ -225,7 +228,7 @@ function renderTokens() {
 async function loadBacktest() {
   if(backtestBusy)return;backtestBusy=true;
   try{
-    const data=await get('data/scanner-backtest.json?t='+Date.now());
+    const data=await publishedJson('data/scanner-backtest.json', d => d.modelVersion === MODEL_VERSION && Array.isArray(d.runs) && d.runs.length > 0);
     if(data.modelVersion!==MODEL_VERSION || !Array.isArray(data.runs) || !data.runs.length)throw new Error('A replay of the current model is required');
     backtest=data;renderBacktest();
   }catch(e){
@@ -248,7 +251,7 @@ function renderBacktest(){
 }
 function choose(product) { if(!PRODUCTS.includes(product))return;selected=product;$('product').value=product;render(); }
 document.addEventListener('click', e=>{
-  const market=e.target.closest('[data-product]');if(market)choose(market.dataset.product);
+  const market=e.target.closest('[data-product]');if(market){choose(market.dataset.product);if(market.classList.contains('row-action')){$('plan-title').tabIndex=-1;$('plan-title').focus();$('plan-title').scrollIntoView({block:'center',behavior:'smooth'});}}
   const token=e.target.closest('[data-token]');if(token){
     const t=snapshot?.tokens?.[Number(token.dataset.token)];if(!t)return;
     const valid=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(t.pair||'');
@@ -296,4 +299,74 @@ setInterval(()=>{if(!disposed){render();if(!paused){connect();restQuotes();}}},1
 setInterval(()=>{if(!document.hidden && !disposed)render();},3000);
 setInterval(()=>{if(!disposed){loadSnapshot();loadHistories();}},60000);
 setInterval(()=>{if(!disposed)loadBacktest();},300000);
+window.addEventListener('online',()=>{connect();loadSnapshot();restQuotes();loadHistories();});
+
+function updateRegion(id, html) {
+  const el = $(id), active = document.activeElement;
+  const product = el.contains(active) ? active?.dataset?.product : null;
+  if (el.innerHTML === html) return;
+  el.innerHTML = html;
+  if (product) el.querySelector(`[data-product="${product}"]`)?.focus({preventScroll:true});
+}
+function renderHealth() {
+  const scanAt = snapshot?.generatedAt, bookAt = snapshot?.paper?.updatedAt;
+  const scanAge = ageSeconds(scanAt), bookAge = ageSeconds(bookAt);
+  const scanSource = publicationHealth.get('data/opportunities.json');
+  const recentLabel = (at, limit) => !at ? 'Not loaded' : ageSeconds(at) > limit ? 'Delayed · ' + since(at) : since(at);
+  $('scan-freshness').textContent = recentLabel(scanAt, 1200);
+  $('scan-freshness').className = scanAge <= 1200 ? 'positive' : 'negative';
+  $('ledger-freshness').textContent = recentLabel(bookAt, 1200);
+  $('ledger-freshness').className = bookAge <= 1200 ? 'positive' : 'negative';
+  const quoteCount = markets.filter(m => quoteUsable(m.quote)).length;
+  const sourceLabel = scanSource?.source === 'repository' ? 'Latest repository snapshot' : scanSource?.source === 'bundled' ? 'Bundled fallback; latest source could not load' : scanSource?.source === 'retained' ? 'Retained newer record; source refresh failed or went backward' : 'Source not loaded';
+  const cards = [
+    ['Live market quotes', paused ? 'Paused' : quoteCount ? 'Receiving' : 'Unavailable', `${quoteCount} of ${PRODUCTS.length} fresh quotes`, 0, 'A quote is usable for entry checks for 30 seconds. A new scan does not refresh the original quote time.', quoteCount && !paused],
+    ['Shared opportunity scan', !scanAt ? 'Unavailable' : scanAge > 1200 ? 'Delayed' : (snapshot?.errors?.length ? 'Partial source errors' : 'Recent'), scanAt ? since(scanAt) : 'Waiting for data', scanAt, sourceLabel + '. Checked every minute while this page is open.', scanAge <= 1200 && !snapshot?.errors?.length],
+    ['Forward paper ledger', !bookAt ? 'Unavailable' : bookAge > 1200 ? 'Delayed' : 'Recent', bookAt ? since(bookAt) : 'Waiting for data', bookAt, 'Shared scheduled simulation. Live quotes do not update its recorded fills or equity.', bookAge <= 1200],
+    ['Token discovery sample', !snapshot?.tokenUpdatedAt ? 'Unavailable' : ageSeconds(snapshot.tokenUpdatedAt) > 1200 ? 'Delayed' : 'Recent', snapshot?.tokenUpdatedAt ? since(snapshot.tokenUpdatedAt) : 'Waiting for data', snapshot?.tokenUpdatedAt, 'Discovery sample with its own collection time. Missing security checks remain unresolved.', ageSeconds(snapshot?.tokenUpdatedAt) <= 1200],
+    ['Scanner historical replay', backtest ? 'Historical study' : 'Unavailable', backtest ? `${new Date(backtest.start * 1000).toLocaleDateString()} to ${new Date(backtest.end * 1000).toLocaleDateString()}` : 'Waiting for report', backtest?.generatedAt, 'Fixed research window. Its original date is expected and does not indicate a disconnected quote feed.', !!backtest],
+    ['Legacy research', 'Archived', 'Collection retired September 8', 0, 'Earlier stocks, arbitrage and offshore wallet experiments are preserved as historical records. Use Markets for the active scanner.', false]
+  ];
+  $('health-cards').innerHTML = cards.map(([title, status, value, at, note, ok]) => `<article class="health-card"><div class="between"><h3>${escape(title)}</h3>${badge(status,ok ? 'good' : 'amber')}</div><strong>${escape(value)}</strong>${at ? `<time datetime="${new Date(at*1000).toISOString()}">${escape(stamp(at))}</time>` : ''}<p>${escape(note)}</p></article>`).join('');
+  const problems = [...(snapshot?.errors || []).map(e => `${e.source}: ${e.message}`)];
+  if (scanSource?.source === 'bundled') problems.push('Latest repository data could not load. Showing the bundled snapshot with its original date.');
+  if (scanSource?.source === 'retained') problems.push(scanSource.error || 'The most recent loaded record is being retained.');
+  if (snapshotError) problems.push(snapshotError);
+  if (historyError) problems.push(historyError);
+  $('source-errors').innerHTML = problems.length ? `<ul>${problems.map(e=>`<li>${escape(e)}</li>`).join('')}</ul>` : snapshot ? '<p>No source errors were reported by the latest loaded scan.</p>' : '<p>Snapshot has not loaded yet.</p>';
+  if (snapshot) $('paper-asof').textContent = `${bookAge > 1200 ? 'Delayed snapshot' : 'Snapshot'} · ${since(bookAt)} · ${stamp(bookAt)}`;
+}
+const views = {
+  markets: ['Market overview', 'Live prices, completed-hour setups, and the cost of taking a position.'],
+  paper: ['Paper performance', 'Follow the shared model, its positions, and its results after costs.'],
+  discovery: ['Token radar', 'Review the observed pools and see exactly which screening rules they meet.'],
+  backtests: ['Strategy evidence', 'Inspect the historical results before interpreting a current setup.'],
+  health: ['Data health', 'Check each source separately. Fresh prices and fresh paper results are different.']
+};
+function showView(view, moveFocus = false) {
+  if (!Object.hasOwn(views, view)) view = 'markets';
+  for (const el of document.querySelectorAll('[data-page]')) el.hidden = el.dataset.page !== view;
+  for (const el of document.querySelectorAll('[data-view]')) {
+    const active = el.dataset.view === view;
+    el.classList.toggle('selected',active);
+    if (active) el.setAttribute('aria-current','page'); else el.removeAttribute('aria-current');
+  }
+  $('view-title').textContent = views[view][0];
+  $('view-description').textContent = views[view][1];
+  document.title = `Moffitt Money | ${views[view][0]}`;
+  if (moveFocus) { $('view-title').tabIndex=-1; $('view-title').focus({preventScroll:true}); window.scrollTo({top:0,behavior:'instant'}); }
+}
+window.addEventListener('hashchange',()=>showView(location.hash.slice(1),true));
+$('health-refresh').addEventListener('click',()=>$('refresh').click());
+showView(location.hash.slice(1));
+get('build-info.json?t='+Date.now()).then(info=>{$('site-build').textContent=`Site release ${info.version} · Published build ${new Date(info.builtAt).toLocaleString()}. Market data updates independently.`;}).catch(()=>{$('site-build').textContent='Moffitt Money 4.0. Market data updates independently of the interface.';});
+// Optional page-scoped agent access to the same visible research state.
+if (document.modelContext?.registerTool) {
+  const lifetime = new AbortController();
+  const register = tool => { try { Promise.resolve(document.modelContext.registerTool(tool,{signal:lifetime.signal})).catch(()=>{}); } catch {} };
+  register({name:'read_market_research',title:'Read market research',description:'Read the displayed research signals and original data timestamps; never places an order.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:true},execute:()=>({selected,generatedAt:snapshot?.generatedAt||null,signals:signals.map(s=>({product:s.product,status:s.status,strategy:s.strategy,reasons:s.reasons})),sources:[...publicationHealth.entries()]})});
+  register({name:'inspect_market',title:'Inspect a market',description:'Select a supported market in the visible research workspace and show its existing position model.',inputSchema:{type:'object',properties:{product:{type:'string',enum:PRODUCTS}},required:['product'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:true},execute:input=>{if(!input||!PRODUCTS.includes(input.product))throw new Error('Choose a supported USD market');choose(input.product);location.hash='markets';showView('markets');const s=signals.find(s=>s.product===selected);return{product:selected,status:s?.status,reasons:s?.reasons};}});
+  window.addEventListener('pagehide',()=>lifetime.abort(),{once:true});
+}
+
 render();connect();loadSnapshot();loadHistories();restQuotes();loadBacktest();
