@@ -41,11 +41,17 @@ For corruption or a vendor revision, preserve both versions. Review the account'
 
 ## Broker transition: not yet completed
 
-The user chose the built-in simulation for now. There are no Alpaca Actions secrets configured. The existing `scripts/desk/venues/alpaca.py` provides separate paper/live endpoints and explicit arming gates, but it is **not connected to this new monthly ETF experiment**. The old `desk` evidence does not authorize the new strategy.
+The user chose the built-in simulation for now. There are no Alpaca Actions secrets configured. `scripts/etf_broker.py` now implements a **dormant, paper-only controller** for this experiment, using its shared monthly signal function. It has passed offline failure and accounting scenarios, but has not connected to a broker or submitted an actual paper order. The older desk adapter is separate; its caller enforces its arming checks, and its evidence does not authorize this strategy.
+
+The new controller binds a dedicated paper account to a private SQLite journal, records each intent durably before submission, and reconciles incremental fill activities, holdings and cash before another order. Lost responses recover by the original client order ID; missing orders never trigger an automatic second submission. Partial orders wait, failed or canceled orders require review, and late cash activities are fetched from the original baseline rather than just the current trading day. Unexplained transfers, corporate actions, revised source history, account changes and stale quotes hold execution.
+
+It caps the strategy's allocation at $1,000 even when the broker's paper account contains more cash. Remaining allocated cash, a $1 reserve and the full limit price constrain buys. Sells precede buys. Broker cash and a separate modeled regulatory-fee overlay are distinct records; the overlay is never described as an actual broker debit. The controller does not synthesize broker dividends or produce a validated net performance report. Keep the cost-inclusive built-in simulation alongside any future broker experiment.
+
+Read [ETF-BROKER.md](ETF-BROKER.md) for the dormant controller's operation and recovery boundaries. The existing automated simulation does not import or invoke it.
 
 Remaining transition work:
 
-1. Connect the same monthly signal and sizing rules to the Alpaca paper endpoint using a dedicated paper account. Use broker quotes and accepted fractional order types, with cash reservation, stable order IDs, partial-fill reconciliation and broker calendar checks. Never copy simulated holdings into a real broker account.
+1. When broker-paper testing is requested, configure a dedicated paper account and exercise the new controller against the actual service. Verify its accepted fractional limits, account eligibility, cash reservation, restart behavior and broker calendar responses. Never copy simulated holdings into a broker account.
 2. Observe actual broker-paper orders and reconcile broker fills, cash, fees, distributions and restart behavior. Broker paper omits some real effects, including regulatory fees and dividends; keep the independent cost ledger. Public Yahoo prices do not establish an executable broker quote.
 3. Review forward outcomes across multiple monthly decisions, cost/slippage observations and account eligibility. Passing the historical gate alone is insufficient for real funding.
 4. Only with separate explicit authorization, select a live account and small capital cap, using distinct credentials and a kill switch. Keep simulation and broker books separate; no browser switch may bypass account/evidence checks.

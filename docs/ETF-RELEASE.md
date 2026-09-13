@@ -23,3 +23,11 @@ The thread's deployment receipts and GitHub Actions runs record publication outc
 ## Remaining evidence
 
 The first eligible forward fill is in a future market session. No new-strategy broker paper order or live order has been submitted. The profitable retrospective sample does not establish future profitability or outperformance. Keep the overall research goal open while those requirements remain unproven.
+
+## Dormant broker-paper controller follow-up
+
+`scripts/etf_broker.py` adds a separate, manually invoked paper-only controller. It is not called by the simulation workflow. Its private durable journal is ignored by Git; dedicated credentials, explicit paper submission, account binding, an allocation cap and reconciliation gate its orders. No credentials were configured and no broker requests were made.
+
+24 new offline tests exercise full monthly allocation, partial fills, lost POST responses, missing orders, persistence failure, account/source changes, cash activities, deadline crossings and allocation limits with an oversized broker account. Independent review found and corrected the full-account-cash sizing leak, stale decision timestamps and a deadline crossing during journal commit. Updated full suites: 304 legacy Python, 112 Python in `tests`, and 56 Node tests passed (472 total), plus the six-page resource check and static build. Existing legacy tests emit file-handle ResourceWarnings; they pass.
+
+This follow-up changes controller source and operating documentation, not the interface or public account data. The already-published ETF dashboard retains its simulation-only and incomplete broker-readiness labels. Actual broker acceptance, automated broker scheduling, cancellation/recovery workflows and real-money activation remain unverified or unimplemented as described in [ETF-BROKER.md](ETF-BROKER.md).
