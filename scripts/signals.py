@@ -91,7 +91,7 @@ def compute_signals(trades_by_wallet, watchlist, now, hours,
     """
     # (conditionId) -> wallet -> outcomeIndex -> flow
     flows = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: {
-        "net": 0.0, "bought": 0.0, "px_num": 0.0, "last": 0})))
+        "net": 0.0, "bought": 0.0, "buy_principal": 0.0, "buy_shares": 0.0, "last": 0})))
     titles, cats = {}, {}
     for addr, trades in trades_by_wallet.items():
         for t in trades:
@@ -101,7 +101,10 @@ def compute_signals(trades_by_wallet, watchlist, now, hours,
             if t["side"] == "BUY":
                 f["net"] += usd
                 f["bought"] += usd
-                f["px_num"] += usd * (t.get("price") or 0)
+                price = t.get("price") or 0
+                shares = t.get("size") or (usd / price if price > 0 else 0)
+                f["buy_shares"] += shares
+                f["buy_principal"] += shares * price
             else:
                 f["net"] -= usd
             f["last"] = max(f["last"], t["timestamp"])
@@ -123,7 +126,7 @@ def compute_signals(trades_by_wallet, watchlist, now, hours,
                 continue
             age_h = (now - f["last"]) / 3600
             recency = math.exp(-age_h / max(hours / 2, 1))
-            avg_px = f["px_num"] / f["bought"] if f["bought"] else None
+            avg_px = f["buy_principal"] / f["buy_shares"] if f["buy_shares"] else None
             per_market[cid][best_oi].append({
                 "wallet": addr, "name": w["name"], "quality": w["quality"],
                 "netUsd": round(net, 2),

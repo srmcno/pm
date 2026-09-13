@@ -38,6 +38,7 @@ const files = [
     "research-summary",
     "desk",
     "copy-trading",
+    "copy-study",
     "crypto-arbitrage",
     "crypto-history",
     "opportunities",

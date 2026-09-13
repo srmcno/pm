@@ -21,3 +21,10 @@ data/etf/.cycle.lock/
 
 # Private durable broker-paper journal; never publish account IDs or credentials.
 data/etf/broker/
+
+# Forward-copy atomic writes and process lock
+data/copy-forward/*.tmp
+data/copy-forward/*.lock/
+dashboard/data/copy-study.json.tmp
+data/copy-forward/*.flock
+data/copy-forward/decisions/*.tmp

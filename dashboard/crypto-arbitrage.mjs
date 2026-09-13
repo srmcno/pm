@@ -17,8 +17,10 @@ import {
 } from "./trading-ui.mjs";
 import {
   CRYPTO_ASSETS,
+  CRYPTO_MODEL,
   CRYPTO_FEES,
-  compareCryptoBooks,
+  optimizeCryptoRoute,
+  checkCryptoDelay,
   priceCryptoTriangle,
 } from "./crypto-arbitrage-core.mjs";
 let data,
@@ -29,12 +31,18 @@ let data,
   triangles = [];
 const venue = (v) => CRYPTO_FEES[v]?.label || v;
 const budget = () => Number($("crypto-budget").value);
+const rankRoute = (a, b) =>
+  ((b.profitableQuantity > 0 ? b.net : b.comparison?.net) ?? -Infinity) -
+  ((a.profitableQuantity > 0 ? a.net : a.comparison?.net) ?? -Infinity);
 function calculate() {
   routes = [];
   triangles = [];
   if (!data) return;
   // Reprice the recorded snapshot at its original observation time, never at a fabricated live time.
-  const options = { budget: budget(), now: data.generatedAt };
+  const options = {
+    budget: budget(),
+    now: data.evaluatedAt ?? data.generatedAt,
+  };
   for (const a of CRYPTO_ASSETS) {
     const cb = data.books.find(
         (b) => b.venue === "coinbase" && b.base === a.base,
@@ -46,7 +54,13 @@ function calculate() {
       [cb, kr],
       [kr, cb],
     ])
-      if (buy && sell) routes.push(compareCryptoBooks(buy, sell, options));
+      if (buy && sell) routes.push(optimizeCryptoRoute(buy, sell, options));
+  }
+  for (const r of routes) {
+    const [buy, sell] = r.books.map((b) =>
+      data.followUpBooks?.find((n) => n.marketId === b.marketId),
+    );
+    r.delayCheck = checkCryptoDelay(r, buy, sell, { now: data.generatedAt });
   }
   for (const base of ["ETH", "SOL"]) {
     const find = (base, quote) =>
@@ -80,6 +94,16 @@ function calculate() {
     }
   }
 }
+function delayLabel(d) {
+  return (
+    {
+      survived: "Positive gap persisted",
+      erased: "Gap disappeared",
+      "initially-unprofitable": "No initial gap",
+      unavailable: "Held after recheck",
+    }[d?.status] || "Awaiting recheck"
+  );
+}
 function drawCross() {
   if (!data) return;
   calculate();
@@ -87,37 +111,40 @@ function drawCross() {
   let rows = routes;
   if (!all)
     rows = CRYPTO_ASSETS.map(
-      (a) =>
-        routes
-          .filter((r) => r.base === a.base)
-          .sort((a, b) => (b.netBps ?? -Infinity) - (a.netBps ?? -Infinity))[0],
+      (a) => routes.filter((r) => r.base === a.base).sort(rankRoute)[0],
     ).filter(Boolean);
-  rows = [...rows].sort(
-    (a, b) => (b.netBps ?? -Infinity) - (a.netBps ?? -Infinity),
-  );
+  rows = [...rows].sort(rankRoute);
   $("crypto-scan-time").textContent =
     `Books observed ${when(data.generatedAt)} · ${routes.length} directions checked`;
   const priced = routes.filter((r) => Number.isFinite(r.net));
   $("crypto-summary").innerHTML =
-    `<div><strong>${priced.filter((r) => r.net > 0).length} modeled gaps after costs</strong><span>${priced.length} priced directions in the recorded scan</span></div><div><strong>${money(budget())} comparison size</strong><span>Walked depth and 5 bps slippage on each leg</span></div><div><strong>Coinbase Exchange ↔ Kraken Pro</strong><span>Same crypto asset and USD quote currency</span></div>`;
+    `<div><strong>${priced.filter((r) => r.net > 0).length} modeled gaps after costs</strong><span>${priced.length} priced directions in the recorded scan</span></div><div><strong>Up to ${money(budget())} buy capital</strong><span>Best size within depth, fees and 5 bps per-leg buffer</span></div><div><strong>Coinbase Exchange ↔ Kraken Pro</strong><span>Same crypto asset and USD quote currency</span></div>`;
   $("crypto-cross").innerHTML = rows.length
     ? table(
         [
           "Asset / route",
-          "Buy average",
-          "Sell average",
-          "Fees + buffer",
-          "Net after costs",
+          "Profitable size",
+          "Budget comparison",
+          "Fee hurdle",
+          "Delayed check",
         ],
-        rows.map((r) => [
-          `<button class="route-name" data-crypto-route="${esc(r.id)}"><strong>${esc(r.base)}</strong><small>${esc(venue(r.buyVenue))} → ${esc(venue(r.sellVenue))}</small></button>`,
-          Number.isFinite(r.buyPrice) ? `$${price(r.buyPrice)}` : "—",
-          Number.isFinite(r.sellPrice) ? `$${price(r.sellPrice)}` : "—",
-          money(r.buyFee + r.sellFee + r.slippage),
-          Number.isFinite(r.net)
-            ? `<strong class="${r.net > 0 ? "positive" : "negative"}">${money(r.net)}</strong><small class="cell-note">${r.netBps.toFixed(1)} bps</small>`
-            : badge(r.reasons[0] || "Held", "caution"),
-        ]),
+        rows.map((r) => {
+          const d = r.comparison || r,
+            delay = r.delayCheck;
+          return [
+            `<button class="route-name" data-crypto-route="${esc(r.id)}"><strong>${esc(r.base)}</strong><small>${esc(venue(r.buyVenue))} → ${esc(venue(r.sellVenue))}</small></button>`,
+            r.profitableQuantity > 0
+              ? `<strong class="positive">${money(r.totalBuyCost)}</strong><small class="cell-note">${price(r.profitableQuantity)} ${r.base} · ${money(r.net)} net</small>`
+              : `<strong>${r.candidatesChecked ? "No profitable size" : "Cannot evaluate"}</strong><small class="cell-note">${r.candidatesChecked ? `${r.candidatesChecked} valid sizes checked` : esc(r.reasons[0] || "Book unavailable")}</small>`,
+            Number.isFinite(d.net)
+              ? `<strong class="${d.net > 0 ? "positive" : "negative"}">${money(d.net)}</strong><small class="cell-note">${d.netBps.toFixed(1)} bps at ${money(d.totalBuyCost)}</small>`
+              : badge(d.reasons[0] || "Held", "caution"),
+            Number.isFinite(d.requiredGrossBps)
+              ? `${d.requiredGrossBps.toFixed(1)} bps<small class="cell-note">${d.grossBps.toFixed(1)} bps recorded gross gap</small>`
+              : "—",
+            `${esc(delayLabel(delay))}<small class="cell-note">${Number.isFinite(delay?.net) ? `${delay.minDelaySeconds.toFixed(1)}–${delay.maxDelaySeconds.toFixed(1)} sec · same quantity` : "Follow-up not usable"}</small>`,
+          ];
+        }),
       )
     : empty(
         "No comparable books available",
@@ -151,7 +178,13 @@ function drawCross() {
       );
   $("crypto-history-scans").innerHTML = data.history?.length
     ? table(
-        ["Scan time", "Priced routes", "Positive modeled gaps", "Best net gap"],
+        [
+          "Scan time",
+          "Priced routes",
+          "Profitable routes",
+          "Delayed checks",
+          "Gaps surviving",
+        ],
         [...data.history]
           .reverse()
           .slice(0, 20)
@@ -159,9 +192,10 @@ function drawCross() {
             when(s.at),
             `${s.priced} / ${s.routes}`,
             String(s.positive),
-            Number.isFinite(s.bestNetBps)
-              ? `${s.bestNetBps.toFixed(1)} bps`
-              : "Not priced",
+            s.delayedChecked == null
+              ? "Earlier model"
+              : String(s.delayedChecked),
+            s.modelVersion !== CRYPTO_MODEL ? "—" : String(s.survived ?? 0),
           ]),
       )
     : empty(
@@ -170,8 +204,9 @@ function drawCross() {
       );
 }
 function showRoute(id) {
-  const r = routes.find((r) => r.id === id);
-  if (!r) return;
+  const route = routes.find((r) => r.id === id);
+  if (!route) return;
+  const r = route.profitableQuantity > 0 ? route : route.comparison || route;
   inspect(
     "Crypto arbitrage · Cost breakdown",
     `<h2>${esc(r.base)}: ${esc(venue(r.buyVenue))} → ${esc(venue(r.sellVenue))}</h2><p class="muted">Book receipts ${r.books.map((b) => `${esc(venue(b.venue))}: ${when(b.receivedAt)}`).join("; ")}</p>${
@@ -188,7 +223,7 @@ function showRoute(id) {
             ],
           )}<p class="table-note">${money(r.depthImpact)} of depth impact is already included in the walked prices. It is not charged twice. Requires ${money(r.totalBuyCost)} on the buy venue and ${price(r.quantity)} ${esc(r.base)} on the sell venue.</p>`
         : ""
-    }<p class="notice">${esc(r.reasons.join(". "))}. Account funding, simultaneous fills and later inventory rebalancing are unverified. No orders or simulated profit credits are created by this comparison.</p>${table(
+    }<div class="research-panel"><h3>${route.profitableQuantity > 0 ? "Best net-dollar size" : route.candidatesChecked ? "No profitable size in this book" : "Cannot evaluate this route"}</h3><p>${route.candidatesChecked} valid quantities were compared at depth breakpoints, minimum orders and the budget boundary. ${route.profitableQuantity > 0 ? `The best recorded size uses ${money(route.totalBuyCost)} for ${money(route.net)} modeled net.` : "The cash-flow table shows the selected budget for comparison; it is not an entry."}</p><p>${Number.isFinite(r.requiredGrossBps) ? `This fee model needs a ${r.requiredGrossBps.toFixed(1)} bps gross spread. The recorded spread is ${r.grossBps.toFixed(1)} bps.` : ""} ${Number.isFinite(r.equalFeeCeiling) ? (r.equalFeeCeiling < 0 ? "Even zero fees would not clear the slippage buffer." : `At this quantity, equal taker fees on both venues must each be below ${(r.equalFeeCeiling * 100).toFixed(4)}%.`) : ""}</p></div><div class="research-panel"><h3>${esc(delayLabel(route.delayCheck))}</h3><p>${esc(route.delayCheck?.reason || "No follow-up observation available")}. ${Number.isFinite(route.delayCheck?.net) ? `At the original quantity, net changed from ${money(route.delayCheck.initialNet)} to ${money(route.delayCheck.net)} over ${route.delayCheck.minDelaySeconds.toFixed(1)}–${route.delayCheck.maxDelaySeconds.toFixed(1)} seconds.` : ""}</p></div><p class="notice">${esc(r.reasons.join(". "))}. Account funding, simultaneous fills and later inventory rebalancing are unverified. No orders or simulated profit credits are created by this comparison.</p>${table(
       ["Book", "Best bid", "Best ask", "Quantity minimum", "Fee model"],
       r.books.map((b) => [
         esc(b.marketId),
@@ -219,22 +254,44 @@ function showTriangle(i) {
 }
 function drawHistory() {
   if (!history) return;
-  $("crypto-earlier").innerHTML = history.experiments
-    .map(
-      (e) =>
-        `<details class="disclosure"><summary>${esc(e.name)} · saved ${when(e.observedAt)}</summary><p class="notice">Earlier simulation using assumed atomic fills. ${e.name.startsWith("Kraken") ? "Its older fee assumptions are superseded by the current comparison above." : "This international venue collector remains paused."} These modeled credits are not realized trading returns.</p><div class="trade-summary">${stat("Starting model value", money(e.paper.bankrollStart))}${stat("Ending model value", money(e.paper.equity))}${stat("Credited cycles", compact(e.paper.tradeCount))}</div>${table(
-          ["Recorded route", "Size", "Modeled profit", "Observed"],
-          e.paper.trades
-            .slice(0, 25)
-            .map((t) => [
-              esc(t.path),
-              money(t.sizeUsd),
-              money(t.profitUsd),
-              when(t.t),
-            ]),
-        )}<p class="table-note">Delayed replay: ${e.replay.edges} edges, ${e.replay.refillable} refillable at the next recorded scan. Positive-cycle selection and atomic fills limit this evidence.</p></details>`,
-    )
-    .join("");
+  const depth = history.depthStudy;
+  $("crypto-earlier").innerHTML =
+    (depth
+      ? `<div class="research-panel"><h3>What the earlier scans actually show</h3>${table(
+          [
+            "Earlier venue",
+            "Recorded scans",
+            "Positive depth receipts",
+            "Top two route share",
+            "Screen-to-recheck reduction",
+          ],
+          depth.map((d) => [
+            esc(d.name),
+            compact(d.scans),
+            `${compact(d.positiveDepthReceipts)} across ${d.distinctRoutes} routes`,
+            Number.isFinite(d.topTwoShare) ? pct(d.topTwoShare * 100) : "—",
+            Number.isFinite(d.medianDepthDeteriorationBps)
+              ? `${d.medianDepthDeteriorationBps.toFixed(1)} bps`
+              : "No paired receipts",
+          ]),
+        )}<p>Kraken’s two leading routes produced 87% of its positive depth receipts. Repeated quotes in the same route do not establish independent wins. This is why the new scan searches size and rechecks the same quantity after a delay.</p><p class="table-note">September 2–8 archives. Changes combine depth, price movement between reads and different trade sizes. Positive receipts were selected by the old model; no full historical depth or synchronized venue timestamps survive. These are not realized fills.</p></div>`
+      : "") +
+    history.experiments
+      .map(
+        (e) =>
+          `<details class="disclosure"><summary>${esc(e.name)} · saved ${when(e.observedAt)}</summary><p class="notice">Earlier simulation using assumed atomic fills. ${e.name.startsWith("Kraken") ? "Its older fee assumptions are superseded by the current comparison above." : "This international venue collector remains paused."} These modeled credits are not realized trading returns.</p><div class="trade-summary">${stat("Starting model value", money(e.paper.bankrollStart))}${stat("Ending model value", money(e.paper.equity))}${stat("Credited cycles", compact(e.paper.tradeCount))}</div>${table(
+            ["Recorded route", "Size", "Modeled profit", "Observed"],
+            e.paper.trades
+              .slice(0, 25)
+              .map((t) => [
+                esc(t.path),
+                money(t.sizeUsd),
+                money(t.profitUsd),
+                when(t.t),
+              ]),
+          )}<p class="table-note">Delayed replay: ${e.replay.edges} edges, ${e.replay.refillable} refillable at the next recorded scan. Positive-cycle selection and atomic fills limit this evidence.</p></details>`,
+      )
+      .join("");
 }
 function drawSpot() {
   if (!spot) return;

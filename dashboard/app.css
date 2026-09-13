@@ -1624,3 +1624,22 @@ dialog::backdrop {
     max-width: 190px;
   }
 }
+
+.wallet-filter-toggle {
+  display: none;
+}
+@media (max-width: 600px) {
+  .wallet-filters .wallet-filter-toggle {
+    display: block;
+    min-height: 44px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+  }
+  .wallet-filters:not([data-expanded="true"]) .wallet-filter-secondary {
+    display: none;
+  }
+  .wallet-filters[data-expanded="true"] .wallet-filter-secondary {
+    grid-column: auto;
+  }
+}

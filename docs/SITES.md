@@ -16,7 +16,7 @@ The build deletes the previous `dist/` before copying an explicit public allowli
 
 `dashboard/data-client.mjs` retrieves dated snapshots from GitHub raw default-branch `HEAD`, then falls back to bundled or newer retained records. The main display checks once per minute. It does not stream trading quotes or submit orders. Refreshing does not advance a paper account.
 
-Prediction collection runs every ten minutes, best effort. ETF simulation runs on its existing weekday schedule. The separate desk and opportunity workflows remain active for their own saved accounts. The opportunity workflow also refreshes public crypto-arbitrage comparisons without any ledger effects. Copy consensus and paper collectors remain paused; wallet profiles can make bounded public activity reads. A data-only commit does not need a Sites interface deployment. Each venue's book times and collection errors, ETF source dates, and retained-data notices remain visible.
+Prediction collection runs every ten minutes, best effort. ETF simulation runs on its existing weekday schedule. The separate desk and opportunity workflows remain active for their own saved accounts. The opportunity workflow also refreshes public crypto-arbitrage comparisons without any ledger effects. The new isolated forward copy study shares the existing opportunity schedule; its public-only collector and frozen $100 account are described in [COPY-TRADING.md](COPY-TRADING.md). Retired copy collectors and the earlier $50 account remain paused; wallet profiles can make bounded public activity reads. A data-only commit does not need a Sites interface deployment. Each venue's book times and collection errors, ETF source dates, and retained-data notices remain visible.
 
 ## Interface publication
 

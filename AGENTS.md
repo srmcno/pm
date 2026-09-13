@@ -7,3 +7,5 @@ Preserve the validated cost/accounting model, original source times, explicit so
 Verification: `npm test`, `python3 scripts/check_site.py`; build: `npm run build`. Source is `dashboard/`, public output is `dist/`. Data-only snapshot commits are read directly by the browser and do not need Sites redeployment.
 
 The September 13 user request separately authorizes the new Polymarket US and Kalshi prediction paper collector and $100 per venue accounts. Maintain it under docs/PREDICTIONS.md. Preserve those accounts, public-data source times and the real-execution lock. This authorization does not restart retired international collectors or activate real orders.
+
+Copy trading improvements now include the isolated public-data forward study in docs/COPY-TRADING.md. Preserve its frozen cohort, rules, ledger and source hashes. It shares the existing opportunity schedule; retired international collectors and all real-order paths remain disabled.

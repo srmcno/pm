@@ -78,21 +78,29 @@
             <label
               ><span class="sr-only">Wallet group</span
               ><select id="wallet-scope">
-                <option value="tracked">Historical copy cohort</option>
+                <option value="tracked">Forward study cohort</option>
                 <option value="all">All researched wallets</option>
                 <option value="saved">My saved wallets</option>
               </select></label
             >
-            <label
+            <button
+              id="wallet-filter-toggle"
+              class="quiet-button wallet-filter-toggle"
+              aria-expanded="false"
+              aria-controls="wallet-category wallet-sort"
+            >
+              Filters
+            </button>
+            <label class="wallet-filter-secondary"
               ><span class="sr-only">Wallet specialty</span
               ><select id="wallet-category">
                 <option value="all">All specialties</option>
               </select></label
             >
-            <label
+            <label class="wallet-filter-secondary"
               ><span class="sr-only">Wallet sort</span
               ><select id="wallet-sort">
-                <option value="quality">Cohort priority</option>
+                <option value="researchScore">Research score</option>
                 <option value="pnl90">Highest P&amp;L</option>
                 <option value="winDayRate">Profitable days</option>
                 <option value="maxDrawdown90">Smallest drawdown</option>
@@ -107,9 +115,9 @@
             Show more wallets
           </button>
           <p class="table-note">
-            This is historical Polymarket international wallet research. Open a
-            profile to inspect its record and check recent public trades. Stars
-            save wallets on this browser.
+            Rankings use dated Polymarket international wallet history. Open a
+            profile for the score breakdown and recent activity. Stars save
+            wallets on this browser.
           </p>
         </div>
         <div data-copy-panel="signals" id="copy-signals" hidden></div>

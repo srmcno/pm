@@ -2,7 +2,7 @@ import { publishedJson, publicationHealth } from "./data-client.mjs";
 import { VENUES, fill } from "./prediction-core.mjs";
 import { validPredictions, validResearchSummary } from "./app-schema.mjs";
 import { validateResearch, validatePaper } from "./etf-schema.mjs";
-import { validCopySnapshot } from "./copy-core.mjs";
+import { validCopySnapshot, validCopyStudy } from "./copy-core.mjs";
 import { validCryptoSnapshot } from "./crypto-arbitrage-core.mjs";
 import { initCopyTrading, renderCopyTrading } from "./copy-trading.mjs";
 import { initCryptoTrading, renderCryptoTrading } from "./crypto-arbitrage.mjs";
@@ -74,6 +74,7 @@ let snapshot,
   etfPaper,
   archive,
   copySnapshot,
+  copyStudy,
   cryptoSnapshot,
   cryptoHistory,
   spotSnapshot,
@@ -497,13 +498,24 @@ function renderHealth() {
   if (copySnapshot)
     $("health-content").insertAdjacentHTML(
       "afterbegin",
-      `<div class="source-row"><strong>Copy trading ${badge("Consensus and paper paused", "caution")}</strong><p>Wallet analytics ${when(copySnapshot.analytics.observedAt)}; consensus and paper ${when(copySnapshot.consensus.observedAt)}. Profiles can separately read recent public wallet activity. Saved wallet stars are local to this browser.</p></div>`,
+      `<div class="source-row"><strong>Copy trading ${badge(copyStudy ? "Forward simulation" : "Historical record", "caution")}</strong><p>Wallet analytics ${when(copySnapshot.analytics.observedAt)}; consensus and paper ${when(copySnapshot.consensus.observedAt)}. ${copyStudy ? `New forward study observed ${when(copyStudy.generatedAt)}; ${copyStudy.coverage.filter((c) => c.complete).length}/${copyStudy.cohort.length} wallet feeds complete.` : ""} Profiles can separately read recent public wallet activity. Saved wallet stars are local to this browser.</p></div>`,
     );
   if (cryptoSnapshot)
     $("health-content").insertAdjacentHTML(
       "afterbegin",
       `<div class="source-row"><strong>Crypto arbitrage ${badge(cryptoSnapshot.errors.length ? "Source issues" : "Public books recorded")}</strong><p>Last scan ${when(cryptoSnapshot.generatedAt)}; ${cryptoSnapshot.errors.length} source errors. Comparisons share the existing five-minute schedule and never credit profits or place orders.</p></div>`,
     );
+  $("health-content").insertAdjacentHTML(
+    "beforeend",
+    `<details class="disclosure"><summary>Snapshot sources and last checks</summary>${table(
+      ["Snapshot", "Loaded from", "Source date"],
+      [...publicationHealth].map(([file, h]) => [
+        esc(file.replace("data/", "").replace(".json", "")),
+        esc(h.source),
+        when(h.updatedAt),
+      ]),
+    )}</details>`,
+  );
 }
 async function refresh() {
   if (busy) return;
@@ -519,6 +531,7 @@ async function refresh() {
     ["data/crypto-arbitrage.json", validCryptoSnapshot, "Crypto arbitrage"],
     ["data/crypto-history.json", validCryptoHistory, "Crypto history"],
     ["data/opportunities.json", validSpotSnapshot, "Crypto spot account"],
+    ["data/copy-study.json", validCopyStudy, "Forward copy study"],
   ];
   try {
     const results = await Promise.allSettled(
@@ -539,8 +552,9 @@ async function refresh() {
     if (results[5].status === "fulfilled") cryptoSnapshot = results[5].value;
     if (results[6].status === "fulfilled") cryptoHistory = results[6].value;
     if (results[7].status === "fulfilled") spotSnapshot = results[7].value;
+    if (results[8].status === "fulfilled") copyStudy = results[8].value;
     try {
-      if (copySnapshot) renderCopyTrading(copySnapshot);
+      if (copySnapshot) renderCopyTrading(copySnapshot, copyStudy);
     } catch {
       errors.push("Copy trading could not display its data. Try refreshing.");
     }
@@ -570,11 +584,14 @@ async function refresh() {
     } catch {
       errors.push("The ETF view could not display its data. Try refreshing.");
     }
-    for (const [path, , label] of requests) {
+    const retained = requests.filter(([path]) => {
       const h = publicationHealth.get(path);
-      if (h && h.source !== "repository" && h.source !== "unavailable")
-        errors.push(label + ": showing the dated " + h.source + " snapshot.");
-    }
+      return h && h.source !== "repository" && h.source !== "unavailable";
+    });
+    if (retained.length)
+      errors.push(
+        `Saved snapshots shown for ${retained.length} sources. See Data status for dates and details.`,
+      );
   } catch {
     errors.push("The refresh did not complete. Try again.");
   } finally {

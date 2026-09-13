@@ -1,5 +1,5 @@
 // Public-book research only. A modeled gap never creates a fill or account credit.
-export const CRYPTO_MODEL = "2026-09-13-crypto-depth-v1";
+export const CRYPTO_MODEL = "2026-09-13-crypto-depth-v2";
 export const CRYPTO_FEES = {
   coinbase: {
     rate: 0.006,
@@ -104,12 +104,22 @@ function bookProblems(book, now) {
     reasons.push("Fee unavailable");
   if (book.bids[0][0] >= book.asks[0][0])
     reasons.push("Locked or crossed source book");
+  if (
+    book.asks.some((r, i) => i && r[0] < book.asks[i - 1][0]) ||
+    book.bids.some((r, i) => i && r[0] > book.bids[i - 1][0])
+  )
+    reasons.push("Unsorted book depth");
   return reasons;
 }
 export function compareCryptoBooks(
   buy,
   sell,
-  { budget = 100, slippageBps = 5, now = Date.now() / 1000 } = {},
+  {
+    budget = 100,
+    slippageBps = 5,
+    now = Date.now() / 1000,
+    quantity: requestedQuantity,
+  } = {},
 ) {
   const result = {
     id: `${buy?.marketId || "missing"}:${sell?.marketId || "missing"}`,
@@ -117,6 +127,7 @@ export function compareCryptoBooks(
     buyVenue: buy?.venue,
     sellVenue: sell?.venue,
     budget,
+    slippageBps,
     modelVersion: CRYPTO_MODEL,
     executable: false,
     fundingVerified: false,
@@ -145,13 +156,26 @@ export function compareCryptoBooks(
     result.reasons.push("Book receipts are more than five seconds apart");
   if (result.reasons.length) return result;
   const slip = slippageBps / 10000;
-  const possible = buyQuantity(buy.asks, budget / (1 + buy.fee + slip));
+  const step = commonQuantityStep(buy.increment, sell.increment);
+  if (!positive(step))
+    return { ...result, reasons: ["Incompatible quantity increments"] };
+  const possible =
+    requestedQuantity ?? buyQuantity(buy.asks, budget / (1 + buy.fee + slip));
   if (!possible)
     return {
       ...result,
       reasons: ["Insufficient ask depth for the selected budget"],
     };
-  const quantity = floor(possible, Math.max(buy.increment, sell.increment));
+  const quantity = floor(possible, step);
+  if (
+    requestedQuantity != null &&
+    (!positive(requestedQuantity) ||
+      Math.abs(quantity - requestedQuantity) > step * 1e-6)
+  )
+    return {
+      ...result,
+      reasons: ["Quantity does not meet both venue increments"],
+    };
   const bought = walkQuantity(buy.asks, quantity),
     sold = walkQuantity(sell.bids, quantity);
   if (!bought || !sold)
@@ -170,6 +194,8 @@ export function compareCryptoBooks(
   const slippage = (bought.value + sold.value) * slip;
   const net = sold.value - bought.value - buyFee - sellFee - slippage;
   const totalBuyCost = bought.value + buyFee + bought.value * slip;
+  if (totalBuyCost > budget + 1e-8)
+    return { ...result, reasons: ["Quantity exceeds the cash budget"] };
   return {
     ...result,
     quantity,
@@ -185,6 +211,10 @@ export function compareCryptoBooks(
     grossBps: (sold.value / bought.value - 1) * 10000,
     netBps: (net / totalBuyCost) * 10000,
     net,
+    requiredGrossBps:
+      ((1 + buy.fee + slip) / (1 - sell.fee - slip) - 1) * 10000,
+    equalFeeCeiling:
+      (sold.value - bought.value - slippage) / (sold.value + bought.value),
     depthImpact:
       bought.value -
       quantity * buy.asks[0][0] +
@@ -195,6 +225,178 @@ export function compareCryptoBooks(
         ? "Positive modeled gap; funding and simultaneous fills are unverified"
         : "Fees and slippage exceed the price gap",
     ],
+  };
+}
+// Least common multiple on a decimal integer grid, not max(step): .002 and
+// .003 require .006. Refuse precision outside the supported 1e-12 grid.
+export function commonQuantityStep(a, b) {
+  const scale = 1e12;
+  const x = Math.round(a * scale),
+    y = Math.round(b * scale);
+  if (
+    ![x, y].every((v) => Number.isSafeInteger(v) && v > 0) ||
+    Math.abs(x / scale - a) > 1e-14 ||
+    Math.abs(y / scale - b) > 1e-14
+  )
+    return null;
+  const gcd = (a, b) => (b ? gcd(b, a % b) : a);
+  const lcm = (x / gcd(x, y)) * y;
+  return Number.isSafeInteger(lcm) ? lcm / scale : null;
+}
+function quantityAtValue(rows, value) {
+  let q = 0,
+    left = value;
+  for (const [p, size] of rows) {
+    const take = Math.min(size, left / p);
+    q += take;
+    left -= take * p;
+    if (left <= 1e-10) return q;
+  }
+  return Infinity;
+}
+export function optimizeCryptoRoute(buy, sell, options = {}) {
+  const budget = options.budget ?? 100;
+  const comparison = compareCryptoBooks(buy, sell, options);
+  const base = {
+    ...comparison,
+    comparison,
+    optimization: true,
+    profitableQuantity: 0,
+    profitableCapital: 0,
+    candidatesChecked: 0,
+  };
+  // Validate independently of the full-budget depth requirement.
+  if (
+    !buy ||
+    !sell ||
+    bookProblems(buy, options.now ?? Date.now() / 1000).length ||
+    bookProblems(sell, options.now ?? Date.now() / 1000).length
+  )
+    return base;
+  const step = commonQuantityStep(buy.increment, sell.increment);
+  if (!step || !positive(budget)) return base;
+  const slip = (options.slippageBps ?? 5) / 10000;
+  const total = (rows) => rows.reduce((s, r) => s + r[1], 0);
+  const cap = floor(
+    Math.min(
+      total(buy.asks),
+      total(sell.bids),
+      quantityAtValue(buy.asks, budget / (1 + buy.fee + slip)),
+    ),
+    step,
+  );
+  const minimum = Math.max(
+    buy.minQuantity,
+    sell.minQuantity,
+    quantityAtValue(buy.asks, buy.minCost),
+    quantityAtValue(sell.bids, sell.minCost),
+    step,
+  );
+  // Net dollars are piecewise linear. The optimum lies at a book breakpoint,
+  // the budget/depth boundary, or the first valid lot beside those boundaries.
+  const points = [cap, Math.ceil((minimum - step * 1e-8) / step) * step];
+  for (const levels of [buy.asks, sell.bids]) {
+    let q = 0;
+    for (const [, size] of levels) {
+      q += size;
+      points.push(floor(q, step), floor(q, step) + step);
+    }
+  }
+  const candidates = [
+    ...new Set(points.filter((q) => positive(q) && q <= cap + step * 1e-7)),
+  ]
+    .map((quantity) =>
+      compareCryptoBooks(buy, sell, { ...options, budget, quantity }),
+    )
+    .filter((r) => finite(r.net));
+  const best = candidates.sort(
+    (a, b) => b.net - a.net || a.quantity - b.quantity,
+  )[0];
+  if (!best) return { ...base, reasons: comparison.reasons };
+  return {
+    ...base,
+    ...best,
+    comparison,
+    candidatesChecked: candidates.length,
+    profitableQuantity: best.net > 0 ? best.quantity : 0,
+    profitableCapital: best.net > 0 ? best.totalBuyCost : 0,
+    status: best.net > 0 ? "modeled-gap" : "no-profitable-size",
+    reasons:
+      best.net > 0
+        ? best.reasons
+        : ["No profitable size within this budget and the recorded depth"],
+  };
+}
+export function checkCryptoDelay(
+  initial,
+  buy,
+  sell,
+  { now = Date.now() / 1000 } = {},
+) {
+  const quantity =
+    initial.profitableQuantity ||
+    initial.comparison?.quantity ||
+    initial.quantity;
+  const before = initial.profitableQuantity
+    ? initial
+    : initial.comparison || initial;
+  const delays = [
+    buy?.receivedAt - before.books?.[0]?.receivedAt,
+    sell?.receivedAt - before.books?.[1]?.receivedAt,
+  ];
+  const base = {
+    quantity,
+    initialNet: before.net ?? null,
+    initialPositive: before.net > 0,
+    minDelaySeconds: Math.min(...delays),
+    maxDelaySeconds: Math.max(...delays),
+    checkedAt: now,
+    status: "unavailable",
+    net: null,
+    survived: false,
+  };
+  if (
+    !positive(quantity) ||
+    !delays.every((d) => finite(d) && d >= 1 && d <= 30)
+  )
+    return {
+      ...base,
+      reason: "Missing, repeated or excessively delayed follow-up books",
+    };
+  if (
+    !before.books?.every((book, i) => {
+      const next = [buy, sell][i];
+      return (
+        next &&
+        ["marketId", "base", "quote", "assetId", "venue"].every(
+          (k) => next[k] === book[k],
+        )
+      );
+    })
+  )
+    return {
+      ...base,
+      reason: "Follow-up route identity differs from the original",
+    };
+  const next = compareCryptoBooks(buy, sell, {
+    budget: before.budget,
+    quantity,
+    now,
+    slippageBps: before.slippageBps ?? 5,
+  });
+  if (!finite(next.net)) return { ...base, reason: next.reasons.join("; ") };
+  return {
+    ...base,
+    net: next.net,
+    netChange: next.net - before.net,
+    status:
+      before.net > 0
+        ? next.net > 0
+          ? "survived"
+          : "erased"
+        : "initially-unprofitable",
+    survived: before.net > 0 && next.net > 0,
+    reason: "Same route and original quantity; no re-optimization",
   };
 }
 export function priceCryptoTriangle(

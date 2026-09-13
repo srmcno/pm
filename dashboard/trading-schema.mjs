@@ -5,6 +5,22 @@ export function validCryptoHistory(d) {
     d?.schemaVersion === 1 &&
     d.realEnabled === false &&
     finite(d.generatedAt) &&
+    (d.depthStudy == null ||
+      array(
+        d.depthStudy,
+        (s) =>
+          s &&
+          typeof s.name === "string" &&
+          ["scans", "positiveDepthReceipts", "distinctRoutes"].every(
+            (k) => finite(s[k]) && s[k] >= 0,
+          ) &&
+          (s.topTwoShare == null ||
+            (finite(s.topTwoShare) &&
+              s.topTwoShare >= 0 &&
+              s.topTwoShare <= 1)) &&
+          (s.medianDepthDeteriorationBps == null ||
+            finite(s.medianDepthDeteriorationBps)),
+      )) &&
     array(
       d.experiments,
       (e) =>

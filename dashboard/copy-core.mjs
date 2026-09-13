@@ -135,3 +135,86 @@ export async function fetchWalletActivity(
     receivedAt: Date.now() / 1000,
   };
 }
+
+export function validCopyStudy(d) {
+  return !!(
+    d?.schemaVersion === 1 &&
+    d.modelVersion === "2026-09-13-copy-forward-v1" &&
+    d.realEnabled === false &&
+    d.mode === "simulation" &&
+    finite(d.generatedAt) &&
+    d.generatedAt <= Date.now() / 1000 + 60 &&
+    finite(d.createdAt) &&
+    d.createdAt <= d.generatedAt &&
+    finite(d.cash) &&
+    d.cash >= 0 &&
+    finite(d.equity) &&
+    finite(d.rules?.bankroll) &&
+    finite(d.rules.stake) &&
+    finite(d.source?.analyticsAt) &&
+    array(
+      d.cohort,
+      (w) => address(w.wallet) && typeof w.name === "string" && finite(w.score),
+    ) &&
+    array(
+      d.ranking,
+      (w) =>
+        address(w.wallet) &&
+        finite(w.score) &&
+        typeof w.eligible === "boolean" &&
+        array(w.reasons, (r) => typeof r === "string"),
+    ) &&
+    array(
+      d.positions,
+      (p) =>
+        typeof p.title === "string" &&
+        finite(p.cost) &&
+        finite(p.shares) &&
+        finite(p.value),
+    ) &&
+    array(
+      d.closed,
+      (p) =>
+        typeof p.title === "string" &&
+        finite(p.cost) &&
+        finite(p.proceeds) &&
+        finite(p.pnl),
+    ) &&
+    array(
+      d.candidates,
+      (c) =>
+        typeof c.id === "string" &&
+        typeof c.title === "string" &&
+        finite(c.backerCount) &&
+        finite(c.effectiveBackers) &&
+        array(
+          c.backers,
+          (b) =>
+            address(b.wallet) &&
+            typeof b.name === "string" &&
+            finite(b.avgPrice) &&
+            finite(b.netShares),
+        ),
+    ) &&
+    array(
+      d.decisions,
+      (c) =>
+        typeof c.id === "string" &&
+        typeof c.title === "string" &&
+        finite(c.at) &&
+        array(c.reasons, (r) => typeof r === "string"),
+    ) &&
+    array(d.curve, (c) => finite(c.at) && finite(c.equity) && finite(c.cash)) &&
+    array(
+      d.errors,
+      (e) => typeof e.source === "string" && typeof e.message === "string",
+    ) &&
+    array(
+      d.coverage,
+      (c) => address(c.wallet) && typeof c.complete === "boolean",
+    ) &&
+    ["scans", "completeScans", "entries", "candidates"].every((k) =>
+      finite(d.counters?.[k]),
+    )
+  );
+}

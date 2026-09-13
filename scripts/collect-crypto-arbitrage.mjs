@@ -7,7 +7,8 @@ import {
   CRYPTO_MODEL,
   FEE_REVIEWED_AT,
   normalizeLevels,
-  compareCryptoBooks,
+  optimizeCryptoRoute,
+  checkCryptoDelay,
   priceCryptoTriangle,
 } from "../dashboard/crypto-arbitrage-core.mjs";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -73,8 +74,7 @@ export function selectCryptoBook(spec, info, data) {
 }
 export async function collectCrypto(previous = {}) {
   const errors = [],
-    metadata = new Map(),
-    books = [];
+    metadata = new Map();
   const addError = (source, e) => errors.push({ source, message: e.message });
   try {
     const pairs = krakenResult(
@@ -129,77 +129,94 @@ export async function collectCrypto(previous = {}) {
       symbol: base + "XBT",
     })),
   );
-  // Small fixed universe and bounded concurrency; no account or order endpoints.
-  for (let i = 0; i < requests.length; i += 4)
-    await Promise.all(
-      requests.slice(i, i + 4).map(async (spec) => {
-        const marketId = `${spec.venue}:${spec.symbol}`;
-        try {
-          const info =
-            spec.venue === "coinbase"
-              ? coinbaseInfo.get(spec.base)
-              : metadata.get(spec.symbol);
-          verifyCryptoMarket(spec, info);
-          const data = await get(
-            spec.venue === "coinbase"
-              ? `https://api.exchange.coinbase.com/products/${spec.symbol}/book?level=2`
-              : `https://api.kraken.com/0/public/Depth?pair=${spec.symbol}&count=50`,
-          );
-          const receivedAt = Date.now() / 1000;
-          const book = selectCryptoBook(spec, info, data);
-          if (!book) throw new Error("Missing book");
-          const cb = spec.venue === "coinbase";
-          const status = cb
-            ? info.status === "online" &&
-              !info.trading_disabled &&
-              !info.cancel_only &&
-              !info.post_only &&
-              !info.limit_only
-              ? "online"
-              : "restricted"
-            : info.status;
-          const increment = cb
-            ? Number(info.base_increment)
-            : 10 ** -Number(info.lot_decimals);
-          const minQuantity = cb
-            ? Number(info.base_min_size ?? 0)
-            : Number(info.ordermin);
-          const minCost = cb
-            ? Number(info.min_market_funds)
-            : Number(info.costmin);
-          if (
-            ![increment, minQuantity, minCost].every(Number.isFinite) ||
-            increment <= 0 ||
-            minQuantity < 0 ||
-            minCost < 0
-          )
-            throw new Error("Invalid order limits");
-          books.push({
-            ...spec,
-            marketId,
-            status,
-            receivedAt,
-            providerAt: cb && data.time ? Date.parse(data.time) / 1000 : null,
-            sequence: cb ? (data.sequence ?? null) : null,
-            fee: CRYPTO_FEES[spec.venue].rate,
-            increment,
-            minQuantity,
-            minCost,
-            bids: normalizeLevels(book.bids, "bids").slice(0, 50),
-            asks: normalizeLevels(book.asks, "asks").slice(0, 50),
-          });
-        } catch (e) {
-          addError(marketId, e);
-          const old = previous.books?.find((b) => b.marketId === marketId);
-          if (old)
+  async function readBooks(priorBooks) {
+    const books = [];
+    // Small fixed universe and bounded concurrency; no account or order endpoints.
+    for (let i = 0; i < requests.length; i += 4)
+      await Promise.all(
+        requests.slice(i, i + 4).map(async (spec) => {
+          const marketId = `${spec.venue}:${spec.symbol}`;
+          try {
+            const info =
+              spec.venue === "coinbase"
+                ? coinbaseInfo.get(spec.base)
+                : metadata.get(spec.symbol);
+            verifyCryptoMarket(spec, info);
+            const data = await get(
+              spec.venue === "coinbase"
+                ? `https://api.exchange.coinbase.com/products/${spec.symbol}/book?level=2`
+                : `https://api.kraken.com/0/public/Depth?pair=${spec.symbol}&count=50`,
+            );
+            const receivedAt = Date.now() / 1000;
+            const book = selectCryptoBook(spec, info, data);
+            if (!book) throw new Error("Missing book");
+            const cb = spec.venue === "coinbase";
+            const status = cb
+              ? info.status === "online" &&
+                !info.trading_disabled &&
+                !info.cancel_only &&
+                !info.post_only &&
+                !info.limit_only
+                ? "online"
+                : "restricted"
+              : info.status;
+            if (
+              !cb &&
+              (!Number.isInteger(info.lot_decimals) ||
+                info.lot_decimals < 0 ||
+                info.lot_decimals > 12 ||
+                info.lot_multiplier !== 1 ||
+                info.ordermin == null ||
+                info.costmin == null ||
+                Number(info.ordermin) <= 0 ||
+                Number(info.costmin) <= 0)
+            )
+              throw new Error("Kraken order limits unavailable");
+            const increment = cb
+              ? Number(info.base_increment)
+              : 10 ** -Number(info.lot_decimals);
+            const minQuantity = cb
+              ? Number(info.base_min_size ?? 0)
+              : Number(info.ordermin);
+            const minCost = cb
+              ? Number(info.min_market_funds)
+              : Number(info.costmin);
+            if (
+              ![increment, minQuantity, minCost].every(Number.isFinite) ||
+              increment <= 0 ||
+              minQuantity < 0 ||
+              minCost < 0
+            )
+              throw new Error("Invalid order limits");
             books.push({
-              ...old,
-              status: "source-error",
-              sourceError: e.message,
+              ...spec,
+              marketId,
+              status,
+              receivedAt,
+              providerAt: cb && data.time ? Date.parse(data.time) / 1000 : null,
+              sequence: cb ? (data.sequence ?? null) : null,
+              fee: CRYPTO_FEES[spec.venue].rate,
+              increment,
+              minQuantity,
+              minCost,
+              bids: normalizeLevels(book.bids, "bids").slice(0, 50),
+              asks: normalizeLevels(book.asks, "asks").slice(0, 50),
             });
-        }
-      }),
-    );
+          } catch (e) {
+            addError(marketId, e);
+            const old = priorBooks?.find((b) => b.marketId === marketId);
+            if (old)
+              books.push({
+                ...old,
+                status: "source-error",
+                sourceError: e.message,
+              });
+          }
+        }),
+      );
+    return books;
+  }
+  const books = await readBooks(previous.books);
   const now = Date.now() / 1000,
     routes = [];
   for (const a of CRYPTO_ASSETS) {
@@ -211,7 +228,7 @@ export async function collectCrypto(previous = {}) {
       [cb, kr],
       [kr, cb],
     ])
-      if (buy && sell) routes.push(compareCryptoBooks(buy, sell, { now }));
+      if (buy && sell) routes.push(optimizeCryptoRoute(buy, sell, { now }));
   }
   const triangles = [];
   for (const base of ["ETH", "SOL"]) {
@@ -245,6 +262,15 @@ export async function collectCrypto(previous = {}) {
       );
     }
   }
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const followUpBooks = await readBooks([]);
+  const checkedAt = Date.now() / 1000;
+  for (const r of routes) {
+    const [buy, sell] = r.books.map((b) =>
+      followUpBooks.find((next) => next.marketId === b.marketId),
+    );
+    r.delayCheck = checkCryptoDelay(r, buy, sell, { now: checkedAt });
+  }
   const priced = routes.filter((r) => Number.isFinite(r.net));
   const receipt = {
     at: now,
@@ -253,15 +279,36 @@ export async function collectCrypto(previous = {}) {
     positive: priced.filter((r) => r.net > 0).length,
     bestNetBps: priced.length ? Math.max(...priced.map((r) => r.netBps)) : null,
     errors: errors.length,
+    modelVersion: CRYPTO_MODEL,
+    delayedChecked: routes.filter((r) => r.delayCheck.net != null).length,
+    survived: routes.filter((r) => r.delayCheck.survived).length,
+    results: routes.map((r) => ({
+      id: r.id,
+      status: r.status,
+      quantity: r.quantity ?? null,
+      profitableQuantity: r.profitableQuantity,
+      net: r.net ?? null,
+      comparisonNet: r.comparison?.net ?? null,
+      delayCheck: r.delayCheck,
+    })),
   };
   // Store observations, never invented trades or automatic profit credits.
   return {
     schemaVersion: 1,
-    generatedAt: now,
+    generatedAt: checkedAt,
+    evaluatedAt: now,
     modelVersion: CRYPTO_MODEL,
     realEnabled: false,
     books,
-    routes: routes.map(({ books, ...r }) => r),
+    followUpBooks,
+    routes: routes.map(({ books, comparison, ...r }) => ({
+      ...r,
+      comparison: comparison
+        ? Object.fromEntries(
+            Object.entries(comparison).filter(([key]) => key !== "books"),
+          )
+        : null,
+    })),
     triangles,
     errors,
     fees: { reviewedAt: FEE_REVIEWED_AT, venues: CRYPTO_FEES },
