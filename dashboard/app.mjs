@@ -2,6 +2,11 @@ import { publishedJson, publicationHealth } from "./data-client.mjs";
 import { VENUES, fill } from "./prediction-core.mjs";
 import { validPredictions, validResearchSummary } from "./app-schema.mjs";
 import { validateResearch, validatePaper } from "./etf-schema.mjs";
+import { validCopySnapshot } from "./copy-core.mjs";
+import { validCryptoSnapshot } from "./crypto-arbitrage-core.mjs";
+import { initCopyTrading, renderCopyTrading } from "./copy-trading.mjs";
+import { initCryptoTrading, renderCryptoTrading } from "./crypto-arbitrage.mjs";
+import { validCryptoHistory, validSpotSnapshot } from "./trading-schema.mjs";
 const $ = (id) => document.getElementById(id),
   n = Number.isFinite;
 const esc = (v) =>
@@ -68,6 +73,10 @@ let snapshot,
   etf,
   etfPaper,
   archive,
+  copySnapshot,
+  cryptoSnapshot,
+  cryptoHistory,
+  spotSnapshot,
   desk = "markets",
   study = "predictions",
   limit = 18,
@@ -122,29 +131,47 @@ function selectStudy(value) {
 }
 function route() {
   const [requested, subview] = location.hash.slice(1).split("/");
-  const view = ["desk", "trades", "research"].includes(requested)
+  const view = ["copy", "crypto", "desk", "trades", "research"].includes(
+    requested,
+  )
     ? requested
-    : "desk";
+    : "copy";
+  if (
+    view === "copy" &&
+    ["wallets", "signals", "paper", "evidence"].includes(subview)
+  )
+    document.querySelector(`[data-copy-tab="${subview}"]`).click();
+  if (
+    view === "crypto" &&
+    ["cross", "triangles", "history", "spot"].includes(subview)
+  )
+    document.querySelector(`[data-crypto-tab="${subview}"]`).click();
   if (view === "research" && subview === "etf") selectStudy("etf");
   document
     .querySelectorAll("[data-view]")
     .forEach((el) => (el.hidden = el.dataset.view !== view));
   document.querySelectorAll("[data-route]").forEach((el) => {
-    if (el.dataset.route === view) el.setAttribute("aria-current", "page");
+    if (el.dataset.route === (view === "trades" ? "desk" : view))
+      el.setAttribute("aria-current", "page");
     else el.removeAttribute("aria-current");
   });
   $("page-title").textContent = {
+    copy: "Copy trading",
+    crypto: "Crypto arbitrage",
     desk: "Prediction desk",
     trades: "Paper trades",
     research: "Research & results",
   }[view];
   $("page-description").textContent = {
+    copy: "Wallet research, consensus signals and the trades that followed.",
+    crypto:
+      "The same crypto asset, different prices. Follow the gap through every cost.",
     desk: "Kalshi and Polymarket US, with the costs in view.",
     trades: "The positions, payouts and costs behind every result.",
     research: "Studies, recorded outcomes and results after costs.",
   }[view];
   document.title = `Moffitt Money — ${$("page-title").textContent}`;
-  $("portfolio").hidden = view === "research";
+  $("portfolio").hidden = !["desk", "trades"].includes(view);
 }
 function renderPortfolio() {
   const accounts = VENUES.map((v) => snapshot.accounts[v]),
@@ -467,6 +494,16 @@ function renderHealth() {
       )
       .join("") +
     `<div class="source-row"><strong>Automatic simulation</strong><p>Both venue accounts are checked about every ten minutes, even with this page closed. Scheduled runs can be delayed. Quote and risk checks happen before each simulated entry.</p></div><div class="source-row"><strong>Paired-contract scan</strong><p>${esc(snapshot.arbitrage?.scope?.description || "Upcoming full-game NFL and MLB moneylines. No cross-venue orders.")}</p><p>${snapshot.arbitrage?.errors?.length || 0} recorded collection errors. Last result ${when(snapshot.arbitrage?.generatedAt)}.</p></div>`;
+  if (copySnapshot)
+    $("health-content").insertAdjacentHTML(
+      "afterbegin",
+      `<div class="source-row"><strong>Copy trading ${badge("Consensus and paper paused", "caution")}</strong><p>Wallet analytics ${when(copySnapshot.analytics.observedAt)}; consensus and paper ${when(copySnapshot.consensus.observedAt)}. Profiles can separately read recent public wallet activity. Saved wallet stars are local to this browser.</p></div>`,
+    );
+  if (cryptoSnapshot)
+    $("health-content").insertAdjacentHTML(
+      "afterbegin",
+      `<div class="source-row"><strong>Crypto arbitrage ${badge(cryptoSnapshot.errors.length ? "Source issues" : "Public books recorded")}</strong><p>Last scan ${when(cryptoSnapshot.generatedAt)}; ${cryptoSnapshot.errors.length} source errors. Comparisons share the existing five-minute schedule and never credit profits or place orders.</p></div>`,
+    );
 }
 async function refresh() {
   if (busy) return;
@@ -478,6 +515,10 @@ async function refresh() {
     ["data/etf-research.json", validateResearch, "ETF research"],
     ["data/etf-paper.json", validatePaper, "ETF account"],
     ["data/research-summary.json", validResearchSummary, "Historical research"],
+    ["data/copy-trading.json", validCopySnapshot, "Copy trading"],
+    ["data/crypto-arbitrage.json", validCryptoSnapshot, "Crypto arbitrage"],
+    ["data/crypto-history.json", validCryptoHistory, "Crypto history"],
+    ["data/opportunities.json", validSpotSnapshot, "Crypto spot account"],
   ];
   try {
     const results = await Promise.allSettled(
@@ -494,6 +535,20 @@ async function refresh() {
     if (results[1].status === "fulfilled") etf = results[1].value;
     if (results[2].status === "fulfilled") etfPaper = results[2].value;
     if (results[3].status === "fulfilled") archive = results[3].value;
+    if (results[4].status === "fulfilled") copySnapshot = results[4].value;
+    if (results[5].status === "fulfilled") cryptoSnapshot = results[5].value;
+    if (results[6].status === "fulfilled") cryptoHistory = results[6].value;
+    if (results[7].status === "fulfilled") spotSnapshot = results[7].value;
+    try {
+      if (copySnapshot) renderCopyTrading(copySnapshot);
+    } catch {
+      errors.push("Copy trading could not display its data. Try refreshing.");
+    }
+    try {
+      renderCryptoTrading(cryptoSnapshot, cryptoHistory, spotSnapshot);
+    } catch {
+      errors.push("Crypto trading could not display its data. Try refreshing.");
+    }
     for (const render of [
       renderPortfolio,
       renderDesk,
@@ -525,9 +580,8 @@ async function refresh() {
   } finally {
     $("load-notice").textContent = errors.join(" ");
     $("load-notice").hidden = !errors.length;
-    $("footer-status").textContent = snapshot
-      ? `Last recorded scan ${when(snapshot.generatedAt)}. Display refreshes every minute.`
-      : "No valid prediction snapshot available.";
+    $("footer-status").textContent =
+      "Each section shows its source date. Display refreshes every minute; accounts remain separate.";
     busy = false;
     $("refresh").disabled = false;
   }
@@ -616,6 +670,8 @@ for (const id of ["search", "venue", "sort"])
     limit = 18;
     renderDesk();
   });
+initCopyTrading();
+initCryptoTrading();
 window.addEventListener("hashchange", route);
 window.addEventListener("resize", drawETF);
 route();

@@ -5,7 +5,7 @@ on:
     - cron: '2-57/5 * * * *'
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/collect-opportunities.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
+    paths: ['scripts/collect-opportunities.mjs', 'scripts/collect-crypto-arbitrage.mjs', 'dashboard/crypto-arbitrage-core.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
 permissions:
   contents: write
 concurrency:
@@ -27,11 +27,17 @@ jobs:
         id: scan
         continue-on-error: true
         run: node scripts/collect-opportunities.mjs
-      - name: Publish snapshot without overwriting another writer
+      - name: Compare public crypto order books
+        # Public crypto comparisons share the existing schedule; they never
+        # advance a ledger or invoke the retired international collectors.
+        run: node scripts/collect-crypto-arbitrage.mjs
+        id: crypto
+        continue-on-error: true
+      - name: Publish both snapshots without overwriting another writer
         run: |
           git config user.name 'moffitt-money-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add dashboard/data/opportunities.json data/opportunities/paper.json
+          git add dashboard/data/opportunities.json dashboard/data/crypto-arbitrage.json data/opportunities/paper.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'auto: U.S. opportunity snapshot'
           for attempt in 1 2 3; do
@@ -40,5 +46,5 @@ jobs:
           done
           exit 1
       - name: Surface a complete upstream outage
-        if: steps.scan.outcome == 'failure'
+        if: steps.scan.outcome == 'failure' || steps.crypto.outcome == 'failure'
         run: exit 1

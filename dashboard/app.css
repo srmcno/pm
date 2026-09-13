@@ -1285,3 +1285,342 @@ dialog::backdrop {
     grid-row: 3;
   }
 }
+
+/* Three trading disciplines share a calm shell, with their records kept distinct. */
+.app-header {
+  gap: 30px;
+}
+.app-header nav {
+  gap: 26px;
+}
+.context-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  gap: 28px;
+  border-block: 1px solid var(--line);
+  padding: 22px 0;
+  margin: 0 0 24px;
+}
+.context-strip strong,
+.context-strip span {
+  display: block;
+}
+.context-strip strong {
+  font-size: 0.98rem;
+}
+.context-strip span {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+.section-tabs {
+  margin-bottom: 22px;
+  max-width: 100%;
+}
+.section-tabs button {
+  white-space: nowrap;
+}
+.wallet-filters {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.5fr) 1fr 1fr 1fr;
+  gap: 12px;
+}
+.wallet-filters label,
+.wallet-filters input,
+.wallet-filters select {
+  width: 100%;
+  min-width: 0;
+}
+.wallet-filters select,
+.crypto-sizing select {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.wallet-filters .search-field {
+  margin: 0;
+}
+.wallet-list {
+  margin-top: 12px;
+}
+.wallet-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: transparent;
+  padding: 2px 0;
+  color: var(--ink);
+  font-weight: 700;
+  min-width: 210px;
+}
+.wallet-name small,
+.route-name small,
+.cell-note {
+  display: block;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.79rem;
+  margin-top: 3px;
+}
+.wallet-avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  background: var(--soft);
+  border-radius: 50%;
+  color: var(--blue);
+  font-family: Manrope, sans-serif;
+}
+.save-wallet {
+  background: transparent;
+  color: var(--blue);
+  font-size: 1.7rem;
+  min-width: 44px;
+}
+.wallet-profile-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.wallet-address {
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  margin: 12px 0 20px;
+}
+.trading-chart {
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  margin: 18px 0;
+  overflow: visible;
+}
+.trading-chart text {
+  font-size: 11px;
+  fill: var(--muted);
+}
+.account-curve {
+  background: var(--paper);
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.signal-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+.signal-row h3 {
+  max-width: 70ch;
+  margin: 8px 0;
+}
+.signal-row button {
+  margin-top: 8px;
+}
+.text-action,
+.route-name {
+  background: none;
+  color: var(--blue);
+  text-align: left;
+  padding: 0;
+  font-weight: 600;
+}
+.route-name {
+  min-width: 225px;
+}
+.route-name strong {
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.crypto-sizing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.crypto-sizing label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.crypto-sizing select {
+  margin-left: 10px;
+}
+#crypto-cross,
+#crypto-triangles,
+#crypto-history-scans {
+  margin-top: 14px;
+}
+.research-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.disclosure p + p {
+  margin-top: 12px;
+}
+@media (max-width: 1050px) {
+  .app-header {
+    gap: 20px;
+  }
+  .app-header nav {
+    gap: 20px;
+  }
+  .app-header nav a {
+    font-size: 0.87rem;
+  }
+  .wallet-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 720px) {
+  .app-header {
+    gap: 10px;
+  }
+  .app-header nav {
+    gap: 0;
+    height: 70px;
+  }
+  .app-header nav a {
+    font-size: 0.78rem;
+    padding: 0 7px;
+    text-align: center;
+    line-height: 1.25;
+    max-width: 25%;
+  }
+  .header-tools {
+    margin-left: auto;
+  }
+  .header-tools .quiet-button {
+    padding: 6px;
+    font-size: 0.76rem;
+  }
+  .brand {
+    font-size: 0.88rem;
+    gap: 6px;
+  }
+  .brand-mark {
+    width: 28px;
+    height: 30px;
+  }
+  .context-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 16px 0;
+    margin-bottom: 18px;
+  }
+  .context-strip > div:last-child {
+    grid-column: 1/-1;
+  }
+  .context-strip > div:last-child strong,
+  .context-strip > div:last-child span {
+    display: inline;
+    font-size: 0.77rem;
+  }
+  .context-strip > div:last-child span:before {
+    content: " · ";
+  }
+  .context-strip strong {
+    font-size: 0.86rem;
+  }
+  .context-strip span {
+    font-size: 0.77rem;
+  }
+  .section-tabs {
+    display: flex;
+    overflow-x: auto;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  .section-tabs button {
+    font-size: 0.77rem;
+    padding: 10px 11px;
+    min-width: max-content;
+  }
+  .wallet-filters {
+    gap: 8px;
+  }
+  .wallet-filters select {
+    font-size: 0.79rem;
+    padding: 9px 7px;
+  }
+  .wallet-filters input {
+    font-size: 0.85rem;
+  }
+  .wallet-filters .search-field {
+    grid-column: 1/-1;
+  }
+  .wallet-filters > label:last-child {
+    grid-column: 1/-1;
+  }
+  .wallet-name {
+    min-width: 185px;
+    gap: 8px;
+    font-size: 0.88rem;
+  }
+  .wallet-avatar {
+    width: 31px;
+    height: 31px;
+    font-size: 0.8rem;
+  }
+  .wallet-name small {
+    font-size: 0.72rem;
+  }
+  .signal-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .signal-row > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 0.86rem;
+  }
+  .signal-row button {
+    margin: 0;
+  }
+  .crypto-sizing {
+    align-items: start;
+    flex-wrap: wrap;
+  }
+  .crypto-sizing label {
+    font-size: 0.82rem;
+  }
+  .crypto-sizing select {
+    font-size: 0.82rem;
+    margin-left: 4px;
+  }
+  .account-curve {
+    padding: 8px;
+  }
+  .research-links {
+    gap: 12px;
+    font-size: 0.83rem;
+  }
+  .route-name {
+    min-width: 200px;
+  }
+  .section-heading {
+    flex-wrap: wrap;
+  }
+}
+.wallet-name > span:last-child {
+  max-width: 270px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 720px) {
+  .wallet-name > span:last-child {
+    max-width: 190px;
+  }
+}

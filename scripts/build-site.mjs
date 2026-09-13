@@ -11,6 +11,12 @@ const files = [
   "app.css",
   "app.mjs",
   "app-schema.mjs",
+  "copy-core.mjs",
+  "copy-trading.mjs",
+  "crypto-arbitrage-core.mjs",
+  "crypto-arbitrage.mjs",
+  "trading-ui.mjs",
+  "trading-schema.mjs",
   "data-client.mjs",
   "prediction-core.mjs",
   "etf-schema.mjs",
@@ -31,6 +37,10 @@ const files = [
     "etf-research",
     "research-summary",
     "desk",
+    "copy-trading",
+    "crypto-arbitrage",
+    "crypto-history",
+    "opportunities",
   ].map((n) => `data/${n}.json`),
 ];
 await rm(output, { recursive: true, force: true });

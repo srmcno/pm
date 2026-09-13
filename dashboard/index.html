@@ -5,26 +5,28 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="Compare Kalshi and Polymarket US contracts, track simulated trades, and inspect the evidence after costs."
+      content="Study copy-trading wallets, compare crypto arbitrage after costs, and track Kalshi and Polymarket simulations."
     />
     <meta name="color-scheme" content="light dark" />
-    <title>Moffitt Money — Prediction desk</title>
+    <title>Moffitt Money — Copy trading</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="app.css?v=5.0.0" />
+    <link rel="stylesheet" href="app.css?v=5.1.0" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to desk</a>
     <header class="app-header">
-      <a class="brand" href="#desk"
+      <a class="brand" href="#copy"
         ><span class="brand-mark" aria-hidden="true">m.</span
         ><span>Moffitt <b>Money</b></span></a
       >
       <nav aria-label="Main navigation">
-        <a href="#desk" data-route="desk">Desk</a
-        ><a href="#trades" data-route="trades">Paper trades</a
+        <a href="#copy" data-route="copy">Copy trading</a
+        ><a href="#crypto" data-route="crypto">Crypto arbitrage</a
+        ><a href="#desk" data-route="desk">Predictions</a
         ><a href="#research" data-route="research">Research</a>
       </nav>
       <div class="header-tools">
+        <button id="refresh" class="quiet-button">Refresh</button>
         <button id="health-button" class="quiet-button">Data status</button
         ><button id="theme" class="icon-button" aria-label="Switch color theme">
           ◐
@@ -34,9 +36,9 @@
     <main id="main" class="workspace">
       <div class="page-heading">
         <div>
-          <h1 id="page-title">Prediction desk</h1>
+          <h1 id="page-title">Copy trading</h1>
           <p id="page-description">
-            Kalshi and Polymarket US, with the costs in view.
+            Wallet research, consensus signals and the trades that followed.
           </p>
         </div>
         <div class="paper-label">
@@ -44,23 +46,188 @@
         </div>
       </div>
       <p id="load-notice" class="notice" role="status" hidden></p>
+      <section data-view="copy" id="copy-view">
+        <div id="copy-summary" class="context-strip">
+          <p>Loading wallet research…</p>
+        </div>
+        <div
+          class="section-tabs segmented"
+          role="group"
+          aria-label="Copy trading view"
+        >
+          <button data-copy-tab="wallets" aria-pressed="true">Wallets</button>
+          <button data-copy-tab="signals" aria-pressed="false">
+            Consensus
+          </button>
+          <button data-copy-tab="paper" aria-pressed="false">
+            Paper account
+          </button>
+          <button data-copy-tab="evidence" aria-pressed="false">
+            Past results
+          </button>
+        </div>
+        <div data-copy-panel="wallets">
+          <div class="wallet-filters">
+            <label class="search-field"
+              ><input
+                id="wallet-search"
+                type="search"
+                placeholder="Find a wallet or specialty"
+                aria-label="Search wallets"
+            /></label>
+            <label
+              ><span class="sr-only">Wallet group</span
+              ><select id="wallet-scope">
+                <option value="tracked">Historical copy cohort</option>
+                <option value="all">All researched wallets</option>
+                <option value="saved">My saved wallets</option>
+              </select></label
+            >
+            <label
+              ><span class="sr-only">Wallet specialty</span
+              ><select id="wallet-category">
+                <option value="all">All specialties</option>
+              </select></label
+            >
+            <label
+              ><span class="sr-only">Wallet sort</span
+              ><select id="wallet-sort">
+                <option value="quality">Cohort priority</option>
+                <option value="pnl90">Highest P&amp;L</option>
+                <option value="winDayRate">Profitable days</option>
+                <option value="maxDrawdown90">Smallest drawdown</option>
+              </select></label
+            >
+          </div>
+          <p class="table-note" id="wallet-count">
+            Reading the saved wallet study…
+          </p>
+          <div id="wallet-list" class="wallet-list"></div>
+          <button id="wallet-more" class="more-button" hidden>
+            Show more wallets
+          </button>
+          <p class="table-note">
+            This is historical Polymarket international wallet research. Open a
+            profile to inspect its record and check recent public trades. Stars
+            save wallets on this browser.
+          </p>
+        </div>
+        <div data-copy-panel="signals" id="copy-signals" hidden></div>
+        <div data-copy-panel="paper" id="copy-paper" hidden></div>
+        <div data-copy-panel="evidence" id="copy-evidence" hidden></div>
+        <p id="copy-action-status" class="sr-only" role="status"></p>
+      </section>
+      <section data-view="crypto" id="crypto-view" hidden>
+        <div id="crypto-summary" class="context-strip">
+          <p>Loading crypto books…</p>
+        </div>
+        <div
+          class="section-tabs segmented"
+          role="group"
+          aria-label="Crypto arbitrage view"
+        >
+          <button data-crypto-tab="cross" aria-pressed="true">
+            Across exchanges
+          </button>
+          <button data-crypto-tab="triangles" aria-pressed="false">
+            Within Kraken
+          </button>
+          <button data-crypto-tab="history" aria-pressed="false">
+            History
+          </button>
+          <button data-crypto-tab="spot" aria-pressed="false">
+            Spot paper
+          </button>
+        </div>
+        <div class="crypto-sizing" id="crypto-sizing">
+          <label
+            >Compare buy budget
+            <select id="crypto-budget">
+              <option value="25">$25</option>
+              <option value="100" selected>$100</option>
+              <option value="500">$500</option>
+            </select></label
+          >
+          <label id="crypto-direction-label"
+            ><span class="sr-only">Route directions</span
+            ><select id="crypto-direction">
+              <option value="best">Best direction per asset</option>
+              <option value="all">Both directions</option>
+            </select></label
+          >
+        </div>
+        <p id="crypto-scan-time" class="table-note">
+          Reading the latest crypto scan…
+        </p>
+        <div data-crypto-panel="cross" id="crypto-cross"></div>
+        <div data-crypto-panel="triangles" hidden>
+          <p class="table-note">
+            USD → two crypto assets → USD, with fees, depth, rounding and order
+            minimums on every leg.
+          </p>
+          <div id="crypto-triangles"></div>
+        </div>
+        <div data-crypto-panel="history" hidden>
+          <div class="section-heading"><h2>Recorded comparisons</h2></div>
+          <p class="table-note">
+            Each row is a scan, not a trade. A positive modeled gap never
+            credits a paper account.
+          </p>
+          <div id="crypto-history-scans"></div>
+          <div class="section-heading"><h2>Earlier crypto simulations</h2></div>
+          <div id="crypto-earlier"></div>
+        </div>
+        <div data-crypto-panel="spot" id="crypto-spot" hidden></div>
+        <p id="crypto-source-notice" class="table-note" role="status"></p>
+        <details class="disclosure">
+          <summary>Fees, inventory and execution assumptions</summary>
+          <p>
+            Base-tier taker assumptions reviewed September 13, 2026: Coinbase
+            Exchange 0.60%, Kraken Pro spot crypto 0.80%. Fees are modeled in
+            quote currency, plus 5 bps additional slippage per leg. Your
+            account’s actual fee tier is not connected.
+          </p>
+          <p>
+            Cross-venue comparisons require USD on the buying exchange and
+            existing crypto inventory on the selling exchange. Transfers,
+            rebalancing and simultaneous execution are unverified. REST receipt
+            times are displayed; no real orders are enabled.
+          </p>
+          <p>
+            <a
+              href="https://help.coinbase.com/en/exchange/trading-and-funding/exchange-fees"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Coinbase Exchange fees</a
+            >
+            ·
+            <a
+              href="https://www.kraken.com/features/fee-schedule"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Kraken fee schedule</a
+            >
+          </p>
+        </details>
+      </section>
       <section
         id="portfolio"
         class="portfolio"
         aria-label="Prediction account summary"
+        hidden
       >
         <p>Loading the two paper accounts…</p>
       </section>
-      <section data-view="desk" id="desk-view">
+      <section data-view="desk" id="desk-view" hidden>
         <div class="desk-controls">
           <div class="segmented" role="group" aria-label="Desk view">
             <button data-desk="markets" aria-pressed="true">
               Markets <span id="market-total">—</span></button
             ><button data-desk="pairs" aria-pressed="false">
-              Price gaps <span id="pair-total">—</span>
+              Contract comparisons <span id="pair-total">—</span>
             </button>
           </div>
-          <button class="quiet-button" id="refresh">Refresh data</button>
+          <a class="quiet-button" href="#trades">Prediction paper accounts</a>
         </div>
         <div class="filter-row">
           <label class="search-field"
@@ -106,6 +273,7 @@
       <section data-view="trades" id="trades-view" hidden>
         <div class="section-heading">
           <h2>Account activity</h2>
+          <a href="#desk">Back to prediction markets</a>
           <button id="export-trades" class="quiet-button">Export trades</button>
         </div>
         <div id="trade-summary" class="trade-summary"></div>
@@ -126,6 +294,11 @@
         <p id="export-status" class="muted" role="status"></p>
       </section>
       <section data-view="research" id="research-view" hidden>
+        <div class="research-links">
+          <a href="#copy/evidence">Copy-trading results</a
+          ><a href="#crypto/history">Crypto arbitrage history</a
+          ><a href="desk.html">Strategy laboratory</a>
+        </div>
         <div
           class="research-tabs segmented"
           role="group"
@@ -231,6 +404,6 @@
         these simulated accounts.
       </p>
     </dialog>
-    <script type="module" src="app.mjs?v=5.0.0"></script>
+    <script type="module" src="app.mjs?v=5.1.0"></script>
   </body>
 </html>

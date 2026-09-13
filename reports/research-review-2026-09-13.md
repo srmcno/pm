@@ -1,6 +1,6 @@
 # Research decisions — September 13, 2026
 
-The redesign reduces the primary product to comparing contracts, tracking simulated trades and inspecting evidence. The algorithm work addresses accounting and selection errors before adding more strategy variants. Existing accounts and losing observations are retained.
+The primary product retains copy trading and crypto arbitrage alongside Kalshi/Polymarket predictions. Contract comparisons are prediction research; they do not replace crypto arbitrage. The algorithm work addresses accounting and selection errors before adding more strategy variants. Existing accounts and losing observations are retained.
 
 ## Evidence reviewed
 
@@ -30,9 +30,15 @@ The 100-outcome cohort, 50-outcome price bin, 30 prior-forecast, 3-cent conserva
 
 ## Product and repository cleanup
 
-The new interface removes repeated navigation and account panels, token-radar clutter, manual prediction controls, and large obsolete wallet/stock/crypto-arbitrage screens. Contract details, costs, holds, actual trade exports, calibration, ETF holdings/transactions, and historical conclusions remain discoverable. Native dialogs, readable table/card layouts, keyboard controls and visible failure states support desktop and mobile use.
+The new interface removes repeated navigation and account panels, token-radar clutter, manual prediction controls, and duplicated standalone shells. Contract details, costs, holds, actual trade exports, calibration, ETF holdings/transactions, and historical conclusions remain discoverable. Native dialogs, readable table/card layouts, keyboard controls and visible failure states support desktop and mobile use.
 
-Unused frontend modules, styles, the old wallet HTML generator and eight obsolete retirement workflows were removed. Former page URLs redirect to Research. Frozen baseline and retired published data moved under `data/research/`; authoritative ledgers are unchanged. Active background account managers were preserved. Sites and Pages publish the same fresh allowlisted build so removed assets cannot linger in a reused output directory.
+Unused frontend modules, styles, the old wallet HTML generator and eight obsolete retirement workflows were removed. Wallet and crypto-arbitrage page URLs now route directly to their restored core sections; ETF and stock links retain research access. Frozen baseline and retired published data moved under `data/research/`; authoritative ledgers are unchanged. Active background account managers were preserved. Sites and Pages publish the same fresh allowlisted build so removed assets cannot linger in a reused output directory.
+
+## Copy and crypto restoration
+
+The shared interface restores wallet ranking, saved wallets, detailed profiles, individual consensus backers, complete copy-paper history and historical variants. Public wallet activity can be inspected separately from the dated research. The displayed paper curve begins at the recorded $50 all-cash opening baseline, removing an inherited earlier funding discontinuity without deleting raw history.
+
+Current Coinbase/Kraken crypto comparisons verify asset metadata and book keys, check receipt/provider freshness, walk the same quantity on both sides and include both taker fees and additional slippage. Three-leg Kraken cycles enforce depth and order minimums. The current Kraken base spot fee is 0.80%, superseding the old 0.40% fallback. These observations never create credited fills. Earlier atomic-fill simulations and the separate directional spot ledger remain available.
 
 ## Remaining evidence needed
 

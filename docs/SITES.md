@@ -6,17 +6,17 @@ The canonical source is the GitHub default branch `claude/polymarket-wallets-ana
 - Pages mirror: https://srmcno.github.io/pm/
 - Source: `dashboard/`; build: `npm run build`; public artifact: `dist/`.
 
-## Version 5 interface
+## Interface
 
-The primary interface has Desk, Paper trades and Research. ETF results are under `#research/etf`; `etf.html` redirects there. Retired wallet, stock and arbitrage page URLs redirect to Research. Their large shells and unused assets were removed; saved account histories remain in `data/` and retired published snapshots in `data/research/retired-public-snapshots/`. The separate active strategy laboratory remains at `desk.html`.
+Copy trading, Crypto arbitrage, Predictions and Research are the primary navigation. Copy trading is the opening view. `wallets.html` routes to `#copy`; `arb.html` routes to `#crypto`. Their full core workflows are integrated into the shared shell. Prediction paper accounts remain under `#trades`, ETF results under `#research/etf`, and the separate strategy laboratory at `desk.html`.
 
-The build deletes the previous `dist/` before copying an explicit public allowlist. Both GitHub Pages and Sites publish that same directory. Backend-only modules, raw backtest inputs and archive snapshots are not part of the public artifact. Do not upload `dashboard/` directly: it also contains research inputs used by scheduled collectors.
+The build deletes the previous `dist/` before copying an explicit public allowlist. Both GitHub Pages and Sites publish that same directory. Backend-only modules and raw backtest inputs are not part of the public artifact. Compact dated copy and crypto history publications are included because they are core research features. Do not upload `dashboard/` directly: it also contains research inputs used by scheduled collectors.
 
 ## Data updates
 
 `dashboard/data-client.mjs` retrieves dated snapshots from GitHub raw default-branch `HEAD`, then falls back to bundled or newer retained records. The main display checks once per minute. It does not stream trading quotes or submit orders. Refreshing does not advance a paper account.
 
-Prediction collection runs every ten minutes, best effort. ETF simulation runs on its existing weekday schedule. The separate desk and opportunity workflows remain active for their own saved accounts. A data-only commit does not need a Sites interface deployment. Each venue's book times and collection errors, ETF source dates, and retained-data notices remain visible.
+Prediction collection runs every ten minutes, best effort. ETF simulation runs on its existing weekday schedule. The separate desk and opportunity workflows remain active for their own saved accounts. The opportunity workflow also refreshes public crypto-arbitrage comparisons without any ledger effects. Copy consensus and paper collectors remain paused; wallet profiles can make bounded public activity reads. A data-only commit does not need a Sites interface deployment. Each venue's book times and collection errors, ETF source dates, and retained-data notices remain visible.
 
 ## Interface publication
 
