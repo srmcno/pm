@@ -20,5 +20,5 @@ jobs:
       - run: pip install 'requests>=2.31,<3'
       - run: python -m unittest discover -s scripts/tests
       - run: python -m unittest discover -s tests
-      - run: node --test tests/market-core.test.mjs tests/scanner-backtest.test.mjs
+      - run: npm test
       - run: python scripts/check_site.py

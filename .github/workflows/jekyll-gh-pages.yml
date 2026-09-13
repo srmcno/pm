@@ -10,7 +10,7 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_run:
-    workflows: ["U.S. opportunity scan", "U.S. desk paper cycle"]
+    workflows: ["U.S. opportunity scan", "U.S. desk paper cycle", "Prediction market paper cycle"]
     types: [completed]
     branches: ["claude/polymarket-wallets-analysis-m81p4j"]
   workflow_dispatch: {}
@@ -40,12 +40,12 @@ jobs:
           node-version: '22'
       - name: Verify the site before publishing
         run: |
-          node --test tests/market-core.test.mjs tests/scanner-backtest.test.mjs tests/data-client.test.mjs tests/outcomes.test.mjs
+          npm test
           python3 scripts/check_site.py
           python3 - <<'PY'
           import json, subprocess, datetime
           with open('dashboard/build-info.json','w') as f:
-            json.dump({'version':'4.1.0','commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},f)
+            json.dump({'version':'4.2.0','commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},f)
           PY
       - name: Setup Pages
         uses: actions/configure-pages@v5

@@ -1,3 +1,4 @@
+import {mountPredictions} from './predictions.mjs?v=4.2.0';
 import {assessEvidence,applyEvidence,summarizeTrades,POLICY_VERSION} from './outcomes.mjs?v=4.1.0';
 import {publishedJson, publicationHealth} from './data-client.mjs?v=4.0.0';
 import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.3';
@@ -388,6 +389,7 @@ function renderHealth() {
   if (snapshot) $('paper-asof').textContent = `${bookAge > 1200 ? 'Delayed snapshot' : 'Snapshot'} · ${since(bookAt)} · ${stamp(bookAt)}`;
 }
 const views = {
+  predictions: ['Prediction markets', 'Polymarket US and Kalshi. Two $100 paper accounts, governed by evidence.'],
   markets: ['Market overview', 'Live prices, completed-hour setups, and the cost of taking a position.'],
   paper: ['Paper performance', 'Follow the shared model, its positions, and its results after costs.'],
   discovery: ['Token radar', 'Review the observed pools and see exactly which screening rules they meet.'],
@@ -395,13 +397,15 @@ const views = {
   health: ['Data health', 'Check each source separately. Fresh prices and fresh paper results are different.']
 };
 function showView(view, moveFocus = false) {
-  if (!Object.hasOwn(views, view)) view = 'markets';
+  if (!Object.hasOwn(views, view)) view = 'predictions';
   for (const el of document.querySelectorAll('[data-page]')) el.hidden = el.dataset.page !== view;
   for (const el of document.querySelectorAll('[data-view]')) {
     const active = el.dataset.view === view;
     el.classList.toggle('selected',active);
     if (active) el.setAttribute('aria-current','page'); else el.removeAttribute('aria-current');
   }
+  document.body.dataset.view=view;
+  $('crypto-session').hidden = view === 'predictions';
   $('view-title').textContent = views[view][0];
   $('view-description').textContent = views[view][1];
   document.title = `Moffitt Money | ${views[view][0]}`;
@@ -420,4 +424,4 @@ if (document.modelContext?.registerTool) {
   window.addEventListener('pagehide',()=>lifetime.abort(),{once:true});
 }
 
-render();connect();loadSnapshot();loadHistories();restQuotes();loadBacktest();loadExperiments();
+mountPredictions();render();connect();loadSnapshot();loadHistories();restQuotes();loadBacktest();loadExperiments();

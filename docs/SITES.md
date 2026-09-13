@@ -25,3 +25,7 @@ The September 12 rebuild passes offline calculation, fallback/rollback regressio
 `dashboard/outcomes.mjs` validates replay model, costs, ledger accounting, chronology and coverage before allowing a strategy to start a new shared paper position. The current failed standalone replays hold both strategies. The collector always marks and manages existing positions even when a replay is missing or unreadable. This policy is separate from the frozen baseline model so past losing results remain reproducible. Minimum 30 trades and 1.15 profit factor are explicit research screening thresholds, not proof of an edge.
 
 The Outcomes view compares realized payoffs, exit contributions, original equity and bounded rule experiments. Both tested variants lost money and were not adopted. See reports/outcome-review.md.
+
+## Prediction accounts, September 13
+
+The main Predictions view now uses Polymarket US and Kalshi public books with independent persistent $100 paper accounts. The authorized new prediction cycle runs every ten minutes, best effort; snapshots update in the browser every minute and Pages follows the cycle. Include its source/collector health in maintenance and preserve all paper state. Real execution remains locked. See docs/PREDICTIONS.md for evidence thresholds, costs, original archive limitations and remaining activation work.

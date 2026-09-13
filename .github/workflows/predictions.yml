@@ -1,0 +1,46 @@
+name: Prediction market paper cycle
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '6-56/10 * * * *'
+  push:
+    branches: [claude/polymarket-wallets-analysis-m81p4j]
+    paths: ['scripts/collect-predictions.mjs', 'scripts/predictions/**', 'dashboard/prediction-core.mjs', 'dashboard/prediction-venues.mjs', '.github/workflows/predictions.yml']
+permissions:
+  contents: write
+concurrency:
+  group: prediction-paper-cycle
+  cancel-in-progress: false
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify paper accounting
+        run: node --test tests/predictions.test.mjs
+      - name: Read public markets, record outcomes and advance two $100 paper books
+        id: collect
+        continue-on-error: true
+        run: node scripts/collect-predictions.mjs
+      - name: Publish without replacing another writer
+        run: |
+          git config user.name 'moffitt-money-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add dashboard/data/predictions.json data/predictions/state.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'auto: prediction market paper cycle'
+          for attempt in 1 2 3; do
+            git pull --rebase origin '${{ github.event.repository.default_branch }}' || { git rebase --abort; exit 1; }
+            if git push origin 'HEAD:${{ github.event.repository.default_branch }}'; then exit 0; fi
+          done
+          exit 1
+      - name: Report collector failure
+        if: steps.collect.outcome == 'failure'
+        run: exit 1

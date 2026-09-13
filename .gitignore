@@ -7,3 +7,8 @@ data/stocks/cache/
 dist/
 .sites-runtime/
 scripts/outcome-research/results.json
+
+# Prediction collector lock and atomic-write leftovers
+data/predictions/.collector.lock/
+data/predictions/*.tmp
+dashboard/data/predictions.json.*.tmp
