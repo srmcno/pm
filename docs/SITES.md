@@ -26,7 +26,13 @@ The September 12 rebuild passes offline calculation, fallback/rollback regressio
 
 The Outcomes view compares realized payoffs, exit contributions, original equity and bounded rule experiments. Both tested variants lost money and were not adopted. See reports/outcome-review.md.
 
-## Prediction accounts, September 13
+## Crypto entry revision, September 13
+
+The user's separate request to revise Volume breakout and Trend reclaim authorizes scanner model `2026-09-13-scanner-v3`. Both require actual positive moving-average slopes and a distinct completed confirmation hour after the original volume trigger. Stops and targets remain anchored to the original trigger; costs, sizing, risk limits and exits are unchanged. Existing paper accounts, positions and closed ledgers are preserved. Versioned signal IDs prevent old pending candidates from confirming a changed model.
+
+`reports/scanner-revision-plan.md` declares the single revision before replay. The original v2 inputs and results are pinned in `backtest-inputs-v2.json.gz` and `scanner-baseline-v2.json`; the frozen research runner uses those archives. Automatic source-change replays reuse committed inputs. An explicit workflow input can collect a new window, whose report labels any non-comparable input change. The current report includes all scenarios and the prior-model comparison. Reused history is not a holdout, reduced losses are not validation, and the existing evidence policy continues to hold failing strategies. Historical v2 experiments remain visible.
+
+## Automatic prediction desk
 
 The v4.3 correction makes Autopilot the default: both prediction accounts are monitored together, while market inspection and personal forecasts are optional. Completed collector receipts report automatic entries, settlements, and pending confirmations. The collector evaluates both venues without browser input. No strategy or risk thresholds were relaxed, no balances reset, and real execution remains locked.
 

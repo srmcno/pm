@@ -145,6 +145,7 @@ export function runReport(data) {
     dataIssues:data.dataIssues||[],highCoverageProducts,
     methodology:['Fixed rules with no parameter search or selection of the best result.',
       'Actual five-minute opens drive scheduled scans. Only completed hourly candles inform entries.',
+      'Both moving averages must rise. The original volume trigger needs a separate completed hour of price follow-through; stops and targets stay anchored to that trigger.',
       'Two distinct scans confirm an entry. The same paper-account function controls sizing, fees, halts and exits.',
       'Default costs: 60 bps fees and 10 bps slippage per side, plus an assumed 10 bps bid/ask spread.',
       'End-of-window positions are liquidated with modeled costs. Three 30-day slices each start with $1,000.',
@@ -160,6 +161,7 @@ function markdown(report) {
   return `# Scanner historical replay\n\n${iso(report.start)} through ${iso(report.end)}. Model ${report.modelVersion}.\n\n`+
     '| Scenario | Net return | Max drawdown | Trades | Win rate | Profit factor | Fees | Buy and hold |\n|---|---:|---:|---:|---:|---:|---:|---:|\n'+
     report.runs.map(r=>`| ${r.name} | ${n(r.returnPct)}% | ${n(r.maxDrawdownPct)}% | ${r.trades} | ${n(r.winRatePct)}% | ${n(r.profitFactor)} | $${n(r.feesUsd)} | ${n(r.benchmarkReturnPct)}% |`).join('\n')+
+    (report.revision ? '\n\n## Previous model comparison\n\n'+(report.revision.sameInputs ? 'Identical preserved inputs; reused development history, not an untouched holdout.' : 'Different inputs or dates. These results are not a controlled comparison.')+'\n\n| Scenario | v2 return | v3 return | v2 trades | v3 trades |\n|---|---:|---:|---:|---:|\n'+report.revision.runs.map(r=>`| ${r.name} | ${n(r.previousReturnPct)}% | ${n(r.returnPct)}% | ${r.previousTrades} | ${r.trades} |`).join('\n')+'\n\n[Declared entry revision](scanner-revision-plan.md). [Preserved v2 report](scanner-baseline-v2.md). A smaller loss does not establish an edge.' : '')+
     '\n\n## Data coverage\n\n'+Object.entries(report.quality).map(([p,q])=>`- ${p}: ${q.fiveMinute.pct.toFixed(4)}% of five-minute intervals, ${q.fiveMinute.missing} missing. Hourly coverage ${q.hourly.pct.toFixed(2)}%.`).join('\n')+
     '\n\n'+(report.dataIssues.length?'The full-universe replay is data-limited. The high-coverage comparison includes '+report.highCoverageProducts.join(', ')+'. No prices were filled into the gaps.':'All markets have at least 98% coverage.')+
     '\n\n## Method\n\n'+report.methodology.map(s=>'- '+s).join('\n')+'\n\n## Limits\n\n'+report.limitations.map(s=>'- '+s).join('\n')+
@@ -173,6 +175,9 @@ async function main(){
     data=await collectHistory();bytes=gzipSync(JSON.stringify(data));await atomic(input,bytes);
   }else{bytes=await readFile(input);data=JSON.parse(gunzipSync(bytes));}
   const report=runReport(data);report.inputSha256=digest(bytes);
+  const previous=JSON.parse(await readFile(path.join(root,'dashboard/data/scanner-baseline-v2.json')));
+  report.revision={previousModel:previous.modelVersion,sameInputs:previous.inputSha256===report.inputSha256 && previous.start===report.start && previous.end===report.end,
+    runs:report.runs.flatMap(r=>{const old=previous.runs.find(x=>x.name===r.name);return old?[{name:r.name,previousReturnPct:old.returnPct,returnPct:r.returnPct,previousTrades:old.trades,trades:r.trades}]:[];})};
   await atomic(path.join(root,'dashboard/data/scanner-backtest.json'),JSON.stringify(report)+'\n');
   await atomic(path.join(root,'reports/scanner-backtest.md'),markdown(report));
 }

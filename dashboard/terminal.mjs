@@ -1,7 +1,7 @@
 import {mountPredictions} from './predictions.mjs?v=4.3.0';
-import {assessEvidence,applyEvidence,summarizeTrades,POLICY_VERSION} from './outcomes.mjs?v=4.1.0';
+import {assessEvidence,applyEvidence,summarizeTrades,POLICY_VERSION} from './outcomes.mjs?v=4.4.0';
 import {publishedJson, publicationHealth} from './data-client.mjs?v=4.0.0';
-import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.3';
+import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=4.4.0';
 const $ = id => document.getElementById(id);
 const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const names = {BTC:'Bitcoin', ETH:'Ethereum', SOL:'Solana', LINK:'Chainlink', AVAX:'Avalanche', DOGE:'Dogecoin'};
@@ -336,6 +336,8 @@ function renderOutcomes() {
   if(!backtest)return;
   const base=backtest.runs.find(r=>r.name==='Combined · 90 days'),policy=assessEvidence(backtest),s=summarizeTrades(base?.ledger);
   if(!base)return;
+  const revision=backtest.revision;
+  $('entry-revision').innerHTML=revision ? `<p class="quiet">${revision.sameInputs?'Both models use identical preserved June 10 through September 8 inputs. This is reused development history, not an untouched holdout.':'The input windows differ. These results are not a controlled comparison.'}</p><div class="table-scroll"><table><thead><tr><th>Strategy</th><th>Previous return</th><th>Revised return</th><th>Trades, before → after</th></tr></thead><tbody>${revision.runs.filter(r=>['Combined · 90 days','Breakout only','Reclaim only'].includes(r.name)).map(r=>`<tr><td>${escape(r.name)}</td><td class="${r.previousReturnPct<0?'negative':'positive'}">${r.previousReturnPct.toFixed(2)}%</td><td class="${r.returnPct<0?'negative':'positive'}">${r.returnPct.toFixed(2)}%</td><td>${r.previousTrades} → ${r.trades}</td></tr>`).join('')}</tbody></table></div>` : '<p class="quiet">The saved comparison has not loaded. Entry decisions still require evidence for the current model.</p>';
   $('strategy-reviews').innerHTML=policy.strategies.map(r=>`<article class="strategy-review"><div class="between"><h3>${escape(r.name)}</h3>${badge(r.status==='needs-revision'?'Needs revision':r.allowed?'Paper eligible':'Insufficient evidence',r.allowed?'good':'amber')}</div><strong class="${r.returnPct<0?'negative':''}">${Number.isFinite(r.returnPct)?r.returnPct.toFixed(2)+'%':'Unavailable'}</strong><p>${r.trades} trades · ${Number.isFinite(r.profitFactor)?r.profitFactor.toFixed(2):'Unknown'} profit factor</p><p class="quiet">${escape(r.reason)}</p></article>`).join('');
   renderEquity('historical-curve',base.curve,'Historical model equity');
   const halt=base.drawdownHalt&&base.ledger?.length?Math.max(...base.ledger.map(t=>t.closedAt)):null;
@@ -347,10 +349,10 @@ function renderOutcomes() {
 }
 async function loadExperiments() {
   try {
-    const data=await publishedJson('data/outcome-experiments.json',d=>d.modelVersion===MODEL_VERSION&&Array.isArray(d.runs));
+    const data=await publishedJson('data/outcome-experiments.json',d=>d.modelVersion==='2026-09-08-scanner-v2'&&Array.isArray(d.runs));
     const names={baseline:'Original rules','net-r-two':'Minimum net reward / risk: 2.0','seven-day-exit':'Time exit: 7 days'};
     $('experiments').innerHTML=`<table><thead><tr><th>Rule set</th><th>90-day return</th><th>First / middle / last 30 days</th><th>Trades</th><th>Decision</th></tr></thead><tbody>${Object.entries(names).map(([id,name])=>{const all=data.runs.filter(r=>r.variant===id),full=all.find(r=>r.window==='Full 90 days'),slices=all.filter(r=>r.window!=='Full 90 days');if(!full)return '';return `<tr><td><strong>${escape(name)}</strong></td><td class="${full.returnPct<0?'negative':'positive'}">${full.returnPct.toFixed(2)}%</td><td>${slices.map(r=>r.returnPct.toFixed(2)+'%').join(' / ')}</td><td>${full.trades}</td><td>${badge(id==='baseline'?'Needs revision':'Not adopted','amber')}</td></tr>`;}).join('')}</tbody></table>`;
-  } catch { $('experiments').innerHTML='<p class="empty">The saved rule comparison could not load. Current entry checks still use the matching baseline replay.</p>'; }
+  } catch { $('experiments').innerHTML='<p class="empty">The historical v2 rule comparison could not load. Current entry checks still require a replay matching the current model.</p>'; }
 }
 
 function updateRegion(id, html) {

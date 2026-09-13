@@ -1,6 +1,11 @@
 name: Backtest the spot scanner
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      collect_fresh:
+        description: Collect a new window instead of replaying the preserved inputs
+        type: boolean
+        default: false
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
     paths: ['scripts/backtest-opportunities.mjs', 'dashboard/market-core.mjs', '.github/workflows/scanner-backtest.yml']
@@ -24,7 +29,11 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tests/market-core.test.mjs tests/scanner-backtest.test.mjs
-      - name: Collect and replay 90 days of actual candle history
+      - name: Replay the preserved history for a controlled model comparison
+        if: ${{ inputs.collect_fresh != true }}
+        run: node scripts/backtest-opportunities.mjs
+      - name: Collect and replay a new 90-day window when requested
+        if: ${{ inputs.collect_fresh == true }}
         run: node scripts/backtest-opportunities.mjs --collect
       - name: Commit reproducible inputs and all scenario results
         run: |

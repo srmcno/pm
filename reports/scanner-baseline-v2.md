@@ -1,36 +1,20 @@
 # Scanner historical replay
 
-2026-06-10T00:00:00.000Z through 2026-09-08T00:00:00.000Z. Model 2026-09-13-scanner-v3.
+Preserved v2 archive. Its exact inputs are now pinned at `data/opportunities/backtest-inputs-v2.json.gz`; the original source dates and result ledger are unchanged. The SHA-256 below also identifies that pinned file. See [the current comparison](scanner-backtest.md).
+
+2026-06-10T00:00:00.000Z through 2026-09-08T00:00:00.000Z. Model 2026-09-08-scanner-v2.
 
 | Scenario | Net return | Max drawdown | Trades | Win rate | Profit factor | Fees | Buy and hold |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Combined · 90 days | -10.40% | -13.11% | 28 | 21.43% | 0.46 | $79.58 | 36.41% |
-| Breakout only | -9.41% | -12.15% | 27 | 22.22% | 0.48 | $76.95 | 36.41% |
-| Reclaim only | -1.09% | -1.22% | 1 | 0.00% | 0.00 | $2.93 | 36.41% |
-| Higher costs | -6.64% | -7.37% | 11 | 18.18% | 0.37 | $48.70 | 34.92% |
-| 15-minute scans | -7.12% | -8.71% | 24 | 20.83% | 0.55 | $68.90 | 36.41% |
-| First 30 days | -2.80% | -6.58% | 10 | 30.00% | 0.52 | $29.61 | 0.80% |
-| Middle 30 days | -2.38% | -3.02% | 3 | 0.00% | 0.00 | $8.83 | 0.33% |
-| Last 30 days | -5.57% | -11.76% | 15 | 20.00% | 0.52 | $43.63 | 30.59% |
-| High-coverage markets only | -4.04% | -10.62% | 21 | 28.57% | 0.68 | $62.18 | 39.76% |
-
-## Previous model comparison
-
-Identical preserved inputs; reused development history, not an untouched holdout.
-
-| Scenario | v2 return | v3 return | v2 trades | v3 trades |
-|---|---:|---:|---:|---:|
-| Combined · 90 days | -13.28% | -10.40% | 39 | 28 |
-| Breakout only | -13.36% | -9.41% | 40 | 27 |
-| Reclaim only | -14.96% | -1.09% | 27 | 1 |
-| Higher costs | -14.29% | -6.64% | 30 | 11 |
-| 15-minute scans | -12.56% | -7.12% | 36 | 24 |
-| First 30 days | -10.66% | -2.80% | 31 | 10 |
-| Middle 30 days | -5.49% | -2.38% | 14 | 3 |
-| Last 30 days | -10.21% | -5.57% | 31 | 15 |
-| High-coverage markets only | -13.46% | -4.04% | 45 | 21 |
-
-[Declared entry revision](scanner-revision-plan.md). [Preserved v2 report](scanner-baseline-v2.md). A smaller loss does not establish an edge.
+| Combined · 90 days | -13.28% | -15.06% | 39 | 25.64% | 0.31 | $109.28 | 36.41% |
+| Breakout only | -13.36% | -15.16% | 40 | 22.50% | 0.29 | $112.70 | 36.41% |
+| Reclaim only | -14.96% | -14.96% | 27 | 14.81% | 0.07 | $74.52 | 36.41% |
+| Higher costs | -14.29% | -14.55% | 30 | 23.33% | 0.35 | $132.81 | 34.92% |
+| 15-minute scans | -12.56% | -15.02% | 36 | 22.22% | 0.25 | $101.90 | 36.41% |
+| First 30 days | -10.66% | -12.49% | 31 | 29.03% | 0.35 | $88.23 | 0.80% |
+| Middle 30 days | -5.49% | -5.98% | 14 | 21.43% | 0.11 | $40.81 | 0.33% |
+| Last 30 days | -10.21% | -13.51% | 31 | 29.03% | 0.42 | $86.97 | 30.59% |
+| High-coverage markets only | -13.46% | -15.24% | 45 | 24.44% | 0.31 | $126.52 | 39.76% |
 
 ## Data coverage
 
@@ -47,7 +31,6 @@ The full-universe replay is data-limited. The high-coverage comparison includes 
 
 - Fixed rules with no parameter search or selection of the best result.
 - Actual five-minute opens drive scheduled scans. Only completed hourly candles inform entries.
-- Both moving averages must rise. The original volume trigger needs a separate completed hour of price follow-through; stops and targets stay anchored to that trigger.
 - Two distinct scans confirm an entry. The same paper-account function controls sizing, fees, halts and exits.
 - Default costs: 60 bps fees and 10 bps slippage per side, plus an assumed 10 bps bid/ask spread.
 - End-of-window positions are liquidated with modeled costs. Three 30-day slices each start with $1,000.

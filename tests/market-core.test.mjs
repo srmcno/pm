@@ -1,11 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ageSeconds, candles, ema, atr, quoteUsable, positionPlan, analyzeMarket, evaluateToken, advancePaper} from '../dashboard/market-core.mjs';
+import {MODEL_VERSION,ageSeconds, candles, ema, atr, quoteUsable, positionPlan, analyzeMarket, evaluateToken, advancePaper} from '../dashboard/market-core.mjs';
 const now = 1701000000;
 function market() {
   const rows = Array.from({length:90},(_,i)=> {const c=100+i*0.3;return [now-(90-i)*3600-30,c-1,c+1,c-.1,c,1000];});
-  const last = rows.at(-1);last[4]+=2;last[2]=last[4]+.1;last[5]=2200;
+  const trigger = rows.at(-2);trigger[4]+=2;trigger[2]=trigger[4]+.1;trigger[5]=2200;
+  const last=rows.at(-1);last.splice(1,5,127.8,128.7,128.45,128.6,1000);
   return {product:'BTC-USD',status:'online',candles:rows,quote:{bid:last[4]-.01,ask:last[4]+.01,price:last[4],at:now}};
+}
+function reclaimMarket(){
+  const m=market();
+  m.candles.at(-3).splice(1,5,122,126.2,126,122.8,1000);
+  m.candles.at(-2).splice(1,5,122.7,124.7,122.9,124.6,1300);
+  m.candles.at(-1).splice(1,5,123.4,125.1,124.7,125,1000);
+  m.quote={bid:124.99,ask:125.01,price:125,at:now};return m;
 }
 test('invalid/future timestamps and crossed books never qualify',()=>{
   assert.equal(ageSeconds(null,now),Infinity); assert.equal(ageSeconds(now+60,now),Infinity);
@@ -37,12 +45,67 @@ test('NaN, negative capital, oversized risk, and inverted stops fail closed',()=
   for(const changes of [{equity:NaN},{equity:-10},{riskPct:10},{feeBps:-1}])assert.equal(positionPlan({entry:100,stop:90,target:150},changes).eligible,false);
   assert.equal(positionPlan({entry:100,stop:101,target:150}).eligible,false);
 });
-test('breakout signal uses the previous high and completed volume',()=>{
+test('breakout uses trigger volume followed by a separate completed-hour confirmation',()=>{
   const m=market(),s=analyzeMarket(m,{},now);
   assert.equal(s.strategy,'Volume breakout');assert.equal(s.status,'candidate');
+  assert.equal(s.relativeVolume,2.2);assert.equal(s.confirmationAt-s.triggerAt,3600);
+  assert.equal(s.trigger,Math.max(...m.candles.slice(-22,-2).map(r=>r[2])));
   assert.ok(s.plan.riskUsd<=15);assert.ok(s.plan.cashRequired<=250);
   const before=s.id;m.candles.push([now,1,100000,100,99999,1e10]);
   assert.equal(analyzeMarket(m,{},now).id,before);
+});
+test('neither repeated scans nor a forming confirmation candle can complete an hourly trigger',()=>{
+  for(const create of [market,reclaimMarket]){
+    const m=create(),confirmationEnd=m.candles.at(-1)[0]+3600;
+    const early=confirmationEnd-60;m.quote.at=early;
+    assert.notEqual(analyzeMarket(m,{},early).status,'candidate');
+    let p=advancePaper(null,[m],early);m.quote.at=early+30;
+    p=advancePaper(p,[m],early+30);assert.equal(p.positions.length,0);assert.equal(p.pending.length,0);
+    m.quote.at=confirmationEnd;
+    assert.equal(analyzeMarket(m,{},confirmationEnd).status,'candidate');
+  }
+});
+test('reclaim confirmation must close stronger and preserve the trigger low',()=>{
+  const m=reclaimMarket(),s=analyzeMarket(m,{},now);
+  assert.equal(s.setup,'reclaim');assert.equal(s.status,'candidate');assert.equal(s.relativeVolume,1.3);
+  const failedLow=structuredClone(m);failedLow.candles.at(-1)[1]=m.candles.at(-2)[1]-.01;
+  assert.notEqual(analyzeMarket(failedLow,{},now).status,'candidate');
+  for(const create of [market,reclaimMarket]){
+    const weak=create();weak.candles.at(-1)[4]=weak.candles.at(-2)[4];
+    assert.notEqual(analyzeMarket(weak,{},now).status,'candidate');
+    const lowVolume=create();lowVolume.candles.at(-2)[5]=1000;lowVolume.candles.at(-1)[5]=100000;
+    assert.notEqual(analyzeMarket(lowVolume,{},now).status,'candidate');
+  }
+});
+test('relative EMA ordering cannot substitute for either required rising slope',()=>{
+  const cases=[
+    {tail:[120,120,123,123.5],declining:20},
+    {tail:[110,110,110,110,110,115,128,128.5],declining:50}
+  ];
+  for(const {tail,declining} of cases){
+    const closes=Array.from({length:90},(_,i)=>100+i*.3);closes.splice(-tail.length,tail.length,...tail);
+    const t=closes.slice(0,-1),m=market();
+    m.candles=closes.map((c,i)=>[now-(90-i)*3600-30,c-1,c+1,c-.1,c,i===88?1500:1000]);
+    m.quote={bid:closes.at(-1)-.01,ask:closes.at(-1)+.01,at:now};
+    assert.ok(ema(t,20)>ema(t,50));assert.ok(t.at(-1)>ema(t,50));
+    const rising20=ema(t,20)>ema(t.slice(0,-3),20),rising50=ema(t,50)>ema(t.slice(0,-6),50);
+    assert.equal(rising20,declining!==20);assert.equal(rising50,declining!==50);
+    const s=analyzeMarket(m,{},now);assert.equal(s.risingTrend,false);assert.notEqual(s.status,'candidate');
+  }
+});
+test('live bid must support the completed setup and stops stay anchored to the trigger',()=>{
+  for(const create of [market,reclaimMarket]){
+    const m=create(),s=analyzeMarket(m,{},now),trigger=m.candles.at(-2);
+    const historicalAtr=atr(candles(m.candles.slice(0,-1),now));
+    const stop=Math.min(trigger[4]-2*historicalAtr,trigger[1]-.1*historicalAtr);
+    assert.equal(s.stop,stop);assert.equal(s.target,trigger[4]+3*(trigger[4]-stop));
+    const level=s.setup==='breakout'?s.trigger:s.ema20;
+    m.quote={bid:level-.01,ask:level+.01,at:now};
+    const lost=analyzeMarket(m,{},now);assert.notEqual(lost.status,'candidate');
+    assert.match(lost.reasons[0],/current bid has lost/);
+    const chased=create();chased.quote={bid:trigger[4]+historicalAtr,ask:trigger[4]+historicalAtr+.01,at:now};
+    assert.match(analyzeMarket(chased,{},now).reasons[0],/do not chase/);
+  }
 });
 test('gaps, stale history, disabled products, and chasing suppress candidates',()=>{
   let m=market();m.candles.splice(50,1);assert.equal(analyzeMarket(m,{},now).status,'unavailable');
@@ -80,6 +143,31 @@ test('fast repeated scans preserve the original confirmation time',()=>{
   const m=market();let p=advancePaper(null,[m],now);
   m.quote.at=now+20;p=advancePaper(p,[m],now+20);assert.equal(p.pending[0].at,now);
   m.quote.at=now+35;p=advancePaper(p,[m],now+35);assert.equal(p.positions.length,1);
+});
+test('legacy pending signals cannot confirm a revised model entry',()=>{
+  const m=market(),s=analyzeMarket(m,{},now),p=advancePaper(null,[],now-60);
+  const legacyId=`${m.product}:${m.candles.at(-2)[0]}:breakout`;
+  p.pending=[{id:legacyId,at:now-60}];
+  const next=advancePaper(p,[m],now);
+  assert.equal(next.positions.length,0);assert.equal(next.pending[0].id,s.id);
+  assert.ok(s.id.startsWith(MODEL_VERSION+':'));assert.equal(next.pending[0].at,now);
+  assert.equal(p.pending[0].id,legacyId);
+  m.quote.at=now+60;const opened=advancePaper(next,[m],now+60);
+  assert.equal(opened.positions.length,1);assert.equal(opened.positions[0].modelVersion,MODEL_VERSION);
+});
+test('legacy positions retain original stops, targets and 48-hour exits with unchanged costs',()=>{
+  for(const [bid,heldHours,reason] of [[94,1,'Stop / adverse gap'],[115,1,'Target observed'],[100,48,'48-hour time exit']]){
+    const p=advancePaper(null,[],now-72*3600),m=market();
+    Object.assign(p,{cash:899.4,equity:998.8,positions:[{id:'legacy-v2',product:'BTC-USD',strategy:'Volume breakout',
+      quantity:1,entry:100,stop:95,target:115,openedAt:now-heldHours*3600,cost:100.6,entryFee:.6,mark:100,markAt:now-60}]});
+    const before=structuredClone(p);m.quote={bid,ask:bid+.01,at:now};
+    const next=advancePaper(p,[m],now,{strategies:[]});
+    assert.deepEqual(p,before);assert.equal(next.positions.length,0);assert.equal(next.closed.length,1);
+    const closed=next.closed[0];assert.equal(closed.id,'legacy-v2');assert.equal(closed.reason,reason);
+    assert.equal(closed.stop,95);assert.equal(closed.target,115);assert.equal(closed.openedAt,before.positions[0].openedAt);
+    assert.equal(closed.exit,bid*.999);assert.ok(Math.abs(closed.pnl-(bid*.999*.994-100.6))<1e-9);
+    assert.ok(Math.abs(next.cash-(899.4+bid*.999*.994))<1e-9);
+  }
 });
 test('a loss realized at a historical stop blocks entries in that same cycle',()=>{
   const m=market(), other={...market(),product:'ETH-USD'};

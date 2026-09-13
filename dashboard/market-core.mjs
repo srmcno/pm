@@ -1,7 +1,7 @@
 // Shared by the browser, collector, simulator, and offline tests.
 // All prices and sizes are spot USD. Scores are rules, never probabilities.
 export const VERSION = '3.0.0';
-export const MODEL_VERSION = '2026-09-08-scanner-v2';
+export const MODEL_VERSION = '2026-09-13-scanner-v3';
 export const PRODUCTS = ['BTC-USD', 'ETH-USD', 'SOL-USD', 'LINK-USD', 'AVAX-USD', 'DOGE-USD'];
 export const DEFAULTS = Object.freeze({equity: 1000, riskPct: 1.5, feeBps: 60,
   slippageBps: 10, maxWeight: 0.25, minNetR: 1.25, minNotional: 10});
@@ -80,16 +80,25 @@ export function analyzeMarket(m, overrides = {}, now = Date.now() / 1000) {
   if (recent.some((v, i) => i && v.t - recent[i - 1].t !== 3600)) {
     return {...out, status: 'unavailable', reasons: ['Hourly history has gaps; setup withheld']};
   }
-  const last = b.at(-1), prev = b.at(-2), closes = b.map(v => v.c);
-  const e20 = ema(closes, 20), e50 = ema(closes, 50), prev20 = ema(closes.slice(0, -1), 20);
-  const a = atr(b), high = Math.max(...b.slice(-21, -1).map(v => v.h));
-  const volume = b.slice(-21, -1).reduce((s, v) => s + v.v, 0) / 20;
-  const rvol = volume > 0 ? last.v / volume : 0;
-  const bullish = last.c > e50 && e20 > e50;
-  const breakout = bullish && last.c > high && rvol >= 1.5;
-  const reclaim = bullish && prev.c <= prev20 && last.c > e20 && rvol >= 1.1 && last.c - e20 <= a;
+  const last = b.at(-1), triggerBar = b.at(-2), prev = b.at(-3), closes = b.map(v => v.c);
+  const e20 = ema(closes, 20), e50 = ema(closes, 50);
+  const triggerCloses = closes.slice(0,-1), trigger20 = ema(triggerCloses,20), trigger50 = ema(triggerCloses,50);
+  const prev20 = ema(triggerCloses.slice(0,-1),20);
+  const rising = trigger20 > ema(triggerCloses.slice(0,-3),20) && trigger50 > ema(triggerCloses.slice(0,-6),50);
+  const a = atr(b.slice(0,-1)), high = Math.max(...b.slice(-22,-2).map(v=>v.h));
+  const volume = b.slice(-22,-2).reduce((s,v)=>s+v.v,0)/20;
+  const rvol = volume > 0 ? triggerBar.v / volume : 0;
+  const bullish = last.c > e50 && e20 > e50 && rising;
+  const triggerTrend = triggerBar.c > trigger50 && trigger20 > trigger50 && rising;
+  const breakoutTrigger = triggerTrend && triggerBar.c > high && rvol >= 1.5;
+  const reclaimTrigger = triggerTrend && prev.c <= prev20 && triggerBar.c > trigger20 && rvol >= 1.1 && triggerBar.c-trigger20 <= a;
+  const followThrough = last.c > triggerBar.c;
+  const breakout = bullish && breakoutTrigger && followThrough && last.c > high;
+  const reclaim = bullish && reclaimTrigger && followThrough && last.c > e20 && last.l >= triggerBar.l;
+  const confirmLevel = breakout ? high : e20;
   Object.assign(out, {regime: bullish ? 'Uptrend' : 'Defensive', atr: a, ema20: e20,
     ema50: e50, relativeVolume: rvol, trigger: high, signalAt: last.t + 3600,
+    triggerAt: triggerBar.t + 3600, confirmationAt: last.t + 3600, risingTrend:rising,
     setup: breakout ? 'breakout' : reclaim ? 'reclaim' : null,
     strategy: breakout ? 'Volume breakout' : reclaim ? 'Trend reclaim' : 'No setup',
     modelVersion: MODEL_VERSION,
@@ -100,17 +109,18 @@ export function analyzeMarket(m, overrides = {}, now = Date.now() / 1000) {
   if (!quoteUsable(m.quote, now)) return {...out, status: 'stale', reasons: ['Fresh two-sided quote required (30-second limit)']};
   if (m.tradingDisabled || m.status !== 'online') return {...out, status: 'unavailable', reasons: ['Product is not currently online']};
   if (!breakout && !reclaim) return {...out, reasons: [bullish ?
-    'Waiting for a volume-confirmed breakout or EMA reclaim' : 'Trend filter is defensive; stay in cash']};
+    'Waiting for a volume trigger followed by a stronger completed hourly close' : 'Both moving averages must be rising in an established uptrend']};
   const entry = m.quote.ask;
-  if (entry - last.c > 0.75 * a || entry < last.c - a) return {...out,
+  if (m.quote.bid < confirmLevel) return {...out,reasons:['The current bid has lost the confirmed breakout or reclaim level']};
+  if (entry - triggerBar.c > 0.75 * a || entry < triggerBar.c - a) return {...out,
     reasons: ['Price has moved too far from the confirmed signal; do not chase']};
-  const stop = Math.min(last.c - 2 * a, last.l - 0.1 * a);
-  const target = last.c + 3 * (last.c - stop);
+  const stop = Math.min(triggerBar.c - 2 * a, triggerBar.l - 0.1 * a);
+  const target = triggerBar.c + 3 * (triggerBar.c - stop);
   const plan = positionPlan({entry, stop, target, askSize: m.quote.askSize}, p);
   return {...out, strategy: breakout ? 'Volume breakout' : 'Trend reclaim',
     status: plan.eligible ? 'candidate' : 'cost-blocked', entry, stop, target, plan,
     reasons: [plan.reason, 'Unvalidated research setup; paper execution only'],
-    id: `${m.product}:${last.t}:${breakout ? 'breakout' : 'reclaim'}`};
+    id: `${MODEL_VERSION}:${m.product}:${triggerBar.t}:${breakout ? 'breakout' : 'reclaim'}`};
 }
 export function evaluateToken(pair, now = Date.now() / 1000) {
   const number = x => x !== null && x !== undefined && x !== '' && finite(Number(x)) && Number(x) >= 0 ? Number(x) : null;
@@ -208,7 +218,7 @@ export function advancePaper(previous, markets, now = Date.now() / 1000, options
       x.quantity * (x.mark * (1 - fee) - x.stop * (1 - slip) * (1 - fee))), 0);
     if (plan.cashRequired > p.cash || existingRisk + plan.riskUsd > p.equity * 0.03) continue;
     p.cash -= plan.cashRequired;
-    p.positions.push({id: signal.id, product: m.product, strategy: signal.strategy,
+    p.positions.push({id: signal.id, product: m.product, strategy: signal.strategy, modelVersion:MODEL_VERSION,
       quantity: plan.quantity, entry: plan.entryFill, stop: signal.stop, target: signal.target,
       openedAt: now, cost: plan.cashRequired, entryFee: plan.notional * fee,
       mark: m.quote.bid * (1 - slip), markAt: m.quote.at});

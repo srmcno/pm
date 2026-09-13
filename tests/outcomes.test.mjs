@@ -26,7 +26,8 @@ test('observed payoff statistics include costs and handle no-trade/single-sided 
 test('held strategies cannot open a paper position, while existing positions still exit',()=>{
   const now=1701000000;
   const rows=Array.from({length:90},(_,i)=>{const c=100+i*.3;return[now-(90-i)*3600-30,c-1,c+1,c-.1,c,1000];});
-  const last=rows.at(-1);last[4]+=2;last[2]=last[4]+.1;last[5]=2200;
+  const trigger=rows.at(-2);trigger[4]+=2;trigger[2]=trigger[4]+.1;trigger[5]=2200;
+  const last=rows.at(-1);last.splice(1,5,127.8,128.7,128.45,128.6,1000);
   const m={product:'BTC-USD',status:'online',candles:rows,quote:{bid:last[4]-.01,ask:last[4]+.01,price:last[4],at:now}};
   assert.equal(analyzeMarket(m,{},now).status,'candidate');
   let p=advancePaper(null,[m],now,{strategies:[]});
