@@ -4,6 +4,14 @@
 
 A U.S. spot-market research app with streaming quotes, explicit trade plans, an isolated forward paper ledger, and a tested Python execution laboratory. The active experience excludes MEXC and the offshore Polymarket platform. Nothing in the new scanner places real orders or connects a wallet.
 
+## U.S. ETF research and paper account — September 13, 2026
+
+[Open the ETF desk](https://moffitt-money.smoffitt74743.chatgpt.site/etf.html) · [Pages mirror](https://srmcno.github.io/pm/etf.html)
+
+A separate $1,000 built-in simulation now tests a fixed ten-month trend rule across SPY, EFA, IEF, GLD and VNQ. The dividend/split-aware 2006–2026 replay includes both-side friction, current regulatory fees, paid-dividend timing, matched buy-and-hold benchmarks, regime checks and all declared cost/capital/delay sensitivities. It was historically profitable but trails buy-and-hold; a $5 monthly operating fee makes the $1,000 account lose money over the full test. This is a forward research candidate, not a proven future edge.
+
+The paper book begins at $1,000 on September 13 with its first decision recorded before the September 14 eligible open. There are no inherited backtest profits and no broker orders. The user chose built-in simulation; broker-paper integration and a demonstrated real-money transition remain incomplete. [Research report](reports/etf-research.md) · [Declared rules](docs/ETF-RESEARCH-PLAN.md) · [Operation and remaining work](docs/ETF-RUNBOOK.md).
+
 ## Outcome-driven update, September 12, 2026
 
 - Recorded results now control paper-entry eligibility. Both losing standalone strategies are held; existing positions continue through the original mark/exit rules. Missing or malformed evidence holds entries without preventing exits.

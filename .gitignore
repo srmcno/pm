@@ -12,3 +12,9 @@ scripts/outcome-research/results.json
 data/predictions/.collector.lock/
 data/predictions/*.tmp
 dashboard/data/predictions.json.*.tmp
+
+# Isolated ETF research runtime and temporary observations
+.venv-etf/
+data/etf/forward-inputs/
+data/etf/*.tmp
+data/etf/.cycle.lock/

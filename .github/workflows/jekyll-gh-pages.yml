@@ -10,7 +10,7 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_run:
-    workflows: ["U.S. opportunity scan", "U.S. desk paper cycle", "Prediction market paper cycle"]
+    workflows: ["U.S. opportunity scan", "U.S. desk paper cycle", "Prediction market paper cycle", "Monthly ETF paper cycle"]
     types: [completed]
     branches: ["claude/polymarket-wallets-analysis-m81p4j"]
   workflow_dispatch: {}
