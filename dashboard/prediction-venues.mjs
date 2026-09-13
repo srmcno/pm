@@ -2,7 +2,7 @@ import {levels,numeric,timestamp,round} from './prediction-core.mjs';
 const e=encodeURIComponent;
 const complement=rows=>levels(rows.map(([p,q])=>[round(1-p),q]));
 function sides(yesBids,yesAsks,noBids,noAsks) {
-  const side=(bids,asks)=>{const b=levels(bids).at(-1);return {bid:b?.[0]??null,bidSize:b?.[1]??null,asks:levels(asks).slice(0,8)};};
+  const side=(bids,asks)=>{const sorted=levels(bids).reverse().slice(0,10),b=sorted[0];return {bid:b?.[0]??null,bidSize:b?.[1]??null,bids:sorted,asks:levels(asks).slice(0,10)};};
   return {yes:side(yesBids,yesAsks),no:side(noBids,noAsks)};
 }
 export function normalizePolymarket(raw,event,book,observedAt) {
@@ -17,6 +17,8 @@ export function normalizePolymarket(raw,event,book,observedAt) {
   const url=event?.slug?`https://polymarket.us/${marketPath}/${e(event.slug)}?marketSlug=${e(raw.slug)}`:'https://polymarket.us/search';
   return {id:`polymarket:${raw.slug}`,venue:'polymarket',venueId:raw.slug,eventId:event?.id?`pm:${event.id}`:null,
     seriesId:series?String(series):null,question:raw.title&&raw.title!==raw.question?`${raw.question}: ${raw.title}`:raw.question,
+    displayTitle:raw.sportsMarketTypeV2==='SPORTS_MARKET_TYPE_MONEYLINE'&&long?.team?.name?`${long.team.name} to win?`:raw.title||raw.question,
+    yesLabel:long?.team?.name||null,
     category:raw.category||event?.category||'Other',rules:raw.description||'',url,
     closeAt:gameCutoff??timestamp(raw.endDate),expiryAt:timestamp(raw.endDate),cutoffKind:gameCutoff?'game start':'contract expiry',observedAt,quoteAt:timestamp(b.transactTime),quoteTimeKind:'venue book timestamp',
     status:raw.closed===false&&raw.status==='MARKET_STATUS_OPEN'&&b.state==='MARKET_STATE_OPEN'?'open':'closed',
@@ -28,13 +30,16 @@ export function effectiveKalshiFee(series,changes,at) {
   const change=rows.at(-1),type=change?.fee_type_override??series.fee_type,mult=numeric(change?.fee_multiplier_override??series.fee_multiplier);
   return ['quadratic','quadratic_with_maker_fees','quadratic_with_combo_maker_fees'].includes(type)&&mult!==null&&mult>=0?round(.07*mult):null;
 }
-export function normalizeKalshi(raw,event,series,changes,book,observedAt) {
+export function normalizeKalshi(raw,event,series,changes,book,observedAt,milestone=null) {
   const b=book?.orderbook_fp||{},yb=levels(b.yes_dollars),nb=levels(b.no_dollars);
+  const game=/^KX(?:NFL|MLB|NBA|NHL|NCAAF)GAME-/.test(raw.event_ticker||'');
+  const start=milestone?.details?.main_game_event_ticker===raw.event_ticker?timestamp(milestone.start_date):null;
   return {id:`kalshi:${raw.ticker}`,venue:'kalshi',venueId:raw.ticker,eventId:raw.event_ticker,
     seriesId:event?.series_ticker||null,question:`${raw.title}${raw.yes_sub_title?' · '+raw.yes_sub_title:''}`,
+    displayTitle:game&&raw.yes_sub_title?`${raw.yes_sub_title} to win?`:[...new Set([raw.title,raw.yes_sub_title].filter(Boolean))].join(' · '),yesLabel:raw.yes_sub_title||null,
     category:event?.category||'Other',rules:[raw.rules_primary,raw.rules_secondary].filter(Boolean).join('\n'),
     url:`https://kalshi.com/markets/${e((event?.series_ticker||'').toLowerCase())}/${e((raw.event_ticker||'').toLowerCase())}`,
-    rulesUrl:series?.contract_terms_url||null,closeAt:Math.min(timestamp(raw.close_time)??Infinity,timestamp(raw.expected_expiration_time)??Infinity),expiryAt:timestamp(raw.close_time),cutoffKind:'expected expiry or earlier close',observedAt,quoteAt:observedAt,
+    rulesUrl:series?.contract_terms_url||null,closeAt:game?start:Math.min(timestamp(raw.close_time)??Infinity,timestamp(raw.expected_expiration_time)??Infinity),expiryAt:timestamp(raw.close_time),cutoffKind:game?(start?'game start':'game start unavailable'):'expected expiry or earlier close',observedAt,quoteAt:observedAt,
     quoteTimeKind:'public book retrieved; venue timestamp not provided',
     status:raw.status==='active'&&numeric(raw.notional_value_dollars)===1&&raw.market_type==='binary'?'open':'closed',
     feeRate:changes?effectiveKalshiFee(series||{},changes,observedAt):null,

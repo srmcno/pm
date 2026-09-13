@@ -1,131 +1,60 @@
-# Moffitt Money 4.1
+# Moffitt Money
 
-[Open Moffitt Money](https://moffitt-money.smoffitt74743.chatgpt.site) · [GitHub Pages mirror](https://srmcno.github.io/pm/)
+[Open the app](https://moffitt-money.smoffitt74743.chatgpt.site/) · [GitHub Pages](https://srmcno.github.io/pm/)
 
-A U.S. spot-market research app with streaming quotes, explicit trade plans, an isolated forward paper ledger, and a tested Python execution laboratory. The active experience excludes MEXC and the offshore Polymarket platform. Nothing in the new scanner places real orders or connects a wallet.
+A focused prediction-market research desk for **Kalshi and Polymarket US**. It uses built-in simulation, with two separate $100 prediction accounts and a separate $1,000 ETF experiment. Real orders remain off.
 
-## U.S. ETF research and paper account — September 13, 2026
+## Three views
 
-[Open the ETF desk](https://moffitt-money.smoffitt74743.chatgpt.site/etf.html) · [Pages mirror](https://srmcno.github.io/pm/etf.html)
+- **Desk:** dated order books, venue/search filters, understandable entry holds and the full cost of each contract. Price gaps compares the best equal-quantity package across both Kalshi team-strike books and the corresponding Polymarket US game.
+- **Paper trades:** actual simulated positions, settlements, fees, net results and CSV export. Recorded research outcomes are never counted as trades.
+- **Research:** calibration samples, historical price-gap evidence, the ETF experiment and concise conclusions from earlier strategies. Detailed account records and uncertainty checks remain available in disclosures.
 
-A separate $1,000 built-in simulation now tests a fixed ten-month trend rule across SPY, EFA, IEF, GLD and VNQ. The dividend/split-aware 2006–2026 replay includes both-side friction, current regulatory fees, paid-dividend timing, matched buy-and-hold benchmarks, regime checks and all declared cost/capital/delay sensitivities. It was historically profitable but trails buy-and-hold; a $5 monthly operating fee makes the $1,000 account lose money over the full test. This is a forward research candidate, not a proven future edge.
+A matching game is not proof of equivalent settlement. The paired scanner verifies named team-provider IDs, the scheduled start and outcome orientation; walks both books; applies current fees and slippage; checks separate cash, exposure and quote times; and records rule hashes. Exceptional settlement remains unverified, so paired execution is held. The browser is a dated research view, not a low-latency execution system.
 
-The paper book begins at $1,000 on September 13 with its first decision recorded before the September 14 eligible open. There are no inherited backtest profits and no broker orders. The user chose built-in simulation; broker-paper integration and a demonstrated real-money transition remain incomplete. [Research report](reports/etf-research.md) · [Declared rules](docs/ETF-RESEARCH-PLAN.md) · [Operation and remaining work](docs/ETF-RUNBOOK.md).
+## What the evidence currently says
 
-## Outcome-driven update, September 12, 2026
+The September 13 study aligned **3,474 historical directional observations across two games**. There were 58 packages below $1 before costs and **zero after modeled costs**. The observations are correlated quotes, not executed or independent trades. The games' exceptional settlement rules also differ. [Complete study and reproducible inputs](reports/paired-market-history.md).
 
-- Recorded results now control paper-entry eligibility. Both losing standalone strategies are held; existing positions continue through the original mark/exit rules. Missing or malformed evidence holds entries without preventing exits.
-- Outcomes includes per-strategy verdicts, historical and forward equity curves, realized win rate versus observed payoff breakeven, recorded fee impact and net outcome by exit reason.
-- Two predeclared rule changes were tested on the same full history and chronological slices. Neither established profitability, so neither was adopted. Read [the complete outcome review](reports/outcome-review.md).
-- Mobile navigation keeps all five main views visible at the bottom. Archive links remain in the footer and desktop research navigation.
+The revised crypto rules lost 10.40% across the preserved 90-day replay; all three chronological slices lost money. The retired stock paper account lost 5.13%. Older wallet and crypto-arbitrage profit figures use incomplete costs or optimistic execution assumptions and do not establish an edge for this desk. [Review of earlier evidence](reports/research-review-2026-09-13.md).
 
-## Sites workspace, September 12, 2026
+The fixed monthly ETF trend rule has a distribution/split-aware 2006–2026 replay, matched hold benchmarks, cost/delay stress tests and bootstrap uncertainty. It trails buy-and-hold; a $5 monthly operating cost makes the original $1,000 simulation lose money over the full test. The separate forward account starts from $1,000 with no inherited historical gains. [ETF report](reports/etf-research.md) · [ETF runbook](docs/ETF-RUNBOOK.md).
 
-- Five focused views: Markets, Paper Ledger, Token Radar, Backtests, and Data Health. Responsive navigation, larger text and controls, and a consistent strategy/archive shell.
-- Browser snapshots load from this repository's default branch every minute, independently of Sites or Pages publishing. Coinbase streams and REST fallback retain their original freshness rules. A bundled snapshot is only a labeled fallback; loaded account data never roll backward.
-- Data Health separates quotes, scan publication, paper-book time, token discovery and fixed-period backtests. Upstream errors are displayed.
-- Retired stock/wallet experiments are marked historical, with their saved dates and no recurring retired-feed polling.
-- Pages publishes on completion of the active data workflows, with the scheduled fallback retained.
-- The Sites source is linked in `.openai/hosting.json`. See [publication and maintenance](docs/SITES.md). Data updates do not require redeployment; interface changes do.
-
-## What changed on September 8, 2026
-
-- New responsive opportunity terminal with live connection health, completed-hour charts, market filters, a position planner, light/dark themes, and CSV ledger export.
-- Volume-confirmed breakouts and trend-reclaim setups on BTC, ETH, SOL, LINK, AVAX and DOGE USD spot products. Product status and two-sided quote freshness are checked. No setup is described as a proven edge.
-- The browser connects directly to Coinbase Exchange public WebSocket quotes. REST is an explicitly labeled fallback. Scheduled snapshots and paper records are separate from live quotes.
-- Pump.fun/PumpSwap discovery from a bounded DEX Screener profile sample. Thin liquidity, young pools, extreme moves and weak sell activity are filtered. Missing mint, freeze, holder, liquidity-ownership and sell-simulation checks remain visible. Execution is disabled because token safety and account/jurisdiction eligibility are not established.
-- Corrected auction lookahead: replay decisions and share sizing use prior completed sessions, while fills use the subsequent auction print. Live auction decisions use the same information boundary.
-- Corrected drawdowns at zero/negative equity, fee-inclusive cash sizing, daily rounding by actual regulatory fee type, and entry-plus-exit fees in realized trade reporting.
-- Invalid/nonfinite risk settings and corrupt persisted account state now fail closed. An explicit empty desk list stays empty after save/load.
-- Validation is versioned. Prior results do not authorize trading after these calculation changes. Fresh walk-forward validation runs when the desk code changes and weekly thereafter.
-- Retired legacy offshore, optimistic arb and earlier stock simulation workflows. Historical source, measurements and wallet research remain available. The wallet build now writes `wallets.html`, never the new homepage.
-
-## Strategies and honest limits
-
-| Rule | Entry | Exit / sizing |
-|---|---|---|
-| Volume breakout | Completed hourly close above the previous 20-hour high; 20 EMA above 50 EMA; at least 1.5x relative volume | Initial stop at least 2 ATR below the signal; initial 3R price target; reject excessive chase |
-| Trend reclaim | Hourly close regains 20 EMA in an established uptrend; at least 1.1x volume | Same cost-aware risk sizing and exit conditions |
-| Shared paper account | A candidate must survive two separate scans, 30 seconds to 15 minutes apart | Starts at $1,000; 1.5% planned risk per idea; 25% position cap; 3% combined modeled open risk; at most 3 positions |
-
-Paper costs default to **60 bps taker fee and 10 bps slippage per side**. These are assumptions, not a promise of your account's fee tier. The browser planner can use your actual fees. Its settings are local and never alter the shared paper account.
-
-For one unit, with fee fraction `f` and slippage fraction `s`:
-
-```
-entry fill = ask * (1 + s)
-cash cost = entry fill * (1 + f)
-stop proceeds = stop * (1 - s) * (1 - f)
-net risk = cash cost - stop proceeds
-net reward = target * (1 - s) * (1 - f) - cash cost
-quantity = min(risk budget / net risk, capital cap / cash cost, 10% of visible ask size if supplied)
-```
-
-This is a risk/reward calculation, **not expected value**. No calibrated success probability is available. The displayed breakeven win rate is the win rate the planned payoff would require, not a forecast. Portfolio correlation and gaps can produce losses beyond planned risk.
-
-The paper ledger marks positions at modeled liquidation proceeds. It pays fees on both sides, uses conservative adverse stop fills, gives stops priority when a completed bar is ambiguous, and has 48-hour time exits. It does not invent target fills that were not observed. New entries stop after a 5% UTC-day loss or a 15% peak drawdown. A drawdown halt persists. An existing position with stale quotes prevents new portfolio entries.
-
-GitHub Actions schedules are best effort. Five-minute scans are not continuous execution. An intrahour move, incomplete bar, network outage or delayed job can be missed. This app is unsuitable for latency arbitrage. Fresh quotes do not make delayed ledger snapshots real-time.
-
-## U.S. access review
-
-Reviewed **2026-09-08**. Platform access is conditional on current account, identity, location, state and product restrictions. A public API response is not a legal authorization to trade.
-
-| Venue | Treatment | Primary source |
-|---|---|---|
-| Coinbase spot | Public market data and conditional U.S. spot research; enter your actual fee tier | [Advanced fees](https://help.coinbase.com/coinbase/trading-and-funding/advanced-trade/advanced-trade-fees) |
-| Alpaca | Existing paper/live adapter retains explicit arming gates; broker/account rules apply | [Intraday margin update](https://alpaca.markets/blog/finra-retires-the-pdt-rule-introducing-alpacas-new-intraday-margin-framework/) |
-| Kalshi | Separate existing research desk, currently subject to its evidence and account gates | [Fee schedule](https://kalshi.com/fee-schedule), [rounding API](https://docs.kalshi.com/getting_started/fee_rounding) |
-| Polymarket US | Separate U.S. venue; the offshore wallet signals do not map automatically to its contracts | [Official U.S. site](https://polymarket.us/) |
-| MEXC | Excluded; order submission is blocked | [Terms](https://www.mexc.com/terms) |
-| Pump.fun/PumpSwap | Discovery only; eligibility not established, no execution | [Terms](https://pump.fun/docs/terms-and-conditions), [fees](https://pump.fun/docs/fees) |
-
-FINRA's new intraday-margin rules took effect June 4, 2026, with a broker transition period. Do not assume every broker adopted them immediately. [FINRA Notice 26-10](https://www.finra.org/rules-guidance/notices/26-10).
-
-## Code map
-
-| Path | Responsibility |
-|---|---|
-| `dashboard/market-core.mjs` | Shared pure signal, sizing, token-screen and paper-accounting rules |
-| `dashboard/terminal.mjs` | Direct WebSocket/REST feeds and UI; no keys or trading calls |
-| `scripts/collect-opportunities.mjs` | Bounded public-data collection and atomic paper-state publication |
-| `data/opportunities/paper.json` | Complete shared paper ledger, separate from earlier simulations |
-| `dashboard/data/opportunities.json` | Published snapshot, original source times and source errors |
-| `scripts/desk/` | Existing U.S. desk allocation, broker adapters, reconciliation, backtesting and validation |
-| `scripts/build_dashboard.py` | Archived wallet-research rebuild only |
-| `tests/market-core.test.mjs`, `scripts/tests/`, `tests/test_engine.py` | Offline regression coverage |
-| `scripts/check_site.py` | Local links, unique IDs and embedded JavaScript integrity |
+These findings guide what stays held. They do not justify lowering evidence requirements or manufacturing trades.
 
 ## Run and verify
 
-## Scanner replay and screening fixes
-
-The earlier 377 tests were code and accounting checks. The existing U.S. desk laboratory had historical walk-forward results, but the new breakout/reclaim scanner initially had only forward paper tracking. These are different types of evidence.
-
-The scanner now has a separate [90-day historical replay report](reports/scanner-backtest.md), also displayed on the homepage. It uses actual Coinbase five-minute opens and completed hourly candles, fixed rules, two-scan confirmation, the same paper account, and modeled fees, spread, and slippage. Results include each strategy, higher costs, slower scans, three chronological slices, and a high-coverage universe comparison when data are incomplete. A losing result is retained. These are experimental strategies with no established profitable edge.
-
-Raw inputs are preserved in `data/opportunities/backtest-inputs.json.gz`; the report records their SHA-256. Missing observations remain missing. Current Pump profiles cannot reconstruct disappeared tokens, so no Pump historical profitability claim is made.
-
-Token screening now distinguishes excluded pools from missing data, shows the observed value and required threshold, and starts with pools passing the market rules. Passing those rules does not resolve the separate security and U.S. eligibility checks. Missing liquidity is not displayed as measured zero. Discovery includes paid promotions, which are neither endorsements nor evidence of safety.
-
-The browser keeps its quote connection available in background/embedded tabs. When streaming cannot connect, the app identifies delayed snapshots and retains chart setups while withholding entry plans. CSV export includes a preview/copy fallback.
-
-Node 22+ and Python 3.12:
-
 ```sh
-python -m pip install 'requests>=2.31,<3'
-python -m unittest discover -s scripts/tests
-python -m unittest discover -s tests
-node --test tests/market-core.test.mjs tests/scanner-backtest.test.mjs
-python scripts/check_site.py
-node scripts/collect-opportunities.mjs
-node scripts/backtest-opportunities.mjs --collect  # download and replay 90 days
-node scripts/backtest-opportunities.mjs            # reproduce from committed inputs
-python -m http.server 8765 --directory dashboard
+npm test
+python3 -m unittest discover -s scripts/tests
+python3 -m unittest discover -s tests
+python3 scripts/check_site.py
+npm run build
+python3 -m http.server 8874 --directory dist
 ```
 
-`U.S. desk paper cycle` runs one decision cycle on a five-minute best-effort schedule, loading the current code and saving its book after each scan. Configured Alpaca credentials supply quotes; this workflow does not arm broker orders. Missing execution quotes block entries. Conflicting state writes fail instead of silently overwriting another writer.
+Python tests require `requests>=2.31,<3`. The browser app needs no package installation. The build clears `dist/` and copies only the supported public surface. Sites and Pages use that identical output; archived raw histories stay in the repository.
 
-`U.S. opportunity scan` collects on a five-minute best-effort schedule. `Deploy dashboard to GitHub Pages` verifies and publishes `dashboard/`, and records the actual deployed commit in `build-info.json`. CI covers changes and pull requests. The watchdog recovers missing scans. Data commits from workflow tokens are published by the scheduled Pages workflow because such commits do not trigger push workflows.
+```sh
+python3 scripts/study-paired-history.py --output /tmp/paired-reproduction
+```
 
-Existing desk operation is documented in [the runbook](docs/RUNBOOK.md). Corrected replay results supersede all historical performance claims in older studies. Real orders still require all existing explicit arming gates and valid evidence. No real orders were needed to develop or test this release.
+This reproduces the frozen price-gap study without network requests or account changes.
+
+## Code and operation
+
+| Path | Responsibility |
+|---|---|
+| `dashboard/app.mjs`, `app.css`, `app-schema.mjs` | Three-view interface and validated display contracts |
+| `dashboard/prediction-core.mjs` | Fees, depth, calibration, risk and persistent paper accounting |
+| `dashboard/prediction-arbitrage.mjs` | Complementary packages, funding, quote freshness and settlement uncertainty |
+| `scripts/predictions/arbitrage.mjs` | Bounded public game discovery and identity matching |
+| `scripts/collect-predictions.mjs` | Automatic prediction cycles, official settlements and observation history |
+| `data/predictions/state.json` | Authoritative prediction accounts, observations and bounded paired-book receipts |
+| `scripts/etf_lab.py`, `data/etf/` | Fixed-rule ETF research and separate forward simulation |
+| `scripts/desk/`, `engine/` | Separate strategy and execution laboratories; no new real-order activation |
+| `data/research/` | Frozen inputs and retired public snapshots; excluded from the site build |
+
+Prediction cycles run about every ten minutes through GitHub Actions, best effort. The display checks publication once a minute and retains newer loaded data on failure. Source times and errors remain visible. Existing strategy-laboratory and opportunity paper workflows continue managing their own accounts; their raw state has not been deleted or reset.
+
+[Prediction methodology and controls](docs/PREDICTIONS.md) · [Publishing and maintenance](docs/SITES.md) · [Cleanup and current research decisions](reports/research-review-2026-09-13.md).

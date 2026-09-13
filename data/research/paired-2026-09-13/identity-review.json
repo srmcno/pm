@@ -1,0 +1,282 @@
+{
+  "observedAt": 1789331307.3,
+  "description": "Dated forward collector receipts used to corroborate the two historical games and both outcome orientations; separate from historical price observations.",
+  "contracts": [
+    {
+      "id": "kalshi:KXMLBGAME-26SEP141940NYYMIN-NYY|polymarket:aec-mlb-nyy-min-2026-09-14",
+      "title": "New York Yankees vs Minnesota Twins",
+      "league": "mlb",
+      "startAt": 1789429200,
+      "identityVerified": true,
+      "markets": [
+        {
+          "id": "polymarket:aec-mlb-nyy-min-2026-09-14",
+          "venue": "polymarket",
+          "venueId": "aec-mlb-nyy-min-2026-09-14",
+          "eventId": "pm:109403",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "mlb",
+            "participants": [
+              "a09ec676-f887-43dc-bbb3-cf4bbaee9a18",
+              "aa34e0ed-f342-4ec6-b774-c79b47b60e2d"
+            ],
+            "yesId": "a09ec676-f887-43dc-bbb3-cf4bbaee9a18",
+            "startAt": 1789429200,
+            "title": "New York Yankees vs Minnesota Twins",
+            "labels": {
+              "a09ec676-f887-43dc-bbb3-cf4bbaee9a18": "New York Yankees",
+              "aa34e0ed-f342-4ec6-b774-c79b47b60e2d": "Minnesota Twins"
+            }
+          },
+          "rules": "This market will settle to the winner of the New York Yankees vs Minnesota Twins MLB game scheduled for 2026-09-14 at 7:40PM ET. Extra innings are included if played. If the game is delayed, postponed, or suspended and not rescheduled to a date within two weeks of the originally scheduled date, the market will settle to the last fair market price. Outcome sourced from MLB.",
+          "ruleHash": "df51dbb4b1df94054b709dfbdbf288e9cb8973772e515ccee78a5d00df67a717",
+          "url": "https://polymarket.us/sports/mlb/mlb-nyy-min-2026-09-14?marketSlug=aec-mlb-nyy-min-2026-09-14",
+          "quoteAt": 1789331258.624,
+          "observedAt": 1789331304.952,
+          "feeRate": 0.06
+        },
+        {
+          "id": "kalshi:KXMLBGAME-26SEP141940NYYMIN-NYY",
+          "venue": "kalshi",
+          "venueId": "KXMLBGAME-26SEP141940NYYMIN-NYY",
+          "eventId": "KXMLBGAME-26SEP141940NYYMIN",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "mlb",
+            "participants": [
+              "a09ec676-f887-43dc-bbb3-cf4bbaee9a18",
+              "aa34e0ed-f342-4ec6-b774-c79b47b60e2d"
+            ],
+            "yesId": "a09ec676-f887-43dc-bbb3-cf4bbaee9a18",
+            "startAt": 1789429200,
+            "milestoneId": "f814fc27-3349-4318-9b3d-c67ae51167c4",
+            "title": "New York Y vs Minnesota",
+            "evidence": {
+              "milestone": "https://api.elections.kalshi.com/trade-api/v2/milestones?related_event_ticker=KXMLBGAME-26SEP141940NYYMIN",
+              "targets": [
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/576dc9ee-9a05-4610-8e9d-efa2a046582d",
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/a2e0a7af-4208-4889-b60c-7c9254c67d5b"
+              ]
+            }
+          },
+          "rules": "If New York Y wins the New York Y vs Minnesota professional baseball game originally scheduled for Sep 14, 2026 at 7:40 PM EDT, then the market resolves to Yes.\nThe following market refers to the New York Y vs Minnesota professional baseball game originally scheduled for Sep 14, 2026 at 7:40 PM EDT. If this game is postponed or delayed, the market will remain open and close after the rescheduled game has finished (within two days). If the game is cancelled or rescheduled to over two days away, the market will resolve to a fair price in accordance with the rules.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+          "ruleHash": "b2bb5f1e35b3c887cadcf79d3f314d38b504b7e15bb61d9e92fe8534554f8c31",
+          "url": "https://kalshi.com/markets/kxmlbgame/kxmlbgame-26sep141940nyymin",
+          "quoteAt": 1789331305.007,
+          "observedAt": 1789331305.007,
+          "feeRate": 0.035
+        }
+      ]
+    },
+    {
+      "id": "kalshi:KXMLBGAME-26SEP141940NYYMIN-MIN|polymarket:aec-mlb-nyy-min-2026-09-14",
+      "title": "New York Yankees vs Minnesota Twins",
+      "league": "mlb",
+      "startAt": 1789429200,
+      "identityVerified": true,
+      "markets": [
+        {
+          "id": "polymarket:aec-mlb-nyy-min-2026-09-14",
+          "venue": "polymarket",
+          "venueId": "aec-mlb-nyy-min-2026-09-14",
+          "eventId": "pm:109403",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "mlb",
+            "participants": [
+              "a09ec676-f887-43dc-bbb3-cf4bbaee9a18",
+              "aa34e0ed-f342-4ec6-b774-c79b47b60e2d"
+            ],
+            "yesId": "a09ec676-f887-43dc-bbb3-cf4bbaee9a18",
+            "startAt": 1789429200,
+            "title": "New York Yankees vs Minnesota Twins",
+            "labels": {
+              "a09ec676-f887-43dc-bbb3-cf4bbaee9a18": "New York Yankees",
+              "aa34e0ed-f342-4ec6-b774-c79b47b60e2d": "Minnesota Twins"
+            }
+          },
+          "rules": "This market will settle to the winner of the New York Yankees vs Minnesota Twins MLB game scheduled for 2026-09-14 at 7:40PM ET. Extra innings are included if played. If the game is delayed, postponed, or suspended and not rescheduled to a date within two weeks of the originally scheduled date, the market will settle to the last fair market price. Outcome sourced from MLB.",
+          "ruleHash": "df51dbb4b1df94054b709dfbdbf288e9cb8973772e515ccee78a5d00df67a717",
+          "url": "https://polymarket.us/sports/mlb/mlb-nyy-min-2026-09-14?marketSlug=aec-mlb-nyy-min-2026-09-14",
+          "quoteAt": 1789331258.624,
+          "observedAt": 1789331305.147,
+          "feeRate": 0.06
+        },
+        {
+          "id": "kalshi:KXMLBGAME-26SEP141940NYYMIN-MIN",
+          "venue": "kalshi",
+          "venueId": "KXMLBGAME-26SEP141940NYYMIN-MIN",
+          "eventId": "KXMLBGAME-26SEP141940NYYMIN",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "mlb",
+            "participants": [
+              "a09ec676-f887-43dc-bbb3-cf4bbaee9a18",
+              "aa34e0ed-f342-4ec6-b774-c79b47b60e2d"
+            ],
+            "yesId": "aa34e0ed-f342-4ec6-b774-c79b47b60e2d",
+            "startAt": 1789429200,
+            "milestoneId": "f814fc27-3349-4318-9b3d-c67ae51167c4",
+            "title": "New York Y vs Minnesota",
+            "evidence": {
+              "milestone": "https://api.elections.kalshi.com/trade-api/v2/milestones?related_event_ticker=KXMLBGAME-26SEP141940NYYMIN",
+              "targets": [
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/576dc9ee-9a05-4610-8e9d-efa2a046582d",
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/a2e0a7af-4208-4889-b60c-7c9254c67d5b"
+              ]
+            }
+          },
+          "rules": "If Minnesota wins the New York Y vs Minnesota professional baseball game originally scheduled for Sep 14, 2026 at 7:40 PM EDT, then the market resolves to Yes.\nThe following market refers to the New York Y vs Minnesota professional baseball game originally scheduled for Sep 14, 2026 at 7:40 PM EDT. If this game is postponed or delayed, the market will remain open and close after the rescheduled game has finished (within two days). If the game is cancelled or rescheduled to over two days away, the market will resolve to a fair price in accordance with the rules.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+          "ruleHash": "34a2faac0b45781d33ff185692bf0a9b4fec0cb82d6e01eb6d89b11ae684e1bd",
+          "url": "https://kalshi.com/markets/kxmlbgame/kxmlbgame-26sep141940nyymin",
+          "quoteAt": 1789331305.159,
+          "observedAt": 1789331305.159,
+          "feeRate": 0.035
+        }
+      ]
+    },
+    {
+      "id": "kalshi:KXNFLGAME-26SEP14DENKC-KC|polymarket:aec-nfl-den-kc-2026-09-14",
+      "title": "Denver Broncos vs Kansas City Chiefs",
+      "league": "nfl",
+      "startAt": 1789431300,
+      "identityVerified": true,
+      "markets": [
+        {
+          "id": "polymarket:aec-nfl-den-kc-2026-09-14",
+          "venue": "polymarket",
+          "venueId": "aec-nfl-den-kc-2026-09-14",
+          "eventId": "pm:74914",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "nfl",
+            "participants": [
+              "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0",
+              "6680d28d-d4d2-49f6-aace-5292d3ec02c2"
+            ],
+            "yesId": "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0",
+            "startAt": 1789431300,
+            "title": "Denver Broncos vs Kansas City Chiefs",
+            "labels": {
+              "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0": "Denver Broncos",
+              "6680d28d-d4d2-49f6-aace-5292d3ec02c2": "Kansas City Chiefs"
+            }
+          },
+          "rules": "This market will settle to the winner of the Denver Broncos vs Kansas City Chiefs professional football game scheduled for Sep 14, 2026. Overtime is included if played. If the game ends in a tie, the market will settle to $0.50. If the game is delayed, postponed, or suspended and not rescheduled to a date within two days of the originally scheduled date, the market will settle to the last fair market price. Outcome sourced from the relevant governing body.",
+          "ruleHash": "a719d3b06c80b4b6c8ebf6cfd3058425f68c6750fc268e24286305c0efddc01d",
+          "url": "https://polymarket.us/sports/nfl/nfl-den-kc-2026-09-14?marketSlug=aec-nfl-den-kc-2026-09-14",
+          "quoteAt": 1789331090.356,
+          "observedAt": 1789331302.078,
+          "feeRate": 0.06
+        },
+        {
+          "id": "kalshi:KXNFLGAME-26SEP14DENKC-KC",
+          "venue": "kalshi",
+          "venueId": "KXNFLGAME-26SEP14DENKC-KC",
+          "eventId": "KXNFLGAME-26SEP14DENKC",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "nfl",
+            "participants": [
+              "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0",
+              "6680d28d-d4d2-49f6-aace-5292d3ec02c2"
+            ],
+            "yesId": "6680d28d-d4d2-49f6-aace-5292d3ec02c2",
+            "startAt": 1789431300,
+            "milestoneId": "3fc2e97c-2036-4490-9095-f3e6c2226e60",
+            "title": "Denver at Kansas City",
+            "evidence": {
+              "milestone": "https://api.elections.kalshi.com/trade-api/v2/milestones?related_event_ticker=KXNFLGAME-26SEP14DENKC",
+              "targets": [
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/0aa02fd7-1bb1-474b-98e1-5379d0a191e3",
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/64f72720-2e4a-4cc8-a39b-ca148aecb389"
+              ]
+            }
+          },
+          "rules": "If Kansas City wins the Denver vs Kansas City professional football game originally scheduled for Sep 14, 2026, then the market resolves to Yes.\nThe following market refers to the team who wins the Denver vs Kansas City professional football game originally scheduled for Sep 14, 2026. If the game ends in a tie, the market will resolve to $0.50 for each team. If the game is postponed but begins within 48 hours from its originally scheduled start time, the market will remain open and resolve based on the official final result. If the game is not started within 48 hours, the market will resolve to a fair market price.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+          "ruleHash": "24d91f494f21dcdae5167ed5272f8ebb79bdc49968a11e7a00acffa90c34fbb6",
+          "url": "https://kalshi.com/markets/kxnflgame/kxnflgame-26sep14denkc",
+          "quoteAt": 1789331302.078,
+          "observedAt": 1789331302.078,
+          "feeRate": 0.07
+        }
+      ]
+    },
+    {
+      "id": "kalshi:KXNFLGAME-26SEP14DENKC-DEN|polymarket:aec-nfl-den-kc-2026-09-14",
+      "title": "Denver Broncos vs Kansas City Chiefs",
+      "league": "nfl",
+      "startAt": 1789431300,
+      "identityVerified": true,
+      "markets": [
+        {
+          "id": "polymarket:aec-nfl-den-kc-2026-09-14",
+          "venue": "polymarket",
+          "venueId": "aec-nfl-den-kc-2026-09-14",
+          "eventId": "pm:74914",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "nfl",
+            "participants": [
+              "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0",
+              "6680d28d-d4d2-49f6-aace-5292d3ec02c2"
+            ],
+            "yesId": "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0",
+            "startAt": 1789431300,
+            "title": "Denver Broncos vs Kansas City Chiefs",
+            "labels": {
+              "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0": "Denver Broncos",
+              "6680d28d-d4d2-49f6-aace-5292d3ec02c2": "Kansas City Chiefs"
+            }
+          },
+          "rules": "This market will settle to the winner of the Denver Broncos vs Kansas City Chiefs professional football game scheduled for Sep 14, 2026. Overtime is included if played. If the game ends in a tie, the market will settle to $0.50. If the game is delayed, postponed, or suspended and not rescheduled to a date within two days of the originally scheduled date, the market will settle to the last fair market price. Outcome sourced from the relevant governing body.",
+          "ruleHash": "a719d3b06c80b4b6c8ebf6cfd3058425f68c6750fc268e24286305c0efddc01d",
+          "url": "https://polymarket.us/sports/nfl/nfl-den-kc-2026-09-14?marketSlug=aec-nfl-den-kc-2026-09-14",
+          "quoteAt": 1789331090.356,
+          "observedAt": 1789331302.187,
+          "feeRate": 0.06
+        },
+        {
+          "id": "kalshi:KXNFLGAME-26SEP14DENKC-DEN",
+          "venue": "kalshi",
+          "venueId": "KXNFLGAME-26SEP14DENKC-DEN",
+          "eventId": "KXNFLGAME-26SEP14DENKC",
+          "identity": {
+            "kind": "full-game-moneyline",
+            "provider": "sportradar",
+            "league": "nfl",
+            "participants": [
+              "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0",
+              "6680d28d-d4d2-49f6-aace-5292d3ec02c2"
+            ],
+            "yesId": "ce92bd47-93d5-4fe9-ada4-0fc681e6caa0",
+            "startAt": 1789431300,
+            "milestoneId": "3fc2e97c-2036-4490-9095-f3e6c2226e60",
+            "title": "Denver at Kansas City",
+            "evidence": {
+              "milestone": "https://api.elections.kalshi.com/trade-api/v2/milestones?related_event_ticker=KXNFLGAME-26SEP14DENKC",
+              "targets": [
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/0aa02fd7-1bb1-474b-98e1-5379d0a191e3",
+                "https://api.elections.kalshi.com/trade-api/v2/structured_targets/64f72720-2e4a-4cc8-a39b-ca148aecb389"
+              ]
+            }
+          },
+          "rules": "If Denver wins the Denver vs Kansas City professional football game originally scheduled for Sep 14, 2026, then the market resolves to Yes.\nThe following market refers to the team who wins the Denver vs Kansas City professional football game originally scheduled for Sep 14, 2026. If the game ends in a tie, the market will resolve to $0.50 for each team. If the game is postponed but begins within 48 hours from its originally scheduled start time, the market will remain open and resolve based on the official final result. If the game is not started within 48 hours, the market will resolve to a fair market price.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+          "ruleHash": "16f938e66ab1c14c3c9e7903119e32014a053811c9fafc1a099788e2e07811e1",
+          "url": "https://kalshi.com/markets/kxnflgame/kxnflgame-26sep14denkc",
+          "quoteAt": 1789331302.237,
+          "observedAt": 1789331302.237,
+          "feeRate": 0.07
+        }
+      ]
+    }
+  ]
+}

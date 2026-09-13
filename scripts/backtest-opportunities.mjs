@@ -175,7 +175,7 @@ async function main(){
     data=await collectHistory();bytes=gzipSync(JSON.stringify(data));await atomic(input,bytes);
   }else{bytes=await readFile(input);data=JSON.parse(gunzipSync(bytes));}
   const report=runReport(data);report.inputSha256=digest(bytes);
-  const previous=JSON.parse(await readFile(path.join(root,'dashboard/data/scanner-baseline-v2.json')));
+  const previous=JSON.parse(await readFile(path.join(root,'data/research/scanner-baseline-v2.json')));
   report.revision={previousModel:previous.modelVersion,sameInputs:previous.inputSha256===report.inputSha256 && previous.start===report.start && previous.end===report.end,
     runs:report.runs.flatMap(r=>{const old=previous.runs.find(x=>x.name===r.name);return old?[{name:r.name,previousReturnPct:old.returnPct,returnPct:r.returnPct,previousTrades:old.trades,trades:r.trades}]:[];})};
   await atomic(path.join(root,'dashboard/data/scanner-backtest.json'),JSON.stringify(report)+'\n');

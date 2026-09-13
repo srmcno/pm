@@ -5,6 +5,8 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {VENUES,PREDICTION_VERSION,POLICY,newAccount,validateAccount,forecast,planBet,observe,numeric,timestamp} from '../dashboard/prediction-core.mjs';
 import {runPaperCycle} from './predictions/cycle.mjs';
+import {collectPairs} from './predictions/arbitrage.mjs';
+import {studyOutcomes} from '../dashboard/prediction-study.mjs';
 import {BASE,get,discoverPolymarket,discoverKalshi,normalizePolymarket,normalizeKalshi,resolvedPolymarket,resolvedKalshi} from './predictions/venues.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const statePath=path.join(root,'data/predictions/state.json'),snapshotPath=path.join(root,'dashboard/data/predictions.json');
@@ -23,12 +25,19 @@ VENUES.forEach(v=>validateAccount(state.accounts?.[v],v));
 const old=await read(snapshotPath,{markets:[],sources:[]}),markets=[],sources=[],errors=[],refreshers=new Map();
 const enc=encodeURIComponent,events=new Map(),series=new Map(),overrides=new Map();
 async function cached(map,key,url){if(!map.has(key))map.set(key,get(url));return map.get(key);}
+const milestones=new Map();
+async function gameMilestone(raw){
+  if(!/^KX(?:NFL|MLB|NBA|NHL|NCAAF)GAME-/.test(raw.event_ticker||''))return null;
+  const d=await cached(milestones,raw.event_ticker,`${BASE.kalshi}/milestones?limit=10&related_event_ticker=${enc(raw.event_ticker)}`);
+  const rows=(d.milestones||[]).filter(m=>m.details?.main_game_event_ticker===raw.event_ticker);
+  return !d.cursor&&rows.length===1?rows[0]:null;
+}
 // Label availability is the time this collector first verifies final payout.
 // It never backdates a newly learned label into an earlier training window.
 const unresolved=state.observations.filter(o=>o.resolvedAt===null);
-const positions=Object.values(state.accounts).flatMap(a=>a.positions).map(p=>({id:p.marketId,marketId:p.marketId,venue:p.marketId.split(':')[0],venueId:p.marketId.slice(p.marketId.indexOf(':')+1),at:p.openedAt}));
-const toResolve=[...new Map([...positions,...unresolved].filter(o=>!state.settlements[o.marketId]).map(o=>[o.marketId,o])).values()]
-  .sort((a,b)=>(state.resolutionChecks?.[a.marketId]||0)-(state.resolutionChecks?.[b.marketId]||0)).slice(0,30);
+const positions=Object.values(state.accounts).flatMap(a=>a.positions).map(p=>({id:p.marketId,marketId:p.marketId,venue:p.marketId.split(':')[0],venueId:p.marketId.slice(p.marketId.indexOf(':')+1),at:p.openedAt,closeAt:p.closeAt,position:true}));
+const toResolve=[...new Map([...unresolved,...positions].filter(o=>!state.settlements[o.marketId]&&(o.position||Number.isFinite(o.closeAt)&&o.closeAt<=start)).map(o=>[o.marketId,o])).values()]
+  .sort((a,b)=>Number(!!b.position)-Number(!!a.position)||(state.resolutionChecks?.[a.marketId]||0)-(state.resolutionChecks?.[b.marketId]||0)).slice(0,30);
 state.resolutionChecks||={};
 for(let i=0;i<toResolve.length;i+=3)await Promise.all(toResolve.slice(i,i+3).map(async o=>{
   try{const s=await(o.venue==='polymarket'?resolvedPolymarket(o.venueId):resolvedKalshi(o.venueId));if(s)state.settlements[o.marketId]=s;}
@@ -73,7 +82,7 @@ for(const venue of VENUES){
           let changes=null;
           try{const d=await cached(overrides,raw.event_ticker,`${BASE.kalshi}/events/fee_changes?event_ticker=${enc(raw.event_ticker)}&limit=1000`);if(Array.isArray(d.event_fee_changes)&&!d.cursor)changes=d.event_fee_changes;}catch(e){errors.push({venue,source:'fees',message:e.message});}
           const book=await get(`${BASE.kalshi}/markets/${enc(raw.ticker)}/orderbook?depth=10`);
-          m=normalizeKalshi(raw,ev,ser,changes,book,Date.now()/1000);
+          m=normalizeKalshi(raw,ev,ser,changes,book,Date.now()/1000,await gameMilestone(raw));
         }
         collected.push(m);
         // Record when THIS book is received, before unrelated slow requests age it out.
@@ -88,7 +97,7 @@ for(const venue of VENUES){
           const ser=(await get(`${BASE.kalshi}/series/${enc(ev.series_ticker)}`)).series;
           const fees=await get(`${BASE.kalshi}/events/fee_changes?event_ticker=${enc(raw.event_ticker)}&limit=1000`);
           const book=await get(`${BASE.kalshi}/markets/${enc(raw.ticker)}/orderbook?depth=10`);
-          return normalizeKalshi(fresh,ev,ser,!fees.cursor?fees.event_fee_changes:null,book,Date.now()/1000);
+          return normalizeKalshi(fresh,ev,ser,!fees.cursor?fees.event_fee_changes:null,book,Date.now()/1000,await gameMilestone(fresh));
         });
       }catch(e){errors.push({venue,source:raw.slug||raw.ticker,message:e.message});}
     }));
@@ -97,9 +106,9 @@ for(const venue of VENUES){
     collected.forEach(m=>failedIds.delete(m.id));
     markets.push(...old.markets.filter(m=>failedIds.has(m.id)).map(m=>({...m,sourceError:'Book refresh failed; retaining original timestamps'})));
     markets.push(...collected);source.observedAt=Math.max(...collected.map(m=>m.observedAt));source.sampled=collected.length;
-    source.status=collected.length<chosen.length?'partial':'ok';
-    source.error=collected.length<chosen.length?`${chosen.length-collected.length} sampled books could not refresh`:null;
-  }catch(e){source.error=e.message;markets.push(...old.markets.filter(m=>m.venue===venue));source.observedAt=old.sources?.find(s=>s.venue===venue)?.observedAt||null;}
+    source.status=collected.length<chosen.length||discovery.errors?.length?'partial':'ok';
+    source.error=[collected.length<chosen.length?`${chosen.length-collected.length} sampled books could not refresh`:null,...(discovery.errors||[])].filter(Boolean).join('; ')||null;
+  }catch(e){source.error=e.message;markets.push(...old.markets.filter(m=>m.venue===venue).map(m=>({...m,sourceError:'Venue collection failed; retaining original timestamps'})));source.observedAt=old.sources?.find(s=>s.venue===venue)?.observedAt||null;}
   sources.push(source);console.log(`${venue}: ${source.status}, ${source.sampled} books, ${source.discovered} contracts discovered`);
 }
 // Re-read any prospective entry and every open position immediately before
@@ -118,11 +127,20 @@ state.observations=observe(markets,state.observations,now).map(o=>{
   if(o.rules){o.rulesHash=createHash('sha256').update(o.rules).digest('hex');delete o.rules;}return o;
 });
 state.updatedAt=now;
-const studies=Object.fromEntries(VENUES.map(v=>{const rows=state.observations.filter(o=>o.venue===v&&o.version===PREDICTION_VERSION),closed=rows.filter(o=>o.resolvedAt!==null),binary=closed.filter(o=>[0,1].includes(o.payout)),predicted=binary.filter(o=>Number.isFinite(o.prediction));
+const studies=Object.fromEntries(VENUES.map(v=>{const all=state.observations.filter(o=>o.venue===v&&o.version===PREDICTION_VERSION).sort((a,b)=>a.at-b.at),unique=new Map(),forecasts=new Map();
+  for(const o of all){if(!unique.has(o.eventId))unique.set(o.eventId,o);if(Number.isFinite(o.prediction)&&o.resolvedAt!==null&&[0,1].includes(o.payout)&&!forecasts.has(o.eventId))forecasts.set(o.eventId,o);}
+  const rows=[...unique.values()],closed=rows.filter(o=>o.resolvedAt!==null),binary=closed.filter(o=>[0,1].includes(o.payout)),predicted=[...forecasts.values()];
   return [v,{observations:rows.length,resolved:closed.length,binary:binary.length,forecasts:predicted.length,
     brier:predicted.length?predicted.reduce((n,o)=>n+(o.prediction-o.payout)**2,0)/predicted.length:null,
     baselineBrier:predicted.length?predicted.reduce((n,o)=>n+(o.baseline-o.payout)**2,0)/predicted.length:null}];}));
+let arbitrage;
+try{arbitrage=await collectPairs(state.accounts,start+440);}catch(error){arbitrage={...(old.arbitrage||{}),generatedAt:old.arbitrage?.generatedAt??start,status:'error',error:error.message,pairs:old.arbitrage?.pairs||[],errors:[{message:error.message}],realEnabled:false};}
+// Paired observations are research receipts, not trades or paper profits.
+if(arbitrage.status!=='error'&&arbitrage.generatedAt>(state.pairedScans?.at(-1)?.at||0))state.pairedScans=[...(state.pairedScans||[]),{at:arbitrage.generatedAt,pairs:(arbitrage.pairs||[]).map(p=>({id:p.id,observedAt:p.observedAt,status:p.status,
+  quantity:p.best?.quantity??null,cost:p.best?.cost??null,normalNet:p.best?.normalNet??null,worstCaseNet:p.worstCaseNet,
+  ruleHashes:p.markets?.map(m=>m.ruleHash),books:p.markets?.map(m=>({id:m.id,quoteAt:m.quoteAt,observedAt:m.observedAt,sides:m.sides,feeRate:m.feeRate}))}))}].slice(-144);
 const snapshot={schemaVersion:1,version:PREDICTION_VERSION,generatedAt:now,mode:'paper',policy:POLICY,sources,markets,accounts:state.accounts,studies,decisions,errors,
+  arbitrage,research:studyOutcomes(state.observations,now),
   automation:{mode:'automatic',venues:VENUES,requiresBrowser:false,latest:receipt,recentCycles:state.recentCycles},
   execution:{mode:'paper',realEnabled:false,credentialsConnected:false,adapterStatus:'Order-intent boundary prepared; authenticated execution is not connected'}};
 await save(statePath,state);await save(snapshotPath,snapshot);

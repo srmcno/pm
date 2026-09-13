@@ -1,0 +1,78 @@
+{
+  "start": 1789243740,
+  "end": 1789330140,
+  "requests": {
+    "nfl-pm-history": {
+      "url": "https://gateway.polymarket.us/v1/price-history?symbol=aec-nfl-den-kc-2026-09-14&timestamp.startTimestamp=1789243740&timestamp.endTimestamp=1789330140&fidelity=1",
+      "fetchedAt": 1789330195.747802,
+      "status": 200,
+      "sha256": "334ece66041e8837ec5e70788034826b57cf936caf79aad2402d7dc01ae0b46d"
+    },
+    "nfl-pm-market": {
+      "url": "https://gateway.polymarket.us/v1/market/slug/aec-nfl-den-kc-2026-09-14",
+      "fetchedAt": 1789330196.136808,
+      "status": 200,
+      "sha256": "fef47ee465652cde9641a1b879e43365d221292b12bb99b2ea257d4318db7f30"
+    },
+    "nfl-kalshi-series": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/series/KXNFLGAME",
+      "fetchedAt": 1789330196.2553768,
+      "status": 200,
+      "sha256": "a8641f1750150022958250b77fd8f9c02e169cfe124d2e90c01bc9a524040b00"
+    },
+    "nfl-kalshi-fees": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/events/fee_changes?event_ticker=KXNFLGAME-26SEP14DENKC&limit=1000",
+      "fetchedAt": 1789330196.418711,
+      "status": 200,
+      "sha256": "4d755a11d76cd85bec7a4758a2d226815fd2a935a5563dbafae35ee9d373da45"
+    },
+    "nfl-kalshi-DEN-history": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/series/KXNFLGAME/markets/KXNFLGAME-26SEP14DENKC-DEN/candlesticks?start_ts=1789243740&end_ts=1789330140&period_interval=1",
+      "fetchedAt": 1789330196.560854,
+      "status": 200,
+      "sha256": "59480bc5cfc7654e51026214ddebacb61210333ce810d5bb3f5404fb512d2208"
+    },
+    "nfl-kalshi-KC-history": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/series/KXNFLGAME/markets/KXNFLGAME-26SEP14DENKC-KC/candlesticks?start_ts=1789243740&end_ts=1789330140&period_interval=1",
+      "fetchedAt": 1789330196.902069,
+      "status": 200,
+      "sha256": "e556a709db3b0a508fe26a14e179eb8b1602b1a1c8d14063b30ee80df19038de"
+    },
+    "mlb-pm-history": {
+      "url": "https://gateway.polymarket.us/v1/price-history?symbol=aec-mlb-nyy-min-2026-09-14&timestamp.startTimestamp=1789243740&timestamp.endTimestamp=1789330140&fidelity=1",
+      "fetchedAt": 1789330197.16765,
+      "status": 200,
+      "sha256": "406e7cac02dadb5a28c5eb5f7ae3d178320a2ebdca53c824613d5cb23c4dcf0e"
+    },
+    "mlb-pm-market": {
+      "url": "https://gateway.polymarket.us/v1/market/slug/aec-mlb-nyy-min-2026-09-14",
+      "fetchedAt": 1789330197.7107048,
+      "status": 200,
+      "sha256": "361cebc88ff4ff2047548550fe4eb97d3851b6ad2c43426080e5a25681e82d14"
+    },
+    "mlb-kalshi-series": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/series/KXMLBGAME",
+      "fetchedAt": 1789330197.875089,
+      "status": 200,
+      "sha256": "baa45e52706a9afa73e715ba06013162a0e517aac7ee281542ab74703c2ee0ac"
+    },
+    "mlb-kalshi-fees": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/events/fee_changes?event_ticker=KXMLBGAME-26SEP141940NYYMIN&limit=1000",
+      "fetchedAt": 1789330198.171409,
+      "status": 200,
+      "sha256": "cf045b8e0702ed1418c697a932de21218024399c0e5e2c9b057f5df950730219"
+    },
+    "mlb-kalshi-NYY-history": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/series/KXMLBGAME/markets/KXMLBGAME-26SEP141940NYYMIN-NYY/candlesticks?start_ts=1789243740&end_ts=1789330140&period_interval=1",
+      "fetchedAt": 1789330198.3296719,
+      "status": 200,
+      "sha256": "2ec97569a504a971efefdcaf5450cb4d8a20ab8eb69f9d0d9324051948c0f1e6"
+    },
+    "mlb-kalshi-MIN-history": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/series/KXMLBGAME/markets/KXMLBGAME-26SEP141940NYYMIN-MIN/candlesticks?start_ts=1789243740&end_ts=1789330140&period_interval=1",
+      "fetchedAt": 1789330198.516132,
+      "status": 200,
+      "sha256": "36de47b61e20f7c9b7a3381b4c84ad74fd09500506b4befbf3fe403b7c6c1773"
+    }
+  }
+}

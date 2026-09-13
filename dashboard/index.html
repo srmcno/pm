@@ -1,85 +1,236 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Moffitt Money: Polymarket US and Kalshi prediction research, separate $100 paper accounts, and decisions based on recorded outcomes.">
-  <meta name="color-scheme" content="dark light">
-  <title>Moffitt Money | Prediction markets</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="terminal.css?v=4.2.0">
-  <link rel="stylesheet" href="workspace.css?v=4.2.0">
-  <link rel="stylesheet" href="predictions.css?v=4.3.0">
-</head>
-<body>
-<a href="#main" class="skip">Skip to opportunities</a>
-<header class="topbar">
-  <a class="brand" href="./"><span class="monogram">M<span>↗</span></span><span>MOFFITT <b>MONEY</b><small>THE OPPORTUNITY DESK</small></span></a>
-  <nav aria-label="Main navigation"><p class="nav-caption">WORKSPACE</p><a data-view="predictions" data-short="Predict" href="#predictions"><span aria-hidden="true">◈</span> Prediction markets</a><a class="selected" data-view="markets" data-short="Crypto" href="#markets"><span aria-hidden="true">◫</span> Crypto markets</a><a data-view="paper" data-short="Paper" href="#paper"><span aria-hidden="true">▤</span> Paper ledger</a><a data-view="discovery" data-short="Tokens" href="#discovery"><span aria-hidden="true">◎</span> Token radar</a><a data-view="backtests" data-short="Results" href="#backtests"><span aria-hidden="true">▥</span> Outcomes</a><a data-view="health" data-short="Health" href="#health"><span aria-hidden="true">◷</span> Data health</a><p class="nav-caption">RESEARCH</p><a href="etf.html">U.S. ETF paper desk ↗</a><a href="desk.html">Strategy lab ↗</a><a href="stocks.html">Stock archive ↗</a><a href="wallets.html">Wallet archive ↗</a></nav>
-  <button class="icon-button" id="theme" aria-label="Switch color theme">◐</button>
-</header>
-<main id="main" class="shell">
-  <header class="workspace-heading"><div><p class="eyebrow">MOFFITT MONEY / RESEARCH WORKSPACE</p><h1 id="view-title">Market overview<span class="title-dot">.</span></h1><p id="view-description" class="quiet">Live prices, completed-hour setups, and the cost of taking a position.</p></div><div class="workspace-mode"><span class="badge gold-badge">RESEARCH &amp; PAPER</span><span id="clock">UTC</span></div></header>
-  <section id="crypto-session" class="session-strip" aria-label="Data freshness"><div><span class="meta-label">QUOTE FEED</span><span id="connection" class="badge muted">Connecting</span></div><div><span class="meta-label">SHARED SCAN</span><strong id="scan-freshness">Checking…</strong></div><div><span class="meta-label">PAPER BOOK</span><strong id="ledger-freshness">Checking…</strong></div><button id="pause" class="text-button">Pause live</button><a href="#health" class="text-button">Data details ↗</a></section>
-  <div id="notice" role="status" class="notice" hidden></div>
-
-  <section id="predictions" data-page="predictions" hidden>
-    <div class="prediction-hero"><div><p class="eyebrow">POLYMARKET US + KALSHI · AUTOMATIC PAPER DESK</p><h2>Both accounts. No manual picks.</h2><p>The bot scans both venues, chooses YES or NO, sizes qualifying paper bets and tracks settlement automatically, even when this page is closed. Each account started with $100.</p></div><div class="prediction-mode"><span class="badge muted">AUTOMATIC · PAPER</span><button class="text-button" data-pred-tab="readiness">Real-money readiness ↗</button></div></div>
-    <div id="prediction-notice" class="notice subtle" role="status" hidden></div>
-    <div id="prediction-accounts" class="prediction-accounts"><div class="empty">Loading the two paper accounts…</div></div>
-    <div class="prediction-toolbar"><div class="prediction-tabs" role="tablist" aria-label="Prediction workspace"><button id="prediction-tab-auto" role="tab" aria-selected="true" aria-controls="prediction-pane-auto" data-pred-tab="auto">Autopilot</button><button id="prediction-tab-accounts" role="tab" aria-selected="false" aria-controls="prediction-pane-accounts" data-pred-tab="accounts">Positions &amp; results</button><button id="prediction-tab-markets" role="tab" aria-selected="false" aria-controls="prediction-pane-markets" data-pred-tab="markets">Inspect markets</button><button id="prediction-tab-method" role="tab" aria-selected="false" aria-controls="prediction-pane-method" data-pred-tab="method">Decision rules</button><button id="prediction-tab-readiness" role="tab" aria-selected="false" aria-controls="prediction-pane-readiness" data-pred-tab="readiness">Go-live path</button></div><button id="prediction-refresh" class="button secondary">↻ Update display</button></div>
-    <section id="prediction-pane-auto" data-pred-pane="auto" role="tabpanel" aria-labelledby="prediction-tab-auto">
-      <div class="automation-summary panel"><div><p class="eyebrow">WHAT THE BOT IS DOING</p><h3 id="prediction-auto-status">Checking the latest automatic scan…</h3><p id="prediction-auto-time" class="quiet"></p></div><span class="badge muted">BOTH VENUES</span></div>
-      <div id="prediction-engines" class="prediction-engines"></div>
-      <section class="panel automation-activity"><div class="panel-head"><h3>Automatic activity</h3><span class="quiet small">Completed scans</span></div><div id="prediction-activity"><p class="empty">Loading recorded activity…</p></div></section>
-      <p class="quiet prediction-sample">Scanning is scheduled every 10 minutes, subject to delays. Before an entry, the bot refreshes the book and requires a quote no older than 90 seconds. No button press, venue selection or personal forecast is needed. If no bet qualifies, cash stays in the account.</p>
-    </section>
-    <section id="prediction-pane-markets" data-pred-pane="markets" role="tabpanel" aria-labelledby="prediction-tab-markets" hidden>
-      <p class="notice subtle">Optional inspection only. These filters and calculations do not control the bot. Both venues continue automatically.</p>
-      <div class="prediction-layout"><div class="prediction-discovery"><div class="prediction-filters"><label><span class="sr-only">Search prediction markets</span><input id="prediction-search" type="search" placeholder="Search a question or topic"></label><label><span class="sr-only">Venue</span><select id="prediction-venue"><option value="all">Both venues</option><option value="polymarket">Polymarket US</option><option value="kalshi">Kalshi</option></select></label><label><span class="sr-only">Sort markets</span><select id="prediction-sort"><option value="close">Closing soon</option><option value="spread">Tightest spread</option></select></label></div><p id="prediction-count" class="quiet small"></p><div id="prediction-markets" class="prediction-market-grid"></div><button id="prediction-more" class="button secondary" hidden>Show more markets</button><p class="quiet small prediction-sample">A bounded sample of public markets, with one contract per event. Prices are quotes, not forecasts. The shared scan runs about every 10 minutes; its schedule can be delayed.</p></div>
-        <aside class="panel prediction-planner" id="prediction-planner"><div class="panel-head"><div><p class="eyebrow">OPTIONAL INSPECTION</p><h3>Market details</h3></div></div><div id="prediction-ticket"><p class="empty">Loading the last scan’s decision details…</p></div><div class="prediction-scenario"><details><summary>Optional forecast calculator</summary><p class="quiet small">A local what-if calculation. The automatic bot uses its own recorded evidence and does not need your estimate.</p><div class="form-grid"><label>Your YES probability <span class="input-wrap"><input id="prediction-probability" type="number" min="1" max="99" step="1" placeholder="e.g. 65"><span>%</span></span></label><label>Error allowance <span class="input-wrap"><input id="prediction-uncertainty" type="number" min="1" max="30" step="1" value="5"><span>pts</span></span></label></div><div id="prediction-scenario-result" class="small quiet">Enter a forecast to see break-even, expected value and hypothetical sizing.</div></details></div></aside>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Compare Kalshi and Polymarket US contracts, track simulated trades, and inspect the evidence after costs."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Moffitt Money — Prediction desk</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="app.css?v=5.0.0" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to desk</a>
+    <header class="app-header">
+      <a class="brand" href="#desk"
+        ><span class="brand-mark" aria-hidden="true">m.</span
+        ><span>Moffitt <b>Money</b></span></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#desk" data-route="desk">Desk</a
+        ><a href="#trades" data-route="trades">Paper trades</a
+        ><a href="#research" data-route="research">Research</a>
+      </nav>
+      <div class="header-tools">
+        <button id="health-button" class="quiet-button">Data status</button
+        ><button id="theme" class="icon-button" aria-label="Switch color theme">
+          ◐
+        </button>
       </div>
-    </section>
-    <section id="prediction-pane-accounts" data-pred-pane="accounts" role="tabpanel" aria-labelledby="prediction-tab-accounts" hidden><div class="section-heading"><div><h2>Every paper dollar is accounted for.</h2><p class="quiet">These two accounts start at $100 each. They are separate from the crypto paper ledger and the retired $50 wallet experiment.</p></div><button id="prediction-export" class="button secondary">Export both ledgers ↓</button></div><p id="prediction-export-status" role="status" class="quiet small"></p><div id="prediction-results"></div><div id="prediction-positions"></div><div id="prediction-study" class="prediction-study"></div></section>
-    <section id="prediction-pane-method" data-pred-pane="method" role="tabpanel" aria-labelledby="prediction-tab-method" hidden><div class="section-heading"><div><p class="eyebrow">OUTCOMES FIRST</p><h2>The edge has to survive the costs.</h2><p class="quiet">The current model is a prospective calibration experiment. It records forecasts before outcomes are known and keeps cash idle until its evidence checks pass.</p></div></div><div class="prediction-method-grid"><article class="panel"><span class="method-number">01</span><h3>Learn from comparable events</h3><p>Keep venues separate. Group observations by recurring series, time until the entry cutoff, and 10-point price band. Record one contract per event so sibling bets do not inflate the sample.</p><strong>100 cohort outcomes · 50 in the price band</strong></article><article class="panel"><span class="method-number">02</span><h3>Beat the market-price baseline</h3><p>Store each prediction before resolution. Compare its Brier score with the original midpoint on at least 30 later-resolved forecasts. A model must improve the score by more than 0.002.</p><strong>No backdated labels or imported win claims</strong></article><article class="panel"><span class="method-number">03</span><h3>Price the uncertainty</h3><p>Use a 99% Wilson lower bound, then subtract another 10 points for variation within the price band. Buy only if that conservative probability exceeds the complete acquisition cost by at least 3¢ per contract.</p><strong>Book depth + fees + 1¢ slippage per contract</strong></article><article class="panel"><span class="method-number">04</span><h3>Size small and verify twice</h3><p>Use quarter Kelly, capped at 2% of account equity per event and 10% total open exposure. Require two qualifying scans, quotes no older than 90 seconds, and a spread of 5¢ or less. Halt after 10% peak drawdown.</p><strong>Hold to official settlement · no leverage</strong></article></div><div class="notice subtle">These are conservative research thresholds, not proof of profitability. A 99% interval is not a 99% chance of winning. Repeated testing and changing market conditions can still produce false signals. There may be long periods with no qualifying bet.</div><div class="panel prediction-method-note"><h3>What changed from the old Pages version</h3><p>The old Polymarket copy sample was small, overlapping, and omitted fees in its paper ledger. The Kalshi favorite-bias idea failed its validation. Their historical numbers remain in the archives; neither is treated as an approved live strategy.</p><div class="prediction-source-links"><a href="wallets.html">Original Polymarket wallet research ↗</a><a href="desk.html">Kalshi &amp; other strategy evidence ↗</a><a href="stocks.html">Stock archive ↗</a><a href="arb.html">Arbitrage archive ↗</a></div><p class="small quiet">The active Polymarket account uses the US exchange. The international wallet archive is a different venue and cannot be used as an execution account here.</p></div></section>
-    <section id="prediction-pane-readiness" data-pred-pane="readiness" role="tabpanel" aria-labelledby="prediction-tab-readiness" hidden><div class="section-heading"><div><p class="eyebrow">A SEPARATE ACTIVATION STEP</p><h2>Built toward real execution.</h2><p class="quiet">The shared market format, decision engine, risk checks and order-intent interface are prepared. Real-money adapters are not connected, and paper balances do not fund exchange accounts.</p></div><span class="badge amber">REAL EXECUTION LOCKED</span></div><div class="panel prediction-readiness"><div><span class="positive">✓</span><div><h3>Separate $100 paper books</h3><p>Persistent cash, positions, costs, official payouts and an exportable audit record.</p></div></div><div><span class="positive">✓</span><div><h3>Shared sizing and order-intent boundary</h3><p>The same proposed side, quantity, limit price, maximum cash and quote timestamp can feed a future server adapter.</p></div></div><div><span class="quiet">○</span><div><h3>Verified forward performance</h3><p>Review net returns, drawdowns, forecast calibration and a meaningful sample of completed paper trades before selecting a live allocation.</p></div></div><div><span class="quiet">○</span><div><h3>Authenticated server connection</h3><p>Later, connect the eligible Polymarket US and Kalshi accounts through server-held credentials. Add reconciliation, cancellation, duplicate-order protection and a kill switch, then verify venue order previews.</p></div></div><div><span class="quiet">○</span><div><h3>Your explicit activation</h3><p>Choose the funded account and cash limit, review a concrete order preview, and explicitly authorize real execution. The paper collector cannot activate itself.</p></div></div></div><div class="prediction-source-links"><a href="https://docs.polymarket.us/api-reference/introduction" target="_blank" rel="noopener noreferrer">Polymarket US API ↗</a><a href="https://docs.polymarket.us/fees" target="_blank" rel="noopener noreferrer">Polymarket US fees ↗</a><a href="https://docs.kalshi.com/getting_started/quick_start_market_data" target="_blank" rel="noopener noreferrer">Kalshi API ↗</a><a href="https://docs.kalshi.com/getting_started/fee_rounding" target="_blank" rel="noopener noreferrer">Kalshi fee calculation ↗</a></div></section>
-  </section>
-  <section id="markets" data-page="markets">
-  <section class="outcome-callout"><div><p class="eyebrow">OUTCOMES DRIVE THE DECISION</p><h2 id="outcome-verdict">Checking strategy evidence…</h2><p id="strategy-evidence">Loading recorded performance before evaluating a new paper entry.</p></div><a class="button secondary" href="#backtests">Review outcomes ↗</a></section><div class="outcome-overview" id="outcome-overview"></div>
-  <section class="ticker-grid" id="ticker" aria-label="Market quotes"><div class="empty">Waiting for market data…</div></section>
-  <section class="workspace">
-    <div class="main-column">
-      <section class="panel chart-panel" aria-labelledby="chart-title"><div class="panel-head"><div><p class="eyebrow">MARKET STRUCTURE</p><h2 id="chart-title">Bitcoin <span class="quiet">/ USD</span></h2></div><div class="chart-controls"><label class="sr-only" for="product">Chart product</label><select id="product"><option value="BTC-USD">BTC / USD</option><option value="ETH-USD">ETH / USD</option><option value="SOL-USD">SOL / USD</option><option value="LINK-USD">LINK / USD</option><option value="AVAX-USD">AVAX / USD</option><option value="DOGE-USD">DOGE / USD</option></select><span class="badge muted">1H CANDLES</span></div></div>
-        <div class="chart-price"><strong id="chart-price">Unavailable</strong><span id="chart-regime" class="badge muted">Waiting</span></div><div id="chart" class="chart"><p class="empty">Loading completed candles…</p></div><div class="chart-legend"><span><i class="legend-line"></i> Close</span><span><i class="legend-line gold"></i> 20-hour high</span><span id="chart-asof" class="quiet">Source: Coinbase Exchange</span></div>
+    </header>
+    <main id="main" class="workspace">
+      <div class="page-heading">
+        <div>
+          <h1 id="page-title">Prediction desk</h1>
+          <p id="page-description">
+            Kalshi and Polymarket US, with the costs in view.
+          </p>
+        </div>
+        <div class="paper-label">
+          <span class="paper-dot" aria-hidden="true"></span>Simulation only
+        </div>
+      </div>
+      <p id="load-notice" class="notice" role="status" hidden></p>
+      <section
+        id="portfolio"
+        class="portfolio"
+        aria-label="Prediction account summary"
+      >
+        <p>Loading the two paper accounts…</p>
       </section>
-      <section class="panel" aria-labelledby="setups-title"><div class="panel-head"><div><p class="eyebrow">COMPLETED-HOUR SIGNALS</p><h2 id="setups-title">Opportunity scanner</h2></div><button id="refresh" class="button secondary">↻ Refresh</button></div>
-        <div class="filterbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Find a market" aria-label="Find a market"></label><label><input id="only-candidates" type="checkbox"> Setups only</label><span class="quiet small" id="scan-count"></span></div>
-        <div class="table-scroll"><table><thead><tr><th>Market / setup</th><th>Price</th><th>Trend</th><th>Rel. volume</th><th>Condition</th><th></th></tr></thead><tbody id="setups"><tr><td colspan="6" class="empty">Loading research data…</td></tr></tbody></table></div>
-        <p class="panel-foot">Breakouts need 1.5× hourly volume. Reclaims need an established uptrend. Each rule uses completed candles. A candidate is a paper research signal, with no proven win rate.</p>
+      <section data-view="desk" id="desk-view">
+        <div class="desk-controls">
+          <div class="segmented" role="group" aria-label="Desk view">
+            <button data-desk="markets" aria-pressed="true">
+              Markets <span id="market-total">—</span></button
+            ><button data-desk="pairs" aria-pressed="false">
+              Price gaps <span id="pair-total">—</span>
+            </button>
+          </div>
+          <button class="quiet-button" id="refresh">Refresh data</button>
+        </div>
+        <div class="filter-row">
+          <label class="search-field"
+            ><svg aria-hidden="true" viewBox="0 0 20 20">
+              <circle cx="8" cy="8" r="5.5" />
+              <path d="m12 12 5 5" /></svg
+            ><input
+              id="search"
+              type="search"
+              placeholder="Find a game, event or question"
+              aria-label="Search markets" /></label
+          ><label
+            ><span class="sr-only">Venue</span
+            ><select id="venue">
+              <option value="all">Both venues</option>
+              <option value="polymarket">Polymarket US</option>
+              <option value="kalshi">Kalshi</option>
+            </select></label
+          ><label
+            ><span class="sr-only">Market sort</span
+            ><select id="sort">
+              <option value="close">Closing soon</option>
+              <option value="spread">Tightest spread</option>
+              <option value="evidence">Most evidence</option>
+            </select></label
+          >
+        </div>
+        <div class="scan-line">
+          <p id="scan-summary">Reading the latest completed scan…</p>
+          <span id="scan-time"></span>
+        </div>
+        <div
+          id="market-surface"
+          class="market-surface"
+          aria-live="polite"
+        ></div>
+        <button id="more" class="more-button" hidden>Show more</button>
+        <p class="table-note" id="desk-note">
+          Displayed prices come from dated scans. The collector checks fresh
+          books before a simulated trade.
+        </p>
       </section>
-    </div>
-    <aside class="side-column">
-      <section class="panel planner" aria-labelledby="plan-title"><div class="panel-head"><div><p class="eyebrow">COST-AWARE SIZING</p><h2 id="plan-title">Position planner</h2></div><span class="badge gold-badge">LOCAL MODEL</span></div>
-        <div class="form-grid"><label>Model capital <span class="input-wrap"><span>$</span><input id="capital" type="number" value="1000" min="10" max="10000000" step="0.01"></span></label><label>Risk per idea <span class="input-wrap"><input id="risk" type="number" value="1.5" min="0.1" max="3" step="0.1"><span>%</span></span></label><label>Taker fee / side <span class="input-wrap"><input id="fee" type="number" value="60" min="0" max="300" step="1"><span>bps</span></span></label><label>Slippage / side <span class="input-wrap"><input id="slippage" type="number" value="10" min="0" max="200" step="1"><span>bps</span></span></label></div>
-        <p class="small quiet">Fee is a model assumption. Enter your actual venue tier. 100 bps = 1%. Each idea is capped at 25% of model capital.</p><div class="divider"></div>
-        <div id="plan"><p class="empty">Select a market to inspect its entry conditions.</p></div>
+      <section data-view="trades" id="trades-view" hidden>
+        <div class="section-heading">
+          <h2>Account activity</h2>
+          <button id="export-trades" class="quiet-button">Export trades</button>
+        </div>
+        <div id="trade-summary" class="trade-summary"></div>
+        <div class="section-heading">
+          <h3>Open positions</h3>
+          <span id="position-count" class="muted"></span>
+        </div>
+        <div id="positions"></div>
+        <div class="section-heading">
+          <h3>Settled trades</h3>
+          <span class="muted">Net of modeled entry costs</span>
+        </div>
+        <div id="closed-trades"></div>
+        <details class="disclosure">
+          <summary>Recent scan activity</summary>
+          <div id="scan-activity"></div>
+        </details>
+        <p id="export-status" class="muted" role="status"></p>
       </section>
-      <section class="playbook"><p class="eyebrow">THE PLAYBOOK</p><details open><summary><span>01</span> Volume breakout</summary><p>The trigger closes above the prior 20-hour high on at least 1.5× volume. EMA20 must rise over three hours and EMA50 over six. The next completed hour must close higher again; the live bid must hold the breakout level. Stops and targets stay anchored to the trigger, with the same 0.75 ATR chase limit.</p></details><details><summary><span>02</span> Trend reclaim</summary><p>The trigger reclaims EMA20 after a pullback on at least 1.1× volume, with both averages rising and EMA20 above EMA50. The next completed hour must close higher, remain above EMA20, and hold the trigger low. The live bid must still hold EMA20. Original stops, targets and exit limits remain in place.</p></details><details><summary><span>03</span> Know when to stop</summary><p>The shared paper account caps combined open risk at 3%, pauses new entries after a 5% UTC-day loss, and halts at 15% peak drawdown. Gaps can exceed a planned stop. No leverage or averaging down.</p></details></section>
-    </aside>
-  </section>
-  </section>
-  <section id="backtests" data-page="backtests" class="section-block" hidden><div class="section-heading"><div><p class="eyebrow">HISTORICAL EVIDENCE</p><h2>What the results actually support</h2><p class="quiet">The breakout and reclaim rules replayed on actual five-minute prices. These results are separate from the forward paper ledger.</p></div><a class="button secondary" href="https://github.com/srmcno/pm/blob/claude/polymarket-wallets-analysis-m81p4j/reports/scanner-backtest.md" target="_blank" rel="noopener noreferrer">Method &amp; full results ↗</a></div><div class="strategy-reviews" id="strategy-reviews"></div><section class="panel experiments-panel"><div class="panel-head"><div><p class="eyebrow">SEPTEMBER 13 ENTRY REVISION</p><h3>Stronger confirmation. Results shown honestly.</h3></div></div><p class="small quiet">Both strategies now require rising moving averages and a separate completed hour of follow-through. Costs, sizing, risk limits and existing position exits are unchanged.</p><div id="entry-revision"><p class="empty">Loading the preserved comparison…</p></div><p class="panel-foot">A smaller loss is still a loss. New entries require the current model to pass every evidence check. <a href="https://github.com/srmcno/pm/blob/claude/polymarket-wallets-analysis-m81p4j/reports/scanner-revision-plan.md" target="_blank" rel="noopener noreferrer">Read the declared rules ↗</a></p></section><section class="panel outcome-chart-panel"><div class="panel-head"><div><p class="eyebrow">CURRENT MODEL REPLAY</p><h3>What happened to $1,000</h3></div><span class="badge amber">HISTORICAL SIMULATION</span></div><div id="historical-curve" class="equity-chart"></div><p id="historical-curve-note" class="panel-foot"></p></section><div class="diagnostic-grid"><section class="panel diagnostic-panel"><h3>What drove the result</h3><div id="outcome-diagnosis"></div></section><section class="panel diagnostic-panel"><h3>Paper-entry checks</h3><p class="small quiet">All checks must pass. Passing permits paper research only.</p><div id="evidence-checks"></div></section></div><p class="notice subtle"><a href="etf.html">New: U.S. ETF research and $1,000 forward paper account</a> · Monthly trend rules, distribution accounting, cost stresses and buy-and-hold comparisons.</p><div id="backtest-summary" class="notice subtle">Loading the historical replay results…</div><div class="metric-grid" id="backtest-metrics"></div><div class="panel"><div class="table-scroll"><table><thead><tr><th>Scenario</th><th>Net return</th><th>Max drawdown</th><th>Trades</th><th>Win rate</th><th>Fees</th><th>Buy &amp; hold</th></tr></thead><tbody id="backtest-rows"><tr><td colspan="7" class="empty">Results have not loaded yet.</td></tr></tbody></table></div><p id="backtest-note" class="panel-foot">Code tests verify calculations. A historical replay measures performance under stated assumptions. Neither proves future profitability.</p></div><section class="panel experiments-panel"><div class="panel-head"><div><p class="eyebrow">PRESERVED V2 RULE EXPERIMENTS</p><h3>Changes tested, including failures</h3></div></div><div id="experiments" class="table-scroll"><p class="empty">Loading the comparison…</p></div><p class="panel-foot">These earlier v2 experiments remain visible as historical evidence. Two changes were declared before their comparison runs. The same 90 days and chronological slices were reused, so these are development comparisons, not untouched holdouts. A smaller loss does not establish a profitable strategy.</p></section></section>
-  <section id="paper" data-page="paper" class="section-block" hidden><div class="section-heading"><div><p class="eyebrow">FORWARD PAPER ACCOUNT</p><h2>The paper ledger</h2><p class="quiet">A separate $1,000 model, observed forward from launch. New entries require passing outcome checks and a second scan. Existing positions keep their exit rules. Both sides pay modeled costs.</p></div><button id="export" class="button secondary">Export ledger ↓</button></div><p id="export-status" role="status" class="quiet small"></p><details id="export-fallback" class="csv-fallback" hidden><summary>CSV download and preview</summary><label class="sr-only" for="csv-preview">Paper ledger CSV</label><textarea id="csv-preview" readonly></textarea><a id="download-csv" class="button secondary" hidden download>Download CSV</a> <button id="copy-csv" class="button secondary">Copy CSV</button></details><div class="metric-grid" id="paper-metrics"></div><section class="panel outcome-chart-panel"><div class="panel-head"><h3>Forward equity</h3><span id="paper-entry-status" class="badge amber">Checking entry policy</span></div><div id="paper-curve" class="equity-chart"></div><p id="paper-outcome-note" class="panel-foot"></p></section><div class="panel"><div class="panel-head"><h3>Positions & recent exits</h3><span id="paper-asof" class="quiet small">Awaiting first scan</span></div><div class="table-scroll"><table><thead><tr><th>Market</th><th>State</th><th>Entry</th><th>Mark / exit</th><th>Net P&amp;L</th><th>Reason / stop</th></tr></thead><tbody id="paper-rows"><tr><td colspan="6" class="empty">The model has no recorded trades yet.</td></tr></tbody></table></div><p class="panel-foot" id="paper-note">This is simulated performance. GitHub schedules can be delayed and cannot reproduce continuous execution.</p></div></section>
-  <section id="discovery" data-page="discovery" class="section-block" hidden><div class="section-heading"><div><p class="eyebrow">HIGH RISK · DISCOVERY ONLY</p><h2>Pump.fun radar</h2><p class="quiet">A broader sample of new, updated, promoted, and previously observed Pump pools. Exclusions are screening outcomes, not application errors.</p></div><span class="badge amber">DISCOVERY ONLY</span></div><div class="notice subtle">U.S. access is not confirmed for these tokens or your account. No wallet connection, execution, or claim of legal approval is provided. Reported liquidity and sells do not prove safety.</div><div class="panel"><div class="filterbar token-filter"><label for="token-filter">Show</label><select id="token-filter"><option value="review">Market screen passed</option><option value="all">All sampled tokens</option><option value="filtered">Excluded by market rules</option><option value="incomplete">Missing required data</option></select><span id="token-summary" class="quiet small"></span></div><div class="table-scroll"><table><thead><tr><th>Token / venue</th><th>Liquidity</th><th>1h move</th><th>Buys / sells</th><th>Market screen / reason</th><th></th></tr></thead><tbody id="tokens"><tr><td colspan="6" class="empty">Waiting for the discovery sample…</td></tr></tbody></table></div><button id="show-all-tokens" class="button secondary show-sample" hidden>View all sampled tokens</button><div id="token-detail" class="token-detail" hidden></div><p class="panel-foot" id="token-asof">Every token remains blocked from execution until the missing checks are resolved.</p></div></section>
-  <section id="health" data-page="health" class="section-block" hidden>
-    <div class="section-heading"><div><p class="eyebrow">SOURCE STATUS</p><h2>Know what is current.</h2><p class="quiet">A successful page load does not mean every source has refreshed.</p></div><button id="health-refresh" class="button secondary">Refresh sources</button></div>
-    <div class="health-grid" id="health-cards"></div><div class="health-grid" id="prediction-health-cards"></div>
-    <section class="panel health-details"><h3>Quote connection</h3><p id="connection-detail">Connecting to the public Coinbase feed…</p><h3>Reported source problems</h3><div id="source-errors">Checking the latest snapshot…</div></section>
-    <section class="panel health-details"><h3>How updates work</h3><dl class="update-rules"><div><dt>Market prices</dt><dd>Stream directly from Coinbase while this page is open. If streaming drops, public REST quotes are tried every 15 seconds. Entry checks expire after 30 seconds.</dd></div><div><dt>Shared snapshots</dt><dd>The latest repository data is checked every minute. Scans are scheduled every five minutes but may be delayed by GitHub. The page keeps the original source times.</dd></div><div><dt>Historical results</dt><dd>A dated replay of a fixed period. These are historical evidence, not a live price feed.</dd></div><div><dt>Retired research</dt><dd>Earlier stocks, arbitrage and offshore wallet experiments stopped on September 8. Their saved records remain available in the archives.</dd></div></dl></section>
-    <p class="quiet small" id="site-build">Loading site release…</p>
-  </section>
-  <footer><div><a class="footer-brand" href="./">MOFFITT MONEY</a><p>Live research. Transparent costs.</p></div><div class="footer-links"><a href="#predictions">Polymarket &amp; Kalshi</a><a href="etf.html">U.S. ETF research &amp; paper</a><a href="desk.html">Other strategy lab</a><a href="arb.html">Arbitrage archive</a><a href="stocks.html">Stock archive</a><a href="wallets.html">Wallet archive</a><a href="https://github.com/srmcno/pm">Source & methodology ↗</a><a href="https://help.coinbase.com/coinbase/trading-and-funding/advanced-trade/advanced-trade-fees">Coinbase fees ↗</a><a href="https://pump.fun/docs/terms-and-conditions">Pump terms ↗</a></div><p class="footer-note">v4.4 · Automatic desk &amp; revised entries · Experimental strategies, no promised returns.<br>Both prediction accounts run automatically. Optional inspection settings do not change the bot.</p></footer>
-</main>
-<script type="module" src="terminal.mjs?v=4.4.0"></script>
-</body>
+      <section data-view="research" id="research-view" hidden>
+        <div
+          class="research-tabs segmented"
+          role="group"
+          aria-label="Research view"
+        >
+          <button data-study="predictions" aria-pressed="true">
+            Prediction evidence</button
+          ><button data-study="etf" aria-pressed="false">ETF experiment</button>
+        </div>
+        <section id="prediction-study">
+          <div class="research-intro">
+            <h2>Do the results support the trades?</h2>
+            <p>
+              Resolved events teach the model. Settled trades measure the
+              account. Those are different records.
+            </p>
+          </div>
+          <div id="learning-summary" class="learning-summary"></div>
+          <div id="research-report"></div>
+          <details class="disclosure">
+            <summary>How a directional trade qualifies</summary>
+            <div class="rule-grid">
+              <p>
+                <strong>Evidence first</strong>100 comparable outcomes, 50 in
+                the price band and 30 earlier forecasts. The model must beat
+                their recorded market-price baseline.
+              </p>
+              <p>
+                <strong>Pay for the whole trade</strong>Displayed depth, current
+                fees and 1¢ slippage per contract. Conservative probability must
+                exceed acquisition cost by at least 3¢.
+              </p>
+              <p>
+                <strong>Keep losses bounded</strong>At most 2% of account equity
+                per event, 10% open exposure and two qualifying scans. Entries
+                stop after 10% drawdown.
+              </p>
+              <p>
+                <strong>Wait for the actual outcome</strong>Positions settle
+                from official final payouts. A near-certain price is not a
+                resolved winner.
+              </p>
+            </div>
+          </details>
+          <details class="disclosure">
+            <summary>Earlier experiments and what they taught us</summary>
+            <div id="earlier-results"></div>
+            <p class="muted">
+              <a href="desk.html">Open the separate strategy laboratory</a>.
+              Archived evidence remains in the repository. Retired strategies do
+              not supply win claims or trading permission for the active desk.
+            </p>
+          </details>
+        </section>
+        <section id="etf-study" hidden>
+          <div class="research-intro">
+            <h2>Monthly ETF trend experiment</h2>
+            <p>
+              A separate $1,000 simulation across SPY, EFA, IEF, GLD and VNQ.
+            </p>
+          </div>
+          <div id="etf-account"></div>
+          <div id="etf-results"></div>
+        </section>
+      </section>
+      <footer class="app-footer">
+        <span id="footer-status">Checking recorded data…</span
+        ><a
+          href="https://github.com/srmcno/pm"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Research &amp; source</a
+        >
+      </footer>
+    </main>
+    <dialog id="inspector" class="inspector">
+      <div class="dialog-header">
+        <span id="inspector-label">Contract details</span
+        ><button
+          class="icon-button"
+          data-close="inspector"
+          aria-label="Close details"
+        >
+          ×
+        </button>
+      </div>
+      <div id="inspector-content"></div>
+    </dialog>
+    <dialog id="health-dialog" class="health-dialog">
+      <div class="dialog-header">
+        <h2>Data &amp; operation</h2>
+        <button
+          class="icon-button"
+          data-close="health-dialog"
+          aria-label="Close data status"
+        >
+          ×
+        </button>
+      </div>
+      <div id="health-content"></div>
+      <p class="safety-note">
+        Real orders are off. Broker credentials and activation are separate from
+        these simulated accounts.
+      </p>
+    </dialog>
+    <script type="module" src="app.mjs?v=5.0.0"></script>
+  </body>
 </html>

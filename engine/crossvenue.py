@@ -21,9 +21,10 @@ opportunities, and the honest framing for the rest is intel.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from math import isfinite
 from typing import Callable, Mapping, Sequence
 
-from .book import walk_buy, walk_sell
+from .book import walk_buy, walk_buy_base, walk_sell
 from .clock import now_ns, wall_ms
 from .config import EngineConfig
 
@@ -125,8 +126,11 @@ class CrossVenueMonitor:
         if self.volumes and min(vol_buy, vol_sell) < cfg.cross_min_vol_usd:
             return None
 
-        fee_b = self.fees.get(buy_v, 0.001)
-        fee_s = self.fees.get(sell_v, 0.001)
+        fee_b = self.fees.get(buy_v)
+        fee_s = self.fees.get(sell_v)
+        if any(not isinstance(f, (int, float)) or not isfinite(f) or not 0 <= f < 1
+               for f in (fee_b, fee_s)):
+            return None
         top_bps = ((sell_px / buy_px) * (1 - fee_b) * (1 - fee_s) - 1) * 10_000
         if not (cfg.cross_min_bps <= top_bps <= cfg.cross_max_bps):
             return None
@@ -139,18 +143,29 @@ class CrossVenueMonitor:
         blocked = ""
         cap_usd = min(cfg.risk.max_stake_per_cycle_usd,
                       cfg.risk.bankroll_usd)
-        if self.balances:
-            if quote_avail <= 0:
-                blocked = f"no {quote} on {buy_v}"
-            elif base_avail <= 0:
-                blocked = f"no {base} on {sell_v}"
-            cap_usd = min(cap_usd, quote_avail or cap_usd,
-                          (base_avail * sell_px) or cap_usd)
+        if not isinstance(quote_avail, (int, float)) or not isfinite(quote_avail) or quote_avail <= 0:
+            blocked = f"no verified {quote} on {buy_v}"
+        elif not isinstance(base_avail, (int, float)) or not isfinite(base_avail) or base_avail <= 0:
+            blocked = f"no verified {base} on {sell_v}"
+        if blocked:
+            cap_usd = 0.0
+        else:
+            cap_usd = min(cap_usd, quote_avail)
         size = max(0.0, cap_usd)
         sized_bps = top_bps
         if size >= 1.0:
             wb = walk_buy(b_asks, size, fee_b)
+            if wb.complete and wb.filled > base_avail:
+                # Sell inventory is denominated in tokens, not its (higher)
+                # sale value. Find the cost of acquiring that exact net amount.
+                bounded = walk_buy_base(b_asks, base_avail / (1 - fee_b), fee_b)
+                if not bounded.complete:
+                    return None
+                size = bounded.filled
+                wb = walk_buy(b_asks, size, fee_b)
             if wb.complete:
+                if wb.filled > base_avail + 1e-10:
+                    return None
                 ws = walk_sell(s_bids, wb.filled, fee_s)
                 sized_bps = ((ws.filled / size - 1) * 10_000 if ws.complete
                              else float("-inf"))

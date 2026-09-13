@@ -5,7 +5,7 @@ import {gunzipSync} from 'node:zlib';
 import {replay} from './backtest.research.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const data=JSON.parse(gunzipSync(await readFile(root+'/data/opportunities/backtest-inputs-v2.json.gz')));
-const original=JSON.parse(await readFile(root+'/dashboard/data/scanner-baseline-v2.json'));
+const original=JSON.parse(await readFile(root+'/data/research/scanner-baseline-v2.json'));
 const prereg=JSON.parse(await readFile(new URL('./predeclared-variants.json',import.meta.url)));
 const day=86400;
 const windows=[['Full 90 days',{}],['First 30 days',{end:data.start+30*day}],['Middle 30 days',{start:data.start+30*day,end:data.start+60*day}],['Last 30 days',{start:data.start+60*day}]];

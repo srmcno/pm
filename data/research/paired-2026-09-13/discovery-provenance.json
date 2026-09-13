@@ -1,0 +1,12 @@
+{
+  "nfl-events": {
+    "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXNFLGAME&status=open&with_nested_markets=true&limit=100",
+    "fetchedAt": 1789330170.9116879,
+    "sha256": "369e5e10c2f1b6fcca6cdd52eb2dd15269da4ce6255d0b296d9abd28431ab248"
+  },
+  "mlb-events": {
+    "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXMLBGAME&status=open&with_nested_markets=true&limit=100",
+    "fetchedAt": 1789330171.2243829,
+    "sha256": "f6e3ac9419eb5cec64289b07272b955d4e59f4aae4e7763debae8a02f7bf421a"
+  }
+}

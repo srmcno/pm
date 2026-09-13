@@ -1,0 +1,178 @@
+{
+  "window": {
+    "start": 1789243740,
+    "end": 1789330140,
+    "startISO": "2026-09-12T20:09:00+00:00",
+    "endISO": "2026-09-13T20:09:00+00:00"
+  },
+  "method": "At each Kalshi minute end use its bid/ask closes and latest Polymarket stored observation no later than that end, aged at most 60 seconds. One contract on each leg, current fee counterfactual, round each fee up to cents, add 1 cent per leg slippage. No future match, forward-fill beyond 60s, depth, fills, or realized profit.",
+  "groups": [
+    {
+      "league": "nfl",
+      "kalshiContract": "DEN",
+      "pmPoints": 914,
+      "pmCoverage": [
+        "2026-09-12T20:09:50+00:00",
+        "2026-09-13T20:07:50+00:00"
+      ],
+      "kalshiBars": 1355,
+      "validAlignedMinuteEnds": 862,
+      "directionalSamples": 1724,
+      "positiveGross": 0,
+      "positiveNet": 0,
+      "pmFeeCoefficient": 0.06,
+      "kalshiCurrentCoefficient": 0.07,
+      "excluded": {
+        "outOfWindow": 0,
+        "invalidQuote": 0,
+        "noPriorPMWithin60s": 493
+      },
+      "strongestNet": {
+        "time": 1789243800,
+        "kalshiSide": "no",
+        "pmSide": "yes",
+        "pmTimestamp": 1789243790,
+        "pmAgeSeconds": 10,
+        "pmAsk": 0.445,
+        "kalshiAskProxy": 0.56,
+        "grossGap": -0.005,
+        "fees": 0.04,
+        "slippage": 0.02,
+        "netGap": -0.065
+      }
+    },
+    {
+      "league": "nfl",
+      "kalshiContract": "KC",
+      "pmPoints": 914,
+      "pmCoverage": [
+        "2026-09-12T20:09:50+00:00",
+        "2026-09-13T20:07:50+00:00"
+      ],
+      "kalshiBars": 1023,
+      "validAlignedMinuteEnds": 632,
+      "directionalSamples": 1264,
+      "positiveGross": 0,
+      "positiveNet": 0,
+      "pmFeeCoefficient": 0.06,
+      "kalshiCurrentCoefficient": 0.07,
+      "excluded": {
+        "outOfWindow": 0,
+        "invalidQuote": 0,
+        "noPriorPMWithin60s": 391
+      },
+      "strongestNet": {
+        "time": 1789243800,
+        "kalshiSide": "yes",
+        "pmSide": "yes",
+        "pmTimestamp": 1789243790,
+        "pmAgeSeconds": 10,
+        "pmAsk": 0.445,
+        "kalshiAskProxy": 0.56,
+        "grossGap": -0.005,
+        "fees": 0.04,
+        "slippage": 0.02,
+        "netGap": -0.065
+      }
+    },
+    {
+      "league": "mlb",
+      "kalshiContract": "NYY",
+      "pmPoints": 1538,
+      "pmCoverage": [
+        "2026-09-12T20:09:50+00:00",
+        "2026-09-13T20:07:50+00:00"
+      ],
+      "kalshiBars": 161,
+      "validAlignedMinuteEnds": 113,
+      "directionalSamples": 226,
+      "positiveGross": 21,
+      "positiveNet": 0,
+      "pmFeeCoefficient": 0.06,
+      "kalshiCurrentCoefficient": 0.035,
+      "excluded": {
+        "outOfWindow": 0,
+        "invalidQuote": 0,
+        "noPriorPMWithin60s": 48
+      },
+      "strongestNet": {
+        "time": 1789243920,
+        "kalshiSide": "no",
+        "pmSide": "yes",
+        "pmTimestamp": 1789243910,
+        "pmAgeSeconds": 10,
+        "pmAsk": 0.51,
+        "kalshiAskProxy": 0.47,
+        "grossGap": 0.02,
+        "fees": 0.03,
+        "slippage": 0.02,
+        "netGap": -0.03
+      }
+    },
+    {
+      "league": "mlb",
+      "kalshiContract": "MIN",
+      "pmPoints": 1538,
+      "pmCoverage": [
+        "2026-09-12T20:09:50+00:00",
+        "2026-09-13T20:07:50+00:00"
+      ],
+      "kalshiBars": 181,
+      "validAlignedMinuteEnds": 130,
+      "directionalSamples": 260,
+      "positiveGross": 37,
+      "positiveNet": 0,
+      "pmFeeCoefficient": 0.06,
+      "kalshiCurrentCoefficient": 0.035,
+      "excluded": {
+        "outOfWindow": 0,
+        "invalidQuote": 0,
+        "noPriorPMWithin60s": 51
+      },
+      "strongestNet": {
+        "time": 1789243920,
+        "kalshiSide": "yes",
+        "pmSide": "yes",
+        "pmTimestamp": 1789243910,
+        "pmAgeSeconds": 10,
+        "pmAsk": 0.51,
+        "kalshiAskProxy": 0.48,
+        "grossGap": 0.01,
+        "fees": 0.03,
+        "slippage": 0.02,
+        "netGap": -0.04
+      }
+    }
+  ],
+  "totals": {
+    "directionalSamples": 3474,
+    "positiveGross": 58,
+    "positiveNet": 0,
+    "strongestNet": {
+      "league": "mlb",
+      "contract": "NYY",
+      "time": 1789243920,
+      "kalshiSide": "no",
+      "pmSide": "yes",
+      "pmTimestamp": 1789243910,
+      "pmAgeSeconds": 10,
+      "pmAsk": 0.51,
+      "kalshiAskProxy": 0.47,
+      "grossGap": 0.02,
+      "fees": 0.03,
+      "slippage": 0.02,
+      "netGap": -0.03
+    }
+  },
+  "ruleMismatch": {
+    "nfl": "Same scheduled game and team orientations verified. Both state tie payout 0.50. Polymarket: delayed/postponed/suspended game rescheduled within two calendar days; Kalshi: game must BEGIN within 48 hours. Fair-market settlement determined independently. Full pathwise equivalence is not established.",
+    "mlb": "Same Sep14 19:40 ET game verified. Material mismatch: Polymarket permits rescheduling within TWO WEEKS, Kalshi within TWO DAYS; fair-value fallback can differ. Not a guaranteed complementary payout package."
+  },
+  "limitations": [
+    "Screening only: PM display prices are normally best-ask-derived, but there is no historical depth or executable order confirmation.",
+    "Kalshi minute close quote can have stale underlying updates; minute end is an availability boundary, not an authenticated quote timestamp.",
+    "Repeated observations and complementary directions are correlated, not independent trades. Missing bars are excluded and no coverage beyond the observed sample is asserted.",
+    "Current fee coefficients are a counterfactual across this one-day window, not proof every historical fill had that fee. Future overrides not applied early.",
+    "Both games remain unresolved at study time; no realized profit or outcomes follow. Rule mismatch independently blocks arbitrage eligibility."
+  ]
+}

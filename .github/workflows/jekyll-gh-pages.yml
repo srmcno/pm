@@ -1,10 +1,10 @@
-# Publishes the verified dashboard directory with the checked-out commit recorded.
+# Publishes the fresh static build with the checked-out commit recorded.
 name: Deploy dashboard to GitHub Pages
 
 on:
   push:
     branches: ["claude/polymarket-wallets-analysis-m81p4j"]
-    paths: ["dashboard/**", ".github/workflows/jekyll-gh-pages.yml"]
+    paths: ["dashboard/**", "scripts/build-site.mjs", "package.json", ".github/workflows/jekyll-gh-pages.yml"]
   # Data commits from workflow tokens do not trigger push workflows.
   # Scheduled publishing is best effort; source timestamps remain visible.
   schedule:
@@ -42,17 +42,13 @@ jobs:
         run: |
           npm test
           python3 scripts/check_site.py
-          python3 - <<'PY'
-          import json, subprocess, datetime
-          with open('dashboard/build-info.json','w') as f:
-            json.dump({'version':json.load(open('package.json'))['version'],'commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},f)
-          PY
+          npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload dashboard
+      - name: Upload verified static build
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dashboard
+          path: dist
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Deploy to GitHub Pages
         id: deployment

@@ -59,3 +59,13 @@ Remaining activation work is explicit: confirm account/venue eligibility, connec
 ## Verification
 
 `npm test` includes prediction math, malformed ledger rejection, bid/ask complement, fee overrides, quote expiry, future-label exclusion, event deduplication, two-scan entry, cash conservation, fractional settlement, settlement idempotence, and locked real execution. Run `python3 scripts/check_site.py` and build the same committed source for Sites. DOM integration checks cover the mobile-oriented card structure, tabs, filters, ticket, forecast calculator and ledger export. No browser visual QA is claimed unless separately performed.
+
+## September 13 paired research and sampling revision
+
+The new Desk presents markets and paired-contract price gaps separately. `scripts/predictions/arbitrage.mjs` samples up to 24 upcoming NFL/MLB games and 48 Kalshi events per league, matching explicit provider team IDs and scheduled starts. Both Kalshi team-strike books are evaluated. `prediction-arbitrage.mjs` prices equal whole-contract packages with current fees, slippage, available book depth and independent account budgets. Book ages are evaluated again at final publication and shown as dated scans in the app. Missing rules or data hold the comparison. Exceptional settlement equivalence remains unverified; no paired orders are submitted and no paired quotes are counted as profits.
+
+`state.pairedScans` retains a bounded 144-scan history with original book times, depths, fee rates and rule hashes. This is research evidence, separate from account trades. [The frozen historical comparison](../reports/paired-market-history.md) includes inputs, hashes, exclusions and reproduction instructions.
+
+New learning rows use `observationPolicy: one-event-per-horizon-v1`. An event may contribute one observation in each predeclared time horizon, rather than being permanently limited to the first horizon seen. Prior rows remain intact. Calibration still counts unique events within each cohort and excludes labels learned after the forecast time; the Research overview counts distinct events across horizons. The model version and trading thresholds are unchanged, and the sampling policy change is explicitly recorded rather than backfilled.
+
+Prediction liquidation marks now walk all available bid levels; entry sizing requires depth for the full modeled liquidation quantity. Full-game Kalshi contracts require a matching milestone start for entry timing; contractual expiry is not kickoff. Open positions and due observed contracts receive settlement-check priority. Whole-venue collection failures retain original data with an explicit source error. Both $100 accounts and the real-order lock are preserved.

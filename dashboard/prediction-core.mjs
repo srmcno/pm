@@ -32,6 +32,11 @@ export function fill(asks, quantity, feeRate) {
   return {quantity,principal:round(principal),fees:round(fees),slippage:round(slippage),
     cost:round(principal+fees+slippage),average:round(principal/quantity),limitPrice:worst};
 }
+export function liquidation(bids,quantity,rate) {
+  const inverse=levels(bids).map(([p,q])=>[round(1-p),q]);
+  const modeled=fill(inverse,quantity,rate);
+  return modeled?{quantity,proceeds:round(Math.max(0,quantity-modeled.cost)),fees:modeled.fees,slippage:modeled.slippage}:null;
+}
 export function wilson(wins,n,z=2.576) {
   if(!n)return {lower:0,upper:1};
   const p=wins/n,zz=z*z,d=1+zz/n,c=(p+zz/(2*n))/d,h=z*Math.sqrt(p*(1-p)/n+zz/(4*n*n))/d;
@@ -89,8 +94,9 @@ export function planBet(m, side, estimate, account, now) {
   const budget=Math.max(0,Math.min(account.cash,account.equity*POLICY.maxStakePct,
     account.equity*POLICY.maxExposurePct-exposure,account.equity*POLICY.kellyFraction*fullKelly));
   let modeled=null;
-  if(unit>0)for(let q=Math.min(200,Math.floor(s.bidSize||0),Math.floor(budget/Math.max(.001,ask)));q>=minQty;q--){
-    const f=fill(s.asks,q,m.feeRate);if(f&&f.cost<=budget+1e-8&&finite(lower)&&lower-f.cost/q>=POLICY.minEdge){modeled=f;break;}
+  const bids=s.bids||[[s.bid,s.bidSize]];
+  if(unit>0)for(let q=Math.min(200,Math.floor(budget/Math.max(.001,ask)));q>=minQty;q--){
+    const f=fill(s.asks,q,m.feeRate);if(f&&liquidation(bids,q,m.feeRate)&&f.cost<=budget+1e-8&&finite(lower)&&lower-f.cost/q>=POLICY.minEdge){modeled=f;break;}
   }
   if(!modeled)reasons.push('No whole-contract stake fits the risk budget and two-sided depth.');
   return {status:reasons.length?'held':'candidate',side,reasons,probability:p,lower,breakEven:unit,
@@ -132,9 +138,10 @@ export function advanceAccount(previous, markets, decisions, settlements, now) {
     a.cash=round(a.cash+payout);a.realizedPnl=round(a.realizedPnl+trade.pnl);a.trades.push(trade);return false;
   });
   for(const p of a.positions){
-    const m=markets.find(m=>m.id===p.marketId),bid=m?.sides?.[p.side]?.bid,bidSize=m?.sides?.[p.side]?.bidSize;
-    if(m&&quoteValid(m,now)&&finite(bid)&&bid>=0&&finite(bidSize)&&bidSize>=p.quantity&&fee(m.feeRate,bid,p.quantity)!==null){
-      p.markValue=round(Math.max(0,bid*p.quantity-fee(m.feeRate,bid,p.quantity)-p.quantity*.01));p.markAt=m.quoteAt;
+    const m=markets.find(m=>m.id===p.marketId),side=m?.sides?.[p.side];
+    const mark=side?liquidation(side.bids||[[side.bid,side.bidSize]],p.quantity,m.feeRate):null;
+    if(m&&quoteValid(m,now)&&mark){
+      p.markValue=mark.proceeds;p.markAt=m.quoteAt;
     }else a.markComplete=false;
   }
   a.equity=round(a.cash+a.positions.reduce((n,p)=>n+(p.markValue||0),0));
@@ -149,8 +156,8 @@ export function advanceAccount(previous, markets, decisions, settlements, now) {
     if(!prior||now-prior.at<60||now-prior.at>1800)continue;
     const f=plan.fill;if(!f||f.cost>a.cash)continue;
     a.cash=round(a.cash-f.cost);a.fees=round(a.fees+f.fees);
-    const bid=m.sides[d.side].bid,markValue=round(Math.max(0,bid*f.quantity-fee(m.feeRate,bid,f.quantity)-f.quantity*.01));
-    a.positions.push({id:`${key}:${now}`,marketId:m.id,eventId:m.eventId,question:m.question,side:d.side,
+    const side=m.sides[d.side],markValue=liquidation(side.bids||[[side.bid,side.bidSize]],f.quantity,m.feeRate).proceeds;
+    a.positions.push({id:`${key}:${now}`,marketId:m.id,eventId:m.eventId,question:m.displayTitle||m.question,contractQuestion:m.question,side:d.side,
       quantity:f.quantity,cost:f.cost,principal:f.principal,fees:f.fees,slippage:f.slippage,entry:f.average,
       openedAt:now,quoteAt:m.quoteAt,closeAt:m.closeAt,markAt:m.quoteAt,markValue,forecast:d.forecast,
       feeRate:m.feeRate,version:PREDICTION_VERSION,url:m.url,intent:orderIntent(m,d.side,f),rules:m.rules});
@@ -159,14 +166,17 @@ export function advanceAccount(previous, markets, decisions, settlements, now) {
   a.pending=pending;a.updatedAt=now;return validateAccount(a,a.venue);
 }
 export function observe(markets, old, now) {
-  const next=[...old],seen=new Set(old.filter(o=>o.version===PREDICTION_VERSION).map(o=>`${o.venue}:${o.eventId}`));
+  // A new horizon can contribute once; repeated scans inside it cannot multiply
+  // an event. Forecast training still deduplicates events within its cohort.
+  const next=[...old],seen=new Set(old.filter(o=>o.version===PREDICTION_VERSION).map(o=>`${o.venue}:${o.eventId}:${o.cohort}`));
   for(const m of markets){
-    const key=`${m.venue}:${m.eventId}`,p=midpoint(m),hours=(m.closeAt-now)/3600;
+    const key=`${m.venue}:${m.eventId}:${cohort(m,now)}`,p=midpoint(m),hours=(m.closeAt-now)/3600;
     if(seen.has(key)||!m.seriesId||!quoteValid(m,now)||!finite(p)||hours<POLICY.minHours||hours>POLICY.maxDays*24)continue;
     const f=forecast(m,old,now);seen.add(key);
     next.push({id:m.id,marketId:m.id,venue:m.venue,eventId:m.eventId,seriesId:m.seriesId,cohort:f.cohort,bin:f.bin,
       at:now,quoteAt:m.quoteAt,baseline:p,prediction:f.probability,trainingCount:f.binSamples,version:PREDICTION_VERSION,
       closeAt:m.closeAt,rules:m.rules,venueId:m.venueId,resolvedAt:null,payout:null});
+    next.at(-1).observationPolicy='one-event-per-horizon-v1';
   }
   return next;
 }
