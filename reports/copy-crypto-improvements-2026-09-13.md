@@ -23,6 +23,8 @@ The prior copy tests share a June 28–August 12 window and omit explicit fees. 
 - [x] Independent ranking calculation and 500-case crypto brute-force comparison.
 - [x] Isolated real-data cycles: complete 20-wallet reads and delayed checks for 12 crypto routes.
 - [x] Integrated checks: 111 Node tests, 307 script Python tests and 115 other Python tests passed; static integrity/build and desktop/mobile workflows passed.
-- [ ] Publish and verify the same Sites and GitHub Pages release.
+- [x] Published app 5.2.0 to the same private Site (saved version 8) and GitHub Pages; both build identities verified at `0be06a33c0ca6306ff3ce25e3674593ae1635d94`. Public desktop/mobile flows and private HTTP/module checks passed.
 
 See [copy study operation](../docs/COPY-TRADING.md) for formulas, limits and primary references. No real trading or profit guarantees are implied by simulated or archived results.
+
+Publication: [Site](https://moffitt-money.smoffitt74743.chatgpt.site), [Pages](https://srmcno.github.io/pm/), [CI](https://github.com/srmcno/pm/actions/runs/34787661714), [first scheduled study cycle](https://github.com/srmcno/pm/actions/runs/34787661713). The hosted cycle completed all public collectors and published 11 held copy candidates with the $100 account intact; no forward trades had settled at verification.
