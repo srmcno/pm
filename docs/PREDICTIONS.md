@@ -4,6 +4,10 @@ The September 13, 2026 user request authorizes new Polymarket and Kalshi paper r
 
 ## Operation
 
+The default **Autopilot** view monitors both venues together. No venue selection, browser session, manual YES/NO choice or personal probability is needed to operate the paper collector. **Inspect markets** contains optional read-only filters and a local calculator; these never become collector inputs. A cold-start account can hold cash while it gathers evidence, and this is shown as learning rather than waiting for the user.
+
+`scripts/predictions/cycle.mjs` evaluates both outcomes for all collected markets and advances both independent accounts under the existing policy. Each completed cycle adds a receipt with actual opened/settled ledger IDs and post-cycle pending counts. `recentCycles` keeps the latest 144 receipts; full account trades, settlements and observations remain intact. The UI displays these original scan decisions, separating normal 90-second quote expiry from source delays over 45 minutes. Detailed activity begins with the first receipt-producing cycle; earlier activity is not backfilled or assigned new timestamps.
+
 `node scripts/collect-predictions.mjs` reads only unauthenticated public venue endpoints. `.github/workflows/predictions.yml` runs it every ten minutes, best effort. `data/predictions/state.json` is the authoritative shared state; it initializes each venue with $100 only when absent, validates every existing account, and refuses corrupt state. `dashboard/data/predictions.json` is the public display snapshot. Neither is a deposit or exchange account. Do not reset either account during maintenance.
 
 The collector has a local exclusive lock and unique atomic-write files. The workflow serializes runs and rebases without force before pushing. Conflicting state writers fail instead of choosing a winner. The browser reads current repository JSON every minute and can refresh the selected public book directly without changing the shared accounts; data-only commits do not require a Sites deployment. Pages is also triggered after the prediction cycle. Public data and paper snapshots never contain private keys.

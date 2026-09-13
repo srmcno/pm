@@ -45,7 +45,7 @@ jobs:
           python3 - <<'PY'
           import json, subprocess, datetime
           with open('dashboard/build-info.json','w') as f:
-            json.dump({'version':'4.2.0','commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},f)
+            json.dump({'version':json.load(open('package.json'))['version'],'commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},f)
           PY
       - name: Setup Pages
         uses: actions/configure-pages@v5

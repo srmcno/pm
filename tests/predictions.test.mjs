@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {numeric,fee,fill,newAccount,validateAccount,forecast,observe,advanceAccount,planBet,orderIntent,PREDICTION_VERSION} from '../dashboard/prediction-core.mjs';
 import {normalizePolymarket,normalizeKalshi,effectiveKalshiFee} from '../scripts/predictions/venues.mjs';
+import {runPaperCycle} from '../scripts/predictions/cycle.mjs';
+import {automationReport} from '../dashboard/prediction-automation.mjs';
 const now=1_789_270_000;
 const market=()=>({id:'kalshi:ABC',venue:'kalshi',venueId:'ABC',eventId:'event1',seriesId:'series',question:'Test',rules:'Final source',status:'open',quoteAt:now,observedAt:now,closeAt:now+86400,feeRate:.07,minQuantity:1,sides:{yes:{bid:.49,bidSize:100,asks:[[.5,100]]},no:{bid:.49,bidSize:100,asks:[[.5,100]]}}});
 const estimate={eligible:true,probability:.8,lower:.7,upper:.9};
@@ -22,4 +24,50 @@ test('sports entry cutoff precedes delayed contractual expiry and uses official 
   const m=normalizePolymarket({slug:'game-a',closed:false,status:'MARKET_STATUS_OPEN',feeCoefficient:.06,endDate:expiry,gameStartTime:start,sportsMarketTypeV2:'SPORTS_MARKET_TYPE_MONEYLINE',marketSides:[{long:true,team:{league:'nfl'}}]},{id:'event',slug:'game'}, {marketData:{state:'MARKET_STATE_OPEN',transactTime:new Date(now*1000).toISOString(),bids:[{px:{value:'.49'},qty:'100'}],offers:[{px:{value:'.5'},qty:'100'}]}},now);
   assert.equal(m.closeAt,now+3600);assert.equal(m.expiryAt,now+14*86400);assert.match(m.url,/sports\/nfl\/game\?marketSlug=game-a/);
   assert.ok(planBet({...m,rules:'rules'},'yes',estimate,newAccount('polymarket',now),now).reasons.some(r=>r.includes('6 hours')));
+});
+
+test('the collector chooses both venues and opposite sides, opens and settles with no browser input',()=>{
+  const markets=['polymarket','kalshi'].map(venue=>({...market(),venue,id:venue+':AUTO',venueId:'AUTO',eventId:venue+':event',closeAt:now+172800}));
+  const accounts=Object.fromEntries(markets.map(m=>[m.venue,newAccount(m.venue,now)]));
+  // Synthetic historical evidence exercises automation, not a performance claim.
+  const history=markets.flatMap(m=>Array.from({length:120},(_,i)=>({version:PREDICTION_VERSION,
+    venue:m.venue,eventId:m.venue+':past'+i,cohort:forecast(m,[],now).cohort,bin:forecast(m,[],now).bin,
+    at:now-1000,resolvedAt:now-500,payout:m.venue==='polymarket'?1:0,
+    baseline:.5,prediction:m.venue==='polymarket'?.9:.1})));
+  const initial=structuredClone(accounts);
+  const first=runPaperCycle(accounts,markets,history,{},now);
+  assert.deepEqual(accounts,initial);
+  assert.equal(first.decisions.length,4);
+  assert.deepEqual(first.receipt.venues.map(v=>[v.pending,v.opened.length]),[[1,0],[1,0]]);
+  const fresh=markets.map(m=>({...m,quoteAt:now+600,observedAt:now+600}));
+  const second=runPaperCycle(first.accounts,fresh,history,{},now+600);
+  assert.equal(second.accounts.polymarket.positions[0].side,'yes');
+  assert.equal(second.accounts.kalshi.positions[0].side,'no');
+  for(const v of second.receipt.venues){assert.equal(v.opened.length,1);assert.equal(v.pending,0);assert.ok(v.opened[0].cost<=2);assert.equal(v.cash,100-v.opened[0].cost);}
+  const snapshot={generatedAt:now+600,accounts:second.accounts,markets:fresh,decisions:second.decisions,
+    sources:markets.map(m=>({venue:m.venue,status:'ok',observedAt:now+600})),automation:{latest:second.receipt}};
+  // Ordinary between-scan quote expiry must not report a feed outage or ask for a pick.
+  assert.ok(automationReport(snapshot,now+1200).every(r=>r.status==='Paper entries recorded'&&!r.delayed&&r.pending.length===0));
+  assert.ok(automationReport(snapshot,now+3301).every(r=>r.status==='Collection delayed'));
+  const settlements=Object.fromEntries(markets.map(m=>[m.id,{yesPayout:m.venue==='polymarket'?1:0,observedAt:now+1500,source:'official fixture'}]));
+  const third=runPaperCycle(second.accounts,[],history,settlements,now+1500);
+  for(const v of third.receipt.venues){assert.equal(v.settled.length,1);assert.equal(v.positions,0);validateAccount(third.accounts[v.venue],v.venue);}
+  const fourth=runPaperCycle(third.accounts,[],history,settlements,now+2100);
+  assert.ok(fourth.receipt.venues.every(v=>v.settled.length===0));
+  assert.equal(fourth.accounts.kalshi.cash,third.accounts.kalshi.cash);
+});
+
+test('automatic cold start holds cash, reports learning, and never needs a manual venue choice',()=>{
+  const markets=['polymarket','kalshi'].map(venue=>({...market(),venue,id:venue+':COLD'}));
+  const accounts=Object.fromEntries(markets.map(m=>[m.venue,newAccount(m.venue,now)]));
+  const cycle=runPaperCycle(accounts,markets,[],{},now);
+  const snapshot={generatedAt:now,accounts:cycle.accounts,markets,decisions:cycle.decisions,
+    sources:markets.map(m=>({venue:m.venue,status:'ok',observedAt:now}))};
+  for(const r of automationReport(snapshot,now+600)){
+    assert.equal(r.status,'Learning before entry');assert.equal(r.checked,1);assert.equal(r.outcomes,2);
+    assert.equal(cycle.accounts[r.venue].cash,100);assert.equal(r.pending.length,0);
+    assert.ok(r.reasons.some(([reason])=>reason.includes('More settled outcomes')));
+  }
+  snapshot.sources[0].status='error';
+  assert.equal(automationReport(snapshot,now+600)[0].status,'Source error');
 });

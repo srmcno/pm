@@ -28,4 +28,6 @@ The Outcomes view compares realized payoffs, exit contributions, original equity
 
 ## Prediction accounts, September 13
 
+The v4.3 correction makes Autopilot the default: both prediction accounts are monitored together, while market inspection and personal forecasts are optional. Completed collector receipts report automatic entries, settlements, and pending confirmations. The collector evaluates both venues without browser input. No strategy or risk thresholds were relaxed, no balances reset, and real execution remains locked.
+
 The main Predictions view now uses Polymarket US and Kalshi public books with independent persistent $100 paper accounts. The authorized new prediction cycle runs every ten minutes, best effort; snapshots update in the browser every minute and Pages follows the cycle. Include its source/collector health in maintenance and preserve all paper state. Real execution remains locked. See docs/PREDICTIONS.md for evidence thresholds, costs, original archive limitations and remaining activation work.

@@ -1,4 +1,4 @@
-import {mountPredictions} from './predictions.mjs?v=4.2.0';
+import {mountPredictions} from './predictions.mjs?v=4.3.0';
 import {assessEvidence,applyEvidence,summarizeTrades,POLICY_VERSION} from './outcomes.mjs?v=4.1.0';
 import {publishedJson, publicationHealth} from './data-client.mjs?v=4.0.0';
 import {PRODUCTS, DEFAULTS, VERSION, MODEL_VERSION, ageSeconds, quoteUsable, analyzeMarket} from './market-core.mjs?v=3.1.3';
@@ -389,7 +389,7 @@ function renderHealth() {
   if (snapshot) $('paper-asof').textContent = `${bookAge > 1200 ? 'Delayed snapshot' : 'Snapshot'} · ${since(bookAt)} · ${stamp(bookAt)}`;
 }
 const views = {
-  predictions: ['Prediction markets', 'Polymarket US and Kalshi. Two $100 paper accounts, governed by evidence.'],
+  predictions: ['Automatic prediction desk', 'Polymarket US and Kalshi run together. The bot selects and manages qualifying paper bets.'],
   markets: ['Market overview', 'Live prices, completed-hour setups, and the cost of taking a position.'],
   paper: ['Paper performance', 'Follow the shared model, its positions, and its results after costs.'],
   discovery: ['Token radar', 'Review the observed pools and see exactly which screening rules they meet.'],

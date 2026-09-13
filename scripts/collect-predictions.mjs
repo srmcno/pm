@@ -3,7 +3,8 @@ import {readFile,writeFile,rename,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-import {VENUES,PREDICTION_VERSION,POLICY,newAccount,validateAccount,forecast,planBet,advanceAccount,observe,numeric,timestamp} from '../dashboard/prediction-core.mjs';
+import {VENUES,PREDICTION_VERSION,POLICY,newAccount,validateAccount,forecast,planBet,observe,numeric,timestamp} from '../dashboard/prediction-core.mjs';
+import {runPaperCycle} from './predictions/cycle.mjs';
 import {BASE,get,discoverPolymarket,discoverKalshi,normalizePolymarket,normalizeKalshi,resolvedPolymarket,resolvedKalshi} from './predictions/venues.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const statePath=path.join(root,'data/predictions/state.json'),snapshotPath=path.join(root,'dashboard/data/predictions.json');
@@ -109,9 +110,10 @@ const needsFresh=markets.filter(m=>{
   return ['yes','no'].some(side=>planBet(m,side,f,state.accounts[m.venue],m.observedAt).status==='candidate');
 });
 for(const m of needsFresh){try{const refresh=refreshers.get(m.id);if(refresh)markets[markets.indexOf(m)]=await refresh();}catch(e){m.sourceError='Entry/mark refresh failed';errors.push({venue:m.venue,source:m.id,message:e.message});}}
-const now=Date.now()/1000,decisions=[];
-for(const m of markets){const f=forecast(m,state.observations,now);for(const side of ['yes','no'])decisions.push({marketId:m.id,venue:m.venue,side,forecast:f,plan:planBet(m,side,f,state.accounts[m.venue],now)});}
-for(const venue of VENUES)state.accounts[venue]=advanceAccount(state.accounts[venue],markets,decisions,state.settlements,now);
+const now=Date.now()/1000;
+const {accounts,decisions,receipt}=runPaperCycle(state.accounts,markets,state.observations,state.settlements,now);
+state.accounts=accounts;
+state.recentCycles=[...(state.recentCycles||[]),receipt].slice(-144);
 state.observations=observe(markets,state.observations,now).map(o=>{
   if(o.rules){o.rulesHash=createHash('sha256').update(o.rules).digest('hex');delete o.rules;}return o;
 });
@@ -121,6 +123,7 @@ const studies=Object.fromEntries(VENUES.map(v=>{const rows=state.observations.fi
     brier:predicted.length?predicted.reduce((n,o)=>n+(o.prediction-o.payout)**2,0)/predicted.length:null,
     baselineBrier:predicted.length?predicted.reduce((n,o)=>n+(o.baseline-o.payout)**2,0)/predicted.length:null}];}));
 const snapshot={schemaVersion:1,version:PREDICTION_VERSION,generatedAt:now,mode:'paper',policy:POLICY,sources,markets,accounts:state.accounts,studies,decisions,errors,
+  automation:{mode:'automatic',venues:VENUES,requiresBrowser:false,latest:receipt,recentCycles:state.recentCycles},
   execution:{mode:'paper',realEnabled:false,credentialsConnected:false,adapterStatus:'Order-intent boundary prepared; authenticated execution is not connected'}};
 await save(statePath,state);await save(snapshotPath,snapshot);
 console.log(JSON.stringify({generatedAt:now,sources,accounts:Object.fromEntries(VENUES.map(v=>[v,{cash:state.accounts[v].cash,positions:state.accounts[v].positions.length}])),studies,errors:errors.slice(0,4)},null,2));
