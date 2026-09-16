@@ -3,7 +3,8 @@ import {readFile,writeFile,rename,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-import {VENUES,PREDICTION_VERSION,POLICY,newAccount,validateAccount,forecast,planBet,observe,numeric,timestamp} from '../dashboard/prediction-core.mjs';
+import {VENUES,PREDICTION_VERSION,POLICY,newAccount,validateAccount,observe,numeric,timestamp} from '../dashboard/prediction-core.mjs';
+import {ENTRY_POLICY,entryForecast as forecast,entryPlan as planBet} from '../dashboard/prediction-entry.mjs';
 import {runPaperCycle} from './predictions/cycle.mjs';
 import {collectPairs} from './predictions/arbitrage.mjs';
 import {studyOutcomes} from '../dashboard/prediction-study.mjs';
@@ -127,6 +128,7 @@ state.observations=observe(markets,state.observations,now).map(o=>{
   if(o.rules){o.rulesHash=createHash('sha256').update(o.rules).digest('hex');delete o.rules;}return o;
 });
 state.updatedAt=now;
+state.entryPolicy=ENTRY_POLICY;
 const studies=Object.fromEntries(VENUES.map(v=>{const all=state.observations.filter(o=>o.venue===v&&o.version===PREDICTION_VERSION).sort((a,b)=>a.at-b.at),unique=new Map(),forecasts=new Map();
   for(const o of all){if(!unique.has(o.eventId))unique.set(o.eventId,o);if(Number.isFinite(o.prediction)&&o.resolvedAt!==null&&[0,1].includes(o.payout)&&!forecasts.has(o.eventId))forecasts.set(o.eventId,o);}
   const rows=[...unique.values()],closed=rows.filter(o=>o.resolvedAt!==null),binary=closed.filter(o=>[0,1].includes(o.payout)),predicted=[...forecasts.values()];
@@ -139,10 +141,10 @@ try{arbitrage=await collectPairs(state.accounts,start+440);}catch(error){arbitra
 if(arbitrage.status!=='error'&&arbitrage.generatedAt>(state.pairedScans?.at(-1)?.at||0))state.pairedScans=[...(state.pairedScans||[]),{at:arbitrage.generatedAt,pairs:(arbitrage.pairs||[]).map(p=>({id:p.id,observedAt:p.observedAt,status:p.status,
   quantity:p.best?.quantity??null,cost:p.best?.cost??null,normalNet:p.best?.normalNet??null,worstCaseNet:p.worstCaseNet,
   ruleHashes:p.markets?.map(m=>m.ruleHash),books:p.markets?.map(m=>({id:m.id,quoteAt:m.quoteAt,observedAt:m.observedAt,sides:m.sides,feeRate:m.feeRate}))}))}].slice(-144);
-const snapshot={schemaVersion:1,version:PREDICTION_VERSION,generatedAt:now,mode:'paper',policy:POLICY,sources,markets,accounts:state.accounts,studies,decisions,errors,
+const snapshot={schemaVersion:1,version:PREDICTION_VERSION,generatedAt:now,mode:'paper',policy:POLICY,entryPolicy:ENTRY_POLICY,sources,markets,accounts:state.accounts,studies,decisions,errors,
   arbitrage,research:studyOutcomes(state.observations,now),
   automation:{mode:'automatic',venues:VENUES,requiresBrowser:false,latest:receipt,recentCycles:state.recentCycles},
   execution:{mode:'paper',realEnabled:false,credentialsConnected:false,adapterStatus:'Order-intent boundary prepared; authenticated execution is not connected'}};
 await save(statePath,state);await save(snapshotPath,snapshot);
-console.log(JSON.stringify({generatedAt:now,sources,accounts:Object.fromEntries(VENUES.map(v=>[v,{cash:state.accounts[v].cash,positions:state.accounts[v].positions.length}])),studies,errors:errors.slice(0,4)},null,2));
+console.log(JSON.stringify({generatedAt:now,entryPolicy:ENTRY_POLICY,cycle:receipt,sources,accounts:Object.fromEntries(VENUES.map(v=>[v,{cash:state.accounts[v].cash,positions:state.accounts[v].positions.length}])),studies,errors:errors.slice(0,4)},null,2));
 if(sources.every(s=>s.status==='error'))process.exitCode=1;

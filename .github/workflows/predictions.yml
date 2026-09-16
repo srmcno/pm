@@ -5,7 +5,7 @@ on:
     - cron: '6-56/10 * * * *'
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/collect-predictions.mjs', 'scripts/predictions/**', 'dashboard/prediction-core.mjs', 'dashboard/prediction-venues.mjs', 'dashboard/prediction-arbitrage.mjs', 'dashboard/prediction-study.mjs', '.github/workflows/predictions.yml']
+    paths: ['scripts/collect-predictions.mjs', 'scripts/predictions/**', 'dashboard/prediction-core.mjs', 'dashboard/prediction-entry.mjs', 'dashboard/prediction-venues.mjs', 'dashboard/prediction-arbitrage.mjs', 'dashboard/prediction-study.mjs', 'tests/prediction-entry.test.mjs', '.github/workflows/predictions.yml']
 permissions:
   contents: write
 concurrency:
@@ -23,8 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify paper accounting
-        run: node --test tests/predictions.test.mjs tests/prediction-research.test.mjs
+      - name: Verify paper accounting and experimental entry
+        run: node --test tests/predictions.test.mjs tests/prediction-research.test.mjs tests/prediction-entry.test.mjs
       - name: Read public markets, record outcomes and advance two $100 paper books
         id: collect
         continue-on-error: true

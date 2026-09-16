@@ -1,31 +1,31 @@
 # Publishing and maintenance
 
-The canonical source is the GitHub default branch `claude/polymarket-wallets-analysis-m81p4j` of `srmcno/pm`. The existing owner-private Sites identity is stored in `.openai/hosting.json`. Reuse it; do not create a second Site or branch.
+The canonical source is the GitHub default branch `claude/polymarket-wallets-analysis-m81p4j` of `srmcno/pm`. Preserve the existing owner-private Sites identity in `.openai/hosting.json`. Do not create a second Site or branch.
 
 - Site: https://moffitt-money.smoffitt74743.chatgpt.site/
 - Pages mirror: https://srmcno.github.io/pm/
 - Source: `dashboard/`; build: `npm run build`; public artifact: `dist/`.
 
-## Interface
+## Interface, version 5.3
 
-Copy trading, Crypto arbitrage, Predictions and Research are the primary navigation. Copy trading is the opening view. `wallets.html` routes to `#copy`; `arb.html` routes to `#crypto`. Their full core workflows are integrated into the shared shell. Prediction paper accounts remain under `#trades`, ETF results under `#research/etf`, and the separate strategy laboratory at `desk.html`.
+`dashboard/focus.html` is the new primary entry. The build publishes it as `dist/index.html`. Main navigation is Overview, Activity and Archive. The original `dashboard/index.html` is the advanced workspace, published as `archive-workspace.html` with a return-to-main link. Do not replace the focused root with the old workspace when deploying.
 
-The build deletes the previous `dist/` before copying an explicit public allowlist. Both GitHub Pages and Sites publish that same directory. Backend-only modules and raw backtest inputs are not part of the public artifact. Compact dated copy and crypto history publications are included because they are core research features. Do not upload `dashboard/` directly: it also contains research inputs used by scheduled collectors.
+The Archive groups active auxiliary tools separately from historical studies and diagnostics. Existing copy, crypto, ETF and strategy screens remain available. Legacy root hashes for copy, crypto, research and desk redirect to the archived workspace; the old trades hash opens the new activity screen. Existing wallet and arb redirect pages continue to resolve through these aliases.
+
+The build clears the previous output and copies an explicit public allowlist. Backend-only modules and raw backtest inputs remain outside the public artifact. Publish `dist/`, not the unbuilt dashboard folder. See [current paper policy and archive design](ACTIVE-PAPER.md).
 
 ## Data updates
 
-`dashboard/data-client.mjs` retrieves dated snapshots from GitHub raw default-branch `HEAD`, then falls back to bundled or newer retained records. The main display checks once per minute. It does not stream trading quotes or submit orders. Refreshing does not advance a paper account.
+`dashboard/data-client.mjs` reads dated snapshots from GitHub raw default-branch HEAD, falling back to bundled or newer retained records. The focused main app checks prediction data once per minute and does not initialize the archived wallet/crypto screens. Refreshing the page never advances an account or submits an order.
 
-Prediction collection runs every ten minutes, best effort. ETF simulation runs on its existing weekday schedule. The separate desk and opportunity workflows remain active for their own saved accounts. The opportunity workflow also refreshes public crypto-arbitrage comparisons without any ledger effects. The new isolated forward copy study shares the existing opportunity schedule; its public-only collector and frozen $100 account are described in [COPY-TRADING.md](COPY-TRADING.md). Retired copy collectors and the earlier $50 account remain paused; wallet profiles can make bounded public activity reads. A data-only commit does not need a Sites interface deployment. Each venue's book times and collection errors, ETF source dates, and retained-data notices remain visible.
+The prediction collector runs every ten minutes, best effort. ETF, spot, opportunity and isolated forward-copy workflows keep their existing schedules and account records. Crypto comparisons have no ledger effect. Retired international collectors and the earlier $50 copy account remain paused. Dates, partial collections and failures remain explicit. Data-only updates do not require an interface deployment.
 
 ## Interface publication
 
-Read the Sites building/hosting skills, preserve `.openai/hosting.json`, and use the existing source credential without writing it into files, logs, remote URLs or git configuration. Preserve concurrent bot commits. Run `npm test`, both Python test suites, `python3 scripts/check_site.py` and the build; inspect the affected interface on desktop and mobile.
+Preserve `.openai/hosting.json` and the existing Site source identity. Run `npm test`, both Python suites, `python3 scripts/check_site.py`, and the build. Inspect the affected interface on mobile and desktop. Preserve concurrent bot commits and all account/history files.
 
-Commit the exact source on the default branch and push the same source to GitHub and the existing Sites source repository. Build after recording the commit so `dist/build-info.json` identifies that revision. Package only the static output, deploy the existing private Site, and verify terminal success plus release identity. Pages builds the same artifact on interface changes and completed data cycles.
+Publish the same committed source and static artifact to Pages and the existing private Site, then verify terminal deployment success and release identity. A GitHub source update is not proof that Sites has updated. Do not expose credentials in files, logs, git configuration, static output or GitHub secrets. The existing maintenance task should be reused rather than duplicated.
 
-The existing hourly maintenance task compares interface sources, the build script and manifest. It excludes data-only and generated build-info changes, republishes when needed, and reports unresolved failures. Do not create duplicate maintenance tasks or put temporary Sites credentials into GitHub secrets.
+## Operational boundaries
 
-## Retained operational boundaries
-
-Built-in simulation is the selected mode. Prediction and ETF balances are independent. No real orders, broker credentials or international venue collectors are activated by this interface update. Do not restart retired collectors to make an old page appear current. See [prediction controls](PREDICTIONS.md), [ETF operation](ETF-RUNBOOK.md), and the [September research review](../reports/research-review-2026-09-13.md).
+All existing accounts remain simulations. The experimental paper-entry policy does not unlock real execution. Do not reset either $100 prediction account, fabricate historical forecasts, restart retired collectors, or make historical results appear live. See [original accounting controls](PREDICTIONS.md), [forward copy study](COPY-TRADING.md), and [ETF operation](ETF-RUNBOOK.md).

@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Study copy-trading wallets, compare crypto arbitrage after costs, and track Kalshi and Polymarket simulations."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Moffitt Money — Copy trading</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="app.css?v=5.1.0" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to desk</a>
+    <header class="app-header">
+      <a class="brand" href="#copy"
+        ><span class="brand-mark" aria-hidden="true">m.</span
+        ><span>Moffitt <b>Money</b></span></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#copy" data-route="copy">Copy trading</a
+        ><a href="#crypto" data-route="crypto">Crypto arbitrage</a
+        ><a href="#desk" data-route="desk">Predictions</a
+        ><a href="#research" data-route="research">Research</a>
+      </nav>
+      <div class="header-tools">
+        <button id="refresh" class="quiet-button">Refresh</button>
+        <button id="health-button" class="quiet-button">Data status</button
+        ><button id="theme" class="icon-button" aria-label="Switch color theme">
+          ◐
+        </button>
+      </div>
+    </header>
+    <main id="main" class="workspace">
+      <div class="page-heading">
+        <div>
+          <h1 id="page-title">Copy trading</h1>
+          <p id="page-description">
+            Wallet research, consensus signals and the trades that followed.
+          </p>
+        </div>
+        <div class="paper-label">
+          <span class="paper-dot" aria-hidden="true"></span>Simulation only
+        </div>
+      </div>
+      <p id="load-notice" class="notice" role="status" hidden></p>
+      <section data-view="copy" id="copy-view">
+        <div id="copy-summary" class="context-strip">
+          <p>Loading wallet research…</p>
+        </div>
+        <div
+          class="section-tabs segmented"
+          role="group"
+          aria-label="Copy trading view"
+        >
+          <button data-copy-tab="wallets" aria-pressed="true">Wallets</button>
+          <button data-copy-tab="signals" aria-pressed="false">
+            Consensus
+          </button>
+          <button data-copy-tab="paper" aria-pressed="false">
+            Paper account
+          </button>
+          <button data-copy-tab="evidence" aria-pressed="false">
+            Past results
+          </button>
+        </div>
+        <div data-copy-panel="wallets">
+          <div class="wallet-filters">
+            <label class="search-field"
+              ><input
+                id="wallet-search"
+                type="search"
+                placeholder="Find a wallet or specialty"
+                aria-label="Search wallets"
+            /></label>
+            <label
+              ><span class="sr-only">Wallet group</span
+              ><select id="wallet-scope">
+                <option value="tracked">Forward study cohort</option>
+                <option value="all">All researched wallets</option>
+                <option value="saved">My saved wallets</option>
+              </select></label
+            >
+            <button
+              id="wallet-filter-toggle"
+              class="quiet-button wallet-filter-toggle"
+              aria-expanded="false"
+              aria-controls="wallet-category wallet-sort"
+            >
+              Filters
+            </button>
+            <label class="wallet-filter-secondary"
+              ><span class="sr-only">Wallet specialty</span
+              ><select id="wallet-category">
+                <option value="all">All specialties</option>
+              </select></label
+            >
+            <label class="wallet-filter-secondary"
+              ><span class="sr-only">Wallet sort</span
+              ><select id="wallet-sort">
+                <option value="researchScore">Research score</option>
+                <option value="pnl90">Highest P&amp;L</option>
+                <option value="winDayRate">Profitable days</option>
+                <option value="maxDrawdown90">Smallest drawdown</option>
+              </select></label
+            >
+          </div>
+          <p class="table-note" id="wallet-count">
+            Reading the saved wallet study…
+          </p>
+          <div id="wallet-list" class="wallet-list"></div>
+          <button id="wallet-more" class="more-button" hidden>
+            Show more wallets
+          </button>
+          <p class="table-note">
+            Rankings use dated Polymarket international wallet history. Open a
+            profile for the score breakdown and recent activity. Stars save
+            wallets on this browser.
+          </p>
+        </div>
+        <div data-copy-panel="signals" id="copy-signals" hidden></div>
+        <div data-copy-panel="paper" id="copy-paper" hidden></div>
+        <div data-copy-panel="evidence" id="copy-evidence" hidden></div>
+        <p id="copy-action-status" class="sr-only" role="status"></p>
+      </section>
+      <section data-view="crypto" id="crypto-view" hidden>
+        <div id="crypto-summary" class="context-strip">
+          <p>Loading crypto books…</p>
+        </div>
+        <div
+          class="section-tabs segmented"
+          role="group"
+          aria-label="Crypto arbitrage view"
+        >
+          <button data-crypto-tab="cross" aria-pressed="true">
+            Across exchanges
+          </button>
+          <button data-crypto-tab="triangles" aria-pressed="false">
+            Within Kraken
+          </button>
+          <button data-crypto-tab="history" aria-pressed="false">
+            History
+          </button>
+          <button data-crypto-tab="spot" aria-pressed="false">
+            Spot paper
+          </button>
+        </div>
+        <div class="crypto-sizing" id="crypto-sizing">
+          <label
+            >Compare buy budget
+            <select id="crypto-budget">
+              <option value="25">$25</option>
+              <option value="100" selected>$100</option>
+              <option value="500">$500</option>
+            </select></label
+          >
+          <label id="crypto-direction-label"
+            ><span class="sr-only">Route directions</span
+            ><select id="crypto-direction">
+              <option value="best">Best direction per asset</option>
+              <option value="all">Both directions</option>
+            </select></label
+          >
+        </div>
+        <p id="crypto-scan-time" class="table-note">
+          Reading the latest crypto scan…
+        </p>
+        <div data-crypto-panel="cross" id="crypto-cross"></div>
+        <div data-crypto-panel="triangles" hidden>
+          <p class="table-note">
+            USD → two crypto assets → USD, with fees, depth, rounding and order
+            minimums on every leg.
+          </p>
+          <div id="crypto-triangles"></div>
+        </div>
+        <div data-crypto-panel="history" hidden>
+          <div class="section-heading"><h2>Recorded comparisons</h2></div>
+          <p class="table-note">
+            Each row is a scan, not a trade. A positive modeled gap never
+            credits a paper account.
+          </p>
+          <div id="crypto-history-scans"></div>
+          <div class="section-heading"><h2>Earlier crypto simulations</h2></div>
+          <div id="crypto-earlier"></div>
+        </div>
+        <div data-crypto-panel="spot" id="crypto-spot" hidden></div>
+        <p id="crypto-source-notice" class="table-note" role="status"></p>
+        <details class="disclosure">
+          <summary>Fees, inventory and execution assumptions</summary>
+          <p>
+            Base-tier taker assumptions reviewed September 13, 2026: Coinbase
+            Exchange 0.60%, Kraken Pro spot crypto 0.80%. Fees are modeled in
+            quote currency, plus 5 bps additional slippage per leg. Your
+            account’s actual fee tier is not connected.
+          </p>
+          <p>
+            Cross-venue comparisons require USD on the buying exchange and
+            existing crypto inventory on the selling exchange. Transfers,
+            rebalancing and simultaneous execution are unverified. REST receipt
+            times are displayed; no real orders are enabled.
+          </p>
+          <p>
+            <a
+              href="https://help.coinbase.com/en/exchange/trading-and-funding/exchange-fees"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Coinbase Exchange fees</a
+            >
+            ·
+            <a
+              href="https://www.kraken.com/features/fee-schedule"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Kraken fee schedule</a
+            >
+          </p>
+        </details>
+      </section>
+      <section
+        id="portfolio"
+        class="portfolio"
+        aria-label="Prediction account summary"
+        hidden
+      >
+        <p>Loading the two paper accounts…</p>
+      </section>
+      <section data-view="desk" id="desk-view" hidden>
+        <div class="desk-controls">
+          <div class="segmented" role="group" aria-label="Desk view">
+            <button data-desk="markets" aria-pressed="true">
+              Markets <span id="market-total">—</span></button
+            ><button data-desk="pairs" aria-pressed="false">
+              Contract comparisons <span id="pair-total">—</span>
+            </button>
+          </div>
+          <a class="quiet-button" href="#trades">Prediction paper accounts</a>
+        </div>
+        <div class="filter-row">
+          <label class="search-field"
+            ><svg aria-hidden="true" viewBox="0 0 20 20">
+              <circle cx="8" cy="8" r="5.5" />
+              <path d="m12 12 5 5" /></svg
+            ><input
+              id="search"
+              type="search"
+              placeholder="Find a game, event or question"
+              aria-label="Search markets" /></label
+          ><label
+            ><span class="sr-only">Venue</span
+            ><select id="venue">
+              <option value="all">Both venues</option>
+              <option value="polymarket">Polymarket US</option>
+              <option value="kalshi">Kalshi</option>
+            </select></label
+          ><label
+            ><span class="sr-only">Market sort</span
+            ><select id="sort">
+              <option value="close">Closing soon</option>
+              <option value="spread">Tightest spread</option>
+              <option value="evidence">Most evidence</option>
+            </select></label
+          >
+        </div>
+        <div class="scan-line">
+          <p id="scan-summary">Reading the latest completed scan…</p>
+          <span id="scan-time"></span>
+        </div>
+        <div
+          id="market-surface"
+          class="market-surface"
+          aria-live="polite"
+        ></div>
+        <button id="more" class="more-button" hidden>Show more</button>
+        <p class="table-note" id="desk-note">
+          Displayed prices come from dated scans. The collector checks fresh
+          books before a simulated trade.
+        </p>
+      </section>
+      <section data-view="trades" id="trades-view" hidden>
+        <div class="section-heading">
+          <h2>Account activity</h2>
+          <a href="#desk">Back to prediction markets</a>
+          <button id="export-trades" class="quiet-button">Export trades</button>
+        </div>
+        <div id="trade-summary" class="trade-summary"></div>
+        <div class="section-heading">
+          <h3>Open positions</h3>
+          <span id="position-count" class="muted"></span>
+        </div>
+        <div id="positions"></div>
+        <div class="section-heading">
+          <h3>Settled trades</h3>
+          <span class="muted">Net of modeled entry costs</span>
+        </div>
+        <div id="closed-trades"></div>
+        <details class="disclosure">
+          <summary>Recent scan activity</summary>
+          <div id="scan-activity"></div>
+        </details>
+        <p id="export-status" class="muted" role="status"></p>
+      </section>
+      <section data-view="research" id="research-view" hidden>
+        <div class="research-links">
+          <a href="#copy/evidence">Copy-trading results</a
+          ><a href="#crypto/history">Crypto arbitrage history</a
+          ><a href="desk.html">Strategy laboratory</a>
+        </div>
+        <div
+          class="research-tabs segmented"
+          role="group"
+          aria-label="Research view"
+        >
+          <button data-study="predictions" aria-pressed="true">
+            Prediction evidence</button
+          ><button data-study="etf" aria-pressed="false">ETF experiment</button>
+        </div>
+        <section id="prediction-study">
+          <div class="research-intro">
+            <h2>Do the results support the trades?</h2>
+            <p>
+              Resolved events teach the model. Settled trades measure the
+              account. Those are different records.
+            </p>
+          </div>
+          <div id="learning-summary" class="learning-summary"></div>
+          <div id="research-report"></div>
+          <details class="disclosure">
+            <summary>How a directional trade qualifies</summary>
+            <div class="rule-grid">
+              <p>
+                <strong>Evidence first</strong>100 comparable outcomes, 50 in
+                the price band and 30 earlier forecasts. The model must beat
+                their recorded market-price baseline.
+              </p>
+              <p>
+                <strong>Pay for the whole trade</strong>Displayed depth, current
+                fees and 1¢ slippage per contract. Conservative probability must
+                exceed acquisition cost by at least 3¢.
+              </p>
+              <p>
+                <strong>Keep losses bounded</strong>At most 2% of account equity
+                per event, 10% open exposure and two qualifying scans. Entries
+                stop after 10% drawdown.
+              </p>
+              <p>
+                <strong>Wait for the actual outcome</strong>Positions settle
+                from official final payouts. A near-certain price is not a
+                resolved winner.
+              </p>
+            </div>
+          </details>
+          <details class="disclosure">
+            <summary>Earlier experiments and what they taught us</summary>
+            <div id="earlier-results"></div>
+            <p class="muted">
+              <a href="desk.html">Open the separate strategy laboratory</a>.
+              Archived evidence remains in the repository. Retired strategies do
+              not supply win claims or trading permission for the active desk.
+            </p>
+          </details>
+        </section>
+        <section id="etf-study" hidden>
+          <div class="research-intro">
+            <h2>Monthly ETF trend experiment</h2>
+            <p>
+              A separate $1,000 simulation across SPY, EFA, IEF, GLD and VNQ.
+            </p>
+          </div>
+          <div id="etf-account"></div>
+          <div id="etf-results"></div>
+        </section>
+      </section>
+      <footer class="app-footer">
+        <span id="footer-status">Checking recorded data…</span
+        ><a
+          href="https://github.com/srmcno/pm"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Research &amp; source</a
+        >
+      </footer>
+    </main>
+    <dialog id="inspector" class="inspector">
+      <div class="dialog-header">
+        <span id="inspector-label">Contract details</span
+        ><button
+          class="icon-button"
+          data-close="inspector"
+          aria-label="Close details"
+        >
+          ×
+        </button>
+      </div>
+      <div id="inspector-content"></div>
+    </dialog>
+    <dialog id="health-dialog" class="health-dialog">
+      <div class="dialog-header">
+        <h2>Data &amp; operation</h2>
+        <button
+          class="icon-button"
+          data-close="health-dialog"
+          aria-label="Close data status"
+        >
+          ×
+        </button>
+      </div>
+      <div id="health-content"></div>
+      <p class="safety-note">
+        Real orders are off. Broker credentials and activation are separate from
+        these simulated accounts.
+      </p>
+    </dialog>
+    <script type="module" src="app.mjs?v=5.1.0"></script>
+  </body>
+</html>

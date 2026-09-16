@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Moffitt Money: autonomous paper accounts, positions and activity. Research and historical tools are kept in one archive.">
+<meta name="color-scheme" content="light dark"><title>Moffitt Money | Overview</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="focus.css?v=5.3.0">
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar"><a class="brand" href="#overview"><span aria-hidden="true">m.</span>Moffitt <b>Money</b></a>
+<nav aria-label="Main navigation"><a href="#overview" data-page="overview" aria-current="page">Overview</a><a href="#activity" data-page="activity">Activity</a><a href="#archive" data-page="archive">Archive</a></nav>
+<div class="tools"><button id="refresh" type="button">Refresh</button><button id="theme" type="button" aria-label="Switch color theme">Theme</button></div></header>
+<main id="content" tabindex="-1">
+<div class="heading"><div><p class="eyebrow">AUTOMATIC ACCOUNTS</p><h1 id="page-title">Your paper accounts</h1><p id="page-subtitle">Positions, results and what the collector is doing now.</p></div><span class="mode">Paper only. Real orders off.</span></div>
+<p id="notice" class="notice" role="status" hidden></p>
+<section id="overview" data-view="overview">
+<div class="section-heading"><h2>Prediction markets</h2><span id="scan-time" class="muted">Reading the latest completed scan...</span></div>
+<div id="account-grid" class="account-grid" aria-live="polite"><div class="empty">Loading your two independent paper accounts...</div></div>
+<p class="footnote">Both venues are selected automatically. No market choice or open browser is needed. Experimental paper entries are not proof of profitability.</p>
+<div class="section-heading"><h2>Open positions</h2><a href="#activity">Full activity</a></div><div id="positions" class="records"><p class="empty">Reading the account ledger...</p></div>
+<details id="market-details" class="details"><summary>Markets checked and entry conditions <span id="market-count"></span></summary><p class="muted">These are decisions from the completed collector scan, not live executable quotes. Inspection does not place a bet.</p><div id="market-list" class="records"></div></details>
+<div class="compact-note"><strong>Other active tools</strong><a href="archive-workspace.html#copy/paper">Forward copy study</a><a href="archive-workspace.html#crypto/spot">Spot paper account</a><a href="archive-workspace.html#crypto">Crypto comparisons</a></div>
+</section>
+<section id="activity" data-view="activity" hidden>
+<div class="section-heading"><h2>Account activity</h2><button id="export" type="button" disabled>Export ledger</button></div>
+<div class="filters"><label>Venue <select id="activity-venue"><option value="all">Both venues</option><option value="polymarket">Polymarket US</option><option value="kalshi">Kalshi</option></select></label><label>Status <select id="activity-state"><option value="all">Open and settled</option><option value="open">Open</option><option value="settled">Settled</option></select></label></div>
+<p id="ledger-count" class="muted"></p><div id="ledger" class="records"></div><button id="load-more" type="button" hidden>Show more activity</button>
+<details class="details"><summary>Recent collector scans</summary><div id="cycles" class="records"></div></details>
+</section>
+<section id="archive" data-view="archive" hidden>
+<p class="intro">The detailed tools and historical work are preserved here. They no longer compete with the main account view. Moving a screen here does not stop its collector.</p>
+<h2>Active research tools</h2><div class="archive-grid">
+<a class="archive-card" href="archive-workspace.html#copy/paper"><small>FORWARD STUDY</small><h3>Copy-trading account</h3><p>Its separate paper ledger, frozen cohort and current research activity.</p></a>
+<a class="archive-card" href="archive-workspace.html#crypto"><small>COMPARISON ONLY</small><h3>Crypto price comparisons</h3><p>Cross-exchange and within-exchange scans. Comparisons are not executed trades.</p></a>
+<a class="archive-card" href="archive-workspace.html#crypto/spot"><small>SEPARATE PAPER ACCOUNT</small><h3>Directional spot strategies</h3><p>The existing spot-paper workflow and its own account history.</p></a>
+<a class="archive-card" href="archive-workspace.html#research/etf"><small>RESEARCH</small><h3>ETF experiment</h3><p>The ETF paper study, supporting evidence and historical results.</p></a>
+</div><h2>Historical studies and diagnostics</h2><div class="archive-grid">
+<a class="archive-card" href="archive-workspace.html#copy/evidence"><small>DATED RESEARCH</small><h3>Wallet studies and past results</h3><p>Prior wallet rankings, the retired paper account and backtest comparisons.</p></a>
+<a class="archive-card" href="archive-workspace.html#crypto/history"><small>HISTORY</small><h3>Earlier crypto experiments</h3><p>Previous simulations and strategy results, with original dates intact.</p></a>
+<a class="archive-card" href="archive-workspace.html#research"><small>DIAGNOSTICS</small><h3>Prediction evidence</h3><p>Calibration, outcome studies and detailed research. Separate from paper-entry eligibility.</p></a>
+<a class="archive-card" href="desk.html"><small>SEPARATE WORKSPACE</small><h3>Strategy laboratory</h3><p>The existing strategy desk and retained experiments.</p></a>
+</div>
+</section>
+<footer><span id="policy-label">Automatic simulation</span><span>Original ledgers preserved. No deposits or live orders.</span></footer>
+</main><script type="module" src="focus.mjs?v=5.3.0"></script>
+</body></html>
