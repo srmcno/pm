@@ -1,8 +1,8 @@
 import {readFile, writeFile, mkdir, rename} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-import {assessEvidence, applyEvidence} from '../dashboard/outcomes.mjs';
-import {PRODUCTS, VERSION, analyzeMarket, evaluateToken, advancePaper} from '../dashboard/market-core.mjs';
+import {assessEvidence, applyEvidence} from './legacy-spot-exit-only.mjs';
+import {PRODUCTS, VERSION, analyzeMarket, evaluateToken, advancePaper} from './legacy-spot-exit-only.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const snapshotPath = path.join(root, 'dashboard/data/opportunities.json');
