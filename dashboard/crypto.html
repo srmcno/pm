@@ -1,0 +1,25 @@
+<!doctype html><html lang="en" data-theme="light"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
+<meta name="description" content="Multi-coin directional paper strategies, actual simulated positions and preserved retirement evidence."><title>Moffitt Money | Crypto Strategies</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="focus.css?v=5.4.0"><link rel="stylesheet" href="crypto-strategies.css?v=5.4.0">
+</head><body><a class="skip" href="#content">Skip to content</a>
+<header class="topbar"><a class="brand" href="./"><span aria-hidden="true">m.</span>Moffitt <b>Money</b></a>
+<nav aria-label="Main navigation"><a href="./">Predictions</a><a href="crypto.html" id="crypto-nav" aria-current="page">Crypto Strategies</a><a href="#activity" id="activity-nav">Activity</a><a href="./#archive" id="archive-nav">Archive</a></nav>
+<div class="tools"><button id="refresh" type="button">Refresh</button><button id="theme" type="button" aria-label="Switch color theme">Theme</button></div></header>
+<main id="content"><div class="heading"><div><p class="eyebrow">ONE EXCHANGE · SEPARATE STRATEGIES</p><h1 id="title">Crypto Strategies</h1><p id="subtitle">Compare coin movement. Follow the entries, exits and net results.</p></div><span class="mode">Paper only. Real orders off.</span></div>
+<p class="notice" id="notice" role="status" hidden></p>
+<section id="crypto-view"><div class="section-heading"><h2>Active experiments</h2><span class="muted" id="updated">Reading the last completed scan...</span></div>
+<div class="account-grid" id="strategies"><div class="empty">Loading the independent paper ledgers...</div></div>
+<p class="footnote">Coinbase USD spot markets. Each new strategy starts with a separate $1,000 synthetic bankroll. Previous losses are preserved, not reset. No strategy is proven profitable.</p>
+<div class="section-heading"><h2>Open crypto positions</h2><a href="#activity">All account activity</a></div><div class="records" id="positions"></div>
+<div class="section-heading"><h2>Coin movement</h2><span class="muted">Completed-hour returns, not price predictions</span></div>
+<div id="coin-board" class="coin-board"></div>
+<details class="details"><summary>Why each strategy entered or passed</summary><div id="decisions" class="records"></div></details>
+<details class="details"><summary>Costs, risk limits and retirement rules</summary><p class="muted">The model charges 0.60% fees plus 0.10% additional slippage on each side, in addition to the actual bid/ask spread and walked depth. These are simulation assumptions, not verified account fees. Each position uses at most 20% of its strategy equity, 60% total deployed capital and 1% planned stop risk. Gaps can exceed that planned risk. New entries pause after a 3% daily loss or 10% peak drawdown.</p><p class="muted">A strategy retires after at least 30 closed trades spanning 14 days when the latest 30 trades and each consecutive block of 10 are net negative. Retirement cannot automatically restart or reset a ledger. Existing positions still exit. Falling-price signals mean selling held coins or staying in cash; no short spot positions or leverage are fabricated.</p></details>
+<div class="compact-note"><a href="#retired">Retired strategies and loss history</a><a href="archive-workspace.html#crypto">Arbitrage research</a></div></section>
+<section id="activity-view" hidden><div class="section-heading"><h2>Prediction and crypto activity</h2><button id="export" type="button" disabled>Export ledger</button></div>
+<div class="filters"><label>Account <select id="account-filter"><option value="all">All accounts</option><option value="rotation">Relative-strength rotation</option><option value="recovery">Range recovery</option><option value="polymarket">Polymarket US</option><option value="kalshi">Kalshi</option></select></label><label>Status <select id="state-filter"><option value="all">Open and closed</option><option value="open">Open positions</option><option value="closed">Closed positions</option></select></label></div>
+<p class="muted" id="activity-count"></p><div class="records" id="activity-records"></div><button id="more" type="button" hidden>Show more activity</button></section>
+<section id="retired-view" hidden><p class="intro">Retired is a trading decision, not a deleted result. Original ledgers remain accessible. Small samples are labeled as small samples, not proof that a strategy always loses.</p><div id="retired-list" class="archive-grid"></div><p class="muted" id="legacy-total"></p><a href="archive-workspace.html#crypto/spot">Open the complete legacy spot ledger and dated replay evidence</a></section>
+<footer><span id="policy">Multi-coin spot-paper research</span><span>Scheduled scans, not live orders. No credentials connected.</span></footer>
+</main><script type="module" src="crypto-strategies-ui.mjs?v=5.4.0"></script></body></html>
