@@ -1,0 +1,27 @@
+name: Crypto source verification bundle
+on:
+  push:
+    paths: ['.github/workflows/crypto-source-bundle.yml']
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Archive tracked source only, without credentials or git configuration
+        run: |
+          git archive --format=tar.gz --output="$RUNNER_TEMP/moffitt-money-source.tar.gz" HEAD
+          git rev-parse HEAD > "$RUNNER_TEMP/SOURCE-COMMIT.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: crypto-source-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/moffitt-money-source.tar.gz
+            ${{ runner.temp }}/SOURCE-COMMIT.txt
+          retention-days: 1
+          if-no-files-found: error
