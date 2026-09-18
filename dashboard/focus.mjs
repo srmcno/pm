@@ -2,13 +2,14 @@ import {publishedJson,publicationHealth} from './data-client.mjs';
 import {validPredictions} from './app-schema.mjs';
 import {VENUES} from './prediction-core.mjs';
 import {venueSummary,ledgerRows,toCsv} from './focus-model.mjs';
+import {validCompetitionSnapshot} from './crypto-strategies-core.mjs';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=v=>Number.isFinite(v)?v.toLocaleString('en-US',{style:'currency',currency:'USD'}):'Not available';
 const when=v=>Number.isFinite(v)?new Date(v*1000).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Not recorded';
 const venueName=v=>v==='polymarket'?'Polymarket US':'Kalshi';
 const empty=(title,detail)=>`<div class="empty"><strong>${esc(title)}</strong>${esc(detail)}</div>`;
-let snapshot,busy=false,limit=60;
+let snapshot,crypto,busy=false,limit=60;
 try {document.documentElement.dataset.theme=localStorage.getItem('mm-theme-v5')||'light';} catch {}
 function route(){
   const raw=location.hash.slice(1),first=raw.split('/')[0];
@@ -57,6 +58,13 @@ function renderMarkets(){
     return `<article class="record"><div><div class="record-title">${esc(m?.displayTitle||m?.question||d.marketId)}</div><div class="record-meta">${venueName(d.venue)} · ${esc(label)} · ${esc(f?.entryStage==='experimental'?'Experimental estimate, not validated':'Paper evaluation')}</div><details><summary>Why this decision?</summary><p class="muted">${esc(reason)}</p></details></div></article>`;
   }).join(''):empty('No market decisions','Read the venue status above for the latest collection state.');
 }
+function renderCryptoSummary(){
+  const el=$('crypto-summary');if(!el)return;
+  if(!crypto){el.innerHTML=empty('Crypto tournament unavailable','Prediction accounts remain available. Open the crypto page for source details.');return;}
+  const accounts=Object.values(crypto.accounts||{}),active=accounts.filter(a=>a.status!=='retired'),open=accounts.reduce((n,a)=>n+(a.positions?.length||0),0),trades=accounts.reduce((n,a)=>n+(a.trades?.length||0),0);
+  const leader=[...active].sort((a,b)=>b.equity-a.equity)[0];
+  el.innerHTML=`<div><strong>${crypto.universe?.selected??crypto.markets?.length??0}</strong><span>selected USD markets</span></div><div><strong>${active.length}</strong><span>active strategies</span></div><div><strong>${open} / ${trades}</strong><span>open / closed crypto positions</span></div><div><strong>${leader?esc(leader.name):'No leader yet'}</strong><span>${leader?money(leader.equity)+' paper equity':'awaiting tournament data'}</span></div>`;
+}
 function render(){
   $('account-grid').innerHTML=VENUES.map(accountCard).join('');
   $('scan-time').textContent=`Last completed scan: ${when(snapshot.generatedAt)}`;
@@ -64,12 +72,14 @@ function render(){
   $('positions').innerHTML=positions.length?positions.slice(0,6).map(record).join(''):empty('No open positions','The account cards show whether each venue is warming up, confirming an entry, or held by another condition.');
   $('market-count').textContent=`(${snapshot.markets.length})`;
   $('policy-label').textContent=snapshot.entryPolicy?`Paper policy: ${snapshot.entryPolicy.version}`:'Awaiting the first updated policy receipt';
-  $('export').disabled=false;renderActivity();renderMarkets();
+  $('export').disabled=false;renderCryptoSummary();renderActivity();renderMarkets();
 }
 async function load(){
   if(busy)return;busy=true;$('refresh').disabled=true;$('refresh').textContent='Refreshing';
   try{
-    snapshot=await publishedJson('data/predictions.json',validPredictions);
+    const results=await Promise.allSettled([publishedJson('data/predictions.json',validPredictions),publishedJson('data/crypto-strategies.json',validCompetitionSnapshot)]);
+    if(results[0].status!=='fulfilled')throw results[0].reason;
+    snapshot=results[0].value;if(results[1].status==='fulfilled')crypto=results[1].value;
     const health=publicationHealth.get('data/predictions.json');
     $('notice').hidden=!health?.error;
     $('notice').textContent=health?.error?`Showing ${health.source==='retained'?'the newer retained':'the available'} snapshot. Latest refresh: ${health.error}`:'';

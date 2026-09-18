@@ -38,3 +38,15 @@ test('focused entry has only overview, activity and archive navigation',async()=
  assert.ok(html.includes('archive-workspace.html#copy/paper'));
  assert.ok(!html.includes('id="wallet-list"'));
 });
+test('home page reserves a compact crypto tournament summary',async()=>{
+ const html=await readFile(new URL('../dashboard/focus.html',import.meta.url),'utf8');
+ assert.ok(html.includes('id="crypto-summary"'));
+ assert.ok(html.includes('href="crypto.html"'));
+});
+test('crypto page discloses the tournament universe and current maker/taker cost model',async()=>{
+ const html=await readFile(new URL('../dashboard/crypto.html',import.meta.url),'utf8');
+ assert.ok(html.includes('id="universe-summary"'));
+ assert.ok(html.includes('0.90%'));
+ assert.ok(html.includes('0.50%'));
+ assert.ok(html.includes('id="strategy-leaderboard"'));
+});

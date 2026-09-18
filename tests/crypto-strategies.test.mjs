@@ -9,7 +9,7 @@ function market(product='SOL-USD',slope=.1){
 const fresh=(m,t)=>({...m,book:{...m.book,receivedAt:t,requestAt:t-1}});
 function openState(){const markets=[market('BTC-USD',.01),market()];let s=api.advanceCompetition(null,markets,now);s=api.advanceCompetition(s,markets.map(m=>fresh(m,now+300)),now+300);return {s,markets};}
 test('paper engine exposes its deterministic API',()=>{assert.equal(typeof api.advanceCompetition,'function');});
-test('new accounts are separate paper bankrolls and real execution is locked',()=>{const s=api.initialCompetition(now);assert.equal(s.realEnabled,false);assert.equal(s.mode,'paper');assert.equal(Object.keys(s.accounts).length,2);for(const a of Object.values(s.accounts)){assert.equal(a.cash,1000);assert.equal(a.positions.length,0);}});
+test('new accounts are separate paper bankrolls and real execution is locked',()=>{const s=api.initialCompetition(now);assert.equal(s.realEnabled,false);assert.equal(s.mode,'paper');assert.equal(Object.keys(s.accounts).length,8);for(const a of Object.values(s.accounts)){assert.equal(a.cash,1000);assert.equal(a.positions.length,0);}});
 test('a repeated clock tick is idempotent and input state is not mutated',()=>{let s=api.advanceCompetition(null,[market('BTC-USD'),market()],now);const before=structuredClone(s);assert.deepEqual(api.advanceCompetition(s,[market()],now),s);assert.deepEqual(s,before);});
 test('ranks stronger qualifying coins before weaker ones, not arrival order',()=>{const ms=[market('BTC-USD',.01),market('ETH-USD',.05),market('SOL-USD',.1)];const a=api.evaluateUniverse(ms,now);assert.equal(a.decisions.filter(d=>d.strategyId==='rotation'&&d.status==='candidate')[0].product,'SOL-USD');assert.deepEqual(api.evaluateUniverse([...ms].reverse(),now),a);});
 test('forming and future candles cannot change earlier decisions',()=>{const ms=[market('BTC-USD',.01),market()];const baseline=api.evaluateUniverse(ms,now);ms[1].candles.push([now,1,9999,5,8000,900000]);assert.deepEqual(api.evaluateUniverse(ms,now),baseline);});
@@ -18,7 +18,7 @@ test('stale, crossed and failed books cannot produce an entry',()=>{for(const ch
 test('first scan only confirms interest; second scan opens a real paper ledger position',()=>{const ms=[market('BTC-USD',.01),market()];const first=api.advanceCompetition(null,ms,now);assert.equal(first.accounts.rotation.positions.length,0);assert.ok(Object.keys(first.accounts.rotation.pending).length>0);const next=api.advanceCompetition(first,ms.map(m=>fresh(m,now+300)),now+300);assert.ok(next.accounts.rotation.positions.length>0);assert.ok(next.accounts.rotation.cash<1000);api.validateCompetition(next);});
 test('back-to-back scans do not erase the first confirmation time',()=>{const ms=[market('BTC-USD',.01),market()];let s=api.advanceCompetition(null,ms,now);s=api.advanceCompetition(s,ms.map(m=>fresh(m,now+30)),now+30);s=api.advanceCompetition(s,ms.map(m=>fresh(m,now+90)),now+90);assert.ok(s.accounts.rotation.positions.length>0);});
 test('missing a candidate for a scan resets its confirmation',()=>{const ms=[market('BTC-USD',.01),market()];let s=api.advanceCompetition(null,ms,now);s=api.advanceCompetition(s,[],now+300);s=api.advanceCompetition(s,ms.map(m=>fresh(m,now+600)),now+600);assert.equal(s.accounts.rotation.positions.length,0);});
-test('fees and slippage are charged on entry, mark and exit; cash reconciles',()=>{let {s,markets}=openState();const a=s.accounts.rotation,p=a.positions.find(p=>p.product==='SOL-USD');assert.ok(p);assert.ok(p.cost>p.principal);const ms=markets.map(m=>fresh(m,now+600));for(const m of ms){m.book.bids=[[80,100]];m.book.asks=[[80.01,100]];}s=api.advanceCompetition(s,ms,now+600);const t=s.accounts.rotation.trades.find(t=>t.id===p.id);assert.ok(t);assert.equal(t.exitReason,'Stop / adverse gap');assert.ok(t.exitFees>0);assert.ok(Math.abs(t.pnl-(t.proceeds-t.cost))<.00001);assert.ok(t.pnl<0);api.validateCompetition(s);});
+test('fees and slippage are charged on entry, mark and exit; cash reconciles',()=>{let {s,markets}=openState();const a=s.accounts.rotation,p=a.positions[0];assert.ok(p);assert.ok(p.cost>p.principal);const ms=markets.map(m=>fresh(m,now+600));for(const m of ms){m.book.bids=[[80,100]];m.book.asks=[[80.01,100]];}s=api.advanceCompetition(s,ms,now+600);const t=s.accounts.rotation.trades.find(t=>t.id===p.id);assert.ok(t);assert.equal(t.exitReason,'Stop / adverse gap');assert.ok(t.exitFees>0);assert.ok(Math.abs(t.pnl-(t.proceeds-t.cost))<.00001);assert.ok(t.pnl<0);api.validateCompetition(s);});
 test('no synthetic stop fill is invented inside an unobserved candle',()=>{let {s,markets}=openState();const before=s.accounts.rotation.trades.length;const ms=markets.map(m=>fresh(m,now+600));ms[1].candles.at(-1)[1]=1;s=api.advanceCompetition(s,ms,now+600);assert.equal(s.accounts.rotation.trades.length,before);});
 test('stale open-position marks hold new entries without resetting balances',()=>{let {s}=openState();const before=s.accounts.rotation.cash;s=api.advanceCompetition(s,[],now+600);assert.equal(s.accounts.rotation.cash,before);assert.equal(s.accounts.rotation.markComplete,false);assert.equal(Object.keys(s.accounts.rotation.pending).length,0);});
 test('same signal never reopens a completed trade or duplicates on restart',()=>{let {s,markets}=openState();const count=s.accounts.rotation.positions.length;const later=api.advanceCompetition(JSON.parse(JSON.stringify(s)),markets.map(m=>fresh(m,now+600)),now+600);assert.equal(later.accounts.rotation.positions.length,count);});
@@ -41,7 +41,7 @@ test('public adapter uses only GET requests and keeps exact per-book receipt tim
  const r=await collectCoinbaseMarkets({cached:[market('BTC-USD')],products:['BTC-USD'],pace:0,clock:()=>time++,fetcher:async(url,options)=>{
   calls.push({url,options});return {ok:true,json:async()=>url.endsWith('?level=2')?{bids:[['109','10',1]],asks:[['110','10',1]],sequence:5}:{id:'BTC-USD',base_currency:'BTC',quote_currency:'USD',base_increment:'.000001',status:'online'}};
  }});
- assert.equal(r.errors.length,0);assert.ok(calls.every(c=>c.options.method==='GET'));assert.equal(calls.length,2);assert.ok(r.markets[0].book.receivedAt>r.markets[0].book.requestAt);
+ assert.equal(r.errors.length,0);assert.ok(calls.every(c=>c.options.method==='GET'));assert.equal(calls.length,3);assert.ok(r.markets[0].book.receivedAt>r.markets[0].book.requestAt);
 });
 
 test('main navigation exposes crypto and routes history to Archive without loading archived screens',async()=>{
@@ -52,4 +52,88 @@ test('main navigation exposes crypto and routes history to Archive without loadi
  const crypto=await readFile(new URL('../dashboard/crypto.html',import.meta.url),'utf8');
  assert.equal((crypto.match(/<nav[\s\S]*?<\/nav>/)||[''])[0].match(/<a /g).length,4);
  assert.ok(crypto.includes('id="activity-view"'));assert.ok(crypto.includes('id="retired-view"'));
+});
+
+test('v2 tournament declares eight strategies and conservative US Advanced fee profile',()=>{
+ assert.equal(api.CRYPTO_VERSION,'2026-09-18-tournament-v2');
+ assert.equal(api.STRATEGIES.length,8);
+ assert.deepEqual(api.STRATEGIES.map(s=>s.id),['rotation','recovery','pullback','compression','sweep','breadth','catchup','capitulation']);
+ assert.equal(api.FEE_PROFILE.makerRate,.005);
+ assert.equal(api.FEE_PROFILE.takerRate,.009);
+ assert.equal(api.FEE_PROFILE.execution,'taker');
+ assert.equal(api.POLICY.feeRate,.009);
+});
+
+test('v1 state migrates without changing existing rotation or recovery ledgers',()=>{
+ const base=api.initialCompetition?.(now);
+ const account=id=>({id,name:id==='rotation'?'Relative-strength rotation':'Range recovery',initialCapital:1000,startedAt:now-5000,
+  cash:987.5,equity:990,peak:1005,realizedPnl:-4.5,fees:2.25,status:'experimental',retirement:null,
+  positions:[],trades:[],pending:{},markComplete:true,day:'2026-09-16',dayStart:995,curve:[{at:now-1000,equity:990}],stats:{trades:0,wins:0,losses:0,net:0,expectancy:null,profitFactor:null,winRate:null}});
+ const old={schemaVersion:1,version:'2026-09-16-multicoin-v1',mode:'paper',realEnabled:false,startedAt:now-5000,updatedAt:now-10,
+  accounts:{rotation:account('rotation'),recovery:account('recovery')},markets:[],decisions:[],cycles:[]};
+ // Make reconciliation exact for the empty ledger while retaining distinctive metadata.
+ for(const a of Object.values(old.accounts)){a.cash=1000;a.equity=1000;a.realizedPnl=0;a.fees=0;}
+ const before=structuredClone(old.accounts);
+ const migrated=api.migrateCompetition(old,now);
+ assert.equal(migrated.version,api.CRYPTO_VERSION);
+ assert.deepEqual(migrated.accounts.rotation,before.rotation);
+ assert.deepEqual(migrated.accounts.recovery,before.recovery);
+ assert.equal(Object.keys(migrated.accounts).length,8);
+ for(const id of ['pullback','compression','sweep','breadth','catchup','capitulation']){
+  assert.equal(migrated.accounts[id].cash,1000);
+  assert.equal(migrated.accounts[id].startedAt,now);
+ }
+});
+
+test('dynamic USD products outside the original ten are valid tournament markets',()=>{
+ const m=market('NEAR-USD',.08);
+ const view=api.evaluateUniverse([market('BTC-USD',.01),m],now);
+ assert.equal(view.decisions.filter(d=>d.product==='NEAR-USD').length,8);
+ const state=api.advanceCompetition(null,[market('BTC-USD',.01),m],now);
+ assert.doesNotThrow(()=>api.validateCompetition(state));
+});
+
+test('walked paper fills charge taker fees and extra slippage on both sides',()=>{
+ const m=market('SOL-USD',.1),q=.5;
+ const buy=api.walkBook(m,'buy',q),sell=api.walkBook(m,'sell',q);
+ assert.equal(buy.feeRate,.009); assert.equal(sell.feeRate,.009);
+ assert.equal(buy.slippageRate,.001); assert.equal(sell.slippageRate,.001);
+ assert.ok(buy.value>buy.principal); assert.ok(sell.value<sell.principal);
+});
+
+test('public feed discovers and ranks USD spot markets while excluding stablecoins and retaining required positions',async()=>{
+ const {collectCoinbaseMarkets}=await import('../scripts/crypto-feed.mjs');
+ const products=Array.from({length:46},(_,i)=>({id:`C${i}-USD`,base_currency:`C${i}`,quote_currency:'USD',status:'online',trading_disabled:false,base_increment:'.001',base_min_size:'.001',min_market_funds:'10'}));
+ products.push({id:'JUP-USD',base_currency:'JUP',quote_currency:'USD',status:'online',trading_disabled:false,base_increment:'.001',base_min_size:'.001',min_market_funds:'10'});
+ products.push({id:'USDC-USD',base_currency:'USDC',quote_currency:'USD',status:'online',trading_disabled:false,base_increment:'.001'});
+ products.push({id:'BTC-EUR',base_currency:'BTC',quote_currency:'EUR',status:'online',trading_disabled:false,base_increment:'.001'});
+ products.push({id:'BTC-USD',base_currency:'BTC',quote_currency:'USD',status:'online',trading_disabled:false,base_increment:'.000001',base_min_size:'.000001',min_market_funds:'10'});
+ let time=now,calls=[];
+ const response=(data)=>({ok:true,json:async()=>data});
+ const result=await collectCoinbaseMarkets({cached:[],requiredProducts:['C45-USD'],pace:0,maxMarkets:40,preselect:46,clock:()=>time++,fetcher:async(url,options)=>{
+  calls.push({url,options});
+  if(url.endsWith('/products'))return response(products);
+  const match=url.match(/\/products\/([^/]+)\/(stats|candles|book)/); if(!match)throw Error('unexpected '+url);
+  const product=decodeURIComponent(match[1]),kind=match[2],n=Number(product.match(/\d+/)?.[0]||99);
+  if(kind==='stats')return response({volume:String(1000+n*100),last:String(10+n)});
+  if(kind==='candles'){const rows=Array.from({length:100},(_,i)=>{const c=10+n+i*.01;return [now-(100-i)*3600,c-.1,c+.1,c-.05,c,1000];});return response(rows);}
+  const px=10+n+1;return response({bids:[[String(px-.01),'100',1]],asks:[[String(px+.01),'100',1]],sequence:1});
+ }});
+ assert.equal(result.markets.length,40);
+ assert.ok(result.markets.some(m=>m.product==='C45-USD'));
+ assert.ok(result.markets.some(m=>m.product==='BTC-USD'));
+ assert.ok(result.markets.some(m=>m.product==='JUP-USD'), 'legitimate JUP ticker must not be mistaken for a leveraged UP token');
+ assert.ok(result.markets.every(m=>m.product.endsWith('-USD')&&m.product!=='USDC-USD'));
+ assert.ok(result.universe.discovered>=47);
+ assert.ok(calls.every(c=>c.options.method==='GET'));
+});
+
+test('all eight strategy signal families have a deterministic qualifying fixture',()=>{
+ const base={product:'X-USD',status:'ready',price:100,change1:.01,change3:.02,change6:.03,change24:.08,atr:2,atrShort:1,ema20:99,ema50:98,
+  low:95,high:110,prior20High:99,prior20Low:95,priorRangeLow:95,priorBar:[0,94,100,95,96,2000],volumeRatio:2,signalAt:now,
+  regime:'Above long trend',last:[98,99,100],bookImbalance:1.2};
+ const common={btc:{change24:.03},median6:.02,median24:.04,breadth6:.7,above20:.7};
+ for(const id of ['rotation','pullback','compression','sweep','breadth','capitulation'])assert.equal(api.strategySignal(id,base,common).pass,true,id);
+ assert.equal(api.strategySignal('recovery',{...base,ema50:99},common).pass,true,'recovery');
+ assert.equal(api.strategySignal('catchup',{...base,change6:.01},{...common,median6:.04}).pass,true,'catchup');
 });

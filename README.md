@@ -7,10 +7,11 @@ Autonomous paper accounts with an activity-first main screen. Real orders remain
 ## Main app
 
 - **Overview:** the two existing $100 Polymarket US and Kalshi paper accounts, actual open positions, current collector status and expandable entry decisions.
-- **Activity:** recorded paper entries and official settlements, with venue/status filters and CSV export. Scans are not counted as trades.
-- **Archive:** one entry for auxiliary research tools, historical studies and diagnostics. Active copy, spot and ETF workflows are distinguished from retired experiments. No ledger is deleted or reset.
+- **Crypto Tournament:** up to 40 dynamically selected Coinbase USD spot markets feed eight independent, cost-aware paper strategies. Existing crypto ledgers are preserved through migration.
+- **Activity:** recorded prediction and crypto paper positions with account/status filters and CSV export. Scans are not counted as trades.
+- **Archive:** auxiliary research, arbitrage comparisons, retired strategies, historical studies and diagnostics. No ledger is deleted or reset.
 
-The focused entry requests only prediction data initially. Wallet research, crypto comparisons, ETF studies and the strategy laboratory remain accessible through Archive or the compact active-tools links.
+The prediction overview includes a compact tournament summary. The full crypto page shows strategy equity, fee drag, open positions, selected markets, candidate/hold reasons and retirement evidence.
 
 ## Paper entry
 
@@ -18,7 +19,9 @@ The versioned experimental paper policy can evaluate entries after 20 resolved c
 
 [Current paper policy and archive design](docs/ACTIVE-PAPER.md) · [Original accounting and calibration controls](docs/PREDICTIONS.md)
 
-Prediction collection runs about every ten minutes, best effort, without a browser. The opportunity workflow retains its existing crypto comparisons, separate spot simulation and forward copy study. Retired international collectors and the original $50 copy account remain paused. Crypto price comparisons do not execute paired trades or credit balances. The ETF experiment retains its own schedule.
+Prediction collection runs about every ten minutes, best effort, without a browser. The five-minute opportunity workflow advances the eight-strategy crypto tournament, retains separate arbitrage comparisons, and advances the forward copy study. Crypto tournament fills use a versioned U.S. Coinbase Advanced taker-cost profile plus walked spread/depth and extra slippage. Retired international collectors and the original $50 copy account remain paused. The ETF experiment retains its own schedule.
+
+[Crypto tournament design and operating rules](docs/CRYPTO-STRATEGIES.md)
 
 ## Build and verify
 

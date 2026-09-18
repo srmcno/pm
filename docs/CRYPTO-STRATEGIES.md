@@ -1,42 +1,63 @@
-# Multi-coin directional paper strategies, version 5.4.0
+# Crypto strategy tournament, version 6.0.0
 
-Owner authorization: implement the crypto redesign and retire the losing legacy strategies. No real-money trading is authorized or connected.
+No real-money trading is authorized or connected. This subsystem is deterministic paper research using public Coinbase Exchange market data and a conservative Coinbase Advanced U.S. fee model.
 
-## Active versus archived
+## Tournament structure
 
-Primary navigation is Predictions, Crypto Strategies, Activity, Archive. `crypto.html` is the same-site crypto page; `crypto.html#activity` combines current crypto and prediction ledgers without pooling capital. `crypto.html#retired` holds retirement evidence. The old workspace remains accessible through the existing Archive.
+Eight strategies run as separate $1,000 synthetic accounts: Relative-strength rotation, Range recovery, Trend pullback continuation, Volatility compression breakout, Liquidity-sweep rebound, Breadth-thrust rotation, Leader-laggard catch-up, and Capitulation recovery. The existing Relative-strength and Range-recovery ledgers migrate from `2026-09-16-multicoin-v1` without changing cash, positions, trades, P&L, fees, curves, or timestamps. The six new accounts begin at $1,000 at migration time. Historical legacy breakout/reclaim evidence remains archived and exit-only.
 
-Volume breakout and Trend reclaim are permanently exit-only through `scripts/legacy-spot-exit-only.mjs`. Original rules, open positions, closed trades, fees, and balance remain intact. The prior spot account is not reinitialized. At inspection its three closed forward trades were negative and its equity was $969.6864081509837 from $1,000. The dated standalone breakout replay showed 27 trades and -$94.0651647640251; reclaim showed only one replay trade and -$10.915554701010421. These are different samples, not amounts to add together. In particular, one replay trade is not proof of persistent failure. Both are retired at the owner's request rather than falsely described as universally losing. The collector derives and publishes current retirement evidence from the original records.
+No strategy is described as proven profitable. These are prospective hypotheses. Activity is measured by actual paper ledger entries, not by scans or signals.
 
-## New prospective experiments
+## Dynamic market universe
 
-Two distinctly versioned paper strategies receive independent $1,000 synthetic bankrolls. These are new experiments, not renamed old strategies or recovered capital. No historical profits are seeded.
+Each cycle discovers currently online Coinbase USD spot products. Stablecoin bases and structurally unsuitable leveraged/inverse-style symbols are excluded. Public 24-hour stats pre-rank the universe by USD notional. The collector then reads completed hourly candles and public level-2 books for a bounded preliminary set. The final tournament contains up to 40 usable markets ranked by 24-hour USD notional, current spread, and visible depth.
 
-Relative-strength rotation compares 6h and 24h upward movement, volatility-normalized cross-coin strength and BTC-relative performance. It requires a price above the 20-hour EMA without excessive extension. Unlike the retired Volume breakout, it does not require breaking a 20-bar high with a volume spike and a later confirming hourly breakout. Unlike Trend reclaim, it does not require two rising moving averages and an EMA crossing.
+`BTC-USD` and every product with an open tournament position are retained in the collection even when they would otherwise fall outside the top 40. A disappearing or failed required product becomes stale and blocks new entries rather than receiving a fabricated price.
 
-Range recovery tests a confirmed rebound after a drawdown of at least three ATRs or 2%, with two increasing completed closes and room toward the recent range high. It does not enter merely because a coin is down.
+## Costs
 
-The declared Coinbase USD universe is BTC, ETH, SOL, LINK, AVAX, DOGE, XRP, ADA, LTC and DOT. Each cycle verifies each product's current identity, availability and quantity increment, obtains completed hourly candles and fresh public books. Unavailable products are explicitly excluded rather than replaced with made-up prices. Sixty completed contiguous hourly bars are required, not 100 settled trades or a previously profitable model.
+Fee profile: `coinbase-advanced-us-entry-2026-09-16`.
 
-## Costs, controls and accounting
+- U.S. Coinbase Advanced entry-level maker reference: 0.50%.
+- U.S. Coinbase Advanced entry-level taker: 0.90%.
+- All tournament entries and exits use the 0.90% taker rate. The tournament does not assume a passive order fills.
+- The exact public order book is walked for the simulated quantity, so spread and depth are already reflected in principal.
+- An additional 0.10% adverse slippage reserve is charged on each side.
+- No funding rate, margin interest, or borrowing cost exists because the tournament is long-only spot.
+- No network/withdrawal fee is charged because paper assets are never transferred on-chain.
 
-The frozen simulation assumes 0.60% fees and 0.10% additional slippage on each side. Actual displayed asks and bids are walked, so spreads and depth costs are included. These fee assumptions do not claim to match a connected user's fee tier. Public product minima and quantity increments apply. Entry and immediate liquidation must fit depth. No real order is submitted.
+The maker rate is published in the UI for reference only and never used to improve simulated performance. If Coinbase changes published pricing, the fee profile must be versioned rather than silently rewriting historical trades.
 
-Maximum initial capital per position is 20% of strategy equity, with 60% total deployed capital and three open positions per strategy. Planned stop risk is 1%; adverse gaps can lose more. Planned net reward/risk must exceed 1.1 after modeled costs. New entries need two qualifying scans 60 to 1,800 seconds apart. A short intervening scan preserves the first timestamp; a missing signal resets confirmation. No same-signal duplicate or re-entry within six hours of closing that coin is allowed.
+## Signal families
 
-Exit on observed stop, target, downward momentum reversal, or maximum holding window (72h rotation, 36h recovery). No fill is invented at a price seen only in an unobserved candle. Stale marks retain their original value and block new entries. New entries pause after 3% daily equity loss or 10% peak drawdown; a drawdown pause does not restart automatically. All accounts reconcile initial capital minus entry costs plus exit proceeds, and equity to cash plus liquidation marks. Invalid existing state is refused, never reset.
+All strategy decisions use completed hourly candles only. A still-forming or future candle cannot alter an earlier decision.
 
-Automatic permanent retirement requires the most recent 30 closed net trades to span at least 14 days, have negative total P&L and profit factor below one, and lose money in each of three consecutive 10-trade blocks. This is a declared product rule, not a statistical proof of inferiority. Retired accounts still manage existing exits and remain in Activity and Archive.
+**Relative-strength rotation** ranks positive 6-hour and 24-hour movement, volatility-normalized strength, and BTC-relative performance while limiting extension from the short trend.
 
-Spot-only: buying and selling owned synthetic coins. Downward signals sell holdings or keep cash. No fabricated spot shorts, borrowing, leverage or real account eligibility is implied.
+**Range recovery** requires a meaningful recent drawdown, two rising completed closes, and room toward the prior range high.
+
+**Trend pullback continuation** requires a rising 20-hour/50-hour trend, a controlled pullback near the short trend, and a completed-hour reclaim.
+
+**Volatility compression breakout** requires short-horizon volatility compression followed by a completed break above the previous range with volume expansion.
+
+**Liquidity-sweep rebound** requires the prior completed bar to sweep below the earlier range low, close back inside it, continue higher, and have supportive current top-book imbalance.
+
+**Breadth-thrust rotation** runs only when a broad share of the selected universe has positive six-hour momentum and trades above its 20-hour trend, then selects stronger leaders.
+
+**Leader-laggard catch-up** looks for a positive longer-trend coin that lagged the median six-hour move but has begun accelerating while broader breadth remains supportive.
+
+**Capitulation recovery** requires a deep drawdown, elevated completed-hour volume, and a confirmed sequence of rising closes before entry.
+
+## Entry, risk, and retirement
+
+Candidates must clear current book freshness, spread, depth, product minimums, all modeled costs, and a minimum 1.1 after-cost reward/risk ratio. Entries require two qualifying scans 60 to 1,800 seconds apart. Each position uses at most 20% of account equity, total deployed cost is capped at 60%, planned stop risk is capped at 1%, and each strategy may have at most three simultaneous positions. A six-hour same-product cooldown follows closure.
+
+New entries pause after a 3% daily equity loss or a 10% peak drawdown. Open positions still attempt safe exits. Strategies become `established` only after at least 30 closed trades spanning 14 days without meeting retirement rules.
+
+Automatic permanent retirement requires the most recent 30 closed trades to span at least 14 days, have negative total P&L, profit factor below one, and negative net P&L in each consecutive block of ten. Retirement cannot reset or automatically restart an account. Original retirement evidence remains in Activity and Archive.
 
 ## Operation and verification
 
-The existing five-minute opportunity workflow calls the new collector. Its group lock serializes writers and rebase fails on conflicting state updates. `data/crypto-strategies/state.json` is authoritative. The browser is read-only and can be closed. A scheduled scan is not continuous real-time execution. Collector locks, atomic file replacement, per-product error timestamps, validation and retained-data handling are explicit.
+The five-minute opportunity workflow runs the tournament collector and writes `data/crypto-strategies/state.json` plus `dashboard/data/crypto-strategies.json`. State writes are atomic. Invalid existing state is refused rather than reset. Public collection uses GET only.
 
-Run `node --test tests/crypto-strategies.test.mjs`, full `npm test`, both existing Python suites, `python3 scripts/check_site.py` and `npm run build`. Browser QA uses clearly separate synthetic fixtures offline, never committed as account performance. Check the deployment and actual collector receipt before claiming completion. Preserve `.openai/hosting.json` and do not claim the separate ChatGPT Site has updated without a successful release check.
-
-Official API references:
-- https://docs.cdp.coinbase.com/api-reference/exchange-api/rest-api/products/get-product-candles
-- https://docs.cdp.coinbase.com/exchange/introduction/welcome
-- https://docs.cdp.coinbase.com/api-reference/exchange-api/rest-api/products/get-product-book
+Before release, run `npm test`, both Python test suites, `python3 scripts/check_site.py`, and `npm run build`. The GitHub Actions collector must complete successfully on the default branch, then Pages must deploy the same verified source. Browser QA must inspect mobile and desktop tournament/activity views. A source commit is not proof of deployment.
