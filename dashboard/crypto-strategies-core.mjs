@@ -1,4 +1,5 @@
 // Deterministic, unauthenticated spot-paper research. Never submits an order.
+// Source deployment marker: crypto tournament v6.
 export const LEGACY_VERSION='2026-09-16-multicoin-v1';
 export const CRYPTO_VERSION='2026-09-18-tournament-v2';
 export const FEE_PROFILE=Object.freeze({
