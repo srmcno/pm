@@ -2,8 +2,8 @@
 
 The canonical source is the GitHub default branch `claude/polymarket-wallets-analysis-m81p4j` of `srmcno/pm`. Preserve the existing owner-private Sites identity in `.openai/hosting.json`. Do not create a second Site or branch.
 
-- Site: https://moffitt-money.smoffitt74743.chatgpt.site/
-- Pages mirror: https://srmcno.github.io/pm/
+- Primary automated dashboard: https://srmcno.github.io/pm/
+- Private Sites mirror: https://moffitt-money.smoffitt74743.chatgpt.site/
 - Source: `dashboard/`; build: `npm run build`; public artifact: `dist/`.
 
 ## Interface, version 7.0
@@ -31,3 +31,5 @@ Publish the same committed source and static artifact to Pages and the existing 
 All existing accounts remain simulations. The experimental paper-entry policy does not unlock real execution. Do not reset either $100 prediction account, fabricate historical forecasts, restart retired collectors, or make historical results appear live. See [original accounting controls](PREDICTIONS.md), [forward copy study](COPY-TRADING.md), and [ETF operation](ETF-RUNBOOK.md).
 
 The Art Deco shell includes `deco.css`; `readiness.html` explains Oklahoma eligibility, costs and private preview setup. No browser control arms orders. The Pages workflow publishes on completed active cycles, with an hourly fallback. `watch-watchdog.yml` checks Pages and active collectors every 30 minutes, recovering missed/failed runs. These are best-effort schedules, not an uptime guarantee. Old desk and spot replay jobs are manual only.
+
+An open primary page checks the deployed interface once per minute and on return to the tab. Builds fingerprint interface assets separately from snapshot commits, version all local module/style imports, and reload for changed interface content. Input focus postpones reload; public funding-calculator values survive it in session storage. No credentials are stored. Sites reads the same fresh public snapshots automatically, but its interface requires a separate Sites publication. Prefer Pages as the single primary link; localhost is a temporary development preview. Pages cannot host the persistent private service required for real-money execution.
