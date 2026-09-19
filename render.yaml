@@ -1,0 +1,30 @@
+# This is the real-capable worker in its initial, disarmed commissioning mode.
+# The account owner performs live activation after private preflight checks.
+services:
+  - type: worker
+    name: moffitt-rotation
+    runtime: node
+    plan: 0.5c-512mb
+    region: oregon
+    branch: claude/polymarket-wallets-analysis-m81p4j
+    buildCommand: node --test tests/live-*.test.mjs
+    startCommand: node scripts/live/runner.mjs
+    autoDeployTrigger: off
+    numInstances: 1
+    disk:
+      name: rotation-journal
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 24.18.0
+      - key: MM_MODE
+        value: preview
+      - key: MM_DATA_DIR
+        value: /var/data/rotation
+      - key: MM_SCAN_SECONDS
+        value: '300'
+      - key: MM_MONTHLY_HOSTING_USD
+        value: '7.25'
+      - key: MM_ALLOCATION_USD
+        value: '18.85'

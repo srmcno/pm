@@ -10,6 +10,7 @@ The active strategies remain paper simulations. Existing records are preserved, 
 - A readiness page compares each strategy with predeclared forward, cost-stress and benchmark screens. No current account has demonstrated all the required evidence. Passing these screens would be a reason to investigate, not proof of a profitable edge.
 - Downloadable Coinbase Advanced setup profiles use the same strategy IDs, explicit allocations and a fixed US/Oklahoma context. All exports are **preview**, with `liveEnabled:false`.
 - `scripts/broker-preview.mjs` validates the profile. With private credentials it reads actual account fees and calls Coinbase's actual order-preview API. It cannot submit an order, transfer funds or cancel one.
+- A separate private Coinbase rotation worker now has a durable execution journal, broker reconciliation, bounded order sizing and operator-controlled live activation. See [COINBASE-WORKER.md](COINBASE-WORKER.md). It starts disarmed; synthetic lifecycle tests and read-only connectivity checks do not verify actual live fills or protection. The public tournament remains paper.
 - The older Alpaca broker-paper controller remains available with its own SQLite journal; it is separate from the crypto tournament. See [ETF-BROKER.md](ETF-BROKER.md). Its private execution has not been tested against your account.
 
 ## What you need to do
@@ -29,7 +30,7 @@ The active strategies remain paper simulations. Existing records are preserved, 
    ```
 
    The tool checks the actual account fee tier and previews a bounded BTC/USD purchase. This tests API integration, not the strategy; no order is submitted. Its output is private account information: do not publish it.
-5. Before real automation: demonstrate broker execution/recovery, choose a funded allocation, and deploy a private persistent execution service with order idempotency, partial-fill reconciliation, cash reservations, account identity binding and ongoing exits. **The new crypto tournament does not yet have that real-order service.** A preview flag or website toggle cannot substitute for it. GitHub Pages is a static dashboard and GitHub Actions is unsuitable for protecting continuous real positions.
+5. The separate [Coinbase worker](COINBASE-WORKER.md) provides software for a private persistent execution service with order idempotency, partial-fill reconciliation, cash reservations, account identity binding and ongoing exits. It requires private cloud credentials, a funded allocation, verified outbound IP access and activation by the account owner. Actual exchange execution/recovery remains unverified until the owner performs a real test. A public website toggle does not activate it. GitHub Pages is a static dashboard and GitHub Actions is unsuitable for protecting continuous real positions.
 
 The setup deliberately stops short of pretending that untested public-data simulations are ready for autonomous real money. Connecting your account and proving the execution lifecycle are remaining dependencies, not an invitation to disable checks. Existing legacy live scripts are not a supported shortcut.
 
