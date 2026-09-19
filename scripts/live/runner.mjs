@@ -107,6 +107,15 @@ export async function run(env=process.env,dependencies={}){
           lastTickAt:Number.isFinite(prior.lastTickAt)?prior.lastTickAt:null,lastSuccessAt:Number.isFinite(prior.lastSuccessAt)?prior.lastSuccessAt:null};
       }
     }
+    if(engine&&env.MM_RECOVER_PROJECTION_ACK){
+      try{
+        const result=await engine.recoverProjectionHold(env.MM_RECOVER_PROJECTION_ACK);
+        log({event:'projection_recovery',status:result.recovered?'recovered':'already_applied'});
+      }catch{
+        // A refused or stale acknowledgement must never unlock the ledger.
+        log({event:'projection_recovery',status:'held',message:'Recovery conditions changed or the acknowledgement did not match; existing controls remain in force.'});
+      }
+    }
     const refresher=new FeedRefresh({clock,collect:dependencies.collect||collectCoinbaseMarkets});let feed=null,lastOutput=0;
     log({event:'worker_started',mode:config.mode,realOrdersEnabled:config.mode==='live',credentialsConfigured:!!broker,revision:env.RENDER_GIT_COMMIT||null});
     while(!stopping){
@@ -119,9 +128,9 @@ export async function run(env=process.env,dependencies={}){
         const good=completed.feed?.markets?.some(m=>!m.sourceError);
         if(good){
           feed=completed.feed;
-          // Preview HTTP work is needed only while disarmed. Live work belongs
-          // exclusively to Engine, never to a second competing worker.
-          const report=await monitor({feed,broker:engine?null:broker,now:clock(),allocation:config.engine.allocation});
+          // Engine owns authenticated work, including read-only reconciliation
+          // after disarming. Its companion scan reports only market signals.
+          const report=await monitor({feed,broker:engine?null:broker,now:clock(),allocation:config.engine.allocation,executionManaged:!!engine});
           state={...state,cycles:state.cycles+1,consecutiveFailures:0,lastAttemptAt:completed.attemptAt,lastSuccessAt:completed.at,feedCache:feed.cache||feed.markets,report};
         }else state={...state,cycles:state.cycles+1,consecutiveFailures:state.consecutiveFailures+1,lastAttemptAt:completed.attemptAt};
         journal.save(state,{type:good?'scan':'source_error'});

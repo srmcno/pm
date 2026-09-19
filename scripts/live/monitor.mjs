@@ -38,20 +38,24 @@ function freshFee(fees,now){
 
 // This module has no create/cancel/convert path. Public diagnostics deliberately
 // exclude balances, identifiers, preview IDs, raw broker responses and errors.
-export async function monitorCycle({feed,broker=null,clock=()=>Date.now()/1000,now=clock(),allocation='20'}={}){
+export async function monitorCycle({feed,broker=null,clock=()=>Date.now()/1000,now=clock(),allocation='20',executionManaged=false}={}){
   // `now` labels the report's start; freshness uses the same wall-clock epoch as
   // broker timestamps. Rebasing elapsed time onto a caller's earlier `now` can
   // falsely put a just-received fee timestamp in the future. Tests inject clock.
   const result={mode:'preview-only',generatedAt:Number.isFinite(now)?now:null,realEnabled:false,status:'market_monitoring',credentialStatus:'needs_credentials',feeStatus:'modeled-unverified',
     coverage:{selected:0,ready:0,rotationCandidates:0,previewed:0},candidates:[],
     note:'Order previews do not execute trades. Paper results are not real-money profit or loss.'};
+  const marketOnly=executionManaged===true&&broker===null;
+  if(marketOnly)Object.assign(result,{mode:'market-only',realEnabled:null,credentialStatus:'handled_by_execution_engine',feeStatus:'handled_by_execution_engine',
+    note:'Market scan only. Authenticated checks and execution status are reported separately by the execution engine. Paper results are not real-money profit or loss.'});
   if(!Number.isFinite(now)||now<=0||!Array.isArray(feed?.markets)||feed.markets.length>1000){result.status='held';result.hold='Market feed unavailable or malformed.';return result;}
   try{if(D(allocation)<D('5')||D(allocation)>D('20'))throw Error();}catch{result.status='held';result.hold='Allocation is outside the supported bounds.';return result;}
   let view;
   try{view=evaluateUniverse(feed.markets,clock());}catch{result.status='held';result.hold='Market feed could not be evaluated.';return result;}
   const eligible=view.decisions.filter(d=>d.strategyId==='rotation'&&d.status==='candidate'&&canonical(d.product));
   result.coverage={...result.coverage,selected:view.markets.length,ready:view.markets.filter(m=>m.status==='ready').length,rotationCandidates:eligible.length};
-  result.candidates=eligible.slice(0,3).map(d=>({product:d.product,status:'needs_credentials',reason:'Authenticated fee and order-preview checks have not run.'}));
+  result.candidates=eligible.slice(0,3).map(d=>({product:d.product,status:marketOnly?'signal_candidate':'needs_credentials',
+    reason:marketOnly?'Public market signal only; authenticated checks are handled by the execution engine.':'Authenticated fee and order-preview checks have not run.'}));
   if(!broker)return result;
   let expected,feeRate,cash,feeReceipt;
   try{

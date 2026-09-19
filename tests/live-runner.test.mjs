@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {EventEmitter} from 'node:events';
 import {configuration,newState,validateState,scan,receipt,FeedRefresh,run} from '../scripts/live/runner.mjs';
 import {LIVE_ACK} from '../scripts/live/config.mjs';
+import {monitorCycle} from '../scripts/live/monitor.mjs';
 
 test('cloud entry point refuses real execution and incomplete credentials',()=>{
   const env={MM_DATA_DIR:'/var/data/test'};
@@ -104,6 +105,35 @@ test('preview restart reconciles existing execution journal with both mutation g
   assert.deepEqual(f.closed,['execution','monitor']);
 });
 
+test('live and disarmed existing engines give the companion report market-only scope',async()=>{
+ for(const live of [false,true]){
+  const f=lifecycle({existing:true,credentials:true,live});
+  f.options.monitor=async args=>{
+   assert.equal(args.broker,null);assert.equal(args.executionManaged,true);
+   return monitorCycle({...args,clock:()=>args.now});
+  };
+  await run(f.env,f.options);
+  const status=f.logs.find(x=>x.event==='worker_status');
+  assert.equal(status.mode,live?'live':'preview');assert.equal(status.realOrdersEnabled,live);
+  assert.equal(status.report.mode,'market-only');assert.equal(status.report.realEnabled,null);
+  assert.equal(status.report.credentialStatus,'handled_by_execution_engine');assert.equal(status.report.feeStatus,'handled_by_execution_engine');
+  assert.ok(status.execution);assert.equal(status.report.coverage.previewed,0);
+ }
+});
+
+test('fresh preview workers retain their own authenticated preflight or missing-credentials context',async()=>{
+ for(const credentials of [false,true]){
+  const f=lifecycle({credentials});
+  f.options.monitor=async args=>{
+   assert.equal(args.executionManaged,false);assert.equal(args.broker!==null,credentials);
+   return {mode:'preview-only',credentialStatus:credentials?'view_verified':'needs_credentials'};
+  };
+  await run(f.env,f.options);
+  const status=f.logs.find(x=>x.event==='worker_status');
+  assert.equal(status.mode,'preview');assert.equal(status.report.mode,'preview-only');assert.equal(status.execution,null);
+ }
+});
+
 test('preview restart without credentials explicitly retains unresolved execution status without private fields',async()=>{
   const f=lifecycle({existing:true});await run(f.env,f.options);
   assert.equal(f.engineOptions.length,0);const status=f.logs.find(x=>x.event==='worker_status');
@@ -144,4 +174,19 @@ test('shutdown during single-run collection starts no tick or monitor after the 
   f.options.collect=async()=>{f.signals.emit('SIGTERM');return {markets:[{product:'BTC-USD'}]};};
   f.options.monitor=async()=>{monitors++;return {};};
   await run(f.env,f.options);assert.equal(ticks,0);assert.equal(monitors,0);assert.deepEqual(f.closed,['execution','monitor']);
+});
+
+test('startup recovery requires an explicit acknowledgement and happens before ordinary ticks',async()=>{
+ for(const outcome of ['absent','recovered','already_applied','held']){
+  const f=lifecycle({live:true}),calls=[],token='projection-v1-'+'a'.repeat(64);
+  if(outcome!=='absent')f.env.MM_RECOVER_PROJECTION_ACK=token;
+  f.options.createEngine=async()=>({state:{manualRecovery:true,intents:[]},
+   recoverProjectionHold:async received=>{calls.push('recover');assert.equal(received,token);if(outcome==='held')throw Error('PRIVATE BROKER RESPONSE');return {recovered:outcome==='recovered'};},
+   tick:async()=>calls.push('tick')});
+  await run(f.env,f.options);
+  assert.deepEqual(calls,outcome==='absent'?['tick']:['recover','tick']);
+  const recovery=f.logs.filter(item=>item.event==='projection_recovery');assert.equal(recovery.length,outcome==='absent'?0:1);
+  if(outcome!=='absent')assert.equal(recovery[0].status,outcome);
+  assert.ok(!JSON.stringify(f.logs).includes(token));assert.ok(!JSON.stringify(f.logs).includes('PRIVATE BROKER RESPONSE'));
+ }
 });

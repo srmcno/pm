@@ -1,4 +1,4 @@
-import {randomUUID} from 'node:crypto';
+import {createHash,randomUUID} from 'node:crypto';
 import {evaluateUniverse} from '../../dashboard/crypto-strategies-core.mjs';
 import {D,S,mul,div,floorStep,planEntry,validatePreview} from './risk.mjs';
 import {validateOrderBody} from './coinbase.mjs';
@@ -13,6 +13,12 @@ const nonnegative=value=>{const n=D(value);if(n<0n)throw Error('Negative ledger 
 const upFee=(amount,rate)=>((amount*rate+ONE*CENT-1n)/(ONE*CENT))*CENT;
 class Hold extends Error {constructor(message,manual=false){super(message);this.manual=manual;}}
 const hold=(message,manual=false)=>{throw new Hold(message,manual);};
+function latch(state,reason,parent){
+ for(const record of [state,parent].filter(Boolean)){
+  record.manualRecovery=true;record.recoveryReason??=reason;record.recoveryReasons??=[];
+  if(!record.recoveryReasons.includes(reason))record.recoveryReasons.push(reason);
+ }
+}
 function configOf(config={}){
  const c={mode:config.mode??'preview',allocation:String(config.allocation??20),maxOrder:String(config.maxOrder??5),lossLimit:String(config.lossLimit??2),expectedPortfolioId:config.expectedPortfolioId??config.portfolioId,confirmationSeconds:config.confirmationSeconds??60,maxPositions:config.maxPositions??3};
  if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>D('5')||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('2')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>3)throw Error('Invalid bounded execution configuration');
@@ -27,6 +33,9 @@ function cashFrom(state){
 function validateState(state,config){
  if(!state||state.version!==1||state.kind!=='coinbase-rotation-engine'||state.portfolioId!==config.expectedPortfolioId||state.allocation!==config.allocation||state.maxOrder!==config.maxOrder||state.lossLimit!==config.lossLimit||!['preview','live'].includes(state.mode)||!['funded','lossLatched','manualRecovery','marksComplete'].every(k=>typeof state[k]==='boolean')||!Array.isArray(state.intents)||state.intents.length>10000||!state.confirmations||!state.cooldowns)throw Error('Invalid execution journal; refusing to reset or adopt balances');
  for(const key of ['lastTickAt','lastSuccessAt','lastMarkedAt'])if(state[key]!==null&&(!Number.isFinite(state[key])||state[key]<=0))throw Error('Invalid execution receipt');
+ if(state.projectionRecoveryToken!==undefined&&!/^projection-v1-[a-f0-9]{64}$/.test(state.projectionRecoveryToken))throw Error('Invalid recovery receipt');
+ for(const record of [state,...state.intents])if(record.recoveryReason!==undefined&&record.recoveryReason!==null&&(typeof record.recoveryReason!=='string'||!record.recoveryReason.length||record.recoveryReason.length>500))throw Error('Invalid recovery reason');
+ for(const record of [state,...state.intents])if(record.recoveryReasons!==undefined&&(!Array.isArray(record.recoveryReasons)||record.recoveryReasons.length>100||record.recoveryReasons.some(reason=>typeof reason!=='string'||!reason.length||reason.length>500)))throw Error('Invalid recovery reasons');
  const seen=new Set();
  for(const intent of state.intents){
   if(!id(intent.clientOrderId)||seen.has(intent.clientOrderId)||!Number.isFinite(intent.createdAt)||intent.createdAt<=0||!Array.isArray(intent.exits)||!intent.plan?.ok||D(intent.plan.reserved)>D(config.maxOrder)||D(intent.plan.reserved)<=0n||D(intent.plan.quantity)<=0n)throw Error('Invalid persisted intent');
@@ -75,6 +84,51 @@ export class Engine {
   this.#state=prior?clone(validateState(prior,c)):{version:1,kind:'coinbase-rotation-engine',mode:c.mode,portfolioId:c.expectedPortfolioId,allocation:c.allocation,maxOrder:c.maxOrder,lossLimit:c.lossLimit,initialCapital:ZERO,funded:false,cash:ZERO,equity:ZERO,exposure:ZERO,marksComplete:false,lastMarkedAt:null,lossLatched:false,manualRecovery:false,hold:null,lastTickAt:null,lastSuccessAt:null,confirmations:{},cooldowns:{},intents:[]};
  }
  get state(){return clone(this.#state);}
+ #beginRecovery(){
+  if(this.#running||this.#fatal||this.#isStopping())hold('Recovery inspection requires an idle healthy engine');
+  this.#running=true;
+ }
+ async #projectionRecoverySnapshot(){
+  const state=this.state,parent=state.intents[0];
+  if(!state.funded||!state.manualRecovery||state.lossLatched||state.intents.length!==1||!parent?.manualRecovery||parent.closedAt!==null||parent.exitReason!==null||parent.exits.length||!parent.terminal||parent.status!=='FILLED'||D(parent.filledSize)<=0n||parent.cancelRequestedAt!==null)hold('Recovery is restricted to one settled protected entry');
+  if([state.recoveryReason,parent.recoveryReason,...(state.recoveryReasons??[]),...(parent.recoveryReasons??[])].some(reason=>reason!==undefined&&reason!==null&&reason!=='Venue total and cumulative fees disagree'))hold('A different recovery reason requires separate review');
+  const child=parent.child;
+  if(!child||!['UNKNOWN','OPEN'].includes(child.status)||child.terminal||child.cancelRequestedAt!==null||[child.filledSize,child.filledValue,child.fees].some(v=>D(v)!==0n))hold('Recovery requires an unfilled, uncancelled protective bracket');
+  const token='projection-v1-'+createHash('sha256').update(JSON.stringify({version:1,portfolioId:state.portfolioId,allocation:state.allocation,initialCapital:state.initialCapital,clientOrderId:parent.clientOrderId,orderId:parent.orderId,childOrderId:child.orderId,plan:parent.plan,createdAt:parent.createdAt})).digest('hex');
+  await this.#permissions();
+  const observedParent=(await this.#broker.order(parent.orderId)).order;
+  if(observedParent?.status!=='FILLED'||observedParent.settled!==true||observedParent.pending_cancel===true||observedParent.attached_order_id!==child.orderId)hold('Entry identity, settlement or attachment changed');
+  if(['filled_size','filled_value','total_fees'].some((key,n)=>D(observedParent[key])!==D([parent.filledSize,parent.filledValue,parent.fees][n])))hold('Entry accounting changed; separate reconciliation is required');
+  this.#apply(state,parent,observedParent,parent,'parent');
+  const observedChild=(await this.#broker.order(child.orderId)).order;
+  if(observedChild?.status!=='OPEN'||observedChild.settled!==false||observedChild.pending_cancel===true||['filled_size','filled_value','total_fees'].some(k=>D(observedChild[k])!==0n)||D(observedChild.total_value_after_fees)<=0n)hold('Protective order no longer matches the unfilled projection incident');
+  this.#apply(state,child,observedChild,parent,'child');
+  const fees=await this.#broker.fees(),balances=await this.#accounts(),book=await this.#broker.book(parent.product),rate=this.#fee(fees),mark=liquidation(book,remaining(parent),rate,parent.product,this.#now());
+  if((balances.get('USD')??0n)<D(state.cash))hold('Available cash does not cover the preserved allocation ledger');
+  const equity=D(state.cash)+mark.net;
+  if(equity<=D(state.initialCapital)-D(state.lossLimit))hold('Current liquidation value reaches the loss trigger');
+  state.equity=S(equity);state.exposure=S(mark.gross);state.marksComplete=true;state.lastMarkedAt=this.#now();
+  return {state,report:{eligible:true,token,product:parent.product,quantity:parent.filledSize,protectionStatus:'OPEN'}};
+ }
+ async inspectProjectionRecovery(){
+  this.#beginRecovery();
+  try{return (await this.#projectionRecoverySnapshot()).report;}finally{this.#running=false;}
+ }
+ async recoverProjectionHold(token){
+  if(typeof token!=='string'||!/^projection-v1-[a-f0-9]{64}$/.test(token))hold('Invalid projection recovery acknowledgement');
+  // A persisted token cannot clear a later unrelated hold, even if the
+  // operator leaves the one-time environment variable in place.
+  if(token===this.#state.projectionRecoveryToken)return {recovered:false,alreadyRecovered:true};
+  this.#beginRecovery();
+  try{
+  const {state,report}=await this.#projectionRecoverySnapshot();
+  if(token!==report.token)hold('Recovery acknowledgement belongs to a different entry');
+  if(this.#isStopping())hold('Shutdown in progress; recovery not saved');
+  state.manualRecovery=false;state.recoveryReason=null;state.recoveryReasons=[];state.hold=null;state.projectionRecoveryToken=token;
+  state.intents[0].manualRecovery=false;state.intents[0].recoveryReason=null;state.intents[0].recoveryReasons=[];state.intents[0].lastAuditAt=this.#now();
+  this.#save(state,'projection_recovery');return {...report,recovered:true};
+  }finally{this.#running=false;}
+ }
  #save(next,event='tick'){
   if(this.#fatal)throw Error('Execution journal failed; restart and reconcile');
   try{validateState(next,this.#config);this.#journal.save(next,{type:event,time:this.#now()});this.#state=clone(next);}catch{this.#fatal=true;throw Error('Execution persistence failed; stop and reconcile before restart');}
@@ -103,7 +157,10 @@ export class Engine {
   }
   const size=nonnegative(raw.filled_size),value=nonnegative(raw.filled_value),fees=nonnegative(raw.total_fees);
   if(size<D(record.filledSize)||value<D(record.filledValue)||fees<D(record.fees)||(size===0n&&value!==0n)||(size>0n&&value===0n))hold('Nonmonotonic or incomplete cumulative fills',true);
-  if(raw.total_value_after_fees!==undefined&&D(raw.total_value_after_fees)!==(kind==='parent'?value+fees:value-fees))hold('Venue total and cumulative fees disagree',true);
+  // OPEN native brackets can report projected proceeds here despite zero
+  // fills. Actual accounting always uses cumulative filled value and fees.
+  // The derived total is a consistency check only after complete settlement.
+  if(raw.status==='FILLED'&&raw.settled===true&&raw.total_value_after_fees!==undefined&&D(raw.total_value_after_fees)!==(kind==='parent'?value+fees:value-fees))hold('Venue total and cumulative fees disagree',true);
   const isTerminal=terminal.has(raw.status)&&(raw.status!=='FILLED'||raw.settled===true);
   if(record.terminal&&!isTerminal)hold('Terminal order became active again',true);
   const maximum=kind==='child'?D(parent.filledSize):D(record.body.order_configuration[kind==='parent'?'limit_limit_gtc':'sor_limit_ioc'].base_size);
@@ -136,11 +193,11 @@ export class Engine {
    if(parent.child&&D(parent.filledSize)>0n){const child=(await this.#broker.order(parent.child.orderId)).order;if(D(child.order_configuration?.trigger_bracket_gtc?.base_size??ZERO)>D(parent.filledSize))this.#apply(state,parent,(await this.#broker.order(parent.orderId)).order,parent,'parent');this.#apply(state,parent.child,child,parent,'child');}
    for(const exit of parent.exits){exit.orderId=await this.#resolve(exit);if(exit.orderId!==null)this.#apply(state,exit,(await this.#broker.order(exit.orderId)).order,parent,'exit');}
    const quantity=remaining(parent);
-   if(parent.child&&D(parent.child.filledSize)>0n&&quantity>0n){parent.manualRecovery=true;state.manualRecovery=true;state.hold='A protective SELL partially filled; remaining protection requires manual recovery';}
-   if(parent.terminal&&quantity>0n&&parent.child?.terminal&&!parent.exitReason){parent.manualRecovery=true;state.manualRecovery=true;state.hold='Owned position has no verified active native bracket; manual recovery required';}
+   if(parent.child&&D(parent.child.filledSize)>0n&&quantity>0n){state.hold='A protective SELL partially filled; remaining protection requires manual recovery';latch(state,state.hold,parent);}
+   if(parent.terminal&&quantity>0n&&parent.child?.terminal&&!parent.exitReason){state.hold='Owned position has no verified active native bracket; manual recovery required';latch(state,state.hold,parent);}
    if(parent.terminal&&quantity===0n&&parent.closedAt===null&&(!parent.child||parent.child.terminal)&&parent.exits.every(exit=>exit.terminal)){parent.closedAt=this.#now();state.cooldowns[parent.product]=parent.closedAt+21600;}
    parent.lastAuditAt=this.#now();this.#save(state,'reconcile');this.#verified.add(index);
-   }catch(error){if(this.#fatal)throw error;this.#cycleHold=error instanceof Hold?error.message:'Order reconciliation unavailable; affected position held';if(error instanceof Hold&&error.manual){const state=this.state;state.manualRecovery=true;state.intents[index].manualRecovery=true;state.hold=this.#cycleHold;this.#save(state,'manual_recovery');}}
+   }catch(error){if(this.#fatal)throw error;this.#cycleHold=error instanceof Hold?error.message:'Order reconciliation unavailable; affected position held';if(error instanceof Hold&&error.manual){const state=this.state;latch(state,this.#cycleHold,state.intents[index]);state.hold=state.recoveryReason;this.#save(state,'manual_recovery');}}
    // A child snapshot problem must never leave a freshly verified stale BUY
    // open. Cancellation is retried only after this tick's authoritative GET.
    const parent=this.#state.intents[index];
@@ -204,7 +261,7 @@ export class Engine {
    if(!id(preview?.preview_id)||!Array.isArray(preview.errs)||preview.errs.length||(preview.warning?.length)||(preview.warnings?.length)||D(preview.base_size??S(quantity))!==quantity||nonnegative(preview.commission_total)>upFee(mark.gross,rate)||nonnegative(preview.order_total)>D(this.#config.maxOrder))hold('Exit preview failed bounded size or fee verification');
    this.#fee(fees);freshBook(book,parent.product,this.#now());body.preview_id=preview.preview_id;
    const state=this.state,exit=record(body,this.#now());state.marksComplete=false;state.intents[index].exits.push(exit);this.#save(state,'exit_intent');await this.#send(index,state.intents[index].exits.length-1);hold('Exit submitted; waiting for cumulative fill reconciliation');
-   }catch(error){if(this.#fatal)throw error;held=error instanceof Hold?error:new Hold('Exit broker verification failed; no further action for this position');if(held.manual){const state=this.state;state.intents[index].manualRecovery=true;state.manualRecovery=true;this.#save(state,'manual_recovery');}}
+   }catch(error){if(this.#fatal)throw error;held=error instanceof Hold?error:new Hold('Exit broker verification failed; no further action for this position');if(held.manual){const state=this.state;latch(state,held.message,state.intents[index]);this.#save(state,'manual_recovery');}}
   }
   if(held)throw held;
  }
@@ -251,7 +308,7 @@ export class Engine {
    const state=this.state;state.lastSuccessAt=this.#now();this.#save(state,'verified');await this.#entry(feed,fees);
   }catch(error){
    if(this.#fatal)throw error;
-   const state=this.state;state.hold=error instanceof Hold?error.message:'Broker data or transport could not be verified; no new action taken';if(error instanceof Hold&&error.manual)state.manualRecovery=true;this.#save(state,'held');
+   const state=this.state;const reason=error instanceof Hold?error.message:'Broker data or transport could not be verified; no new action taken';if(error instanceof Hold&&error.manual)latch(state,reason);state.hold=state.recoveryReason??reason;this.#save(state,'held');
   }finally{this.#running=false;}
   return this.state;
  }

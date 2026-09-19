@@ -152,3 +152,121 @@ test('real SQLite journal preserves engine intents and exact accounting through 
   const state=await restarted.tick(f.feed);assert.equal(state.cash,cash);assert.equal(state.cash,S(D('20')-D(raw.filled_value)-D(raw.total_fees)));assert.equal(state.intents[0].clientOrderId,intent.clientOrderId);assert.equal(state.intents[0].filledSize,raw.filled_size);assert.equal(f.calls.filter(c=>c.create).length,1);
  }finally{journal.close();rmSync(directory,{recursive:true,force:true});}
 });
+
+test('an OPEN native bracket projected total is never treated as completed sale proceeds',async()=>{
+ const f=fixture(),intent=await f.enter(),parent=f.fillParent(intent),child=f.orders.get(`child-${intent.orderId}`);
+ // Observed Coinbase response shape, with synthetic identifiers and amounts.
+ child.total_value_after_fees=S(mul(mul(D(intent.plan.quantity),D(intent.plan.target)),D('0.991')));
+ assert.ok(D(child.total_value_after_fees)>0n);
+ const state=await f.tick();
+ assert.equal(state.manualRecovery,false,state.hold);
+ assert.equal(state.intents[0].child.status,'OPEN');
+ assert.equal(state.intents[0].child.filledValue,'0');
+ assert.equal(state.cash,S(D('20')-D(parent.filled_value)-D(parent.total_fees)));
+ assert.equal(state.marksComplete,true);
+ assert.equal(f.calls.filter(c=>c.create||c.cancel).length,1);
+});
+test('cancelled partial BUY credits only actual cumulative fields despite a projected order total',async()=>{
+ const f=fixture(),intent=await f.enter(),parent=f.fillParent(intent,{fraction:.5});
+ parent.total_value_after_fees=intent.plan.reserved;
+ const state=await f.tick();
+ assert.equal(state.manualRecovery,false,state.hold);
+ assert.equal(state.cash,S(D('20')-D(parent.filled_value)-D(parent.total_fees)));
+ assert.equal(state.intents[0].filledSize,parent.filled_size);
+});
+test('settled FILLED order totals must still match actual principal and fees',async()=>{
+ const f=fixture(),intent=await f.enter(),parent=f.fillParent(intent);
+ parent.total_value_after_fees=S(D(parent.total_value_after_fees)+D('0.01'));
+ const state=await f.tick();assert.equal(state.manualRecovery,true);assert.equal(state.cash,'20');
+ assert.equal(state.recoveryReason,'Venue total and cumulative fees disagree');
+ assert.equal(state.hold,state.recoveryReason,'Later marking failures must not hide the original cause');
+});
+
+async function projectionIncident(){
+ const f=fixture(),intent=await f.enter();f.fillParent(intent);await f.tick();
+ const state=f.journal.load(),parent=state.intents[0],child=f.orders.get(parent.child.orderId);
+ child.total_value_after_fees=S(mul(mul(D(parent.filledSize),D(parent.plan.target)),D('0.991')));
+ // Reproduce the old durable state after the parent saved but child check failed.
+ state.manualRecovery=true;parent.manualRecovery=true;parent.child.status='UNKNOWN';state.marksComplete=false;
+ state.hold='Position awaits its own verified order and liquidation data';
+ f.journal.save(state,{type:'legacy_fixture'});f.restart();return f;
+}
+test('read-only incident inspection and scoped recovery preserve actual accounting and native protection',async()=>{
+ const f=await projectionIncident(),before=f.engine.state,orders=copy([...f.orders]),mutations=f.calls.filter(c=>c.create||c.cancel).length,events=f.journal.events.length;
+ const report=await f.engine.inspectProjectionRecovery();
+ assert.equal(report.eligible,true);assert.equal(report.protectionStatus,'OPEN');assert.match(report.token,/^projection-v1-[a-f0-9]{64}$/);
+ assert.deepEqual(f.engine.state,before);assert.deepEqual(f.journal.load(),before);assert.equal(f.journal.events.length,events);
+ const result=await f.engine.recoverProjectionHold(report.token),after=f.engine.state;
+ assert.equal(result.recovered,true);assert.equal(after.manualRecovery,false);assert.equal(after.intents[0].manualRecovery,false);
+ assert.equal(after.intents[0].child.status,'OPEN');assert.equal(after.cash,before.cash);assert.equal(after.initialCapital,before.initialCapital);
+ for(const key of ['orderId','clientOrderId','filledSize','filledValue','fees','body','plan'])assert.deepEqual(after.intents[0][key],before.intents[0][key],key);
+ assert.equal(after.intents[0].child.orderId,before.intents[0].child.orderId);assert.equal(after.marksComplete,true);
+ assert.equal(f.journal.events.at(-1).type,'projection_recovery');assert.equal(f.calls.filter(c=>c.create||c.cancel).length,mutations);assert.deepEqual([...f.orders],orders);
+});
+test('ordinary reconciliation and restart never clear a persisted recovery latch',async()=>{
+ const f=await projectionIncident();await f.tick();f.restart();await f.tick();
+ assert.equal(f.engine.state.manualRecovery,true);assert.equal(f.engine.state.intents[0].manualRecovery,true);
+ assert.equal(f.engine.state.intents[0].child.status,'OPEN');assert.equal(f.engine.state.marksComplete,true);
+ assert.equal(f.calls.filter(c=>c.create||c.cancel).length,1);
+});
+test('recovery rejects malformed or different-entry acknowledgements and keeps ledger unchanged',async()=>{
+ const f=await projectionIncident(),other=await projectionIncident(),report=await other.engine.inspectProjectionRecovery(),before=f.engine.state;
+ for(const token of [undefined,'clear-all',report.token])await assert.rejects(f.engine.recoverProjectionHold(token));
+ assert.deepEqual(f.engine.state,before);assert.deepEqual(f.journal.load(),before);
+});
+test('recovery rechecks changed evidence and rejects unrelated or unsafe incident states',async()=>{
+ for(const kind of ['reason','loss','multiple','pending-parent','pending-child','child-origin','child-config','child-filled','child-cancelled','parent-fees','cash','book','liquidation']){
+  const f=await projectionIncident(),report=await f.engine.inspectProjectionRecovery(),parent=f.engine.state.intents[0],rawParent=f.orders.get(parent.orderId),child=f.orders.get(parent.child.orderId);
+  if(['reason','loss','multiple'].includes(kind)){
+   const state=f.journal.load();
+   if(kind==='reason')state.recoveryReason='Order identity, side or status mismatch';
+   if(kind==='loss')state.lossLatched=true;
+   if(kind==='multiple'){
+    const extra=copy(state.intents[0]);extra.clientOrderId='other-client';extra.body.client_order_id=extra.clientOrderId;extra.orderId='other-order';extra.child.orderId='other-child';
+    state.intents.push(extra);state.cash=S(D(state.cash)-D(extra.filledValue)-D(extra.fees));
+   }
+   f.journal.save(state,{type:'changed_fixture'});f.restart();
+  }
+  if(kind==='pending-parent')rawParent.pending_cancel=true;
+  if(kind==='pending-child')child.pending_cancel=true;
+  if(kind==='child-origin')child.originating_order_id='foreign-parent';
+  if(kind==='child-config')child.order_configuration.trigger_bracket_gtc.limit_price='999';
+  if(kind==='child-filled'){child.filled_size='0.001';child.filled_value='0.1';}
+  if(kind==='child-cancelled')child.status='CANCELLED';
+  if(kind==='parent-fees')rawParent.total_fees='0.02';
+  if(kind==='cash')f.setUSD('0');
+  if(kind==='book'){const book=f.broker.book;f.broker.book=async id=>({...await book(id),bookAt:f.now-16});}
+  if(kind==='liquidation'){
+   const state=f.journal.load();state.lossLimit='0.1';f.journal.save(state,{type:'small_loss_limit_fixture'});f.restart({lossLimit:'0.1'});
+   f.prices.set(parent.product,0.01);
+  }
+  const before=f.engine.state;await assert.rejects(f.engine.recoverProjectionHold(report.token),undefined,kind);
+  assert.deepEqual(f.engine.state,before,kind);assert.deepEqual(f.journal.load(),before,kind);assert.equal(f.calls.filter(c=>c.create||c.cancel).length,1,kind);
+ }
+});
+test('recovery token replay cannot clear a subsequent unrelated hold',async()=>{
+ const f=await projectionIncident(),report=await f.engine.inspectProjectionRecovery();await f.engine.recoverProjectionHold(report.token);
+ const state=f.journal.load();state.manualRecovery=true;state.recoveryReason='Attached exit origin mismatch';state.intents[0].manualRecovery=true;
+ f.journal.save(state,{type:'later_hold'});f.restart();const before=f.engine.state;
+ assert.deepEqual(await f.engine.recoverProjectionHold(report.token),{recovered:false,alreadyRecovered:true});assert.deepEqual(f.engine.state,before);
+});
+test('a later distinct recovery fault remains a blocker even after its broker snapshot recovers',async()=>{
+ const f=await projectionIncident(),report=await f.engine.inspectProjectionRecovery(),state=f.journal.load();
+ state.recoveryReason='Venue total and cumulative fees disagree';state.intents[0].recoveryReason=state.recoveryReason;
+ f.journal.save(state,{type:'known_projection_reason'});f.restart();
+ const child=f.orders.get(state.intents[0].child.orderId),origin=child.originating_order_id;child.originating_order_id='foreign-parent';
+ await f.tick();child.originating_order_id=origin;await f.tick();
+ assert.equal(f.engine.state.recoveryReason,'Venue total and cumulative fees disagree');
+ assert.ok(f.engine.state.recoveryReasons.includes('Attached exit origin mismatch'));
+ await assert.rejects(f.engine.recoverProjectionHold(report.token),/different recovery reason/);assert.equal(f.engine.state.manualRecovery,true);
+});
+test('recovery and inspection exclusively lock the engine across broker awaits',async()=>{
+ for(const recover of [false,true]){
+  const f=await projectionIncident(),report=await f.engine.inspectProjectionRecovery(),permissions=f.broker.permissions;let release;
+  f.broker.permissions=()=>new Promise(resolve=>{release=async()=>resolve(await permissions());});
+  const pending=recover?f.engine.recoverProjectionHold(report.token):f.engine.inspectProjectionRecovery();
+  await assert.rejects(f.tick(),/already running/);await assert.rejects(f.engine.inspectProjectionRecovery(),/idle healthy/);
+  await assert.rejects(f.engine.recoverProjectionHold(report.token),/idle healthy/);await release();await pending;
+  f.broker.permissions=permissions;await f.tick();assert.equal(f.engine.state.manualRecovery,!recover);
+ }
+});

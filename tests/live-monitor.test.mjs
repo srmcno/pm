@@ -25,6 +25,15 @@ test('without credentials publishes market coverage and explicitly unverified mo
  const {feed}=fixture();const result=await monitorCycle({feed,now});
  assert.equal(result.mode,'preview-only');assert.equal(result.realEnabled,false);assert.equal(result.status,'market_monitoring');assert.equal(result.credentialStatus,'needs_credentials');assert.equal(result.feeStatus,'modeled-unverified');assert.equal(result.coverage.ready,2);assert.equal(result.coverage.selected,2);assert.equal(result.generatedAt,now);assert.ok(result.candidates.length);assert.match(result.note,/not real-money/);
 });
+test('execution-managed scan labels public signals without claiming missing or verified credentials',async()=>{
+ const {feed}=fixture();const result=await monitorCycle({feed,now,executionManaged:true});
+ assert.equal(result.mode,'market-only');assert.equal(result.realEnabled,null);
+ assert.equal(result.credentialStatus,'handled_by_execution_engine');assert.equal(result.feeStatus,'handled_by_execution_engine');
+ assert.equal(result.status,'market_monitoring');assert.equal(result.coverage.previewed,0);
+ assert.ok(result.candidates.length);assert.ok(result.candidates.every(c=>c.status==='signal_candidate'));
+ assert.match(result.note,/execution status are reported separately/);
+ assert.ok(!JSON.stringify(result).includes('needs_credentials'));assert.ok(!JSON.stringify(result).includes('account_verified'));
+});
 test('view-only credential permits capped previews with an attached bracket and publishes no private data',async()=>{
  const {feed,broker,calls}=fixture();const result=await monitorCycle({feed,broker,now});
  assert.equal(result.credentialStatus,'view_verified');assert.equal(result.feeStatus,'account_verified');assert.ok(result.coverage.previewed>0,JSON.stringify(result));assert.ok(result.candidates.some(c=>c.status==='preview_passed'),JSON.stringify(result));

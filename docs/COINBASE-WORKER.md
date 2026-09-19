@@ -1,6 +1,6 @@
 # Coinbase rotation worker
 
-This private worker is separate from the public paper dashboard. Its goal is an operator-activated, automated Coinbase Advanced USD spot test with an allocation ceiling of $20. Deploying the repository or editing a website does not activate trading. No real orders were used to validate this implementation.
+This private worker is separate from the public paper dashboard. Its goal is an operator-activated, automated Coinbase Advanced USD spot test with an allocation ceiling of $20. Deploying the repository or editing a website does not activate trading. Automated tests use synthetic orders; subsequent operator-activated operation exposed the bracket accounting issue described below.
 
 ## Hosting
 
@@ -31,6 +31,17 @@ State persists under `/var/data/rotation/execution`; market/preflight evidence l
 Private worker logs and `status.json` expose operating status and aggregate marked trading P&L without credentials, account identifiers or order responses. Marked P&L is available only with complete liquidation marks less than 60 seconds old, and is explicitly distinct from realized profit. Quantities, fills and account identity remain in the private journal. The public Pages/Sites figures continue to be paper results; they do not become this worker's realized profit. Hosting accrual is an estimate, not a Render invoice. Funding, conversion, withdrawal, taxes and any other external costs must be included separately when judging overall profitability.
 
 Turning the worker off stops software reconciliation. Changing it to preview preserves read-only reconciliation when the credentials remain configured; it does not sell positions or cancel broker-native orders. Check and manage those positions in Coinbase when pausing live execution. A persistent loss or recovery latch does not automatically reset after redeployment.
+
+## Narrow recovery for an open bracket's projected total
+
+An observed Coinbase `OPEN` protective bracket reported a projected `total_value_after_fees` despite zero cumulative fills. The original tests did not cover this response shape. Comparing that projected amount with zero actual proceeds incorrectly raised the manual recovery hold `Venue total and cumulative fees disagree`. Accounting must continue to use cumulative `filled_size`, `filled_value` and `total_fees`; a projected total is not realized proceeds or profit.
+
+The recovery path is limited to that specific hold and a single existing protected position. Fresh broker evidence must verify the immutable entry as `FILLED`, its attached protection as `OPEN` with zero child fills, matching quantities and identities, no software exits, and no other manual recovery or loss condition. It does not authorize clearing unrelated holds, adopting balances, changing protection or resetting the journal.
+
+1. After deploying the reviewed recovery code, run `node scripts/live/check-recovery.mjs` in the worker's private shell with its existing environment and persistent disk. The checker opens the existing execution database read-only, inspects a snapshot, forces preview mode and disables broker submissions. It never calls the execution loop, changes journal state, or creates/cancels orders; there is no `--apply` option.
+2. An eligible result reports the product, owned quantity, `protectionStatus: "OPEN"` and `MM_RECOVER_PROJECTION_ACK`. It omits account/order identifiers, credentials and raw responses. A failed check returns no token and leaves the hold in place. The result is a point-in-time check, not a guarantee that protection remains unchanged.
+3. The account owner sets `MM_RECOVER_PROJECTION_ACK` to that exact check token in the worker's private environment and redeploys. This acknowledgement is scoped to the existing immutable intent. The worker checks the same conditions against fresh evidence again before recording recovery; this path itself does not submit or cancel orders. Ordinary operation afterward still follows the configured live/preview mode and all existing risk gates.
+4. Remove the acknowledgement after successful recovery. An old token is inert after success and cannot clear later or unrelated holds. If the fresh recheck fails, preserve the ledger and inspect current broker orders; do not delete state or substitute a different acknowledgement.
 
 ## Verification scope
 
