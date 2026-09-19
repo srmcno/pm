@@ -5,13 +5,13 @@ function number(v){return v!==null&&v!==undefined&&v!==''&&finite(Number(v))?Num
 function normalizeLevels(rows){if(!Array.isArray(rows)||!rows.length)throw Error('Empty order book');return rows.map(r=>{const p=number(r?.[0]),q=number(r?.[1]);if(!(p>0&&q>0))throw Error('Malformed order-book level');return [p,q];});}
 function productEligible(p){
   const base=String(p?.base_currency||'').toUpperCase(),id=String(p?.id||'');
-  if(p?.quote_currency!=='USD'||`${base}-USD`!==id||p?.status!=='online'||p?.trading_disabled)return false;
+  if(p?.quote_currency!=='USD'||`${base}-USD`!==id||p?.status!=='online'||p?.trading_disabled||p?.cancel_only||p?.post_only||p?.limit_only||p?.auction_mode)return false;
   if(STABLE_BASES.has(base))return false;
   if(/(?:BULL|BEAR|[23][LS])$/.test(base))return false;
   return /^[A-Z0-9][A-Z0-9.-]{0,20}-USD$/.test(id);
 }
 function cacheByProduct(cached){return new Map((cached||[]).filter(m=>m?.product).map(m=>[m.product,m]));}
-export async function collectCoinbaseMarkets({cached=[],fetcher=fetch,clock=()=>Date.now()/1000,pace=210,products=null,requiredProducts=[],maxMarkets=40,preselect=52}={}){
+export async function collectCoinbaseMarkets({cached=[],fetcher=fetch,clock=()=>Date.now()/1000,pace=210,products=null,requiredProducts=[],maxMarkets=100,preselect=130}={}){
   let nextRequest=0;const errors=[],cache=cacheByProduct(cached),methodCalls=[];
   async function get(url){
     const at=Math.max(Date.now(),nextRequest);nextRequest=at+pace;if(at>Date.now())await new Promise(resolve=>setTimeout(resolve,at-Date.now()));
@@ -41,25 +41,39 @@ export async function collectCoinbaseMarkets({cached=[],fetcher=fetch,clock=()=>
   stats.sort((a,b)=>b.quoteVolume24h-a.quoteVolume24h||a.product.localeCompare(b.product));
   let selectedStats=explicit?stats:stats.slice(0,Math.max(preselect,maxMarkets));
   for(const product of required){const row=stats.find(s=>s.product===product);if(row&&!selectedStats.some(s=>s.product===product))selectedStats.push(row);}
-  const collected=[];
+  // Complete history work BEFORE fetching books. Slow candle requests must not
+  // consume the execution quote's freshness budget as the universe expands.
+  const prepared=[],collected=[];
   for(let i=0;i<selectedStats.length;i+=3){
     const batch=await Promise.all(selectedStats.slice(i,i+3).map(async row=>{
       const product=row.product,prior=cache.get(product),p=row.meta;
       try{
         if(!explicit&&!productEligible(p))throw Error('Product is not eligible for USD spot research');
-        if(p.status!=='online'||p.trading_disabled)throw Error('Product currently unavailable for trading');
+        if(p.status!=='online'||p.trading_disabled||p.cancel_only||p.post_only||p.limit_only||p.auction_mode||p._metadataError)throw Error('Product currently unavailable for modeled taker trading');
         const increment=number(p.base_increment)??prior?.increment;if(!(increment>0))throw Error('Missing public quantity increment');
         const last=prior?.candles?.filter(b=>Array.isArray(b)&&finite(b[0])&&b[0]+3600<=clock()).sort((a,b)=>b[0]-a[0])[0];
-        const canReuse=prior&&!prior.sourceError&&last&&clock()-(last[0]+3600)<3600&&prior.candles.length>=60;
-        const candles=canReuse?prior.candles:await get(`${baseUrl}/${encodeURIComponent(product)}/candles?granularity=3600`);
+        const canReuse=prior&&!prior.sourceError&&last&&last[0]+3600<=(prior.candlesRequestedAt||0)&&clock()-(last[0]+3600)<3600&&prior.candles.length>=60;
+        const candlesRequestedAt=canReuse?prior.candlesRequestedAt:clock();
+        const rawCandles=canReuse?prior.candles:await get(`${baseUrl}/${encodeURIComponent(product)}/candles?granularity=3600`);
+        // A response can cross an hour boundary. Only use candles already
+        // completed when the request began, never a cached partial hour.
+        const candles=Array.isArray(rawCandles)?rawCandles.filter(b=>b[0]+3600<=candlesRequestedAt):rawCandles;
         if(!Array.isArray(candles)||candles.length<60)throw Error('Insufficient public hourly history');
+        return {row,prior,p,increment,canReuse,candles,candlesRequestedAt};
+      }catch(error){errors.push({product,message:error.message,stage:'history'});if(prior)collected.push({...prior,sourceError:error.message});return null;}
+    }));prepared.push(...batch.filter(Boolean));
+  }
+  for(let i=0;i<prepared.length;i+=3){
+    const batch=await Promise.all(prepared.slice(i,i+3).map(async ({row,prior,p,increment,canReuse,candles,candlesRequestedAt})=>{
+      const product=row.product;
+      try{
         const requestAt=clock(),book=await get(`${baseUrl}/${encodeURIComponent(product)}/book?level=2`),receivedAt=clock();
         const bids=normalizeLevels(book.bids).sort((a,b)=>b[0]-a[0]).slice(0,50),asks=normalizeLevels(book.asks).sort((a,b)=>a[0]-b[0]).slice(0,50);
         const spreadBps=(asks[0][0]/bids[0][0]-1)*10000,depthUsd=bids.slice(0,10).reduce((n,[px,q])=>n+px*q,0)+asks.slice(0,10).reduce((n,[px,q])=>n+px*q,0);
         if(spreadBps>POLICY.maxSpread*10000&&!required.has(product))throw Error('Spread exceeds tournament limit');
         if(depthUsd<100&&!required.has(product))throw Error('Visible near-book depth is too small');
         return {product,status:p.status,tradingDisabled:false,candles,increment,minSize:number(p.base_min_size)??prior?.minSize??increment,
-          minNotional:Math.max(10,number(p.min_market_funds)??prior?.minNotional??10),fetchedAt:canReuse?prior.fetchedAt:receivedAt,metadataAt:receivedAt,
+          minNotional:Math.max(10,number(p.min_market_funds)??prior?.minNotional??10),fetchedAt:candlesRequestedAt,candlesRequestedAt,metadataAt:receivedAt,
           quoteVolume24h:row.quoteVolume24h,statsAt:row.statsAt,spreadBps,depthUsd,
           book:{bids,asks,requestAt,receivedAt,sequence:book.sequence??null,timeKind:'Public REST book retrieval time; not a guaranteed executable quote'},source:'Coinbase Exchange public API'};
       }catch(error){errors.push({product,message:error.message,stage:'market'});return prior?{...prior,sourceError:error.message}:null;}
@@ -74,9 +88,13 @@ export async function collectCoinbaseMarkets({cached=[],fetcher=fetch,clock=()=>
   else{
     for(const product of required){const m=collected.find(x=>x.product===product);if(m&&!markets.some(x=>x.product===product))markets.push(m);}
     for(const m of usable){if(markets.length>=maxMarkets)break;if(!markets.some(x=>x.product===m.product))markets.push(m);}
-    markets=markets.slice(0,maxMarkets);
+    // A cap may limit new candidates, never remove a position that needs exits.
+    for(const product of required){if(!markets.some(m=>m.product===product)&&cache.has(product)){const m={...cache.get(product),sourceError:'Required product absent or restricted in discovery'};markets.push(m);errors.push({product,stage:'required',message:m.sourceError});}}
   }
   const universe={discovered:discovered.length,statsChecked:stats.length,preselected:selectedStats.length,selected:markets.length,maxMarkets,required:[...required],
     excludedStableOrNonUsd:explicit?0:null,generatedAt:clock(),ranking:'24h USD notional, current spread and visible depth; open-position products retained'};
-  return {markets,errors,universe,requests:methodCalls.length};
+  universe.readyBooks=markets.filter(m=>!m.sourceError&&clock()-m.book.receivedAt<=POLICY.maxQuoteAge).length;
+  universe.maxBookAgeSeconds=Math.max(0,...markets.filter(m=>!m.sourceError).map(m=>clock()-m.book.receivedAt));
+  universe.coveragePolicy='2026-09-19-usd-100-v1';
+  return {markets,cache:collected,errors,universe,requests:methodCalls.length};
 }

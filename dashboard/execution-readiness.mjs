@@ -16,7 +16,7 @@ export function fundingHurdle({capital,entryRate,exitRate,slippageRate,fundingCo
 }
 export function assessReadiness(account,now=Date.now()/1000){
  const trades=(account?.trades||[]).filter(t=>finite(t.pnl)&&finite(t.closedAt)&&finite(t.openedAt)&&t.closedAt<=now);
- const start=account?.benchmark?.startedAt??now;
+ const start=Math.max(account?.benchmark?.startedAt??now,account?.policyStartedAt??0);
  const rows=trades.filter(t=>t.openedAt>=start),days=Math.max(0,(now-start)/86400);
  const net=rows.reduce((s,t)=>s+t.pnl,0),mean=rows.length?net/rows.length:0;
  const sd=rows.length>1?Math.sqrt(rows.reduce((s,t)=>s+(t.pnl-mean)**2,0)/(rows.length-1)):Infinity;
@@ -30,7 +30,7 @@ export function assessReadiness(account,now=Date.now()/1000){
   {label:'Positive realized results after all modeled trading costs',pass:rows.length>0&&net>0},
   {label:'Positive result with 50% higher fees and another 0.10% slippage each side',pass:rows.length>0&&stressed>0},
   {label:'Positive lower mean estimate (screening only, not proof of an edge)',pass:finite(lower)&&lower>0},
-  {label:'Outperform cost-adjusted BTC holding and cash over the same forward interval',pass:!!benchmark&&benchmark.markComplete===true&&account.equity>benchmark.equity&&account.equity>benchmark.baselineEquity},
+  {label:'Outperform cost-adjusted BTC holding and cash over the same forward interval',pass:!!benchmark&&benchmark.startedAt>=start&&benchmark.markComplete===true&&account.equity>benchmark.equity&&account.equity>benchmark.baselineEquity},
   {label:'Fresh liquidation marks and drawdown below 10%',pass:account?.markComplete===true&&finite(account.updatedAt??account.curve?.at(-1)?.at)&&(account.updatedAt??account.curve?.at(-1)?.at)<=now+5&&now-(account.updatedAt??account.curve?.at(-1)?.at)<1200&&dd<.1},
   {label:'Strategy remains eligible for new entries',pass:['experimental','established'].includes(account?.status)},
  ];

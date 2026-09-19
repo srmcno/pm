@@ -67,3 +67,36 @@ Before release, run `npm test`, both Python test suites, `python3 scripts/check_
 See [FUNDING.md](FUNDING.md) for account-specific fee caveats, funding/withdrawal cost treatment, conservative prediction-fee rounding, Oklahoma eligibility and the separate real-money prerequisites. Fees above are paper assumptions until verified against the user account.
 
 Defensive strength tests rising coins during declining BTC regimes. Volume-weighted recovery requires two rising completed closes below the preceding 72-hour volume-weighted price with at least 4% room. Weekend participation requires a UTC-weekend break of the prior range with volume and broad-market participation. Each retains the same depth, cost, risk and confirmation gates. A forward BTC/cash benchmark starts prospectively and does not alter any account cash. Evaluation time is captured after feed collection.
+
+## 100-pair expansion and prospective rotation comparison
+
+The September 19 expansion scans up to 100 eligible USD spot pairs from a 130-pair
+shortlist. All product statistics still participate in discovery. Historical
+candles are fetched before a separate fresh-book phase, and the whole shortlist
+is cached. Partial-hour candles are excluded at request time and refetched after
+the hour completes. Restricted taker markets (auction, post-only, cancel-only or
+limit-only) are excluded. Missing required holdings stay explicitly stale.
+
+Original accounts retain every balance and trade. Their promotion evidence
+starts a new policy interval and BTC comparison; prior benchmarks are preserved
+in benchmarkHistory. Historical fees are never silently rewritten.
+
+The snapshot's rotationStudy starts only after at least 80 markets are ready.
+Two fresh $1,000 paper accounts start together: a 40-pair control and a 100-pair
+expanded arm. Both use the same rule, collection clock, cost model and feed;
+selection ranks the observed markets independently while retaining each arm's
+own holdings. Study state lives in the same authoritative atomic JSON as the
+original ledgers. Comparison positions and trades appear in Activity/CSV.
+
+Displayed higher-cost outcomes are same-fill sensitivity calculations, not a
+second executed account: 1.20% taker fees plus 0.30% additional slippage each side.
+Base fills retain 0.90% / 0.10% assumptions and walked spread/depth. Account fees,
+individual Oklahoma asset eligibility, funding/withdrawal/hosting costs and taxes
+are not verified or included. No real orders or funding are enabled.
+
+Each account records gaps over 15 minutes and possible historical candle crossings
+of stops/targets. Those crossings flag incomplete execution evidence; candle
+extremes never fabricate fills. A five-minute cloud schedule does not guarantee
+continuous exits. Below 80 usable markets the collector still reconciles existing
+positions and preserves records, but fails its workflow to surface degraded
+coverage. The dashboard reports actual selected/fresh counts and book age.

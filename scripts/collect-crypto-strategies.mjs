@@ -4,6 +4,7 @@ import path from 'node:path';
 import {advanceCompetition,migrateCompetition,validateCompetition,STRATEGIES,POLICY,FEE_PROFILE,performance} from '../dashboard/crypto-strategies-core.mjs';
 import {collectCoinbaseMarkets} from './crypto-feed.mjs';
 import {collectAndAdvance} from './crypto-cycle.mjs';
+import {advanceStudy,validateStudy,studyRequiredProducts} from './rotation-study.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const statePath=path.join(root,'data/crypto-strategies/state.json');
 const snapshotPath=path.join(root,'dashboard/data/crypto-strategies.json');
@@ -14,21 +15,32 @@ await mkdir(path.dirname(lock),{recursive:true});await mkdir(lock);
 try{
   const rawPrevious=await read(statePath,null),startedAt=Date.now()/1000;
   const previous=rawPrevious?migrateCompetition(rawPrevious,startedAt):null;if(previous)validateCompetition(previous);
+  if(previous&&previous.universePolicy?.id!=='2026-09-19-usd-100-v1')for(const a of Object.values(previous.accounts)){
+    // Financial history is immutable; promotion evidence is policy-specific.
+    if(a.benchmark){a.benchmarkHistory=[...(a.benchmarkHistory||[]),a.benchmark];delete a.benchmark;}
+    a.policyStartedAt=startedAt;a.pending={};
+  }
   const old=await read(snapshotPath,null),legacy=await read(path.join(root,'dashboard/data/opportunities.json'),null);
   const cached=old?.feedCache||legacy?.markets||[];
-  const requiredProducts=previous?Object.values(previous.accounts).flatMap(a=>a.positions.map(p=>p.product)):[];
-  const {feed,now,state}=await collectAndAdvance(previous,{cached,requiredProducts,maxMarkets:40,preselect:52},collectCoinbaseMarkets);
+  // Study and original accounts share one atomic authoritative state file.
+  const priorStudy=previous?.rotationStudy;if(priorStudy)validateStudy(priorStudy);
+  const requiredProducts=[...(previous?Object.values(previous.accounts).flatMap(a=>a.positions.map(p=>p.product)):[]),...studyRequiredProducts(priorStudy)];
+  const {feed,now,state}=await collectAndAdvance(previous,{cached,requiredProducts,maxMarkets:100,preselect:130},collectCoinbaseMarkets);
+  const ready=state.markets.filter(m=>m.status==='ready').length;
+  // Do not start fresh evidence until a useful, complete expanded feed exists.
+  if(priorStudy||ready>=80)state.rotationStudy=advanceStudy(priorStudy,feed.markets,now);
+  state.universePolicy={id:'2026-09-19-usd-100-v1',maxMarkets:100,startedAt:previous?.universePolicy?.startedAt||now};
   const legacyAccount=legacy?.paper;
   const retired=(legacyAccount?.entryPolicy?.strategies||[]).map(s=>({id:s.id,name:s.name,status:'retired',retiredAt:legacyAccount.retirement?.at||null,
     replay:{returnPct:s.returnPct,trades:s.trades,net:s.stats?.net,profitFactor:s.profitFactor},forward:performance((legacyAccount.closed||[]).filter(t=>t.strategy.toLowerCase()===s.name.toLowerCase())),
     reason:s.id==='reclaim'?'Retired at owner request after observed losses. Its replay sample is too small to establish persistent failure.':'Retired legacy model after negative replay and observed paper losses.',
     source:'data/opportunities/paper.json',reportAt:legacyAccount.entryPolicy?.reportAt||null}));
   const snapshot={...state,generatedAt:now,venue:'Coinbase Exchange public books / Coinbase Advanced U.S. fee model',policy:POLICY,feeProfile:FEE_PROFILE,strategies:STRATEGIES,
-    universe:feed.universe,errors:feed.errors,feedCache:feed.markets,retired,
+    universe:feed.universe,errors:feed.errors,feedCache:feed.cache||feed.markets,retired,
     legacyAccount:legacyAccount?{initialCapital:legacyAccount.start,cash:legacyAccount.cash,equity:legacyAccount.equity,closed:legacyAccount.closed?.length||0,open:legacyAccount.positions?.length||0}:null,
     execution:{mode:'paper',realEnabled:false,credentialsConnected:false,shorting:false,leverage:false,transferFeesModeled:false},
     notes:[
-      'Eleven independent $1,000 synthetic research bankrolls. Existing rotation/recovery ledgers were migrated without a reset.',
+      'Eleven original research accounts remain intact. Separate $1,000 rotation controls compare 40 and 100 pairs prospectively; no historical profits are copied into them.',
       'Long-only spot: falling-price signals exit positions or hold cash. No leverage, borrowing, funding rate or pretend spot shorting.',
       'Active fills use the U.S. Coinbase Advanced entry-level 0.90% taker fee announced 2026-09-16, plus actual walked spread/depth and 0.10% extra adverse slippage per side.',
       'The 0.50% maker rate is recorded for reference but not credited because these strategies do not model post-only fill probability.',
@@ -39,5 +51,5 @@ try{
   console.log(JSON.stringify({version:state.version,generatedAt:now,feeProfile:FEE_PROFILE.id,universe:feed.universe,
     accounts:Object.fromEntries(Object.entries(state.accounts).map(([id,a])=>[id,{status:a.status,equity:a.equity,cash:a.cash,positions:a.positions.length,trades:a.trades.length,pending:Object.keys(a.pending).length}])),
     cycle:state.cycles.at(-1),errors:feed.errors.slice(0,12)},null,2));
-  if(!state.markets.some(m=>m.status==='ready'))process.exitCode=1;
+  if(ready<80)process.exitCode=1;
 }finally{await rm(lock,{recursive:true,force:true});}

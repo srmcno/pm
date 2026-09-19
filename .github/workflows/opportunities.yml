@@ -5,7 +5,7 @@ on:
     - cron: '2-57/5 * * * *'
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/collect-opportunities.mjs', 'scripts/collect-crypto-strategies.mjs', 'scripts/crypto-feed.mjs', 'scripts/crypto-cycle.mjs', 'scripts/legacy-spot-exit-only.mjs', 'dashboard/crypto-strategies-core.mjs', 'tests/crypto-strategies.test.mjs', 'scripts/collect-crypto-arbitrage.mjs', 'scripts/collect-copy-study.mjs', 'scripts/copy-study-core.mjs', 'scripts/copy-study-lock.py', 'dashboard/crypto-arbitrage-core.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
+    paths: ['scripts/collect-opportunities.mjs', 'scripts/collect-crypto-strategies.mjs', 'scripts/crypto-feed.mjs', 'scripts/crypto-cycle.mjs', 'scripts/rotation-study.mjs', 'scripts/legacy-spot-exit-only.mjs', 'dashboard/crypto-strategies-core.mjs', 'tests/crypto-strategies.test.mjs', 'scripts/collect-crypto-arbitrage.mjs', 'scripts/collect-copy-study.mjs', 'scripts/copy-study-core.mjs', 'scripts/copy-study-lock.py', 'dashboard/crypto-arbitrage-core.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
 permissions:
   contents: write
 concurrency:
