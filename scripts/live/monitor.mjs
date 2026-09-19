@@ -38,8 +38,10 @@ function freshFee(fees,now){
 
 // This module has no create/cancel/convert path. Public diagnostics deliberately
 // exclude balances, identifiers, preview IDs, raw broker responses and errors.
-export async function monitorCycle({feed,broker=null,now=Date.now()/1000,allocation='20'}={}){
-  const wallStart=Date.now()/1000,clock=()=>now+Math.max(0,Date.now()/1000-wallStart);
+export async function monitorCycle({feed,broker=null,clock=()=>Date.now()/1000,now=clock(),allocation='20'}={}){
+  // `now` labels the report's start; freshness uses the same wall-clock epoch as
+  // broker timestamps. Rebasing elapsed time onto a caller's earlier `now` can
+  // falsely put a just-received fee timestamp in the future. Tests inject clock.
   const result={mode:'preview-only',generatedAt:Number.isFinite(now)?now:null,realEnabled:false,status:'market_monitoring',credentialStatus:'needs_credentials',feeStatus:'modeled-unverified',
     coverage:{selected:0,ready:0,rotationCandidates:0,previewed:0},candidates:[],
     note:'Order previews do not execute trades. Paper results are not real-money profit or loss.'};

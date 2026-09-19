@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {monitorCycle} from '../scripts/live/monitor.mjs';
+import {monitorCycle as runMonitorCycle} from '../scripts/live/monitor.mjs';
 import {D,S,mul} from '../scripts/live/risk.mjs';
 const now=1789603200;
+const monitorCycle=args=>runMonitorCycle({clock:()=>now,...args});
 function market(product='ABC-USD',slope=.1){
  const candles=Array.from({length:100},(_,i)=>{const c=100+i*slope;return [now-(100-i)*3600,c-4,c+4,c-.05,c,1000];});
  const price=candles.at(-1)[4];return {product,status:'online',tradingDisabled:false,candles,increment:.000001,minSize:.000001,minNotional:.1,
@@ -61,4 +62,33 @@ test('small server clock skew passes while excessive future books cannot preview
   const result=await monitorCycle({feed,broker,now,allocation:'18.85'});
   assert.equal(result.coverage.previewed>0,skew===2,JSON.stringify(result));
  }
+});
+test('a one millisecond gap after caller timestamp does not reject newly received fees',async t=>{
+ const {broker}=fixture(),startMs=now*1000;
+ let wallMs=startMs+1;
+ t.mock.method(Date,'now',()=>wallMs);
+ broker.fees=async()=>{wallMs=startMs+10;return {takerRate:.001,checkedAt:Date.now()/1000};};
+ const result=await runMonitorCycle({feed:{markets:[]},broker,now});
+ assert.equal(result.credentialStatus,'view_verified');
+ assert.equal(result.feeStatus,'account_verified');
+ assert.equal(result.status,'preview_monitoring');
+ assert.equal(result.generatedAt,(startMs+10)/1000);
+});
+test('strict fee freshness rejects stale and even one millisecond future receipts',async()=>{
+ for(const deltaMs of [-15001,1]){
+  const {broker,calls}=fixture();
+  broker.fees=async()=>({takerRate:.001,checkedAt:(now*1000+deltaMs)/1000});
+  const result=await monitorCycle({feed:{markets:[]},broker,now});
+  assert.equal(result.credentialStatus,'verification_held');
+  assert.equal(result.feeStatus,'modeled-unverified');
+  assert.ok(!calls.includes('accounts'));
+ }
+});
+test('fees that expire during account lookup still hold verification',async()=>{
+ const {broker}=fixture(),accounts=broker.accounts;
+ let current=now;
+ broker.accounts=async()=>{current=now+15.001;return accounts();};
+ const result=await monitorCycle({feed:{markets:[]},broker,now,clock:()=>current});
+ assert.equal(result.credentialStatus,'verification_held');
+ assert.equal(result.feeStatus,'modeled-unverified');
 });
