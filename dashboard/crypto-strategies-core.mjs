@@ -229,18 +229,34 @@ export function migrateCompetition(previous,now){
     accounts,markets:Array.isArray(p.markets)?p.markets:[],decisions:[],cycles:Array.isArray(p.cycles)?p.cycles:[]});
 }
 export function validateCompetition(s){
+  if(s?.rotationStudy&&!validRotationStudy(s.rotationStudy))throw Error('Invalid rotation comparison; refusing incompatible evidence');
   const fail=()=>{throw Error('Invalid crypto paper state; refusing to reset accounts');};
   if(s?.schemaVersion!==3||s.version!==CRYPTO_VERSION||s.mode!=='paper'||s.realEnabled!==false||!finite(s.updatedAt)||!finite(s.startedAt)||s.feeProfile?.id!==FEE_PROFILE.id)fail();
   for(const strategy of STRATEGIES)if(!accountValid(s.accounts?.[strategy.id],strategy))fail();return s;
+}
+export function validRotationStudy(s){
+ if(!s||s.version!=='2026-09-19-rotation-40-vs-100-v1'||s.realEnabled!==false||!finite(s.startedAt)||s.startedAt<=0||!finite(s.updatedAt)||s.updatedAt<s.startedAt)return false;
+ if(Object.keys(s.accounts||{}).sort().join(',')!=='control,expanded')return false;
+ for(const [key,limit] of [['control',40],['expanded',100]]){
+  const a=s.accounts[key],c=s.coverage?.[key];
+  if(!accountValid(a,STRATEGIES[0])||a.startedAt!==s.startedAt||!c||c.limit!==limit||!Number.isInteger(c.ready)||c.ready<0||!Number.isInteger(c.selected)||c.selected<c.ready||!Array.isArray(c.products)||c.products.length!==c.selected||c.products.some(p=>!validProduct(p)))return false;
+ }
+ return true;
 }
 export function advanceCompetition(previous,markets,now){
   if(!finite(now)||now<=0)throw Error('Invalid evaluation time');const s=migrateCompetition(previous,now);if(now<=s.updatedAt)return s;
   const view=evaluateUniverse(markets,now),byProduct=new Map((markets||[]).map(m=>[m.product,m])),receipt={at:now,accounts:[]};
   for(const strategy of STRATEGIES){
     const a=s.accounts[strategy.id],opened=[],closed=[];a.markComplete=true;
+    const audit=a.executionAudit||{startedAt:now,cycles:0,gapCount:0,maxGapSeconds:0,possibleMissedExits:0};
+    const gap=s.updatedAt?now-s.updatedAt:0;audit.cycles++;audit.maxGapSeconds=Math.max(audit.maxGapSeconds,gap);
+    if(gap>900)audit.gapCount++;a.executionAudit=audit;
     for(const p of [...a.positions]){
       const m=byProduct.get(p.product),fill=m&&usableBook(m,now)?walkBook(m,'sell',p.quantity):null;if(!fill){a.markComplete=false;continue;}
       p.markValue=fill.value;p.markAt=m.book.receivedAt;const f=view.markets.find(x=>x.product===p.product),bid=levels(m.book.bids,'sell')[0][0];
+      // Candle extremes indicate a POSSIBLE missed intracycle exit, not proof
+      // of a fill. Flag evidence quality; never invent a historical stop fill.
+      if(!p.possibleMissedExit&&(m.candles||[]).some(b=>b[0]>=p.openedAt&&b[0]+3600<=now&&(b[1]<=p.stop||b[2]>=p.target))){p.possibleMissedExit=true;audit.possibleMissedExits++;}
       const reason=bid<=p.stop?'Stop / adverse gap':bid>=p.target?'Target observed':f?.status==='ready'&&f.change6<0&&f.price<f.ema20?'Momentum reversal':now-p.openedAt>=strategy.maxHold?'Maximum holding window':null;
       if(reason){const trade={...p,closedAt:now,exitPrice:fill.price,exitFees:fill.fees,exitSlippage:fill.slippage,exitFeeRate:fill.feeRate,proceeds:fill.value,pnl:round(fill.value-p.cost),exitReason:reason};a.positions=a.positions.filter(x=>x.id!==p.id);a.trades.push(trade);a.cash=round(a.cash+trade.proceeds);closed.push(trade.id);}
     }
@@ -248,7 +264,7 @@ export function advanceCompetition(previous,markets,now){
     // Prospective cost-adjusted BTC control; never backfill a flattering benchmark.
     const btcMarket=byProduct.get('BTC-USD');
     if(!a.benchmark&&a.markComplete&&btcMarket&&usableBook(btcMarket,now)){
-      const ask=levels(btcMarket.book.asks,'buy')[0][0],q=Math.floor(a.equity/(ask*(1+POLICY.feeRate+POLICY.slippageRate))/btcMarket.increment)*btcMarket.increment;
+      const ask=levels(btcMarket.book.asks,'buy')[0][0],q=Math.floor(Math.max(0,a.equity-.01)/(ask*(1+POLICY.feeRate+POLICY.slippageRate))/btcMarket.increment)*btcMarket.increment;
       const fill=walkBook(btcMarket,'buy',q);
       if(fill&&fill.value<=a.equity)a.benchmark={startedAt:now,baselineEquity:a.equity,quantity:q,cash:round(a.equity-fill.value),entryCost:fill.value,entryFees:fill.fees,feeProfile:FEE_PROFILE.id,equity:a.equity,markComplete:false,markAt:0};
     }

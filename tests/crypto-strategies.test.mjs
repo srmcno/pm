@@ -38,7 +38,7 @@ test('public adapter rejects a wrong product identity and does not rejuvenate re
 });
 test('public adapter uses only GET requests and keeps exact per-book receipt times',async()=>{
  const {collectCoinbaseMarkets}=await import('../scripts/crypto-feed.mjs');let time=now,calls=[];
- const r=await collectCoinbaseMarkets({cached:[market('BTC-USD')],products:['BTC-USD'],pace:0,clock:()=>time++,fetcher:async(url,options)=>{
+ const r=await collectCoinbaseMarkets({cached:[{...market('BTC-USD'),candlesRequestedAt:now}],products:['BTC-USD'],pace:0,clock:()=>time++,fetcher:async(url,options)=>{
   calls.push({url,options});return {ok:true,json:async()=>url.endsWith('?level=2')?{bids:[['109','10',1]],asks:[['110','10',1]],sequence:5}:{id:'BTC-USD',base_currency:'BTC',quote_currency:'USD',base_increment:'.000001',status:'online'}};
  }});
  assert.equal(r.errors.length,0);assert.ok(calls.every(c=>c.options.method==='GET'));assert.equal(calls.length,3);assert.ok(r.markets[0].book.receivedAt>r.markets[0].book.requestAt);
