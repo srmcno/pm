@@ -6,9 +6,6 @@ on:
         description: Collect a new window instead of replaying the preserved inputs
         type: boolean
         default: false
-  push:
-    branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/backtest-opportunities.mjs', 'dashboard/market-core.mjs', '.github/workflows/scanner-backtest.yml']
 permissions:
   contents: write
   actions: write

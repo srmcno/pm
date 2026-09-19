@@ -1,10 +1,10 @@
-# Crypto strategy tournament, version 6.0.0
+# Crypto strategy tournament, version 7.0.0
 
-No real-money trading is authorized or connected. This subsystem is deterministic paper research using public Coinbase Exchange market data and a conservative Coinbase Advanced U.S. fee model.
+Real-money preparation is authorized; no real-money account or order service is connected. This subsystem is deterministic paper research using public Coinbase Exchange market data and a conservative Coinbase Advanced U.S. fee model.
 
 ## Tournament structure
 
-Eight strategies run as separate $1,000 synthetic accounts: Relative-strength rotation, Range recovery, Trend pullback continuation, Volatility compression breakout, Liquidity-sweep rebound, Breadth-thrust rotation, Leader-laggard catch-up, and Capitulation recovery. The existing Relative-strength and Range-recovery ledgers migrate from `2026-09-16-multicoin-v1` without changing cash, positions, trades, P&L, fees, curves, or timestamps. The six new accounts begin at $1,000 at migration time. Historical legacy breakout/reclaim evidence remains archived and exit-only.
+Eleven strategies run as separate $1,000 synthetic accounts: Relative-strength rotation, Range recovery, Trend pullback continuation, Volatility compression breakout, Liquidity-sweep rebound, Breadth-thrust rotation, Leader-laggard catch-up, and Capitulation recovery. The existing Relative-strength and Range-recovery ledgers migrate from `2026-09-16-multicoin-v1` without changing cash, positions, trades, P&L, fees, curves, or timestamps. Version 3 preserves all eight v2 accounts and adds three synthetic accounts: Defensive relative strength, Volume-weighted value recovery and Weekend participation breakout. Historical legacy breakout/reclaim evidence remains archived and exit-only.
 
 No strategy is described as proven profitable. These are prospective hypotheses. Activity is measured by actual paper ledger entries, not by scans or signals.
 
@@ -52,7 +52,7 @@ All strategy decisions use completed hourly candles only. A still-forming or fut
 
 Candidates must clear current book freshness, spread, depth, product minimums, all modeled costs, and a minimum 1.1 after-cost reward/risk ratio. Entries require two qualifying scans 60 to 1,800 seconds apart. Each position uses at most 20% of account equity, total deployed cost is capped at 60%, planned stop risk is capped at 1%, and each strategy may have at most three simultaneous positions. A six-hour same-product cooldown follows closure.
 
-New entries pause after a 3% daily equity loss or a 10% peak drawdown. Open positions still attempt safe exits. Strategies become `established` only after at least 30 closed trades spanning 14 days without meeting retirement rules.
+New entries pause after a 3% daily equity loss or a 10% peak drawdown. Open positions still attempt safe exits. Strategies become `established` only after at least 30 closed trades spanning 14 days with positive net realized P&L and without meeting retirement rules. The UI calls this an extended paper sample, not a funded-readiness verdict.
 
 Automatic permanent retirement requires the most recent 30 closed trades to span at least 14 days, have negative total P&L, profit factor below one, and negative net P&L in each consecutive block of ten. Retirement cannot reset or automatically restart an account. Original retirement evidence remains in Activity and Archive.
 
@@ -61,3 +61,9 @@ Automatic permanent retirement requires the most recent 30 closed trades to span
 The five-minute opportunity workflow runs the tournament collector and writes `data/crypto-strategies/state.json` plus `dashboard/data/crypto-strategies.json`. State writes are atomic. Invalid existing state is refused rather than reset. Public collection uses GET only.
 
 Before release, run `npm test`, both Python test suites, `python3 scripts/check_site.py`, and `npm run build`. The GitHub Actions collector must complete successfully on the default branch, then Pages must deploy the same verified source. Browser QA must inspect mobile and desktop tournament/activity views. A source commit is not proof of deployment.
+
+## September 19 additions
+
+See [FUNDING.md](FUNDING.md) for account-specific fee caveats, funding/withdrawal cost treatment, conservative prediction-fee rounding, Oklahoma eligibility and the separate real-money prerequisites. Fees above are paper assumptions until verified against the user account.
+
+Defensive strength tests rising coins during declining BTC regimes. Volume-weighted recovery requires two rising completed closes below the preceding 72-hour volume-weighted price with at least 4% room. Weekend participation requires a UTC-weekend break of the prior range with volume and broad-market participation. Each retains the same depth, cost, risk and confirmation gates. A forward BTC/cash benchmark starts prospectively and does not alter any account cash. Evaluation time is captured after feed collection.

@@ -1,11 +1,11 @@
 // Public-book research only. A modeled gap never creates a fill or account credit.
-export const CRYPTO_MODEL = "2026-09-13-crypto-depth-v2";
+export const CRYPTO_MODEL = "2026-09-19-crypto-depth-v3";
 export const CRYPTO_FEES = {
   coinbase: {
-    rate: 0.006,
-    label: "Coinbase Exchange",
+    rate: 0.009,
+    label: "Coinbase Advanced paper assumption",
     source:
-      "https://help.coinbase.com/en/exchange/trading-and-funding/exchange-fees",
+      "https://help.coinbase.com/en/coinbase/trading-and-funding/advanced-trade/advanced-trade-fees",
   },
   kraken: {
     rate: 0.008,
@@ -13,7 +13,7 @@ export const CRYPTO_FEES = {
     source: "https://www.kraken.com/features/fee-schedule",
   },
 };
-export const FEE_REVIEWED_AT = "2026-09-13";
+export const FEE_REVIEWED_AT = "2026-09-19";
 export const CRYPTO_ASSETS = [
   ["BTC", "XBTUSD", "bitcoin"],
   ["ETH", "ETHUSD", "ethereum"],

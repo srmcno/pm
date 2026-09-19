@@ -180,14 +180,14 @@ async function batches(items, fn, size = 3) {
   for (let i = 0; i < items.length; i += size)
     await Promise.all(items.slice(i, i + size).map(fn));
 }
-export async function collectCopyStudy(state, get = publicGet) {
+export async function collectCopyStudy(state, get = publicGet, {settlementOnly = false} = {}) {
   validateCopyStudyState(state);
   const end = Math.floor(Date.now() / 1000),
     start = end - state.rules.windowHours * 3600;
   const errors = [],
     coverage = [],
     fresh = [];
-  await batches(state.cohort, async (w) => {
+  await batches(settlementOnly ? [] : state.cohort, async (w) => {
     try {
       const result = await collectCopyActivity(w.wallet, start, end, get);
       fresh.push(...result.trades);
@@ -212,7 +212,7 @@ export async function collectCopyStudy(state, get = publicGet) {
       ? { ...t, firstObservedAt: old.get(t.id).firstObservedAt }
       : t,
   );
-  const candidates = buildCopyCandidates(
+  const candidates = settlementOnly ? [] : buildCopyCandidates(
     activity,
     state.cohort,
     Date.now() / 1000,
@@ -284,7 +284,8 @@ export async function collectCopyStudy(state, get = publicGet) {
     errors,
     coverage,
   });
-  next.activity = activity;
+  if(settlementOnly) next.archivePolicy={mode:"settlement-only",reason:"International venue is outside the Oklahoma execution plan. Preserve positions and official settlements; no new entries."};
+  next.activity = settlementOnly ? state.activity : activity;
   next.activityWindow = { start, end, complete };
   return next;
 }
@@ -297,7 +298,7 @@ export function copyStudySnapshot(state) {
     generatedAt: state.updatedAt,
     positions: state.positions.map(concise),
     closed: state.closed.map(concise),
-    status: state.entryPaused
+    status: state.archivePolicy?.mode === "settlement-only" ? "settlement-only" : state.entryPaused
       ? "drawdown-stop"
       : state.activityWindow?.complete
         ? "observing"
@@ -386,7 +387,8 @@ if (
       throw new Error("Study migration required; existing account preserved");
     const journal = path.join(path.dirname(file), "decisions");
     await syncCopyDecisions(journal, state.decisions);
-    const next = await collectCopyStudy(state);
+    const settlementOnly = process.argv.includes("--settlement-only") || state.archivePolicy?.mode === "settlement-only";
+    const next = await collectCopyStudy(state, publicGet, {settlementOnly});
     // State is the canonical ledger. Publishing can be safely retried from it.
     await atomic(file, next);
     await atomic(output, copyStudySnapshot(next));
@@ -403,6 +405,7 @@ if (
         errors: next.errors,
       }),
     );
-    if (!next.activityWindow.complete) process.exitCode = 1;
+    if (!settlementOnly && !next.activityWindow.complete) process.exitCode = 1;
+    if(settlementOnly && next.errors.some(e=>e.source.startsWith("Resolution "))) process.exitCode=1;
   }
 }

@@ -5,7 +5,7 @@ on:
     - cron: '2-57/5 * * * *'
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/collect-opportunities.mjs', 'scripts/collect-crypto-strategies.mjs', 'scripts/crypto-feed.mjs', 'scripts/legacy-spot-exit-only.mjs', 'dashboard/crypto-strategies-core.mjs', 'tests/crypto-strategies.test.mjs', 'scripts/collect-crypto-arbitrage.mjs', 'scripts/collect-copy-study.mjs', 'scripts/copy-study-core.mjs', 'scripts/copy-study-lock.py', 'dashboard/crypto-arbitrage-core.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
+    paths: ['scripts/collect-opportunities.mjs', 'scripts/collect-crypto-strategies.mjs', 'scripts/crypto-feed.mjs', 'scripts/crypto-cycle.mjs', 'scripts/legacy-spot-exit-only.mjs', 'dashboard/crypto-strategies-core.mjs', 'tests/crypto-strategies.test.mjs', 'scripts/collect-crypto-arbitrage.mjs', 'scripts/collect-copy-study.mjs', 'scripts/copy-study-core.mjs', 'scripts/copy-study-lock.py', 'dashboard/crypto-arbitrage-core.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
 permissions:
   contents: write
 concurrency:
@@ -25,10 +25,6 @@ jobs:
           node-version: '22'
       - name: Verify strategy accounting and retirement before advancing any ledger
         run: npm test
-      - name: Collect quotes and manage retired spot positions without new entries
-        id: scan
-        continue-on-error: true
-        run: node scripts/collect-opportunities.mjs
       - name: Advance independent multi-coin paper strategies
         id: strategies
         continue-on-error: true
@@ -37,15 +33,11 @@ jobs:
         run: node scripts/collect-crypto-arbitrage.mjs
         id: crypto
         continue-on-error: true
-      - name: Advance the isolated forward copy study
-        run: node scripts/collect-copy-study.mjs
-        id: copy
-        continue-on-error: true
       - name: Publish research snapshots without overwriting another writer
         run: |
           git config user.name 'moffitt-money-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add dashboard/data/opportunities.json dashboard/data/crypto-arbitrage.json data/opportunities/paper.json dashboard/data/copy-study.json data/copy-forward
+          git add dashboard/data/crypto-arbitrage.json
           for file in dashboard/data/crypto-strategies.json data/crypto-strategies/state.json; do
             if [ -f "$file" ]; then git add "$file"; fi
           done
@@ -57,5 +49,5 @@ jobs:
           done
           exit 1
       - name: Surface an upstream failure
-        if: steps.scan.outcome == 'failure' || steps.strategies.outcome == 'failure' || steps.crypto.outcome == 'failure' || steps.copy.outcome == 'failure'
+        if: steps.strategies.outcome == 'failure' || steps.crypto.outcome == 'failure'
         run: exit 1

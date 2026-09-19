@@ -8,9 +8,9 @@ on:
   # Data commits from workflow tokens do not trigger push workflows.
   # Scheduled publishing is best effort; source timestamps remain visible.
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "17 * * * *"
   workflow_run:
-    workflows: ["Opportunity and copy study scan", "U.S. desk paper cycle", "Prediction market paper cycle", "Monthly ETF paper cycle"]
+    workflows: ["Opportunity and copy study scan", "Prediction market paper cycle", "Monthly ETF paper cycle"]
     types: [completed]
     branches: ["claude/polymarket-wallets-analysis-m81p4j"]
   workflow_dispatch: {}

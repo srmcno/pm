@@ -1,3 +1,5 @@
+> **Archived assumptions: do not use this page to activate current strategies.** The idle desk schedules were retired September 19. Historical fee rates and validation claims below are not current readiness evidence. Use [FUNDING.md](FUNDING.md) for the supported setup and remaining execution requirements.
+
 > **Historical technical reference.** September 8, 2026: the active U.S. application and current method are described in the [README](../README.md). MEXC and offshore Polymarket execution are blocked. Earlier performance measurements below use the previous timing/fee model and do not authorize trading. New desk validation must match `2026-09-08-auction-cutoff-v2`.
 
 # Running this with real money

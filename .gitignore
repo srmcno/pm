@@ -28,3 +28,13 @@ data/copy-forward/*.lock/
 dashboard/data/copy-study.json.tmp
 data/copy-forward/*.flock
 data/copy-forward/decisions/*.tmp
+
+# Private execution configuration/credentials and transient collector state
+.env
+.env.*
+!.env.example
+.execution/
+data/crypto-strategies/.collector.lock/
+data/crypto-strategies/*.tmp
+dashboard/data/crypto-strategies.json.*.tmp
+work/

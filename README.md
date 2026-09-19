@@ -1,5 +1,7 @@
 # Moffitt Money
 
+**September 19:** Art Deco redesign, repaired forward collection, three new experiments, fee-stressed readiness and an Oklahoma platform review. [Funding setup](https://srmcno.github.io/pm/readiness.html) · [Cleanup record](docs/CLEANUP-2026-09-19.md) · [Private broker-preview guide](docs/FUNDING.md)
+
 [Open the app](https://moffitt-money.smoffitt74743.chatgpt.site/) · [GitHub Pages](https://srmcno.github.io/pm/)
 
 Autonomous paper accounts with an activity-first main screen. Real orders remain off. Account balances and ledgers are separate; historical results are never presented as current performance.
@@ -7,7 +9,7 @@ Autonomous paper accounts with an activity-first main screen. Real orders remain
 ## Main app
 
 - **Overview:** the two existing $100 Polymarket US and Kalshi paper accounts, actual open positions, current collector status and expandable entry decisions.
-- **Crypto Tournament:** up to 40 dynamically selected Coinbase USD spot markets feed eight independent, cost-aware paper strategies. Existing crypto ledgers are preserved through migration.
+- **Crypto Tournament:** up to 40 dynamically selected Coinbase USD spot markets feed eleven independent, cost-aware paper strategies. Existing crypto ledgers are preserved through migration.
 - **Activity:** recorded prediction and crypto paper positions with account/status filters and CSV export. Scans are not counted as trades.
 - **Archive:** auxiliary research, arbitrage comparisons, retired strategies, historical studies and diagnostics. No ledger is deleted or reset.
 
@@ -19,7 +21,7 @@ The versioned experimental paper policy can evaluate entries after 20 resolved c
 
 [Current paper policy and archive design](docs/ACTIVE-PAPER.md) · [Original accounting and calibration controls](docs/PREDICTIONS.md)
 
-Prediction collection runs about every ten minutes, best effort, without a browser. The five-minute opportunity workflow advances the eight-strategy crypto tournament, retains separate arbitrage comparisons, and advances the forward copy study. Crypto tournament fills use a versioned U.S. Coinbase Advanced taker-cost profile plus walked spread/depth and extra slippage. Retired international collectors and the original $50 copy account remain paused. The ETF experiment retains its own schedule.
+Prediction collection runs about every ten minutes, best effort, without a browser. The five-minute opportunity workflow advances the eleven-strategy crypto tournament, retains separate arbitrage comparisons, while the international copy study is settlement-only every six hours. Crypto tournament fills use a versioned U.S. Coinbase Advanced taker-cost profile plus walked spread/depth and extra slippage. Retired international collectors and the original $50 copy account remain paused. The ETF experiment retains its own schedule.
 
 [Crypto tournament design and operating rules](docs/CRYPTO-STRATEGIES.md)
 

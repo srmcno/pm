@@ -8,7 +8,7 @@ const files=[
  'index.html','app.css','app.mjs','app-schema.mjs','copy-core.mjs','copy-trading.mjs',
  'crypto-arbitrage-core.mjs','crypto-arbitrage.mjs','trading-ui.mjs','trading-schema.mjs',
  'data-client.mjs','prediction-core.mjs','prediction-entry.mjs',
- 'focus.html','focus.css','focus.mjs','focus-model.mjs',
+ 'focus.html','focus.css','focus.mjs','focus-model.mjs','deco.css','site-health.mjs','readiness.html','readiness-ui.mjs','execution-readiness.mjs',
  'crypto.html','crypto-strategies-core.mjs','crypto-strategies-ui.mjs','crypto-strategies.css',
  'etf-schema.mjs','etf-transactions.csv','favicon.svg','favicon.png','_headers',
  'desk.html','legacy.css','archive.css','etf.html','stocks.html','arb.html','wallets.html',

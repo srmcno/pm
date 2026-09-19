@@ -9,3 +9,5 @@ Verification: `npm test`, `python3 scripts/check_site.py`; build: `npm run build
 The September 13 user request separately authorizes the new Polymarket US and Kalshi prediction paper collector and $100 per venue accounts. Maintain it under docs/PREDICTIONS.md. Preserve those accounts, public-data source times and the real-execution lock. This authorization does not restart retired international collectors or activate real orders.
 
 Copy trading improvements now include the isolated public-data forward study in docs/COPY-TRADING.md. Preserve its frozen cohort, rules, ledger and source hashes. It shares the existing opportunity schedule; retired international collectors and all real-order paths remain disabled.
+
+September 19 v7: active crypto is `focus.html`/`crypto.html`, eleven isolated paper books. Preserve v1/v2 migrations. International copy is settlement-only; legacy spot and idle desk schedules are retired. The Coinbase adapter is private preview-only; it has no submit path. Read docs/FUNDING.md and docs/CLEANUP-2026-09-19.md before execution changes. Pages schedules are best effort; never describe them as continuous quotes.

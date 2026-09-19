@@ -1,3 +1,4 @@
+# Archived September 19: no allocated or demonstrated active edge. Manual research only.
 name: Desk walk-forward validation
 
 # Re-runs walk-forward validation on every desk and commits the evidence.
@@ -7,11 +8,7 @@ name: Desk walk-forward validation
 # anyone having to notice first.
 on:
   workflow_dispatch: {}
-  push:
-    branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/desk/**', '.github/workflows/desk-validate.yml']
-  schedule:
-    - cron: "30 6 * * 1"     # Mondays, before the US session
+
 
 concurrency:
   group: desk-validate

@@ -78,8 +78,9 @@ async function load(){
   if(busy)return;busy=true;$('refresh').disabled=true;$('refresh').textContent='Refreshing';
   try{
     const results=await Promise.allSettled([publishedJson('data/predictions.json',validPredictions),publishedJson('data/crypto-strategies.json',validCompetitionSnapshot)]);
+    if(results[1].status==='fulfilled')crypto=results[1].value;renderCryptoSummary();
     if(results[0].status!=='fulfilled')throw results[0].reason;
-    snapshot=results[0].value;if(results[1].status==='fulfilled')crypto=results[1].value;
+    snapshot=results[0].value;
     const health=publicationHealth.get('data/predictions.json');
     $('notice').hidden=!health?.error;
     $('notice').textContent=health?.error?`Showing ${health.source==='retained'?'the newer retained':'the available'} snapshot. Latest refresh: ${health.error}`:'';

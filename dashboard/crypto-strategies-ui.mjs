@@ -18,7 +18,7 @@ function route(){
   for(const v of ['crypto','activity','archive'])$(v+'-nav').removeAttribute('aria-current');
   $(p==='retired'?'archive-nav':p+'-nav').setAttribute('aria-current','page');
   $('title').textContent={crypto:'Crypto Tournament',activity:'Account activity',retired:'Retired strategies'}[p];
-  $('subtitle').textContent={crypto:'Eight independent paper hypotheses compete after fees, spread, depth and slippage.',activity:'Recorded paper positions across separate prediction and crypto accounts.',retired:'Original losses, sample sizes and retirement decisions are preserved.'}[p];
+  $('subtitle').textContent={crypto:'Eleven independent paper hypotheses compete after fees, spread, depth and slippage.',activity:'Recorded paper positions across separate prediction and crypto accounts.',retired:'Original losses, sample sizes and retirement decisions are preserved.'}[p];
   document.title=`Moffitt Money | ${$('title').textContent}`;if(data)render();if(p==='activity'&&!predictions&&!busy)load();
 }
 function accountName(id){return STRATEGIES.find(s=>s.id===id)?.name||({polymarket:'Polymarket US',kalshi:'Kalshi'}[id])||id;}
@@ -40,7 +40,7 @@ function accountCard(a,rank){
   let status=a.status==='retired'?'Retired':a.status==='risk-paused'?'Risk paused':delayed?'Collection delayed':!a.markComplete?'Position price unavailable':pending?'Confirming paper entries':a.positions.length?'Managing positions':'Scanning coin movement';
   let detail=a.retirement?.reason||(!a.markComplete?'An open position needs a fresh book before any new entries.':pending?`${pending} setup${pending===1?'':'s'} passed one scan; entries need a second qualifying scan.`:a.positions.length?'Stops, targets and reversals are checked against observed books.':'No entry met every setup, cost and risk check in the last scan.');
   if(delayed)detail='Showing the last completed cycle, not a current market scan.';
-  const strategy=STRATEGIES.find(s=>s.id===a.id),label=a.status==='established'?'Established paper':a.status==='retired'?'Retired':'Experimental paper';
+  const strategy=STRATEGIES.find(s=>s.id===a.id),label=a.status==='established'?'Extended paper sample':a.status==='retired'?'Retired':'Experimental paper';
   return `<article class="account-card"><div class="card-head"><div class="venue"><span class="rank">#${rank}</span> ${esc(a.name)}</div><span class="pill ${a.status==='established'?'status-established':''}">${label}</span></div><div class="equity">${money(a.equity)}</div><div class="small-label">Equity · ${money(a.equity-a.initialCapital)} total P&L including open marks</div><dl class="metrics"><div><dt>Realized P&L</dt><dd class="${color(a.realizedPnl)}">${money(a.realizedPnl)}</dd></div><div><dt>Cash</dt><dd>${money(a.cash)}</dd></div><div><dt>Fee drag</dt><dd>${money(a.fees)}</dd></div></dl><div class="account-state"><strong>${esc(status)}</strong><p>${esc(detail)}</p></div><div class="card-bottom"><span>${a.positions.length} open · ${a.trades.length} closed</span><span>${decisions.length} market decisions</span></div><details class="strategy-details"><summary>Hypothesis and evidence</summary><p>${esc(strategy?.description||'Strategy definition unavailable.')}</p><p>${a.stats?.trades?`${a.stats.wins} wins, ${a.stats.losses} losses; net expectancy ${money(a.stats.expectancy)} per closed trade; profit factor ${finite(a.stats.profitFactor)?a.stats.profitFactor.toFixed(2):'not meaningful yet'}.`:'No closed-trade evidence yet. Activity is not proof of an edge.'}</p></details></article>`;
 }
 function renderUniverse(){

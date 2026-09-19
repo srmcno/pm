@@ -1,14 +1,11 @@
+# Archived September 19: no allocated or demonstrated active edge. Manual research only.
 name: U.S. desk paper cycle
 
 # Short paper cycles load the current code and save the book after each scan.
 # Broker keys, when configured, supply quotes only. This workflow never arms orders.
 on:
   workflow_dispatch: {}
-  schedule:
-    - cron: '4-59/5 * * * *'
-  push:
-    branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/desk/**', '.github/workflows/desk-shift.yml']
+
 
 concurrency:
   group: desk-shift

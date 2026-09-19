@@ -9,7 +9,7 @@ function market(product='SOL-USD',slope=.1){
 const fresh=(m,t)=>({...m,book:{...m.book,receivedAt:t,requestAt:t-1}});
 function openState(){const markets=[market('BTC-USD',.01),market()];let s=api.advanceCompetition(null,markets,now);s=api.advanceCompetition(s,markets.map(m=>fresh(m,now+300)),now+300);return {s,markets};}
 test('paper engine exposes its deterministic API',()=>{assert.equal(typeof api.advanceCompetition,'function');});
-test('new accounts are separate paper bankrolls and real execution is locked',()=>{const s=api.initialCompetition(now);assert.equal(s.realEnabled,false);assert.equal(s.mode,'paper');assert.equal(Object.keys(s.accounts).length,8);for(const a of Object.values(s.accounts)){assert.equal(a.cash,1000);assert.equal(a.positions.length,0);}});
+test('new accounts are separate paper bankrolls and real execution is locked',()=>{const s=api.initialCompetition(now);assert.equal(s.realEnabled,false);assert.equal(s.mode,'paper');assert.equal(Object.keys(s.accounts).length,11);for(const a of Object.values(s.accounts)){assert.equal(a.cash,1000);assert.equal(a.positions.length,0);}});
 test('a repeated clock tick is idempotent and input state is not mutated',()=>{let s=api.advanceCompetition(null,[market('BTC-USD'),market()],now);const before=structuredClone(s);assert.deepEqual(api.advanceCompetition(s,[market()],now),s);assert.deepEqual(s,before);});
 test('ranks stronger qualifying coins before weaker ones, not arrival order',()=>{const ms=[market('BTC-USD',.01),market('ETH-USD',.05),market('SOL-USD',.1)];const a=api.evaluateUniverse(ms,now);assert.equal(a.decisions.filter(d=>d.strategyId==='rotation'&&d.status==='candidate')[0].product,'SOL-USD');assert.deepEqual(api.evaluateUniverse([...ms].reverse(),now),a);});
 test('forming and future candles cannot change earlier decisions',()=>{const ms=[market('BTC-USD',.01),market()];const baseline=api.evaluateUniverse(ms,now);ms[1].candles.push([now,1,9999,5,8000,900000]);assert.deepEqual(api.evaluateUniverse(ms,now),baseline);});
@@ -54,10 +54,10 @@ test('main navigation exposes crypto and routes history to Archive without loadi
  assert.ok(crypto.includes('id="activity-view"'));assert.ok(crypto.includes('id="retired-view"'));
 });
 
-test('v2 tournament declares eight strategies and conservative US Advanced fee profile',()=>{
- assert.equal(api.CRYPTO_VERSION,'2026-09-18-tournament-v2');
- assert.equal(api.STRATEGIES.length,8);
- assert.deepEqual(api.STRATEGIES.map(s=>s.id),['rotation','recovery','pullback','compression','sweep','breadth','catchup','capitulation']);
+test('v3 tournament declares eleven strategies and conservative US Advanced fee profile',()=>{
+ assert.equal(api.CRYPTO_VERSION,'2026-09-19-tournament-v3');
+ assert.equal(api.STRATEGIES.length,11);
+ assert.deepEqual(api.STRATEGIES.map(s=>s.id),['rotation','recovery','pullback','compression','sweep','breadth','catchup','capitulation','defensive','vwap','weekend']);
  assert.equal(api.FEE_PROFILE.makerRate,.005);
  assert.equal(api.FEE_PROFILE.takerRate,.009);
  assert.equal(api.FEE_PROFILE.execution,'taker');
@@ -78,7 +78,7 @@ test('v1 state migrates without changing existing rotation or recovery ledgers',
  assert.equal(migrated.version,api.CRYPTO_VERSION);
  assert.deepEqual(migrated.accounts.rotation,before.rotation);
  assert.deepEqual(migrated.accounts.recovery,before.recovery);
- assert.equal(Object.keys(migrated.accounts).length,8);
+ assert.equal(Object.keys(migrated.accounts).length,11);
  for(const id of ['pullback','compression','sweep','breadth','catchup','capitulation']){
   assert.equal(migrated.accounts[id].cash,1000);
   assert.equal(migrated.accounts[id].startedAt,now);
@@ -88,7 +88,7 @@ test('v1 state migrates without changing existing rotation or recovery ledgers',
 test('dynamic USD products outside the original ten are valid tournament markets',()=>{
  const m=market('NEAR-USD',.08);
  const view=api.evaluateUniverse([market('BTC-USD',.01),m],now);
- assert.equal(view.decisions.filter(d=>d.product==='NEAR-USD').length,8);
+ assert.equal(view.decisions.filter(d=>d.product==='NEAR-USD').length,11);
  const state=api.advanceCompetition(null,[market('BTC-USD',.01),m],now);
  assert.doesNotThrow(()=>api.validateCompetition(state));
 });
@@ -136,4 +136,36 @@ test('all eight strategy signal families have a deterministic qualifying fixture
  for(const id of ['rotation','pullback','compression','sweep','breadth','capitulation'])assert.equal(api.strategySignal(id,base,common).pass,true,id);
  assert.equal(api.strategySignal('recovery',{...base,ema50:99},common).pass,true,'recovery');
  assert.equal(api.strategySignal('catchup',{...base,change6:.01},{...common,median6:.04}).pass,true,'catchup');
+});
+
+test('collection evaluates at the post-I/O clock and publishes failures without rejuvenating books',async()=>{
+ const {collectAndAdvance}=await import('../scripts/crypto-cycle.mjs');let clock=now;
+ const result=await collectAndAdvance(null,{cached:[]},async()=>{clock+=100;return {markets:[fresh(market('BTC-USD'),clock),fresh(market(),clock)],errors:[]};},()=>clock);
+ assert.equal(result.now,now+100);assert.equal(result.state.markets.filter(m=>m.status==='ready').length,2);
+ const failure=await collectAndAdvance(result.state,{cached:[fresh(market(),now+100)]},async()=>{throw Error('discovery unavailable');},()=>now+200);
+ assert.equal(failure.feed.markets[0].book.receivedAt,now+100);assert.equal(failure.state.markets[0].status,'unavailable');assert.match(failure.feed.errors[0].message,/discovery/);
+});
+test('v2 migration preserves all eight cash and trade records and creates only three new books',()=>{
+ const previous=api.initialCompetition(now);previous.version=api.PREVIOUS_VERSION;previous.schemaVersion=2;
+ for(const id of ['defensive','vwap','weekend'])delete previous.accounts[id];
+ const before=structuredClone(previous.accounts),next=api.migrateCompetition(previous,now+100);
+ for(const id of Object.keys(before))assert.deepEqual(next.accounts[id],before[id]);
+ assert.equal(Object.keys(next.accounts).length,11);assert.equal(next.accounts.weekend.startedAt,now+100);
+});
+test('new hypotheses reject the wrong regime and pass independent feature examples',()=>{
+ const f={price:100,atr:2,change1:.01,change3:.02,change6:.03,change24:.06,ema20:99,ema50:97,last:[98,99,100],low:97,vwap72:109,volumeRatio:2,prior20High:99,utcDay:6};
+ const ctx={btc:{change24:-.025,change6:-.01},breadth6:.7};
+ for(const id of ['defensive','vwap','weekend'])assert.equal(api.strategySignal(id,f,ctx).pass,true,id);
+ assert.equal(api.strategySignal('defensive',f,{...ctx,btc:{change24:.03,change6:.01}}).pass,false);
+ assert.equal(api.strategySignal('vwap',{...f,vwap72:102},ctx).pass,false);
+ assert.equal(api.strategySignal('weekend',{...f,utcDay:2},ctx).pass,false);
+});
+test('BTC benchmark starts prospectively and never changes paper account cash',()=>{
+ const s=api.advanceCompetition(null,[market('BTC-USD')],now);const a=s.accounts.weekend;
+ assert.equal(a.cash,1000);assert.equal(a.benchmark.startedAt,now);assert.ok(a.benchmark.equity<1000);
+ const next=api.advanceCompetition(s,[],now+100);assert.equal(next.accounts.weekend.benchmark.markComplete,false);assert.equal(next.accounts.weekend.benchmark.startedAt,now);
+});
+test('72-hour volume-weighted feature refuses short or gapped prior windows',()=>{
+ for(const short of [true,false]){const m=market();if(short)m.candles=m.candles.slice(-60);else m.candles.splice(-70,1);const view=api.evaluateUniverse([m],now);assert.equal(view.markets[0].status,'ready');assert.equal(view.markets[0].vwap72,null);assert.notEqual(view.decisions.find(d=>d.strategyId==='vwap').status,'candidate');}
+ assert.ok(Number.isFinite(api.evaluateUniverse([market()],now).markets[0].vwap72));
 });
