@@ -106,11 +106,31 @@ test('private errors from loading, broker setup, engine setup and inspection are
  }
 });
 
-test('CLI rejects apply arguments and fails safely without credentials',()=>{
- const cli=fileURLToPath(new URL('../scripts/live/check-recovery.mjs',import.meta.url));
- for(const args of [['--apply'],['--apply',token],['unexpected']]){
-  const child=spawnSync(process.execPath,[cli,...args],{env:{},encoding:'utf8'});
-  assert.equal(child.status,1);assert.equal(child.stdout,'');const result=JSON.parse(child.stderr.trim());assertHeld(result);assert.match(result.message,/accepts no arguments/);
+function cliResponse(output){
+ const lines=output.split(/\r?\n/).filter(line=>line.trim()),responses=lines.filter(line=>line.startsWith('{'));
+ assert.equal(responses.length,1,'CLI must emit exactly one JSON response');
+ let warning=false;
+ for(const line of lines){
+  if(line.startsWith('{'))continue;
+  if(/^\(node:\d+\) ExperimentalWarning: SQLite is an experimental feature and might change at any time$/.test(line)){warning=true;continue;}
+  assert.ok(warning&&(/^(?:\(Use .*--trace-warnings.*\)|\s+at .+)$/.test(line)),`Unexpected CLI output: ${line}`);
  }
- const child=spawnSync(process.execPath,[cli],{env:{},encoding:'utf8'});assert.equal(child.status,1);assertHeld(JSON.parse(child.stdout.trim()));
+ return JSON.parse(responses[0]);
+}
+
+test('CLI rejects apply arguments and fails safely without credentials, including SQLite runtime warnings',()=>{
+ const cli=fileURLToPath(new URL('../scripts/live/check-recovery.mjs',import.meta.url));
+ // Emit a real Node warning even on versions that no longer warn for SQLite.
+ const warningModule='data:text/javascript,'+encodeURIComponent("process.emitWarning('SQLite is an experimental feature and might change at any time','ExperimentalWarning');");
+ for(const runtime of [[],['--import',warningModule],['--trace-warnings','--import',warningModule]]){
+  for(const args of [['--apply'],['--apply',token],['unexpected']]){
+   const child=spawnSync(process.execPath,[...runtime,cli,...args],{env:{},encoding:'utf8'});
+   assert.equal(child.status,1);assert.equal(child.stdout,'');const result=cliResponse(child.stderr);assertHeld(result);assert.match(result.message,/accepts no arguments/);
+   assert.ok(!child.stderr.includes(token));assert.ok(!child.stderr.includes('SYNTHETIC_PRIVATE_KEY'));
+  }
+  const child=spawnSync(process.execPath,[...runtime,cli],{env:{},encoding:'utf8'});
+  assert.equal(child.status,1);assertHeld(cliResponse(child.stdout+'\n'+child.stderr));
+ }
+ assert.throws(()=>cliResponse('{}\n{}\n'),/exactly one/);
+ assert.throws(()=>cliResponse('{}\nPRIVATE_RESPONSE\n'),/Unexpected CLI output/);
 });
