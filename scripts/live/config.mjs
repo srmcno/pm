@@ -1,9 +1,11 @@
 import path from 'node:path';
 import {D,S} from './risk.mjs';
+import {getCapacityProfile} from './capacity.mjs';
 export const LIVE_ACK='I_ACCEPT_REAL_MONEY_TRADING';
 export function configuration(env=process.env){
   if(env.MM_LIVE_ENABLED!==undefined)throw Error('Use MM_MODE and the explicit operator acknowledgement; the legacy live flag is unsupported.');
   const mode=env.MM_MODE||'preview';
+  const capacity=getCapacityProfile(env.MM_CAPACITY_PROFILE??'standard');
   const allocation=D(env.MM_ALLOCATION_USD||'20');
   if(allocation<D('5')||allocation>D('20'))throw Error('Allocation must be between $5 and the $20 hard ceiling.');
   if(!['preview','live'].includes(mode))throw Error('MM_MODE must be preview or live.');
@@ -18,5 +20,5 @@ export function configuration(env=process.env){
   const present=fields.filter(k=>env[k]);
   if((present.length&&present.length!==fields.length)||(mode==='live'&&present.length!==fields.length))throw Error('Coinbase connection requires all three private variables.');
   const credentials=present.length?{keyName:env.COINBASE_KEY_NAME,privateKey:env.COINBASE_PRIVATE_KEY,portfolioId:env.COINBASE_PORTFOLIO_ID,allowSubmit:mode==='live'}:null;
-  return {dataDir,mode,scanSeconds,monthlyHosting,credentials,engine:{mode,allocation:S(allocation),maxOrder:'5',lossLimit:'2',expectedPortfolioId:credentials?.portfolioId}};
+  return {dataDir,mode,scanSeconds,monthlyHosting,credentials,engine:{mode,allocation:S(allocation),maxOrder:'5',lossLimit:'2',capacityProfile:capacity.name,expectedPortfolioId:credentials?.portfolioId}};
 }

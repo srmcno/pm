@@ -53,3 +53,20 @@ test('preview refuses a forged plan beyond the hard five-dollar cap',()=>{
   const p={...planEntry(input()),reserved:'10',maxOrder:'10',quantity:'6',principal:'6.006'};
   assert.ok(validatePreview(p,{preview_id:'p',errs:[],commission_total:'0.01',order_total:'6.02',quote_size:'6.006',base_size:'6'},'0.009').hold);
 });
+test('expanded capacity admits entries above the old exposure ceiling while preserving risk and cash bounds',()=>{
+ const x=input();x.cash='6.85';x.equity='18.85';x.exposure='12';x.config.allocation='18.85';
+ assert.match(planEntry(x).hold,/exposure budget exhausted/);
+ x.config.capacityProfile='expanded';const plan=planEntry(x);assert.equal(plan.ok,true,JSON.stringify(plan));
+ assert.equal(plan.capacityProfile,'expanded');assert.ok(D(plan.reserved)<=D('4.965'));
+ assert.ok(D(plan.reserved)<=D('5'));assert.ok(D(plan.risk)<=D('0.1885'));
+ assert.ok(D(plan.reserved)+D(x.exposure)<=D('16.965'));
+ x.exposure='16.965';assert.match(planEntry(x).hold,/exposure budget exhausted/);
+ x.exposure='16.95';assert.ok(planEntry(x).hold,'Cannot round up to force a venue minimum');
+});
+test('expanded profile never relaxes per-entry loss, authenticated fees or absolute allocation limits',()=>{
+ const x=input(),standard=planEntry(x);x.config.capacityProfile='expanded';const expanded=planEntry(x);
+ assert.equal(expanded.risk,standard.risk,'Risk-limited entries remain the same size');
+ for(const change of [v=>v.config.capacityProfile='unlimited',v=>v.config.capacityProfile=null,v=>v.config.maxOrder='5.01',v=>v.config.allocation='20.01',v=>v.config.feeVerified=false,v=>v.cash='0.01',v=>v.product.quote_min_size='10']){
+  const candidate=structuredClone(x);change(candidate);assert.ok(planEntry(candidate).hold,String(change));
+ }
+});

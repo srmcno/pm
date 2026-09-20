@@ -2,6 +2,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {evaluateUniverse} from '../../dashboard/crypto-strategies-core.mjs';
 import {D,S,mul,div,floorStep,planEntry,validatePreview} from './risk.mjs';
 import {validateOrderBody} from './coinbase.mjs';
+import {getCapacityProfile} from './capacity.mjs';
 
 const ZERO='0',CENT=D('0.01'),ONE=D('1');
 const min=(...values)=>values.reduce((a,b)=>a<b?a:b);
@@ -20,8 +21,9 @@ function latch(state,reason,parent){
  }
 }
 function configOf(config={}){
- const c={mode:config.mode??'preview',allocation:String(config.allocation??20),maxOrder:String(config.maxOrder??5),lossLimit:String(config.lossLimit??2),expectedPortfolioId:config.expectedPortfolioId??config.portfolioId,confirmationSeconds:config.confirmationSeconds??60,maxPositions:config.maxPositions??3};
- if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>D('5')||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('2')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>3)throw Error('Invalid bounded execution configuration');
+ const capacity=getCapacityProfile(config.capacityProfile);
+ const c={mode:config.mode??'preview',allocation:String(config.allocation??20),maxOrder:String(config.maxOrder??5),lossLimit:String(config.lossLimit??2),expectedPortfolioId:config.expectedPortfolioId??config.portfolioId,confirmationSeconds:config.confirmationSeconds??60,capacityProfile:capacity.name,maxPositions:config.maxPositions??capacity.maxPositions};
+ if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>D('5')||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('2')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>capacity.maxPositions)throw Error('Invalid bounded execution configuration');
  return Object.freeze(c);
 }
 function remaining(intent){return D(intent.filledSize)-D(intent.child?.filledSize??ZERO)-intent.exits.reduce((sum,exit)=>sum+D(exit.filledSize),0n);}
@@ -33,6 +35,7 @@ function cashFrom(state){
 function validateState(state,config){
  if(!state||state.version!==1||state.kind!=='coinbase-rotation-engine'||state.portfolioId!==config.expectedPortfolioId||state.allocation!==config.allocation||state.maxOrder!==config.maxOrder||state.lossLimit!==config.lossLimit||!['preview','live'].includes(state.mode)||!['funded','lossLatched','manualRecovery','marksComplete'].every(k=>typeof state[k]==='boolean')||!Array.isArray(state.intents)||state.intents.length>10000||!state.confirmations||!state.cooldowns)throw Error('Invalid execution journal; refusing to reset or adopt balances');
  for(const key of ['lastTickAt','lastSuccessAt','lastMarkedAt'])if(state[key]!==null&&(!Number.isFinite(state[key])||state[key]<=0))throw Error('Invalid execution receipt');
+ getCapacityProfile(state.capacityProfile);
  if(state.projectionRecoveryToken!==undefined&&!/^projection-v1-[a-f0-9]{64}$/.test(state.projectionRecoveryToken))throw Error('Invalid recovery receipt');
  for(const record of [state,...state.intents])if(record.recoveryReason!==undefined&&record.recoveryReason!==null&&(typeof record.recoveryReason!=='string'||!record.recoveryReason.length||record.recoveryReason.length>500))throw Error('Invalid recovery reason');
  for(const record of [state,...state.intents])if(record.recoveryReasons!==undefined&&(!Array.isArray(record.recoveryReasons)||record.recoveryReasons.length>100||record.recoveryReasons.some(reason=>typeof reason!=='string'||!reason.length||reason.length>500)))throw Error('Invalid recovery reasons');
@@ -136,6 +139,12 @@ export class Engine {
  #now(){const now=this.#clock();if(!Number.isFinite(now)||now<=0)throw Error('Invalid execution clock');return now;}
  #mutation(){if(this.#isStopping())hold('Shutdown in progress; mutation disabled');if(this.#config.mode!=='live'||this.#broker.allowSubmit!==true)hold('Live mutation guard is disabled');}
  #fee(fees){const now=this.#now();if(!Number.isFinite(fees?.checkedAt)||fees.checkedAt>now||now-fees.checkedAt>15)hold('Fresh authenticated fees unavailable');const rate=D(fees.raw?.fee_tier?.taker_fee_rate??fees.takerRate);if(rate<0n||rate>=D('0.1')||(fees.takerRate!==undefined&&rate!==D(fees.takerRate)))hold('Account fee rate invalid');return rate;}
+ async #refreshFees(fees){
+  // A larger portfolio must not reuse one aging receipt for every exit.
+  // Refresh well before expiry; the original strict 15-second gate still applies.
+  if(Number.isFinite(fees?.checkedAt)&&this.#now()-fees.checkedAt>5)fees=await this.#broker.fees();
+  this.#fee(fees);return fees;
+ }
  async #accounts(){
   const raw=await this.#broker.accounts();if(!Array.isArray(raw?.accounts)||raw.has_next!==false||(raw.cursor!==undefined&&raw.cursor!==''))hold('Incomplete account pagination');
   const seen=new Set(),balances=new Map();
@@ -181,7 +190,8 @@ export class Engine {
  async #reconcile(){
   // Even terminal orders are reread: delayed commission updates must be
   // accounted before new spending. Cancelled partial fills are not discarded.
-  const indexes=this.#state.intents.map((_,index)=>index).sort((a,b)=>Number(this.#state.intents[a].closedAt!==null)-Number(this.#state.intents[b].closedAt!==null));let auditedClosed=false;
+  const priority=intent=>intent.closedAt!==null?2:intent.terminal?1:0;
+  const indexes=this.#state.intents.map((_,index)=>index).sort((a,b)=>priority(this.#state.intents[a])-priority(this.#state.intents[b]));let auditedClosed=false;
   for(const index of indexes){
    let parentObserved=false;
    try{
@@ -208,13 +218,16 @@ export class Engine {
   }
  }
  async #mark(fees){
-  const rate=this.#fee(fees);let equity=D(this.#state.cash),exposure=0n;const books=new Map();
+  this.#fee(fees);let equity=D(this.#state.cash),exposure=0n;const books=new Map();
   let complete=!this.#state.intents.some(i=>!i.terminal||i.exits.some(e=>!e.terminal)||(i.child&&!i.child.terminal&&(i.child.cancelRequestedAt!==null||remaining(i)===0n)));
   for(const [index,parent] of this.#state.intents.entries()){
    const quantity=remaining(parent);if(quantity===0n)continue;
-   try{if(!this.#verified.has(index))hold('Position is not reconciled this tick');const book=await this.#broker.book(parent.product);this.#fee(fees);const mark=liquidation(book,quantity,rate,parent.product,this.#now());books.set(parent.product,book);equity+=mark.net;exposure+=mark.gross;}
+   try{if(!this.#verified.has(index))hold('Position is not reconciled this tick');const book=await this.#broker.book(parent.product);fees=await this.#refreshFees(fees);const mark=liquidation(book,quantity,this.#fee(fees),parent.product,this.#now());books.set(parent.product,book);equity+=mark.net;exposure+=mark.gross;}
    catch{complete=false;this.#cycleHold='Some owned positions lack current verified liquidation marks';}
   }
+  // Earlier books may have aged while later positions were read. Keep those
+  // positions eligible for independently refreshed exits, but not new spending.
+  for(const [product,book] of books){try{freshBook(book,product,this.#now());}catch{complete=false;this.#cycleHold='Portfolio books aged during marking; new entries await fresh aggregate marks';}}
   const state=this.state;state.marksComplete=complete;if(complete){state.equity=S(equity);state.exposure=S(exposure);state.lastMarkedAt=this.#now();if(equity<=D(state.initialCapital)-D(state.lossLimit))state.lossLatched=true;}this.#save(state,'mark');return books;
  }
  async #send(index,exitIndex=null){
@@ -242,7 +255,8 @@ export class Engine {
    if(this.#config.mode!=='live')hold('Exit requested; preview mode cannot mutate existing orders');
    if(!parent.child)hold('Exit has no verified child identity',true);
    if(parent.exits.some(exit=>!exit.terminal))hold('Exit order pending reconciliation');
-   const product=await this.#broker.product(parent.product),book=await this.#broker.book(parent.product),rate=this.#fee(fees),now=this.#now(),{bids}=freshBook(book,parent.product,now);
+   const product=await this.#broker.product(parent.product),book=await this.#broker.book(parent.product);fees=await this.#refreshFees(fees);
+   const rate=this.#fee(fees),now=this.#now(),{bids}=freshBook(book,parent.product,now);
    if(product.product_id!==parent.product||product.product_type!=='SPOT'||product.quote_currency_id!=='USD'||product.status!=='online'||['is_disabled','trading_disabled','cancel_only','view_only','post_only','auction_mode'].some(k=>product[k]!==false))hold('Exit product is currently unavailable',true);
    const step=D(product.base_increment),priceStep=D(product.price_increment??product.quote_increment);
    if(step<=0n||priceStep<=0n)hold('Exit increments invalid',true);
@@ -285,7 +299,7 @@ export class Engine {
   const state=this.state,prior=state.confirmations[candidate.product],confirmation=prior&&prior.signalId===decision.id&&now-prior.lastSeen<=1800?{...prior,lastSeen:now}:{signalId:decision.id,at:now,lastSeen:now};state.confirmations={[candidate.product]:confirmation};this.#save(state,'confirmation');
   if(now-confirmation.at<this.#config.confirmationSeconds)hold('Waiting for a second qualifying scan at least 60 seconds later');
   const balances=await this.#accounts(),rate=this.#fee(fees),cash=min(D(this.#state.cash),D(this.#config.allocation),balances.get('USD')??0n);
-  const plan=planEntry({decision,product,book,cash:S(cash),equity:S(min(D(this.#state.equity),D(this.#config.allocation))),exposure:this.#state.exposure,feeRate:S(rate),config:{allocation:this.#config.allocation,maxOrder:this.#config.maxOrder,feeVerified:true},now:this.#now()});
+  const plan=planEntry({decision,product,book,cash:S(cash),equity:S(min(D(this.#state.equity),D(this.#config.allocation))),exposure:this.#state.exposure,feeRate:S(rate),config:{allocation:this.#config.allocation,maxOrder:this.#config.maxOrder,capacityProfile:this.#config.capacityProfile,feeVerified:true},now:this.#now()});
   if(plan.hold)hold(plan.hold);
   const body={client_order_id:randomUUID(),product_id:candidate.product,side:'BUY',retail_portfolio_id:this.#config.expectedPortfolioId,order_configuration:{limit_limit_gtc:{base_size:plan.quantity,limit_price:plan.limitPrice,post_only:false}},attached_order_configuration:{trigger_bracket_gtc:{limit_price:plan.target,stop_trigger_price:plan.stop}}};
   const {client_order_id:_entryClientId,preview_id:_entryPreviewId,...previewBody}=body;
@@ -300,12 +314,12 @@ export class Engine {
  async tick(feed){
   if(this.#running)throw Error('Execution tick already running');if(this.#fatal)throw Error('Execution journal failed; restart required');this.#running=true;
   try{
-   this.#verified=new Set();this.#cycleHold=null;const start=this.state;start.mode=this.#config.mode;start.lastTickAt=this.#now();start.marksComplete=false;if(!start.manualRecovery)start.hold=null;this.#save(start);
+   this.#verified=new Set();this.#cycleHold=null;const start=this.state,capacityChanged=(start.capacityProfile??'standard')!==this.#config.capacityProfile;start.mode=this.#config.mode;start.capacityProfile=this.#config.capacityProfile;start.lastTickAt=this.#now();start.marksComplete=false;if(!start.manualRecovery)start.hold=null;this.#save(start,capacityChanged?'capacity_change':'tick');
    await this.#permissions();await this.#reconcile();const fees=await this.#broker.fees();this.#fee(fees);const balances=await this.#accounts();
    if(!this.#state.funded){const initial=min(balances.get('USD')??0n,D(this.#config.allocation));if(initial<D('5'))hold('At least $5 available USD is required; existing crypto is never adopted or converted');const state=this.state;state.funded=true;state.initialCapital=S(initial);state.cash=state.initialCapital;state.equity=state.initialCapital;this.#save(state,'allocation_initialized');}
    const books=await this.#mark(fees);await this.#exits(feed,books,fees);
    if(this.#state.manualRecovery)hold(this.#state.hold??'Manual recovery required');if(this.#cycleHold)hold(this.#cycleHold);if(this.#state.lossLatched)hold('Loss trigger latched; new entries remain disabled');
-   const state=this.state;state.lastSuccessAt=this.#now();this.#save(state,'verified');await this.#entry(feed,fees);
+   const state=this.state;state.lastSuccessAt=this.#now();this.#save(state,'verified');await this.#entry(feed,await this.#refreshFees(fees));
   }catch(error){
    if(this.#fatal)throw error;
    const state=this.state;const reason=error instanceof Hold?error.message:'Broker data or transport could not be verified; no new action taken';if(error instanceof Hold&&error.manual)latch(state,reason);state.hold=state.recoveryReason??reason;this.#save(state,'held');

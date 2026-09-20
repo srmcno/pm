@@ -270,3 +270,66 @@ test('recovery and inspection exclusively lock the engine across broker awaits',
   f.broker.permissions=permissions;await f.tick();assert.equal(f.engine.state.manualRecovery,!recover);
  }
 });
+
+test('capacity changes preserve existing ledger, holdings, protection and immutable plans across restart',async()=>{
+ const f=fixture();await threePositions(f);f.addMarket('GHI-USD',.06);
+ const before=f.engine.state,creates=f.calls.filter(c=>c.create).length;
+ f.restart({capacityProfile:'expanded'});let state=await f.tick();
+ assert.equal(state.capacityProfile,'expanded');assert.equal(state.initialCapital,before.initialCapital);assert.equal(state.cash,before.cash);
+ for(let i=0;i<3;i++){assert.deepEqual(state.intents[i].plan,before.intents[i].plan);assert.equal(state.intents[i].child.orderId,before.intents[i].child.orderId);}
+ assert.ok(f.journal.events.some(e=>e.type==='capacity_change'));assert.equal(f.calls.filter(c=>c.cancel).length,0);
+ f.advance(61);state=await f.tick();assert.equal(state.intents.length,4,state.hold);assert.equal(f.calls.filter(c=>c.create).length,creates+1);
+ assert.equal(state.intents[3].plan.capacityProfile,'expanded');f.fillParent(state.intents[3]);await f.tick();
+ f.restart({capacityProfile:'standard'});state=await f.tick();
+ assert.equal(state.capacityProfile,'standard');assert.equal(state.intents.length,4);assert.match(state.hold,/Maximum owned positions/);
+ assert.equal(f.calls.filter(c=>c.cancel).length,0,'Reducing capacity does not liquidate existing protected holdings');
+ assert.equal(state.initialCapital,before.initialCapital);
+});
+async function expandedPositions(count=10){
+ const f=fixture({usd:'18.85',config:{allocation:'18.85',capacityProfile:'expanded'}});
+ for(let i=0;i<11;i++)f.addMarket(`T${i}-USD`,.099-i*.001);
+ let intent=await f.enter();
+ for(let i=0;i<count;i++){
+  f.fillParent(intent);await f.tick();
+  if(i<count-1){f.advance(61);const state=await f.tick();assert.equal(state.intents.length,i+2,`${i}: ${state.hold}`);intent=state.intents.at(-1);}
+ }
+ return f;
+}
+test('expanded capacity can hold ten distinct positions but refuses an eleventh and does not top up',async()=>{
+ const f=await expandedPositions();
+ f.setUSD('1000');f.advance(61);f.restart();const state=await f.tick();
+ assert.equal(state.intents.length,10);assert.match(state.hold,/Maximum owned positions/);assert.equal(state.initialCapital,'18.85');
+ assert.ok(D(state.cash)>=0n);assert.equal(f.calls.filter(c=>c.create).length,10);assert.equal(f.calls.filter(c=>c.cancel).length,0);
+ for(const position of state.intents){assert.equal(position.child.status,'OPEN');assert.ok(D(position.plan.reserved)<=D('5'));assert.ok(D(position.plan.risk)<=D('0.1885'));}
+});
+test('ten slow position reads refresh fees and cannot starve independently valid software exits',async()=>{
+ const f=await expandedPositions(),book=f.broker.book,fees=f.broker.fees,accounts=f.broker.accounts;let feeReads=0;
+ f.broker.accounts=async()=>{const result=await accounts();for(const position of f.engine.state.intents){const currency=position.product.slice(0,-4);if(!result.accounts.some(a=>a.currency===currency))result.accounts.push({uuid:`account-${currency}`,retail_portfolio_id:PORTFOLIO,currency,active:true,ready:true,available_balance:{currency,value:position.filledSize}});}return result;};
+ f.broker.book=async id=>{const result=await book(id);f.advance(1.6);return result;};
+ f.broker.fees=async()=>{feeReads++;return fees();};
+ f.advance(72*3600);await f.tick();
+ assert.equal(f.calls.filter(c=>c.cancel).length,10,'Every independently verified protective child must reach cancellation');
+ assert.ok(feeReads>1,'Aging authenticated fees must be refreshed, not trusted past expiry');
+ assert.equal(f.engine.state.marksComplete,false,'Oldest aggregate book is over15s old');
+ await f.tick();assert.equal(f.calls.filter(c=>c.create).length,20,'Ten fee-checked software exits can follow confirmed child cancellation');
+ assert.equal(f.engine.state.manualRecovery,false,f.engine.state.hold);
+});
+test('slow aggregate marking never labels expired books as complete or spends from stale equity',async()=>{
+ const f=await expandedPositions(),book=f.broker.book;
+ f.broker.book=async id=>{const result=await book(id);f.advance(1.6);return result;};
+ const state=await f.tick();assert.equal(state.marksComplete,false);assert.match(state.hold,/aged during marking/);
+ assert.equal(f.calls.filter(c=>c.create).length,10);assert.equal(f.calls.filter(c=>c.cancel).length,0);
+});
+test('a pending BUY is reconciled and cancelled before slow reads of nine established holdings',async()=>{
+ const f=await expandedPositions(9);f.advance(61);await f.tick();const pending=f.engine.state.intents.at(-1);
+ assert.equal(f.engine.state.intents.length,10);assert.equal(pending.terminal,false);
+ const order=f.broker.order;f.broker.order=async id=>{f.advance(1.6);return order(id);};
+ const start=f.calls.length;f.advance(31);await f.tick();const cycle=f.calls.slice(start);
+ assert.equal(cycle.find(c=>typeof c==='string'&&c.startsWith('order:')),`order:${pending.orderId}`);
+ const cancelIndex=cycle.findIndex(c=>c.cancel?.includes(pending.orderId));assert.ok(cancelIndex>=0);
+ assert.ok(cancelIndex<cycle.findIndex(c=>c===`order:${f.engine.state.intents[0].orderId}`));
+ assert.equal(f.engine.state.manualRecovery,false);
+});
+test('capacity configuration rejects invalid profiles and position counts beyond the selected profile',()=>{
+ for(const config of [{capacityProfile:'unlimited'},{maxPositions:4},{capacityProfile:'expanded',maxPositions:11},{capacityProfile:'expanded',maxPositions:0}])assert.throws(()=>fixture({config}));
+});

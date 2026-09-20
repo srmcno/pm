@@ -20,7 +20,25 @@ Auto-deployment is off to avoid restarting the trading process on the repository
 
 ## Limits, evidence and recovery
 
-The runtime bounds new risk to the configured $20 allocation ceiling, $5 absolute order ceiling, 20% maximum position weight, 60% exposure and 1% modeled loss per entry. Venue minimums can make a small test unable to trade. The software must skip such a setup rather than increase the allocation or weaken the risk checks. Profits do not authorize a larger allocation. The $2 trading loss trigger is a control signal, not a guaranteed maximum loss; slippage, gaps, fees and unavailable markets can exceed it. Hosting is outside that trading trigger.
+The runtime bounds new risk to the configured $20 allocation ceiling, $5 absolute order ceiling and 1% modeled loss per entry. The default capacity profile allows three positions, 20% maximum entry weight and 60% exposure. Venue minimums can make a small test unable to trade. The software must skip such a setup rather than increase the allocation or weaken the risk checks. Profits do not authorize a larger allocation. The $2 trading loss trigger is a control signal, not a guaranteed maximum loss; slippage, gaps, fees and unavailable markets can exceed it. Hosting is outside that trading trigger.
+
+### Using more of the existing allocation
+
+The account owner can select `MM_CAPACITY_PROFILE=expanded` in the worker's private environment and save/redeploy. Omitting this variable retains `standard`; unknown or empty values stop configuration rather than silently choosing a profile. Publishing new code alone does not select expanded capacity.
+
+| Entry capacity | Standard | Expanded |
+|---|---:|---:|
+| Simultaneous owned positions | 3 | 10 |
+| Maximum entry weight | 20% | 30% |
+| Maximum combined exposure | 60% | 90% |
+| Absolute order reservation ceiling | $5 | $5 |
+| Modeled loss per entry | 1% | 1% |
+
+At the initial $18.85 allocation, expanded capacity permits up to $16.965 of combined exposure, subject to current equity, fees, the cash ledger and venue requirements. The $5 absolute order cap still takes precedence over the 30% weight. These are entry ceilings, not target purchases; the 1% loss sizing often produces much smaller orders. A larger position count does not require the bot to fill every slot.
+
+Both profiles use the same frozen initial allocation, actual-fee checks, native protection, signal confirmation and $2 loss trigger. Deposits and unrelated account holdings are not adopted. A profile change never resizes an existing position, modifies its immutable protection plan, resets accounting or clears a loss/recovery hold. Switching back to standard blocks additional entries when over its limits; it does not force liquidation. The selected profile is recorded in the private journal and the `capacity` section of worker status so the effective setting is visible after deployment.
+
+With more holdings, pending BUY reconciliation takes priority over established positions. Fee receipts refresh during longer marking/exit cycles, while the same 15-second freshness checks remain. If the earliest portfolio books expire during collection, aggregate marks are incomplete and new entries wait; independently verified exits still obtain their own fresh books and fees. Synthetic latency tests cover this ten-position case.
 
 New orders require fresh authenticated books, account fees, tradable USD spot products, sufficient real USD, a current rotation signal and successful Coinbase cost preview. The public paper minimum of $10 does not define the broker minimum; authenticated product increments/minimums do. Protective orders use Coinbase's attached bracket. Stop execution and partial fills must be reconciled rather than inferred from a successful HTTP response.
 

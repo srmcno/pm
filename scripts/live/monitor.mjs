@@ -38,7 +38,7 @@ function freshFee(fees,now){
 
 // This module has no create/cancel/convert path. Public diagnostics deliberately
 // exclude balances, identifiers, preview IDs, raw broker responses and errors.
-export async function monitorCycle({feed,broker=null,clock=()=>Date.now()/1000,now=clock(),allocation='20',executionManaged=false}={}){
+export async function monitorCycle({feed,broker=null,clock=()=>Date.now()/1000,now=clock(),allocation='20',capacityProfile='standard',executionManaged=false}={}){
   // `now` labels the report's start; freshness uses the same wall-clock epoch as
   // broker timestamps. Rebasing elapsed time onto a caller's earlier `now` can
   // falsely put a just-received fee timestamp in the future. Tests inject clock.
@@ -92,7 +92,7 @@ export async function monitorCycle({feed,broker=null,clock=()=>Date.now()/1000,n
       stage='risk';
       feeRate=freshFee(feeReceipt,clock());
       const plan=planEntry({decision,product,book:candidateBook,cash:S(cash),equity:allocation,exposure:'0',feeRate,
-        config:{allocation,maxOrder:'5',feeVerified:true},now:decisionAt});
+        config:{allocation,maxOrder:'5',capacityProfile,feeVerified:true},now:decisionAt});
       if(plan.hold){row.status='held';row.reason=plan.hold;continue;}
       const body={product_id:row.product,side:'BUY',retail_portfolio_id:expected,
         order_configuration:{sor_limit_ioc:{base_size:plan.quantity,limit_price:plan.limitPrice}},

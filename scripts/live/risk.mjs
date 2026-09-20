@@ -1,5 +1,6 @@
 // Decimal quantities use fixed 18-place integers. No floating-point arithmetic
 // enters sizing; callers should preserve decimal strings from venue responses.
+import {getCapacityProfile} from './capacity.mjs';
 const SCALE=10n**18n;
 export function D(value){
   if(typeof value==='number'&&(!Number.isFinite(value)||(Number.isInteger(value)&&!Number.isSafeInteger(value))))throw Error('Invalid or unsafe decimal number');
@@ -49,6 +50,7 @@ function fills(levels,quantity,limit=null){
 export function planEntry({decision,product,book,cash,equity,exposure,feeRate,config,now}={}){
   try{
     if(config?.feeVerified!==true)throw Error('Fresh account fee verification required');
+    const capacity=getCapacityProfile(config.capacityProfile);
     const allocation=positive(config.allocation,'Allocation'),maxOrder=positive(config.maxOrder,'Order cap');
     if(allocation>D('20')||maxOrder>D('5'))throw Error('Allocation or order exceeds hard cash cap');
     const available=nonnegative(cash,'Cash'),accountEquity=positive(equity,'Equity'),used=nonnegative(exposure,'Exposure'),rate=nonnegative(feeRate,'Fee rate');
@@ -72,7 +74,7 @@ export function planEntry({decision,product,book,cash,equity,exposure,feeRate,co
     if(ask>signalPrice+atr)throw Error('Price moved beyond the candidate setup');
     const limitPrice=floorStep(mul(ask,D('1.001')),priceStep),stop=ceilStep(positive(decision.stop,'Stop'),priceStep),target=floorStep(positive(decision.target,'Target'),priceStep);
     if(limitPrice<ask||stop>=bid||stop>=limitPrice||target<=limitPrice)throw Error('Protective levels do not fit the entry');
-    const sizingEquity=min(accountEquity,allocation),budget=min(available,maxOrder,mul(sizingEquity,D('0.20')),max(0n,mul(sizingEquity,D('0.60'))-used));
+    const sizingEquity=min(accountEquity,allocation),budget=min(available,maxOrder,mul(sizingEquity,D(capacity.positionWeight)),max(0n,mul(sizingEquity,D(capacity.exposureWeight))-used));
     if(budget<=CENT)throw Error('Cash or exposure budget exhausted');
     const unitCost=upMul(limitPrice,SCALE+rate);
     const exitStop=floorStep(mul(stop,D('0.95')),priceStep);
@@ -94,7 +96,7 @@ export function planEntry({decision,product,book,cash,equity,exposure,feeRate,co
       if(principal<minQuote||stopPrincipal<minQuote||principal>maxQuote||targetPrincipal>maxQuote)continue;
       if(reserved>budget||risk<=0n||risk>riskBudget||reward<=0n||div(reward,risk)<D('1.1'))continue;
       if(fills(asks,quantity,limitPrice)===null||fills(bids,quantity)===null)continue;
-      return {ok:true,quantity:S(quantity),limitPrice:S(limitPrice),stop:S(stop),target:S(target),stopLimitPrice:S(exitStop),reserved:S(reserved),risk:S(risk),reward:S(reward),principal:S(principal),feeReserve:S(entryFee),maxOrder:S(maxOrder),productId};
+      return {ok:true,quantity:S(quantity),limitPrice:S(limitPrice),stop:S(stop),target:S(target),stopLimitPrice:S(exitStop),reserved:S(reserved),risk:S(risk),reward:S(reward),principal:S(principal),feeReserve:S(entryFee),maxOrder:S(maxOrder),productId,capacityProfile:capacity.name};
     }
     throw Error('No quantity fits venue minimums, displayed depth, costs and hard risk limits');
   }catch(error){return {hold:error.message};}

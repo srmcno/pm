@@ -7,6 +7,7 @@ import {Journal} from './journal.mjs';
 import {monitorCycle} from './monitor.mjs';
 import {configuration} from './config.mjs';
 import {D,S} from './risk.mjs';
+import {getCapacityProfile} from './capacity.mjs';
 export {configuration} from './config.mjs';
 
 export function validateState(state){
@@ -28,11 +29,13 @@ export async function scan(state,{broker=null,collect=collectCoinbaseMarkets,mon
   }
 }
 export function receipt(state,config,now=Date.now()/1000,engineState=null){
+  const capacity=getCapacityProfile(engineState?.capacityProfile??config.engine?.capacityProfile);
   let markedTradingPnlUsd=null;
   if(engineState?.funded&&engineState.marksComplete===true&&Number.isFinite(engineState.lastMarkedAt)&&engineState.lastMarkedAt<=now&&now-engineState.lastMarkedAt<=60){
     try{markedTradingPnlUsd=S(D(engineState.equity)-D(engineState.initialCapital));}catch{}
   }
   return {event:'worker_status',mode:config.mode||'preview',realOrdersEnabled:config.mode==='live',at:now,
+    capacity:{profile:capacity.name,maxPositions:capacity.maxPositions,maxPositionFraction:capacity.positionWeight,maxExposureFraction:capacity.exposureWeight},
     startedAt:state.startedAt,cycles:state.cycles,lastAttemptAt:state.lastAttemptAt,lastSuccessAt:state.lastSuccessAt,
     sourceAgeSeconds:state.lastSuccessAt===null?null:Math.max(0,Math.round(now-state.lastSuccessAt)),
     status:state.consecutiveFailures?'source_error':state.lastSuccessAt===null?'starting':'monitoring',consecutiveFailures:state.consecutiveFailures,
@@ -130,7 +133,7 @@ export async function run(env=process.env,dependencies={}){
           feed=completed.feed;
           // Engine owns authenticated work, including read-only reconciliation
           // after disarming. Its companion scan reports only market signals.
-          const report=await monitor({feed,broker:engine?null:broker,now:clock(),allocation:config.engine.allocation,executionManaged:!!engine});
+          const report=await monitor({feed,broker:engine?null:broker,now:clock(),allocation:config.engine.allocation,capacityProfile:config.engine.capacityProfile,executionManaged:!!engine});
           state={...state,cycles:state.cycles+1,consecutiveFailures:0,lastAttemptAt:completed.attemptAt,lastSuccessAt:completed.at,feedCache:feed.cache||feed.markets,report};
         }else state={...state,cycles:state.cycles+1,consecutiveFailures:state.consecutiveFailures+1,lastAttemptAt:completed.attemptAt};
         journal.save(state,{type:good?'scan':'source_error'});
