@@ -17,7 +17,7 @@ test("the current real prediction snapshot is accepted without inventing missing
 test("missing study fields, malformed book levels and malformed scan receipts fail validation", () => {
   for (const mutate of [
     (p) => delete p.studies,
-    (p) => (p.studies.kalshi.forecasts = 4),
+    (p) => delete p.studies.kalshi.forecasts,
     (p) => (p.markets[0].question = null),
     (p) => (p.markets[0].sides.yes.asks = "bad"),
     (p) => (p.automation.recentCycles[0].venues = null),
