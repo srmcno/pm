@@ -285,6 +285,24 @@ test('capacity changes preserve existing ledger, holdings, protection and immuta
  assert.equal(f.calls.filter(c=>c.cancel).length,0,'Reducing capacity does not liquidate existing protected holdings');
  assert.equal(state.initialCapital,before.initialCapital);
 });
+test('active profile permits a larger protected live entry without adopting deposits or resizing it on downgrade',async()=>{
+ const baseline=fixture({usd:'18.85',config:{allocation:'18.85',capacityProfile:'expanded'}});
+ const smaller=await baseline.enter();
+ const f=fixture({usd:'18.85',config:{allocation:'18.85',capacityProfile:'active'}});
+ const intent=await f.enter();
+ assert.equal(intent.plan.entryRiskFraction,'0.02');
+ assert.ok(D(intent.plan.reserved)>D(smaller.plan.reserved));
+ assert.ok(D(intent.plan.risk)<=D('0.377'));
+ assert.ok(D(intent.plan.reserved)<=D('5'));
+ f.fillParent(intent);await f.tick();
+ const before=f.engine.state;
+ f.setUSD('1000');f.restart({capacityProfile:'expanded'});await f.tick();
+ const after=f.engine.state;
+ assert.equal(after.initialCapital,'18.85');
+ assert.deepEqual(after.intents[0].plan,before.intents[0].plan);
+ assert.equal(after.intents[0].child.orderId,before.intents[0].child.orderId);
+ assert.equal(f.calls.filter(c=>c.create).length,1);
+});
 async function expandedPositions(count=10){
  const f=fixture({usd:'18.85',config:{allocation:'18.85',capacityProfile:'expanded'}});
  for(let i=0;i<11;i++)f.addMarket(`T${i}-USD`,.099-i*.001);

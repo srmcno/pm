@@ -82,7 +82,7 @@ export function planEntry({decision,product,book,cash,equity,exposure,feeRate,co
     const stopNet=mul(mul(exitStop,D('0.999')),SCALE-rate),targetNet=mul(mul(target,D('0.999')),SCALE-rate);
     const loss=unitCost-stopNet,gain=targetNet-unitCost;
     if(loss<=0n||gain<=0n||div(gain,loss)<D('1.1'))throw Error('Reward does not clear fees and conservative stop risk');
-    const riskBudget=mul(sizingEquity,D('0.01'));
+    const riskBudget=mul(sizingEquity,D(capacity.entryRiskWeight));
     let quantity=floorStep(min(div(budget-CENT,unitCost),div(max(0n,riskBudget-2n*CENT),loss),maxSize),increment);
     // Cent rounding can invalidate the closed-form estimate. Reduce by a
     // bounded geometric step; never round quantity up to force minimum size.
@@ -96,7 +96,7 @@ export function planEntry({decision,product,book,cash,equity,exposure,feeRate,co
       if(principal<minQuote||stopPrincipal<minQuote||principal>maxQuote||targetPrincipal>maxQuote)continue;
       if(reserved>budget||risk<=0n||risk>riskBudget||reward<=0n||div(reward,risk)<D('1.1'))continue;
       if(fills(asks,quantity,limitPrice)===null||fills(bids,quantity)===null)continue;
-      return {ok:true,quantity:S(quantity),limitPrice:S(limitPrice),stop:S(stop),target:S(target),stopLimitPrice:S(exitStop),reserved:S(reserved),risk:S(risk),reward:S(reward),principal:S(principal),feeReserve:S(entryFee),maxOrder:S(maxOrder),productId,capacityProfile:capacity.name};
+      return {ok:true,quantity:S(quantity),limitPrice:S(limitPrice),stop:S(stop),target:S(target),stopLimitPrice:S(exitStop),reserved:S(reserved),risk:S(risk),reward:S(reward),principal:S(principal),feeReserve:S(entryFee),maxOrder:S(maxOrder),productId,capacityProfile:capacity.name,entryRiskFraction:capacity.entryRiskWeight};
     }
     throw Error('No quantity fits venue minimums, displayed depth, costs and hard risk limits');
   }catch(error){return {hold:error.message};}

@@ -35,7 +35,7 @@ export function receipt(state,config,now=Date.now()/1000,engineState=null){
     try{markedTradingPnlUsd=S(D(engineState.equity)-D(engineState.initialCapital));}catch{}
   }
   return {event:'worker_status',mode:config.mode||'preview',realOrdersEnabled:config.mode==='live',at:now,
-    capacity:{profile:capacity.name,maxPositions:capacity.maxPositions,maxPositionFraction:capacity.positionWeight,maxExposureFraction:capacity.exposureWeight},
+    capacity:{profile:capacity.name,maxPositions:capacity.maxPositions,maxPositionFraction:capacity.positionWeight,maxExposureFraction:capacity.exposureWeight,maxEntryRiskFraction:capacity.entryRiskWeight},
     startedAt:state.startedAt,cycles:state.cycles,lastAttemptAt:state.lastAttemptAt,lastSuccessAt:state.lastSuccessAt,
     sourceAgeSeconds:state.lastSuccessAt===null?null:Math.max(0,Math.round(now-state.lastSuccessAt)),
     status:state.consecutiveFailures?'source_error':state.lastSuccessAt===null?'starting':'monitoring',consecutiveFailures:state.consecutiveFailures,
