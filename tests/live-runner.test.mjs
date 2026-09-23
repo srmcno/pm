@@ -23,13 +23,15 @@ test('cloud entry point refuses real execution and incomplete credentials',()=>{
   assert.throws(()=>configuration({...env,RENDER:'true',MM_DATA_DIR:'/tmp/ephemeral'}));
 });
 test('capacity selection is explicit, defaults unchanged, and never changes allocation or live activation',()=>{
- const env={MM_DATA_DIR:'/var/data/test',MM_ALLOCATION_USD:'18.85'},standard=configuration(env),expanded=configuration({...env,MM_CAPACITY_PROFILE:'expanded'});
+ const env={MM_DATA_DIR:'/var/data/test',MM_ALLOCATION_USD:'18.85'},standard=configuration(env),expanded=configuration({...env,MM_CAPACITY_PROFILE:'expanded'}),active=configuration({...env,MM_CAPACITY_PROFILE:'active'});
  assert.equal(standard.engine.capacityProfile,'standard');assert.equal(expanded.engine.capacityProfile,'expanded');
  assert.equal(expanded.engine.allocation,'18.85');assert.equal(expanded.engine.maxOrder,'5');assert.equal(expanded.engine.lossLimit,'2');assert.equal(expanded.mode,'preview');assert.equal(expanded.credentials,null);
  for(const profile of ['','unlimited','Expanded','constructor','__proto__'])assert.throws(()=>configuration({...env,MM_CAPACITY_PROFILE:profile}));
  const before=receipt(newState(1000),standard,1000),after=receipt(newState(1000),expanded,1000);
- assert.deepEqual(before.capacity,{profile:'standard',maxPositions:3,maxPositionFraction:'0.20',maxExposureFraction:'0.60'});
- assert.deepEqual(after.capacity,{profile:'expanded',maxPositions:10,maxPositionFraction:'0.30',maxExposureFraction:'0.90'});
+ assert.deepEqual(before.capacity,{profile:'standard',maxPositions:3,maxPositionFraction:'0.20',maxExposureFraction:'0.60',maxEntryRiskFraction:'0.01'});
+ assert.deepEqual(after.capacity,{profile:'expanded',maxPositions:10,maxPositionFraction:'0.30',maxExposureFraction:'0.90',maxEntryRiskFraction:'0.01'});
+ assert.deepEqual(receipt(newState(1000),active,1000).capacity,{profile:'active',maxPositions:10,maxPositionFraction:'0.30',maxExposureFraction:'0.90',maxEntryRiskFraction:'0.02'});
+ assert.equal(active.engine.allocation,'18.85');assert.equal(active.engine.lossLimit,'2');assert.equal(active.mode,'preview');
  assert.equal(after.realOrdersEnabled,false);
 });
 test('runner forwards the selected profile to standalone authenticated previews',async()=>{

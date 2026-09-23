@@ -70,3 +70,17 @@ test('expanded profile never relaxes per-entry loss, authenticated fees or absol
   const candidate=structuredClone(x);change(candidate);assert.ok(planEntry(candidate).hold,String(change));
  }
 });
+test('active profile uses at most two percent modeled risk without bypassing fee, exposure or order caps',()=>{
+ const x=input();x.config.allocation='18.85';x.cash='18.85';x.equity='18.85';
+ x.config.capacityProfile='expanded';const expanded=planEntry(x);
+ x.config.capacityProfile='active';const active=planEntry(x);
+ assert.equal(active.ok,true,JSON.stringify(active));
+ assert.equal(active.entryRiskFraction,'0.02');
+ assert.ok(D(active.reserved)>D(expanded.reserved),'Additional risk should permit a larger entry when sizing is risk-limited');
+ assert.ok(D(active.risk)<=D('0.377'));
+ assert.ok(D(active.reserved)<=D('5'));
+ assert.ok(D(active.reserved)<=D('5.655'));
+ assert.ok(D(active.reward)*10n>=D(active.risk)*11n);
+ x.exposure='16.965';assert.match(planEntry(x).hold,/exposure budget exhausted/);
+ x.exposure='0';x.config.feeVerified=false;assert.match(planEntry(x).hold,/Fresh account fee verification/);
+});
