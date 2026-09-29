@@ -29,9 +29,10 @@ await cp(path.join(root,'dashboard/focus.html'),path.join(output,'index.html'));
 const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 const {version}=JSON.parse(await readFile(path.join(root,'package.json'),'utf8'));
 // Interface identity excludes collector snapshots. Frequent data commits must
-// not reload an open dashboard, but code changes must invalidate module caches.
+// not reload an open dashboard, but code changes, including this build script
+// (it rewrites every page), must invalidate module caches.
 const assets=files.filter(file=>/\.(html|css|mjs|svg|png)$/.test(file));
-const hash=createHash('sha256').update(version);
+const hash=createHash('sha256').update(version).update(await readFile(fileURLToPath(import.meta.url)));
 for(const file of assets)hash.update(file).update(await readFile(path.join(root,'dashboard',file)));
 const interfaceRevision=hash.digest('hex').slice(0,20);
 for(const file of [...assets,'archive-workspace.html']){

@@ -2,10 +2,14 @@
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
+import re
 import subprocess
+import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1] / "dashboard"
+# Static and dynamic relative module specifiers; build query strings are ignored.
+IMPORT = re.compile(r"""(?:\bfrom\s*|\bimport\s*\(?\s*)["'](\.{1,2}/[^"'?#]+)(?:[?#][^"']*)?["']""")
 
 class Page(HTMLParser):
     def __init__(self):
@@ -32,9 +36,15 @@ class Page(HTMLParser):
             self.scripts.append(self.active)
             self.active = None
 
-def main():
-    count = 0
-    for file in ROOT.glob("*.html"):
+def imports(source, base, pending, name):
+    for spec in IMPORT.findall(source):
+        target = (base / unquote(spec)).resolve()
+        assert target.is_file(), f"missing module import in {name}: {spec}"
+        pending.append(target)
+
+def main(root=ROOT):
+    count, pending, modules = 0, [], set()
+    for file in root.glob("*.html"):
         if file.name == "template.html":
             continue
         page = Page()
@@ -46,13 +56,23 @@ def main():
                 continue
             target = (file.parent / unquote(url.path)).resolve()
             assert target.exists(), f"missing local resource in {file.name}: {link}"
+            if target.suffix == ".mjs":
+                pending.append(target)
         for script in page.scripts:
+            imports(script, file.parent, pending, file.name)
             with tempfile.NamedTemporaryFile(mode="w", suffix=".mjs") as tmp:
                 tmp.write(script)
                 tmp.flush()
                 subprocess.run(["node", "--check", tmp.name], check=True, capture_output=True)
         count += 1
-    print(f"Validated local resources, unique IDs, and scripts in {count} pages")
+    assert count, f"no pages in {root}"
+    while pending:
+        module = pending.pop()
+        if module not in modules:
+            modules.add(module)
+            imports(module.read_text(), module.parent, pending, module.name)
+    extra = "" if root == ROOT else f" and {len(modules)} imported modules in {root}"
+    print(f"Validated local resources, unique IDs, and scripts in {count} pages{extra}")
 
 if __name__ == "__main__":
-    main()
+    main(Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT)

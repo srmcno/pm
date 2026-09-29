@@ -1,6 +1,8 @@
-const main=document.querySelector('main');
+// Archive pages declare reload-only: they follow new releases without claiming live scans.
+const main=document.querySelector('main')||document.body,quiet=document.querySelector('meta[name="mm-health"]')?.content==='reload-only';
 if(main){
- const strip=document.createElement('div');strip.className='health-strip';strip.setAttribute('role','status');strip.innerHTML='<span>Scheduled paper scans · refreshes every minute</span><a href="readiness.html">Platform access & funding readiness</a>';main.prepend(strip);
+ const strip=document.createElement('div');strip.className='health-strip';strip.setAttribute('role','status');
+ if(!quiet){strip.innerHTML='<span>Scheduled paper scans · refreshes every minute</span><a href="readiness.html">Platform access & funding readiness</a>';main.prepend(strip);}
  let release=document.querySelector('meta[name="mm-release"]')?.content||null,busy=false;const loadedAt=Date.now();
  async function check(){
   if(busy||document.visibilityState!=='visible')return;busy=true;
@@ -12,7 +14,7 @@ if(main){
    // Never interrupt typing. Readiness retains its nonsensitive calculator
    // values in session storage; live data continues updating in the meantime.
    if(document.body.dataset.updateBlocked==='true'||document.activeElement?.matches('input,select,textarea,[contenteditable="true"]')){
-    strip.replaceChildren();const label=document.createElement('span');label.textContent=document.body.dataset.updateBlocked==='true'?'Dashboard update ready. This browser cannot retain your edits; reload after you finish.':'Dashboard update ready. It will load after you finish editing.';strip.append(label);
+    strip.replaceChildren();const label=document.createElement('span');label.textContent=document.body.dataset.updateBlocked==='true'?'Dashboard update ready. This browser cannot retain your edits; reload after you finish.':'Dashboard update ready. It will load after you finish editing.';strip.append(label);if(!strip.isConnected)main.prepend(strip);
     return;
    }
    // Query-version the document as well as its imports. A stale CDN document

@@ -48,6 +48,9 @@ jobs:
             if git push origin 'HEAD:${{ github.event.repository.default_branch }}'; then exit 0; fi
           done
           exit 1
+      # Pages tests use frozen fixtures; the live snapshot is checked where it is written.
+      - name: Check the published comparison snapshot
+        run: MM_LIVE_SNAPSHOTS=1 node --test --test-name-pattern='published current snapshot' tests/crypto-arbitrage.test.mjs
       - name: Surface an upstream failure
         if: steps.strategies.outcome == 'failure' || steps.crypto.outcome == 'failure'
         run: exit 1
