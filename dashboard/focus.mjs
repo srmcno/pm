@@ -3,13 +3,15 @@ import {validPredictions} from './app-schema.mjs';
 import {VENUES} from './prediction-core.mjs';
 import {venueSummary,ledgerRows,toCsv} from './focus-model.mjs';
 import {validCompetitionSnapshot} from './crypto-strategies-core.mjs';
+import {validTrendSnapshot} from './crypto-trend-core.mjs';
+import {trendOverview} from './crypto-trend-ui.mjs';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=v=>Number.isFinite(v)?v.toLocaleString('en-US',{style:'currency',currency:'USD'}):'Not available';
 const when=v=>Number.isFinite(v)?new Date(v*1000).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Not recorded';
 const venueName=v=>v==='polymarket'?'Polymarket US':'Kalshi';
 const empty=(title,detail)=>`<div class="empty"><strong>${esc(title)}</strong>${esc(detail)}</div>`;
-let snapshot,crypto,busy=false,limit=60;
+let snapshot,crypto,trend,busy=false,limit=60;
 try {document.documentElement.dataset.theme=localStorage.getItem('mm-theme-v5')||'light';} catch {}
 function route(){
   const raw=location.hash.slice(1),first=raw.split('/')[0];
@@ -65,6 +67,7 @@ function renderCryptoSummary(){
   const leader=[...active].sort((a,b)=>b.equity-a.equity)[0];
   el.innerHTML=`<div><strong>${crypto.universe?.selected??crypto.markets?.length??0}</strong><span>selected USD markets</span></div><div><strong>${active.length}</strong><span>active strategies</span></div><div><strong>${open} / ${trades}</strong><span>open / closed crypto positions</span></div><div><strong>${leader?esc(leader.name):'No leader yet'}</strong><span>${leader?money(leader.equity)+' paper equity':'awaiting tournament data'}</span></div>`;
 }
+function renderTrendSummary(){const el=$('trend-summary');if(el)el.innerHTML=trendOverview(trend);}
 function render(){
   $('account-grid').innerHTML=VENUES.map(accountCard).join('');
   $('scan-time').textContent=`Last completed scan: ${when(snapshot.generatedAt)}`;
@@ -72,13 +75,14 @@ function render(){
   $('positions').innerHTML=positions.length?positions.slice(0,6).map(record).join(''):empty('No open positions','The account cards show whether each venue is warming up, confirming an entry, or held by another condition.');
   $('market-count').textContent=`(${snapshot.markets.length})`;
   $('policy-label').textContent=snapshot.entryPolicy?`Paper policy: ${snapshot.entryPolicy.version}`:'Awaiting the first updated policy receipt';
-  $('export').disabled=false;renderCryptoSummary();renderActivity();renderMarkets();
+  $('export').disabled=false;renderCryptoSummary();renderTrendSummary();renderActivity();renderMarkets();
 }
 async function load(){
   if(busy)return;busy=true;$('refresh').disabled=true;$('refresh').textContent='Refreshing';
   try{
-    const results=await Promise.allSettled([publishedJson('data/predictions.json',validPredictions),publishedJson('data/crypto-strategies.json',validCompetitionSnapshot)]);
+    const results=await Promise.allSettled([publishedJson('data/predictions.json',validPredictions),publishedJson('data/crypto-strategies.json',validCompetitionSnapshot),publishedJson('data/crypto-trend.json',validTrendSnapshot)]);
     if(results[1].status==='fulfilled')crypto=results[1].value;renderCryptoSummary();
+    if(results[2].status==='fulfilled')trend=results[2].value;renderTrendSummary();
     if(results[0].status!=='fulfilled')throw results[0].reason;
     snapshot=results[0].value;
     const health=publicationHealth.get('data/predictions.json');

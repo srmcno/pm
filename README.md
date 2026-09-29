@@ -21,7 +21,7 @@ The versioned experimental paper policy can evaluate entries after 20 resolved c
 
 [Current paper policy and archive design](docs/ACTIVE-PAPER.md) · [Original accounting and calibration controls](docs/PREDICTIONS.md)
 
-Prediction collection runs about every ten minutes, best effort, without a browser. The five-minute opportunity workflow advances the eleven-strategy crypto tournament, retains separate arbitrage comparisons, while the international copy study is settlement-only every six hours. Crypto tournament fills use a versioned U.S. Coinbase Advanced taker-cost profile plus walked spread/depth and extra slippage. Retired international collectors and the original $50 copy account remain paused. The ETF experiment retains its own schedule.
+Prediction collection runs about every ten minutes, best effort, without a browser. The five-minute opportunity workflow advances the eleven-strategy crypto tournament and a separate BTC/ETH daily-trend paper mirror of the private worker's rules, retains separate arbitrage comparisons, while the international copy study is settlement-only every six hours. Crypto tournament fills use a versioned U.S. Coinbase Advanced taker-cost profile plus walked spread/depth and extra slippage. Retired international collectors and the original $50 copy account remain paused. The ETF experiment retains its own schedule.
 
 [Crypto tournament design and operating rules](docs/CRYPTO-STRATEGIES.md)
 

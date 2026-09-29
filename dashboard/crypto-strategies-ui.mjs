@@ -2,6 +2,8 @@ import {publishedJson,publicationHealth} from './data-client.mjs';
 import {validCompetitionSnapshot,STRATEGIES,FEE_PROFILE} from './crypto-strategies-core.mjs';
 import {executionEstimate} from './execution-estimate.mjs';
 import {validPredictions} from './app-schema.mjs';
+import {validTrendSnapshot} from './crypto-trend-core.mjs';
+import {trendPanel,trendActivityRows} from './crypto-trend-ui.mjs';
 const $=id=>document.getElementById(id),finite=Number.isFinite;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=v=>finite(v)?v.toLocaleString('en-US',{style:'currency',currency:'USD'}):'Unavailable';
@@ -11,7 +13,7 @@ const compact=v=>finite(v)?Intl.NumberFormat('en-US',{notation:'compact',maximum
 const when=v=>finite(v)?new Date(v*1000).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Not recorded';
 const color=v=>v>0?'positive':v<0?'negative':'';
 const empty=(title,note)=>`<div class="empty"><strong>${esc(title)}</strong>${esc(note)}</div>`;
-let data,predictions,busy=false,limit=50,loadErrors=[];
+let data,predictions,trend,trendError='',busy=false,limit=50,loadErrors=[];
 try{document.documentElement.dataset.theme=localStorage.getItem('mm-theme-v6')||localStorage.getItem('mm-theme-v5')||'light';}catch{}
 function page(){return location.hash==='#activity'?'activity':location.hash==='#retired'?'retired':'crypto';}
 function route(){
@@ -19,18 +21,18 @@ function route(){
   for(const v of ['crypto','activity','archive'])$(v+'-nav').removeAttribute('aria-current');
   $(p==='retired'?'archive-nav':p+'-nav').setAttribute('aria-current','page');
   $('title').textContent={crypto:'Crypto Tournament',activity:'Account activity',retired:'Retired strategies'}[p];
-  $('subtitle').textContent={crypto:'Eleven independent paper hypotheses compete after fees, spread, depth and slippage.',activity:'Recorded paper positions across separate prediction and crypto accounts.',retired:'Original losses, sample sizes and retirement decisions are preserved.'}[p];
+  $('subtitle').textContent={crypto:'Eleven independent paper hypotheses compete after fees, spread, depth and slippage. A separate paper book mirrors the live bot\'s BTC/ETH trend rules.',activity:'Recorded paper positions across separate prediction and crypto accounts.',retired:'Original losses, sample sizes and retirement decisions are preserved.'}[p];
   document.title=`Moffitt Money | ${$('title').textContent}`;if(data)render();if(p==='activity'&&!predictions&&!busy)load();
 }
-function accountName(id){return STRATEGIES.find(s=>s.id===id)?.name||({'rotation-control':'Rotation · 40-pair control','rotation-expanded':'Rotation · 100-pair test',polymarket:'Polymarket US',kalshi:'Kalshi'}[id])||id;}
+function accountName(id){return STRATEGIES.find(s=>s.id===id)?.name||({'rotation-control':'Rotation · 40-pair control','rotation-expanded':'Rotation · 100-pair test','trend-mirror':'BTC/ETH trend · paper mirror',polymarket:'Polymarket US',kalshi:'Kalshi'}[id])||id;}
 function ensureFilters(){
-  const select=$('account-filter'),value=select.value;select.innerHTML='<option value="all">All accounts</option>'+STRATEGIES.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('')+'<option value="rotation-control">Rotation · 40-pair control</option><option value="rotation-expanded">Rotation · 100-pair test</option><option value="polymarket">Polymarket US</option><option value="kalshi">Kalshi</option>';select.value=[...select.options].some(o=>o.value===value)?value:'all';
+  const select=$('account-filter'),value=select.value;select.innerHTML='<option value="all">All accounts</option>'+STRATEGIES.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('')+'<option value="rotation-control">Rotation · 40-pair control</option><option value="rotation-expanded">Rotation · 100-pair test</option><option value="trend-mirror">BTC/ETH trend · paper mirror</option><option value="polymarket">Polymarket US</option><option value="kalshi">Kalshi</option>';select.value=[...select.options].some(o=>o.value===value)?value:'all';
 }
 function allRows(){
   const crypto=Object.entries(data?.accounts||{}).flatMap(([id,a])=>[...(a.positions||[]).map(p=>({...p,account:id,kind:'crypto',state:'open'})),...(a.trades||[]).map(p=>({...p,account:id,kind:'crypto',state:'closed'}))]);
   const pred=Object.entries(predictions?.accounts||{}).flatMap(([id,a])=>[...(a.positions||[]).map(p=>({...p,account:id,kind:'prediction',state:'open'})),...(a.trades||[]).map(p=>({...p,account:id,kind:'prediction',state:'closed'}))]);
   const comparison=Object.entries(data?.rotationStudy?.accounts||{}).flatMap(([id,a])=>[...a.positions.map(p=>({...p,account:'rotation-'+id,kind:'crypto',state:'open'})),...a.trades.map(p=>({...p,account:'rotation-'+id,kind:'crypto',state:'closed'}))]);
-  return [...crypto,...pred,...comparison].sort((a,b)=>(b.closedAt||b.openedAt||0)-(a.closedAt||a.openedAt||0));
+  return [...crypto,...pred,...comparison,...trendActivityRows(trend)].sort((a,b)=>(b.closedAt||b.openedAt||0)-(a.closedAt||a.openedAt||0));
 }
 function record(r){
   const closed=r.state==='closed',title=r.kind==='crypto'?r.product:r.question||r.marketId;
@@ -63,7 +65,7 @@ function renderCrypto(){
   renderStudy();renderUniverse();const active=Object.values(data.accounts).filter(a=>a.status!=='retired').sort((a,b)=>b.equity-a.equity||a.name.localeCompare(b.name));
   $('strategies').innerHTML=active.length?active.map((a,i)=>accountCard(a,i+1)).join(''):empty('No active strategies','All strategies are retired. Their losses and reasons remain in Archive.');
   $('updated').textContent=`Last completed scan: ${when(data.generatedAt)}`;
-  const positions=allRows().filter(r=>r.kind==='crypto'&&r.state==='open'&&!r.account.startsWith('rotation-'));$('positions').innerHTML=positions.length?positions.map(record).join(''):empty('No open crypto positions','The tournament enters only observed qualifying setups after modeled costs.');
+  const positions=allRows().filter(r=>r.kind==='crypto'&&r.state==='open'&&!r.account.startsWith('rotation-')&&r.account!=='trend-mirror');$('positions').innerHTML=positions.length?positions.map(record).join(''):empty('No open crypto positions','The tournament enters only observed qualifying setups after modeled costs.');
   const markets=[...(data.markets||[])].sort((a,b)=>((b.quoteVolume24h||0)-(a.quoteVolume24h||0))||a.product.localeCompare(b.product));
   $('coin-board').innerHTML='<div class="coin-row coin-head"><div>Coin / close</div><span>1h</span><span>6h</span><span>24h</span><span class="liquidity">24h volume</span><div class="coin-state">Tournament state</div></div>'+markets.map(m=>{
     const ds=(data.decisions||[]).filter(d=>d.product===m.product&&data.accounts[d.strategyId]?.status!=='retired');
@@ -75,19 +77,22 @@ function renderCrypto(){
   $('decisions').innerHTML=visible.length?visible.map(d=>`<article class="record"><div><div class="record-title">${esc(d.product)} · ${esc(accountName(d.strategyId))}</div><p class="muted">${esc(d.status)}: ${esc((d.reasons||[]).join(' '))}</p>${d.plan?`<div class="record-meta">Planned cost ${money(d.plan.cost)} · modeled stop risk ${money(d.plan.risk)} · reward ${money(d.plan.reward)} · taker-cost profile applied.</div>`:''}</div></article>`).join(''):empty('No strategy decisions loaded','The next completed collector cycle will publish decision receipts.');
 }
 function filteredRows(){return allRows().filter(r=>($('account-filter').value==='all'||r.account===$('account-filter').value)&&($('state-filter').value==='all'||r.state===$('state-filter').value));}
-function renderActivity(){const rows=filteredRows();$('activity-count').textContent=`${rows.length} recorded positions. Bankrolls remain separate.${!predictions?' Prediction ledger unavailable.':''}${!data?' Crypto ledger unavailable.':''}`;$('activity-records').innerHTML=rows.length?rows.slice(0,limit).map(record).join(''):empty('No recorded positions in this view','Scans and research observations are not counted as trades.');$('more').hidden=rows.length<=limit;$('export').disabled=!data&&!predictions;}
+function renderActivity(){const rows=filteredRows();$('activity-count').textContent=`${rows.length} recorded positions. Bankrolls remain separate.${!predictions?' Prediction ledger unavailable.':''}${!data?' Crypto ledger unavailable.':''}${!trend?' Trend paper mirror unavailable.':''}`;$('activity-records').innerHTML=rows.length?rows.slice(0,limit).map(record).join(''):empty('No recorded positions in this view','Scans and research observations are not counted as trades.');$('more').hidden=rows.length<=limit;$('export').disabled=!data&&!predictions&&!trend;}
 function renderRetired(){
   const old=data.retired||[],newly=Object.values(data.accounts||{}).filter(a=>a.status==='retired');
   $('retired-list').innerHTML=old.map(a=>`<article class="archive-card"><small>RETIRED LEGACY MODEL</small><h3>${esc(a.name)}</h3><p>${esc(a.reason)}</p><p><strong>Forward paper: ${money(a.forward?.net)}</strong> across ${a.forward?.trades||0} closed trades.</p><p>Dated replay: ${money(a.replay?.net)} across ${a.replay?.trades||0} trades. Replay and forward results are not added together.</p></article>`).join('')+newly.map(a=>`<article class="archive-card"><small>RETIRED ${esc(when(a.retirement?.at))}</small><h3>${esc(a.name)}</h3><p>${esc(a.retirement?.reason)}</p><p>${money(a.realizedPnl)} net realized across ${a.trades.length} closed trades.</p></article>`).join('');
   if(!old.length&&!newly.length)$('retired-list').innerHTML=empty('No retirement receipt loaded','The original spot ledger remains available below.');const a=data.legacyAccount;$('legacy-total').textContent=a?`Original spot account: ${money(a.equity)} remaining from ${money(a.initialCapital)}. ${a.closed} closed trades. No reset or transfer into the tournament.`:'';
 }
-function render(){ensureFilters();if(data){renderCrypto();renderRetired();$('policy').textContent=`${data.version} · ${data.feeProfile?.id||FEE_PROFILE.id}`;}renderActivity();}
+function renderTrend(){$('trend-mirror').innerHTML=trendPanel(trend,{error:trendError});}
+function render(){ensureFilters();renderTrend();if(data){renderCrypto();renderRetired();$('policy').textContent=`${data.version} · ${data.feeProfile?.id||FEE_PROFILE.id}`;}renderActivity();}
 async function load(){
   if(busy)return;busy=true;$('refresh').disabled=true;loadErrors=[];
-  const tasks=[publishedJson('data/crypto-strategies.json',validCompetitionSnapshot).then(x=>{data=x;}).catch(e=>{loadErrors.push(`Crypto: ${e.message}. The first completed tournament scan may not be published yet.`);})];
+  const tasks=[publishedJson('data/crypto-strategies.json',validCompetitionSnapshot).then(x=>{data=x;}).catch(e=>{loadErrors.push(`Crypto: ${e.message}. The first completed tournament scan may not be published yet.`);}),
+    publishedJson('data/crypto-trend.json',validTrendSnapshot).then(x=>{trend=x;trendError='';}).catch(e=>{trendError=e.message;})];
   if(page()==='activity')tasks.push(publishedJson('data/predictions.json',validPredictions).then(x=>{predictions=x;}).catch(e=>{loadErrors.push(`Predictions: ${e.message}`);}));
   await Promise.all(tasks);
   for(const file of ['data/crypto-strategies.json',...(page()==='activity'?['data/predictions.json']:[])]){const h=publicationHealth.get(file);if(h?.error)loadErrors.push(`${file.includes('crypto')?'Crypto':'Predictions'} uses ${h.source} data: ${h.error}`);}
+  const trendHealth=publicationHealth.get('data/crypto-trend.json');if(trend&&trendHealth?.error)loadErrors.push(`Trend paper mirror uses ${trendHealth.source} data: ${trendHealth.error}`);
   if(data?.errors?.length)loadErrors.push(`${data.errors.length} public-source warning(s); affected products are excluded or retained stale without creating entries.`);
   $('notice').hidden=!loadErrors.length;$('notice').textContent=[...new Set(loadErrors)].join(' ');if(!data)$('strategies').innerHTML=empty('Tournament data not available','No balances or trades are invented. Refresh reads the published collector result.');render();busy=false;$('refresh').disabled=false;
 }

@@ -5,7 +5,7 @@ on:
     - cron: '2-57/5 * * * *'
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/collect-opportunities.mjs', 'scripts/collect-crypto-strategies.mjs', 'scripts/crypto-feed.mjs', 'scripts/crypto-cycle.mjs', 'scripts/rotation-study.mjs', 'scripts/legacy-spot-exit-only.mjs', 'dashboard/crypto-strategies-core.mjs', 'tests/app-schema.test.mjs', 'tests/crypto-strategies.test.mjs', 'scripts/collect-crypto-arbitrage.mjs', 'scripts/collect-copy-study.mjs', 'scripts/copy-study-core.mjs', 'scripts/copy-study-lock.py', 'dashboard/crypto-arbitrage-core.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
+    paths: ['scripts/collect-opportunities.mjs', 'scripts/collect-crypto-strategies.mjs', 'scripts/crypto-feed.mjs', 'scripts/crypto-cycle.mjs', 'scripts/rotation-study.mjs', 'scripts/legacy-spot-exit-only.mjs', 'dashboard/crypto-strategies-core.mjs', 'scripts/collect-crypto-trend.mjs', 'scripts/crypto-trend-feed.mjs', 'dashboard/crypto-trend-core.mjs', 'dashboard/trend-core.mjs', 'tests/crypto-trend.test.mjs', 'tests/app-schema.test.mjs', 'tests/crypto-strategies.test.mjs', 'scripts/collect-crypto-arbitrage.mjs', 'scripts/collect-copy-study.mjs', 'scripts/copy-study-core.mjs', 'scripts/copy-study-lock.py', 'dashboard/crypto-arbitrage-core.mjs', 'dashboard/market-core.mjs', 'dashboard/outcomes.mjs', 'dashboard/data/scanner-backtest.json', '.github/workflows/opportunities.yml']
 permissions:
   contents: write
 concurrency:
@@ -29,6 +29,10 @@ jobs:
         id: strategies
         continue-on-error: true
         run: node scripts/collect-crypto-strategies.mjs
+      - name: Advance the isolated BTC/ETH daily trend paper mirror
+        id: trend
+        continue-on-error: true
+        run: node scripts/collect-crypto-trend.mjs
       - name: Compare public crypto order books
         run: node scripts/collect-crypto-arbitrage.mjs
         id: crypto
@@ -38,7 +42,7 @@ jobs:
           git config user.name 'moffitt-money-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add dashboard/data/crypto-arbitrage.json
-          for file in dashboard/data/crypto-strategies.json data/crypto-strategies/state.json; do
+          for file in dashboard/data/crypto-strategies.json data/crypto-strategies/state.json dashboard/data/crypto-trend.json data/crypto-trend/state.json; do
             if [ -f "$file" ]; then git add "$file"; fi
           done
           if git diff --cached --quiet; then exit 0; fi
@@ -52,5 +56,5 @@ jobs:
       - name: Check the published comparison snapshot
         run: MM_LIVE_SNAPSHOTS=1 node --test --test-name-pattern='published current snapshot' tests/crypto-arbitrage.test.mjs
       - name: Surface an upstream failure
-        if: steps.strategies.outcome == 'failure' || steps.crypto.outcome == 'failure'
+        if: steps.strategies.outcome == 'failure' || steps.trend.outcome == 'failure' || steps.crypto.outcome == 'failure'
         run: exit 1

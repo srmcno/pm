@@ -37,4 +37,7 @@ data/copy-forward/decisions/*.tmp
 data/crypto-strategies/.collector.lock/
 data/crypto-strategies/*.tmp
 dashboard/data/crypto-strategies.json.*.tmp
+data/crypto-trend/.collector.lock/
+data/crypto-trend/*.tmp
+dashboard/data/crypto-trend.json.*.tmp
 work/
