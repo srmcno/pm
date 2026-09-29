@@ -128,7 +128,7 @@ test('trend exit cancels the bracket, then sells only the owned quantity',async(
  await f.tick();assert.equal(f.engine.state.intents[0].exitReason,'trend-exit');assert.deepEqual(f.calls.find(c=>c.cancel).cancel,[`child-${btc.orderId}`]);
  await f.tick();const sell=f.creates().at(-1);assert.equal(sell.side,'SELL');assert.equal(sell.order_configuration.sor_limit_ioc.base_size,btc.plan.quantity);
  f.fillSell(f.engine.state.intents[0].exits[0]);await f.tick();const closed=f.engine.state.intents[0];assert.ok(closed.closedAt);
- assert.equal(f.engine.state.cooldowns['BTC-USD'],closed.closedAt+3600);
+ assert.equal(f.engine.state.cooldowns['BTC-USD'],Math.max(closed.closedAt+3600,(Math.floor(closed.closedAt/86400)+1)*86400+300),'Re-entry waits for the next daily bar');
 });
 test('switching strategies retires sellable legacy holdings and leaves dust with its native bracket',async()=>{
  for(const [allocation,retire] of [['18.85',true],['7',false]]){

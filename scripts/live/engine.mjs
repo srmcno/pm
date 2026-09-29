@@ -22,7 +22,9 @@ const venueCode=value=>typeof value==='string'&&/^[A-Z][A-Z0-9_]{2,80}$/.test(va
 // only after order history confirms the client ID never became an order.
 const rejectedWithoutId=order=>order.orderId===null&&order.status==='REJECTED'&&order.terminal===true&&venueCode(order.rejection?.reason)&&[order.filledSize,order.filledValue,order.fees].every(v=>D(v)===0n);
 const trendPlan=intent=>intent.plan?.strategy===TREND_POLICY.id;
-const cooldownFor=intent=>D(intent.filledSize)===0n?60:trendPlan(intent)?3600:21600;
+// Unfilled orders may retry soon. A closed trend position waits for the next
+// completed daily bar, so a stop-out is never re-bought on the same signal.
+const cooldownUntil=(intent,now)=>D(intent.filledSize)===0n?now+60:trendPlan(intent)?Math.max(now+3600,(Math.floor(now/86400)+1)*86400+300):now+21600;
 function latch(state,reason,parent){
  for(const record of [state,parent].filter(Boolean)){
   record.manualRecovery=true;record.recoveryReason??=reason;record.recoveryReasons??=[];
@@ -212,7 +214,7 @@ export class Engine {
    if(parent.orderId===null){
     const now=this.#now();
     if(rejectedWithoutId(parent)){parent.lastAuditAt=now;this.#save(state,'rejection_audit');this.#verified.add(index);continue;}
-    if(parent.rejection&&now-parent.rejection.at>=60){parent.status='REJECTED';parent.terminal=true;parent.closedAt=now;parent.lastAuditAt=now;state.cooldowns[parent.product]=now+cooldownFor(parent);this.#save(state,'rejection_confirmed');this.#verified.add(index);continue;}
+    if(parent.rejection&&now-parent.rejection.at>=60){parent.status='REJECTED';parent.terminal=true;parent.closedAt=now;parent.lastAuditAt=now;state.cooldowns[parent.product]=cooldownUntil(parent,now);this.#save(state,'rejection_confirmed');this.#verified.add(index);continue;}
     this.#cycleHold=parent.rejection?'Venue rejected the submission; confirming absence before releasing the reservation':'Submission outcome unknown; reservation retained and no retry';continue;
    }
    this.#apply(state,parent,(await this.#broker.order(parent.orderId)).order,parent,'parent');
@@ -227,7 +229,7 @@ export class Engine {
    const quantity=remaining(parent);
    if(parent.child&&D(parent.child.filledSize)>0n&&quantity>0n){state.hold='A protective SELL partially filled; remaining protection requires manual recovery';latch(state,state.hold,parent);}
    if(parent.terminal&&quantity>0n&&parent.child?.terminal&&!parent.exitReason){state.hold='Owned position has no verified active native bracket; manual recovery required';latch(state,state.hold,parent);}
-   if(parent.terminal&&quantity===0n&&parent.closedAt===null&&(!parent.child||parent.child.terminal)&&parent.exits.every(exit=>exit.terminal)){parent.closedAt=this.#now();state.cooldowns[parent.product]=parent.closedAt+cooldownFor(parent);}
+   if(parent.terminal&&quantity===0n&&parent.closedAt===null&&(!parent.child||parent.child.terminal)&&parent.exits.every(exit=>exit.terminal)){parent.closedAt=this.#now();state.cooldowns[parent.product]=cooldownUntil(parent,parent.closedAt);}
    parent.lastAuditAt=this.#now();this.#save(state,'reconcile');this.#verified.add(index);
    }catch(error){if(this.#fatal)throw error;this.#cycleHold=error instanceof Hold?error.message:'Order reconciliation unavailable; affected position held';if(error instanceof Hold&&error.manual){const state=this.state;latch(state,this.#cycleHold,state.intents[index]);state.hold=state.recoveryReason;this.#save(state,'manual_recovery');}}
    // A child snapshot problem must never leave a freshly verified stale BUY
