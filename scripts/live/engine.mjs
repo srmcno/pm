@@ -17,14 +17,31 @@ const upFee=(amount,rate)=>((amount*rate+ONE*CENT-1n)/(ONE*CENT))*CENT;
 class Hold extends Error {constructor(message,manual=false){super(message);this.manual=manual;}}
 const hold=(message,manual=false)=>{throw new Hold(message,manual);};
 const exitReasons=['loss-trigger','trend-exit','maximum-hold','strategy-change'];
-const venueCode=value=>typeof value==='string'&&/^[A-Z][A-Z0-9_]{2,80}$/.test(value)&&value!=='UNKNOWN_FAILURE_REASON';
+// Only codes that mean the venue refused to create the order qualify. Any
+// UNKNOWN-style or unlisted code stays an unknown outcome and is never retried.
+const REJECTION_CODES=new Set(['INSUFFICIENT_FUND','INSUFFICIENT_FUNDS','PREVIEW_INSUFFICIENT_FUND','INVALID_LIMIT_PRICE_POST_ONLY','INVALID_LIMIT_PRICE','INVALID_PRICE_PRECISION','INVALID_SIZE_PRECISION','INVALID_NO_LIQUIDITY','ORDER_ENTRY_DISABLED','INELIGIBLE_PAIR','INVALID_PRODUCT_ID','UNSUPPORTED_ORDER_CONFIGURATION']);
+const venueCode=value=>typeof value==='string'&&REJECTION_CODES.has(value);
+const definitiveRejection=response=>{
+ if(response?.success!==false)return undefined;
+ const present=v=>v!==undefined&&v!==null&&v!=='';
+ // Generic fields may only carry their documented defaults.
+ for(const [value,fallback] of [[response.failure_reason,'UNKNOWN_FAILURE_REASON'],[response.error_response?.preview_failure_reason,'UNKNOWN_PREVIEW_FAILURE_REASON']])if(present(value)&&value!==fallback&&!venueCode(value))return undefined;
+ const codes=[response.error_response?.new_order_failure_reason,response.error_response?.error].filter(present);
+ return codes.length&&codes.every(venueCode)?codes[0]:undefined;
+};
 // A definitive venue rejection has no order ID. It releases its reservation
 // only after order history confirms the client ID never became an order.
 const rejectedWithoutId=order=>order.orderId===null&&order.status==='REJECTED'&&order.terminal===true&&venueCode(order.rejection?.reason)&&[order.filledSize,order.filledValue,order.fees].every(v=>D(v)===0n);
 const trendPlan=intent=>intent.plan?.strategy===TREND_POLICY.id;
 // Unfilled orders may retry soon. A closed trend position waits for the next
 // completed daily bar, so a stop-out is never re-bought on the same signal.
-const cooldownUntil=(intent,now)=>D(intent.filledSize)===0n?now+60:trendPlan(intent)?Math.max(now+3600,(Math.floor(now/86400)+1)*86400+300):now+21600;
+// Repeated unfilled or rejected trend entries back off exponentially to an hour.
+const cooldownUntil=(intent,now,intents=[])=>{
+ if(!trendPlan(intent))return now+21600;
+ if(D(intent.filledSize)>0n)return Math.max(now+3600,(Math.floor(now/86400)+1)*86400+300);
+ let streak=0;for(let i=intents.length-1;i>=0;i--){const x=intents[i];if(x.product!==intent.product||x.closedAt===null&&x!==intent)continue;if(D(x.filledSize)!==0n)break;streak++;}
+ return now+Math.min(3600,60*2**Math.max(0,Math.min(streak,7)-1));
+};
 function latch(state,reason,parent){
  for(const record of [state,parent].filter(Boolean)){
   record.manualRecovery=true;record.recoveryReason??=reason;record.recoveryReasons??=[];
@@ -208,28 +225,27 @@ export class Engine {
   for(const index of indexes){
    let parentObserved=false;
    try{
-   let state=this.state,parent=state.intents[index];
-   if(parent.closedAt!==null){if(auditedClosed||this.#now()-(parent.lastAuditAt??0)<3600)continue;auditedClosed=true;}
+   const current=this.#state.intents[index];
+   if(current.closedAt!==null){if(auditedClosed||this.#now()-(current.lastAuditAt??0)<3600)continue;auditedClosed=true;}
+   let state=this.state,parent=state.intents[index];const wasRejected=rejectedWithoutId(parent);
    parent.orderId=await this.#resolve(parent);
+   if(wasRejected&&parent.orderId!==null)hold('A submission recorded as rejected later appeared at the venue; manual recovery required',true);
    if(parent.orderId===null){
     const now=this.#now();
     if(rejectedWithoutId(parent)){parent.lastAuditAt=now;this.#save(state,'rejection_audit');this.#verified.add(index);continue;}
-    if(parent.rejection&&now-parent.rejection.at>=60){parent.status='REJECTED';parent.terminal=true;parent.closedAt=now;parent.lastAuditAt=now;state.cooldowns[parent.product]=cooldownUntil(parent,now);this.#save(state,'rejection_confirmed');this.#verified.add(index);continue;}
+    if(parent.rejection&&now-parent.rejection.at>=60){parent.status='REJECTED';parent.terminal=true;parent.closedAt=now;parent.lastAuditAt=now;state.cooldowns[parent.product]=cooldownUntil(parent,now,state.intents);this.#save(state,'rejection_confirmed');this.#verified.add(index);continue;}
     this.#cycleHold=parent.rejection?'Venue rejected the submission; confirming absence before releasing the reservation':'Submission outcome unknown; reservation retained and no retry';continue;
    }
    this.#apply(state,parent,(await this.#broker.order(parent.orderId)).order,parent,'parent');
    this.#save(state,'parent_reconcile');parentObserved=true;
    if(parent.child&&D(parent.filledSize)>0n){const child=(await this.#broker.order(parent.child.orderId)).order;if(D(child.order_configuration?.trigger_bracket_gtc?.base_size??ZERO)>D(parent.filledSize))this.#apply(state,parent,(await this.#broker.order(parent.orderId)).order,parent,'parent');this.#apply(state,parent.child,child,parent,'child');}
-   for(const exit of parent.exits){
-    if(rejectedWithoutId(exit))continue;
-    exit.orderId=await this.#resolve(exit);
-    if(exit.orderId!==null)this.#apply(state,exit,(await this.#broker.order(exit.orderId)).order,parent,'exit');
-    else if(exit.rejection&&this.#now()-exit.rejection.at>=60){exit.status='REJECTED';exit.terminal=true;}
-   }
+   for(const exit of parent.exits){exit.orderId=await this.#resolve(exit);if(exit.orderId!==null)this.#apply(state,exit,(await this.#broker.order(exit.orderId)).order,parent,'exit');}
    const quantity=remaining(parent);
+   // A filled BUY must carry its native bracket once the venue has settled it.
+   if(parent.terminal&&D(parent.filledSize)>0n&&!parent.child&&this.#now()-parent.createdAt>=(parent.plan.restSeconds??30)+120){state.hold='Filled entry has no attached native bracket; manual recovery required';latch(state,state.hold,parent);}
    if(parent.child&&D(parent.child.filledSize)>0n&&quantity>0n){state.hold='A protective SELL partially filled; remaining protection requires manual recovery';latch(state,state.hold,parent);}
    if(parent.terminal&&quantity>0n&&parent.child?.terminal&&!parent.exitReason){state.hold='Owned position has no verified active native bracket; manual recovery required';latch(state,state.hold,parent);}
-   if(parent.terminal&&quantity===0n&&parent.closedAt===null&&(!parent.child||parent.child.terminal)&&parent.exits.every(exit=>exit.terminal)){parent.closedAt=this.#now();state.cooldowns[parent.product]=cooldownUntil(parent,parent.closedAt);}
+   if(parent.terminal&&quantity===0n&&parent.closedAt===null&&(!parent.child||parent.child.terminal)&&parent.exits.every(exit=>exit.terminal)){parent.closedAt=this.#now();state.cooldowns[parent.product]=cooldownUntil(parent,parent.closedAt,state.intents);}
    parent.lastAuditAt=this.#now();this.#save(state,'reconcile');this.#verified.add(index);
    }catch(error){if(this.#fatal)throw error;this.#cycleHold=error instanceof Hold?error.message:'Order reconciliation unavailable; affected position held';if(error instanceof Hold&&error.manual){const state=this.state;latch(state,this.#cycleHold,state.intents[index]);state.hold=state.recoveryReason;this.#save(state,'manual_recovery');}}
    // A child snapshot problem must never leave a freshly verified stale BUY
@@ -261,7 +277,8 @@ export class Engine {
   let response;try{response=await this.#broker.create(clone(record.body));}catch{hold('Submission outcome unknown; persisted intent must be reconciled');}
   const orderId=response?.success===true?response.success_response?.order_id:null;
   if(!id(orderId)){
-   const code=response?.success===false?[response.error_response?.error,response.error_response?.new_order_failure_reason,response.error_response?.preview_failure_reason,response.failure_reason].find(venueCode):undefined;
+   // Exits never take the rejection path: an unknown SELL must not be resent.
+   const code=exitIndex===null?definitiveRejection(response):undefined;
    if(code){const state=this.state,target=exitIndex===null?state.intents[index]:state.intents[index].exits[exitIndex];target.rejection={reason:code,at:this.#now()};this.#save(state,'submission_rejected');hold(`Venue rejected the submission (${code}); confirming absence before release`);}
    hold('Submission response is ambiguous; persisted intent must be reconciled');
   }
@@ -328,7 +345,9 @@ export class Engine {
   if(this.#state.intents.some(i=>i.child&&!i.child.terminal&&remaining(i)===0n))hold('Completed exit is awaiting final settlement before cash reuse');
   if(this.#state.intents.some(i=>remaining(i)>0n&&(!i.child||i.child.terminal)))hold('Owned position protection is not yet verified; no new entries');
   if(this.#state.intents.some(i=>i.exitReason&&remaining(i)>0n))hold('An exit is still in progress');
-  if(this.#state.intents.filter(i=>remaining(i)>0n).length>=this.#config.maxPositions)hold('Maximum owned positions reached');
+  // Trend mode counts its own positions; leftover legacy holdings stay bounded
+  // by the exposure budget and are retired or exit under their original rules.
+  if(this.#state.intents.filter(i=>remaining(i)>0n&&(this.#config.strategy!=='trend'||trendPlan(i))).length>=this.#config.maxPositions)hold('Maximum owned positions reached');
  }
  async #trendEntry(feed,fees){
   const now=this.#now();this.#entryGates();
