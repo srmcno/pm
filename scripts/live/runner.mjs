@@ -8,6 +8,8 @@ import {monitorCycle} from './monitor.mjs';
 import {configuration} from './config.mjs';
 import {D,S} from './risk.mjs';
 import {getCapacityProfile} from './capacity.mjs';
+import {TrendFeed} from './trend-feed.mjs';
+import {trendView,TREND_POLICY} from '../../dashboard/trend-core.mjs';
 export {configuration} from './config.mjs';
 
 export function validateState(state){
@@ -28,13 +30,21 @@ export async function scan(state,{broker=null,collect=collectCoinbaseMarkets,mon
     return {...state,cycles:state.cycles+1,consecutiveFailures:state.consecutiveFailures+1,lastAttemptAt:attemptAt};
   }
 }
-export function receipt(state,config,now=Date.now()/1000,engineState=null){
+// Public-data signal summary only: no balances, quantities or order identities.
+export function trendSummary(trend,engineState,now){
+  if(!trend)return null;
+  const held=(engineState?.intents??[]).filter(i=>i.plan?.strategy===TREND_POLICY.id&&i.closedAt===null&&i.status!=='REJECTED').map(i=>i.product);
+  return trendView({candles:trend.candles,fetchedAt:trend.fetchedAt,held,now}).map(s=>({product:s.product,status:s.status,state:s.state,action:s.action,
+    close:s.close??null,sma:s.sma??null,barTime:s.barTime??null,fetchedAt:s.fetchedAt,...(s.status==='ready'?{}:{reason:s.reason})}));
+}
+export function receipt(state,config,now=Date.now()/1000,engineState=null,trend=null){
   const capacity=getCapacityProfile(engineState?.capacityProfile??config.engine?.capacityProfile);
   let markedTradingPnlUsd=null;
   if(engineState?.funded&&engineState.marksComplete===true&&Number.isFinite(engineState.lastMarkedAt)&&engineState.lastMarkedAt<=now&&now-engineState.lastMarkedAt<=60){
     try{markedTradingPnlUsd=S(D(engineState.equity)-D(engineState.initialCapital));}catch{}
   }
-  return {event:'worker_status',mode:config.mode||'preview',realOrdersEnabled:config.mode==='live',at:now,
+  return {event:'worker_status',mode:config.mode||'preview',realOrdersEnabled:config.mode==='live',at:now,strategy:config.strategy??'rotation',
+    ...(trend?{trend:trendSummary(trend,engineState,now)}:{}),
     capacity:{profile:capacity.name,maxPositions:capacity.maxPositions,maxPositionFraction:capacity.positionWeight,maxExposureFraction:capacity.exposureWeight,maxEntryRiskFraction:capacity.entryRiskWeight},
     startedAt:state.startedAt,cycles:state.cycles,lastAttemptAt:state.lastAttemptAt,lastSuccessAt:state.lastSuccessAt,
     sourceAgeSeconds:state.lastSuccessAt===null?null:Math.max(0,Math.round(now-state.lastSuccessAt)),
@@ -119,13 +129,21 @@ export async function run(env=process.env,dependencies={}){
         log({event:'projection_recovery',status:'held',message:'Recovery conditions changed or the acknowledgement did not match; existing controls remain in force.'});
       }
     }
-    const refresher=new FeedRefresh({clock,collect:dependencies.collect||collectCoinbaseMarkets});let feed=null,lastOutput=0;
+    const refresher=new FeedRefresh({clock,collect:dependencies.collect||collectCoinbaseMarkets});let feed=null,lastOutput=0,lastDiscovery=-Infinity;
+    const trendFeed=config.strategy==='trend'?(dependencies.createTrendFeed||(options=>new TrendFeed(options)))({clock}):null;
     log({event:'worker_started',mode:config.mode,realOrdersEnabled:config.mode==='live',credentialsConfigured:!!broker,revision:env.RENDER_GIT_COMMIT||null});
     while(!stopping){
       const requiredProducts=engine?[...new Set((engine.state.intents||[]).map(i=>i.productId??i.product).filter(Boolean))]:[];
       refresher.start(state.feedCache,config.scanSeconds,requiredProducts);
-      if(env.MM_ONCE==='true')await refresher.finish();
+      trendFeed?.refresh();
+      if(env.MM_ONCE==='true'){await refresher.finish();await trendFeed?.finish();}
       if(stopping)break;
+      // Read-only account capability scan: which Coinbase product families
+      // this key can see. It never places, previews or cancels anything.
+      if(broker&&typeof broker.capabilities==='function'&&clock()-lastDiscovery>=86400){
+        lastDiscovery=clock();
+        try{log({event:'capability_discovery',at:clock(),...(await broker.capabilities())});}catch{log({event:'capability_discovery',at:clock(),status:'unavailable'});}
+      }
       const completed=refresher.take();
       if(completed){
         const good=completed.feed?.markets?.some(m=>!m.sourceError);
@@ -138,9 +156,10 @@ export async function run(env=process.env,dependencies={}){
         }else state={...state,cycles:state.cycles+1,consecutiveFailures:state.consecutiveFailures+1,lastAttemptAt:completed.attemptAt};
         journal.save(state,{type:good?'scan':'source_error'});
       }
-      if(engine&&!stopping)await engine.tick(feed&&clock()-state.lastSuccessAt<=900?feed:{markets:[]});
+      const trend=trendFeed?.snapshot()??null;
+      if(engine&&!stopping)await engine.tick({...(feed&&clock()-state.lastSuccessAt<=900?feed:{markets:[]}),...(trend?{trend}:{})});
       if(completed||stopping||clock()-lastOutput>=30){
-        const status=receipt(state,config,clock(),engine?.state||unresolvedExecution);await writeStatus(config.dataDir,status);log(status);lastOutput=clock();
+        const status=receipt(state,config,clock(),engine?.state||unresolvedExecution,trend);await writeStatus(config.dataDir,status);log(status);lastOutput=clock();
       }
       if(env.MM_ONCE==='true')break;
       if(!stopping)await (dependencies.wait||waitForTick)(15000,controller.signal);
