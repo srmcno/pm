@@ -20,8 +20,9 @@ permissions:
   pages: write
   id-token: write
 
+# One queue for every trigger and ref: deployments of the same commit never overlap.
 concurrency:
-  group: "pages-v6-${{ github.ref }}"
+  group: "pages-v6"
   cancel-in-progress: false
 
 jobs:
@@ -43,15 +44,30 @@ jobs:
           npm test
           python3 scripts/check_site.py
           npm run build
+          python3 scripts/check_site.py dist
+      # Scheduled and collector-triggered runs skip a commit and interface that are
+      # already live. Push and manual runs always publish; an unreadable release never skips.
+      - name: Compare with the live release
+        id: live
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_run'
+        continue-on-error: true
+        run: |
+          live=$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://srmcno.github.io/pm/build-info.json?t=$(date +%s)" || true)
+          current=$(node -e 'const [a,b]=process.argv.slice(1).map(s=>{try{return JSON.parse(s)}catch{return null}});console.log(!!(a?.commit&&a.commit===b?.commit&&a.interfaceRevision&&a.interfaceRevision===b.interfaceRevision))' "$live" "$(cat dist/build-info.json)" || echo false)
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          if [ "$current" = true ]; then echo "::notice::This commit and interface are already live; skipping a duplicate deployment."; fi
       - name: Setup Pages
+        if: steps.live.outputs.current != 'true'
         uses: actions/configure-pages@v5
       - name: Upload verified static build
+        if: steps.live.outputs.current != 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Deploy to GitHub Pages
         id: deployment
+        if: steps.live.outputs.current != 'true'
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}

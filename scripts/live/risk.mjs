@@ -32,6 +32,8 @@ const upMul=(a,b)=>{if(a<0n||b<0n)throw Error('Invalid unsigned multiplication')
 const positive=(x,label)=>{const n=D(x);if(n<=0n)throw Error(`${label} must be positive`);return n;};
 const nonnegative=(x,label)=>{const n=D(x);if(n<0n)throw Error(`${label} must be nonnegative`);return n;};
 const CENT=D('0.01');
+// Strategy features are floats; venue-bound values must enter as exact decimals.
+const fixed18=value=>typeof value==='number'&&Number.isFinite(value)&&Math.abs(value)<1e15?value.toFixed(18):value;
 const booleanFlags=['trading_disabled','is_disabled','cancel_only','view_only','post_only','limit_only','auction_mode'];
 function parseLevels(rows,side){
   if(!Array.isArray(rows)||!rows.length)throw Error('Missing displayed depth');
@@ -47,12 +49,15 @@ function fills(levels,quantity,limit=null){
 
 // Risk is an estimate, not a guaranteed stop fill. Coinbase's attached spot
 // bracket becomes a limit 5% below its stop trigger; gaps can still strand it.
+// Passive entries rest at the best bid (maker when not immediately matched);
+// fees are still reserved at the taker rate because a moving book can match.
 export function planEntry({decision,product,book,cash,equity,exposure,feeRate,config,now}={}){
   try{
     if(config?.feeVerified!==true)throw Error('Fresh account fee verification required');
     const capacity=getCapacityProfile(config.capacityProfile);
     const allocation=positive(config.allocation,'Allocation'),maxOrder=positive(config.maxOrder,'Order cap');
     if(allocation>D('20')||maxOrder>D('5'))throw Error('Allocation or order exceeds hard cash cap');
+    const passive=config.passive===true;
     const available=nonnegative(cash,'Cash'),accountEquity=positive(equity,'Equity'),used=nonnegative(exposure,'Exposure'),rate=nonnegative(feeRate,'Fee rate');
     if(rate>D('1'))throw Error('Invalid fee rate');
     if(available>allocation||accountEquity>allocation)throw Error('Cash and equity must stay within the isolated allocation');
@@ -70,10 +75,10 @@ export function planEntry({decision,product,book,cash,equity,exposure,feeRate,co
     const minSize=positive(product.base_min_size,'Base minimum'),minQuote=positive(product.quote_min_size,'Quote minimum');
     const maxSize=positive(product.base_max_size,'Base maximum'),maxQuote=positive(product.quote_max_size,'Quote maximum');
     if(minSize>maxSize||minQuote>maxQuote)throw Error('Invalid product limits');
-    const signalPrice=positive(decision.features?.price,'Signal price'),atr=positive(decision.features?.atr,'ATR');
+    const signalPrice=positive(fixed18(decision.features?.price),'Signal price'),atr=positive(fixed18(decision.features?.atr),'ATR');
     if(ask>signalPrice+atr)throw Error('Price moved beyond the candidate setup');
-    const limitPrice=floorStep(mul(ask,D('1.001')),priceStep),stop=ceilStep(positive(decision.stop,'Stop'),priceStep),target=floorStep(positive(decision.target,'Target'),priceStep);
-    if(limitPrice<ask||stop>=bid||stop>=limitPrice||target<=limitPrice)throw Error('Protective levels do not fit the entry');
+    const limitPrice=passive?floorStep(bid,priceStep):floorStep(mul(ask,D('1.001')),priceStep),stop=ceilStep(positive(fixed18(decision.stop),'Stop'),priceStep),target=floorStep(positive(fixed18(decision.target),'Target'),priceStep);
+    if((passive?(limitPrice<=0n||limitPrice>ask):limitPrice<ask)||stop>=bid||stop>=limitPrice||target<=limitPrice)throw Error('Protective levels do not fit the entry');
     const sizingEquity=min(accountEquity,allocation),budget=min(available,maxOrder,mul(sizingEquity,D(capacity.positionWeight)),max(0n,mul(sizingEquity,D(capacity.exposureWeight))-used));
     if(budget<=CENT)throw Error('Cash or exposure budget exhausted');
     const unitCost=upMul(limitPrice,SCALE+rate);
@@ -95,8 +100,8 @@ export function planEntry({decision,product,book,cash,equity,exposure,feeRate,co
       const risk=reserved-stopProceeds,reward=targetProceeds-reserved;
       if(principal<minQuote||stopPrincipal<minQuote||principal>maxQuote||targetPrincipal>maxQuote)continue;
       if(reserved>budget||risk<=0n||risk>riskBudget||reward<=0n||div(reward,risk)<D('1.1'))continue;
-      if(fills(asks,quantity,limitPrice)===null||fills(bids,quantity)===null)continue;
-      return {ok:true,quantity:S(quantity),limitPrice:S(limitPrice),stop:S(stop),target:S(target),stopLimitPrice:S(exitStop),reserved:S(reserved),risk:S(risk),reward:S(reward),principal:S(principal),feeReserve:S(entryFee),maxOrder:S(maxOrder),productId,capacityProfile:capacity.name,entryRiskFraction:capacity.entryRiskWeight};
+      if((!passive&&fills(asks,quantity,limitPrice)===null)||fills(bids,quantity)===null)continue;
+      return {ok:true,passive,quantity:S(quantity),limitPrice:S(limitPrice),stop:S(stop),target:S(target),stopLimitPrice:S(exitStop),reserved:S(reserved),risk:S(risk),reward:S(reward),principal:S(principal),feeReserve:S(entryFee),maxOrder:S(maxOrder),productId,capacityProfile:capacity.name,entryRiskFraction:capacity.entryRiskWeight};
     }
     throw Error('No quantity fits venue minimums, displayed depth, costs and hard risk limits');
   }catch(error){return {hold:error.message};}

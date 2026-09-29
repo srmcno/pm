@@ -1,6 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mm-health" content="reload-only">
 <title>Moffitt Money — Desk System</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png" type="image/png">
@@ -106,6 +107,7 @@
   .card .note { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
 </style>
 <link rel="stylesheet" href="archive.css?v=4.0.0">
+</head>
 <div class="archive-banner"><strong>Calculation model updated September 8, 2026.</strong> Older validation results are inactive until replayed with the corrected auction timing. <a href="./">Open Moffitt Money →</a></div>
 <nav class="topnav" aria-label="Site">
   <a class="brand" href="./">Moffitt Money</a>
@@ -400,3 +402,4 @@ async function refresh() {
 refresh();
 setInterval(refresh, 60000);
 </script>
+<script type="module" src="site-health.mjs?v=7.0.0"></script>

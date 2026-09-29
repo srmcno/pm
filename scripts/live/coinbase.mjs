@@ -62,6 +62,9 @@ function route(method,path){
    [`${BASE}/product_book`]:['product_id','limit'],
    [`${BASE}/orders/historical/batch`]:['product_type','product_ids','limit','cursor'],
    [`${BASE}/orders/historical/fills`]:['order_ids','limit','cursor'],
+   // Read-only capability discovery. Listing and balance reads only.
+   [`${BASE}/products`]:['product_type','limit'],
+   [`${BASE}/cfm/balance_summary`]:[],
   };
   if(Object.hasOwn(fixed,path))return fixed[path];
   if(path.startsWith(`${BASE}/products/`)){productId(path.slice(`${BASE}/products/`.length));return ['get_tradability_status'];}
@@ -104,7 +107,7 @@ export class CoinbaseLive {
   for(const [key,value] of Object.entries(query)){
    if(typeof value!=='string'&&typeof value!=='number'&&typeof value!=='boolean')throw Error('Invalid broker query.');
    if(String(value).length>2048)throw Error('Broker query exceeded the size limit.');
-   if(key==='product_type'&&value!=='SPOT')throw Error('Only spot history and fees are permitted.');
+   if(key==='product_type'&&value!=='SPOT'&&!(path===`${BASE}/products`&&['FUTURE','EQUITY'].includes(value)))throw Error('Only spot history and fees are permitted.');
    if(key==='product_id'||key==='product_ids')productId(value);
    if(key==='order_ids')identifier(value);
    if(key==='get_tradability_status'&&value!==true)throw Error('Account tradability must be requested.');
@@ -228,6 +231,20 @@ export class CoinbaseLive {
   // cannot be cancelled through this restricted adapter.
   for(const id of ids){const {order}=await this.order(id);productId(order.product_id);if(order.product_type!=='SPOT')throw Error('Only spot orders can be cancelled.');}
   return this.#send('POST',`${BASE}/orders/batch_cancel`,{order_ids:ids});
+ }
+ // Which product families this key can see. Counts and public product names
+ // only; balances, identifiers and responses are not returned.
+ async capabilities(){
+  const family=async type=>{
+   try{const raw=await this.#send('GET',`${BASE}/products`,undefined,{product_type:type,limit:250});if(!Array.isArray(raw.products))throw Error('invalid');
+    const tradable=raw.products.filter(p=>p?.status==='online'&&p.trading_disabled!==true&&p.is_disabled!==true);
+    return {visible:raw.products.length,tradable:tradable.length,sample:tradable.slice(0,5).map(p=>String(p.display_name??p.product_id??'').slice(0,40))};}
+   catch{return {visible:null,status:'unavailable'};}
+  };
+  const futures=await family('FUTURE'),equities=await family('EQUITY');let futuresAccount='unavailable';
+  try{const raw=await this.#send('GET',`${BASE}/cfm/balance_summary`);futuresAccount=object(raw.balance_summary)?'present':'absent';}catch{}
+  return {status:'ok',futures,equities,futuresAccount,
+   note:'Discovery only. The worker trades USD spot; futures, margin and equities remain disabled.'};
  }
 }
 

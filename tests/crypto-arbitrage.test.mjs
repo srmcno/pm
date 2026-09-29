@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { snapshotUrl } from "./fixtures/snapshot.mjs";
 import {
   compareCryptoBooks,
   priceCryptoTriangle,
@@ -205,9 +206,7 @@ test("public adapters verify returned product identity, pair key and mandatory n
 });
 test("published current snapshot has priced observations and no executions or paper credits", () => {
   const d = JSON.parse(
-    readFileSync(
-      new URL("../dashboard/data/crypto-arbitrage.json", import.meta.url),
-    ),
+    readFileSync(snapshotUrl("crypto-arbitrage.json")),
   );
   assert.equal(validCryptoSnapshot(d), true);
   assert.ok(d.books.length > 0);
@@ -323,9 +322,7 @@ test("historical depth-study schema accepts empty evidence but rejects invalid n
   const { validCryptoHistory } =
     await import("../dashboard/trading-schema.mjs");
   const d = JSON.parse(
-    readFileSync(
-      new URL("../dashboard/data/crypto-history.json", import.meta.url),
-    ),
+    readFileSync(snapshotUrl("crypto-history.json")),
   );
   assert.equal(validCryptoHistory(d), true);
   d.depthStudy[0].medianDepthDeteriorationBps = null;

@@ -5,11 +5,9 @@ import {
   validPredictions,
   validResearchSummary,
 } from "../dashboard/app-schema.mjs";
+import { snapshotUrl } from "./fixtures/snapshot.mjs";
 const snapshot = JSON.parse(
-  await readFile(
-    new URL("../dashboard/data/predictions.json", import.meta.url),
-    "utf8",
-  ),
+  await readFile(snapshotUrl("predictions.json"), "utf8"),
 );
 test("the current real prediction snapshot is accepted without inventing missing studies", () => {
   assert.equal(validPredictions(snapshot), true);

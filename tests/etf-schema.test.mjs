@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {validateResearch,validatePaper} from '../dashboard/etf-schema.mjs';
-const read=f=>JSON.parse(readFileSync(new URL('../dashboard/data/'+f,import.meta.url)));
+import {snapshotUrl} from './fixtures/snapshot.mjs';
+// The ETF bot rewrites etf-paper.json; research is a static study.
+const read=f=>JSON.parse(readFileSync(f==='etf-paper.json'?snapshotUrl(f):new URL('../dashboard/data/'+f,import.meta.url)));
 test('ETF published research and account have the full rendering contract',()=>{
   assert.equal(validateResearch(read('etf-research.json')),true);
   assert.equal(validatePaper(read('etf-paper.json')),true);

@@ -11,6 +11,7 @@ const files=[
  'data-client.mjs','prediction-core.mjs','prediction-entry.mjs',
  'focus.html','focus.css','focus.mjs','focus-model.mjs','deco.css','site-health.mjs','readiness.html','readiness-ui.mjs','execution-readiness.mjs',
  'crypto.html','crypto-strategies-core.mjs','crypto-strategies-ui.mjs','crypto-strategies.css','execution-estimate.mjs',
+ 'trend-core.mjs','crypto-trend-core.mjs','crypto-trend-ui.mjs',
  'etf-schema.mjs','etf-transactions.csv','favicon.svg','favicon.png','_headers',
  'desk.html','legacy.css','archive.css','etf.html','stocks.html','arb.html','wallets.html',
  ...['predictions','etf-paper','etf-research','research-summary','desk','copy-trading',
@@ -21,7 +22,7 @@ await mkdir(path.join(output,'data'),{recursive:true});
 for(const file of files)await cp(path.join(root,'dashboard',file),path.join(output,file));
 // A source deployment may precede the first scheduled strategy cycle. Do not
 // fabricate funded accounts or make that normal rollout a build failure.
-try{await cp(path.join(root,'dashboard/data/crypto-strategies.json'),path.join(output,'data/crypto-strategies.json'));}catch(e){if(e.code!=='ENOENT')throw e;}
+for(const name of ['crypto-strategies','crypto-trend'])try{await cp(path.join(root,`dashboard/data/${name}.json`),path.join(output,`data/${name}.json`));}catch(e){if(e.code!=='ENOENT')throw e;}
 const archive=await readFile(path.join(root,'dashboard/index.html'),'utf8');
 await writeFile(path.join(output,'archive-workspace.html'),archive.replace('<body>',
  '<body><div style="padding:12px 24px;display:flex;gap:20px;justify-content:space-between;border-bottom:1px solid var(--border,#dce3eb)"><a href="./">Back to main app</a><span>Advanced tools and archive</span></div>'));
@@ -29,9 +30,10 @@ await cp(path.join(root,'dashboard/focus.html'),path.join(output,'index.html'));
 const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 const {version}=JSON.parse(await readFile(path.join(root,'package.json'),'utf8'));
 // Interface identity excludes collector snapshots. Frequent data commits must
-// not reload an open dashboard, but code changes must invalidate module caches.
+// not reload an open dashboard, but code changes, including this build script
+// (it rewrites every page), must invalidate module caches.
 const assets=files.filter(file=>/\.(html|css|mjs|svg|png)$/.test(file));
-const hash=createHash('sha256').update(version);
+const hash=createHash('sha256').update(version).update(await readFile(fileURLToPath(import.meta.url)));
 for(const file of assets)hash.update(file).update(await readFile(path.join(root,'dashboard',file)));
 const interfaceRevision=hash.digest('hex').slice(0,20);
 for(const file of [...assets,'archive-workspace.html']){

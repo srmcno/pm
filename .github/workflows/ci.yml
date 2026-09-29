@@ -22,3 +22,5 @@ jobs:
       - run: python -m unittest discover -s tests
       - run: npm test
       - run: python scripts/check_site.py
+      - run: npm run build
+      - run: python scripts/check_site.py dist

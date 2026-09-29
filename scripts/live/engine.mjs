@@ -3,9 +3,11 @@ import {evaluateUniverse} from '../../dashboard/crypto-strategies-core.mjs';
 import {D,S,mul,div,floorStep,planEntry,validatePreview} from './risk.mjs';
 import {validateOrderBody} from './coinbase.mjs';
 import {getCapacityProfile} from './capacity.mjs';
+import {TREND_POLICY,trendView} from '../../dashboard/trend-core.mjs';
 
 const ZERO='0',CENT=D('0.01'),ONE=D('1');
 const min=(...values)=>values.reduce((a,b)=>a<b?a:b);
+const max=(...values)=>values.reduce((a,b)=>a>b?a:b);
 const id=value=>typeof value==='string'&&/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(value);
 const terminal=new Set(['FILLED','CANCELLED','EXPIRED','FAILED','REJECTED']);
 const statuses=new Set([...terminal,'PENDING','OPEN','QUEUED','CANCEL_QUEUED','EDIT_QUEUED']);
@@ -14,6 +16,15 @@ const nonnegative=value=>{const n=D(value);if(n<0n)throw Error('Negative ledger 
 const upFee=(amount,rate)=>((amount*rate+ONE*CENT-1n)/(ONE*CENT))*CENT;
 class Hold extends Error {constructor(message,manual=false){super(message);this.manual=manual;}}
 const hold=(message,manual=false)=>{throw new Hold(message,manual);};
+const exitReasons=['loss-trigger','trend-exit','maximum-hold','strategy-change'];
+const venueCode=value=>typeof value==='string'&&/^[A-Z][A-Z0-9_]{2,80}$/.test(value)&&value!=='UNKNOWN_FAILURE_REASON';
+// A definitive venue rejection has no order ID. It releases its reservation
+// only after order history confirms the client ID never became an order.
+const rejectedWithoutId=order=>order.orderId===null&&order.status==='REJECTED'&&order.terminal===true&&venueCode(order.rejection?.reason)&&[order.filledSize,order.filledValue,order.fees].every(v=>D(v)===0n);
+const trendPlan=intent=>intent.plan?.strategy===TREND_POLICY.id;
+// Unfilled orders may retry soon. A closed trend position waits for the next
+// completed daily bar, so a stop-out is never re-bought on the same signal.
+const cooldownUntil=(intent,now)=>D(intent.filledSize)===0n?now+60:trendPlan(intent)?Math.max(now+3600,(Math.floor(now/86400)+1)*86400+300):now+21600;
 function latch(state,reason,parent){
  for(const record of [state,parent].filter(Boolean)){
   record.manualRecovery=true;record.recoveryReason??=reason;record.recoveryReasons??=[];
@@ -22,8 +33,8 @@ function latch(state,reason,parent){
 }
 function configOf(config={}){
  const capacity=getCapacityProfile(config.capacityProfile);
- const c={mode:config.mode??'preview',allocation:String(config.allocation??20),maxOrder:String(config.maxOrder??5),lossLimit:String(config.lossLimit??2),expectedPortfolioId:config.expectedPortfolioId??config.portfolioId,confirmationSeconds:config.confirmationSeconds??60,capacityProfile:capacity.name,maxPositions:config.maxPositions??capacity.maxPositions};
- if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>D('5')||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('2')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>capacity.maxPositions)throw Error('Invalid bounded execution configuration');
+ const c={mode:config.mode??'preview',allocation:String(config.allocation??20),maxOrder:String(config.maxOrder??5),lossLimit:String(config.lossLimit??2),expectedPortfolioId:config.expectedPortfolioId??config.portfolioId,confirmationSeconds:config.confirmationSeconds??60,capacityProfile:capacity.name,maxPositions:config.maxPositions??capacity.maxPositions,strategy:config.strategy??'rotation'};
+ if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>D('5')||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('2')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>capacity.maxPositions||!['rotation','trend'].includes(c.strategy))throw Error('Invalid bounded execution configuration');
  return Object.freeze(c);
 }
 function remaining(intent){return D(intent.filledSize)-D(intent.child?.filledSize??ZERO)-intent.exits.reduce((sum,exit)=>sum+D(exit.filledSize),0n);}
@@ -43,12 +54,14 @@ function validateState(state,config){
  for(const intent of state.intents){
   if(!id(intent.clientOrderId)||seen.has(intent.clientOrderId)||!Number.isFinite(intent.createdAt)||intent.createdAt<=0||!Array.isArray(intent.exits)||!intent.plan?.ok||D(intent.plan.reserved)>D(config.maxOrder)||D(intent.plan.reserved)<=0n||D(intent.plan.quantity)<=0n)throw Error('Invalid persisted intent');
   seen.add(intent.clientOrderId);validateOrderBody(intent.body,{create:true,portfolioId:config.expectedPortfolioId});
-  if(typeof intent.manualRecovery!=='boolean'||(intent.exitReason!==null&&!['loss-trigger','trend-exit','maximum-hold'].includes(intent.exitReason)))throw Error('Invalid persisted recovery state');
+  if(typeof intent.manualRecovery!=='boolean'||(intent.exitReason!==null&&!exitReasons.includes(intent.exitReason)))throw Error('Invalid persisted recovery state');
   for(const key of ['closedAt','lastAuditAt'])if(intent[key]!==null&&(!Number.isFinite(intent[key])||intent[key]<intent.createdAt))throw Error('Invalid persisted order receipt');
   if(intent.body.client_order_id!==intent.clientOrderId||intent.body.product_id!==intent.product||intent.body.side!=='BUY'||intent.body.order_configuration?.limit_limit_gtc?.base_size!==intent.plan.quantity||intent.body.order_configuration.limit_limit_gtc.limit_price!==intent.plan.limitPrice||intent.body.attached_order_configuration?.trigger_bracket_gtc?.limit_price!==intent.plan.target||intent.body.attached_order_configuration.trigger_bracket_gtc.stop_trigger_price!==intent.plan.stop)throw Error('Persisted intent does not match its immutable plan');
   for(const order of [intent,intent.child,...intent.exits].filter(Boolean)){
    if(order.orderId!==null&&!id(order.orderId))throw Error('Invalid persisted order identity');
-   if(typeof order.terminal!=='boolean'||!Number.isFinite(order.createdAt)||order.createdAt<=0||(!statuses.has(order.status)&&order.status!=='UNKNOWN')||(order.terminal&&(!terminal.has(order.status)||order.orderId===null))||(order.orderId===null&&order.status!=='UNKNOWN')||(order.cancelRequestedAt!==null&&(!Number.isFinite(order.cancelRequestedAt)||order.cancelRequestedAt<order.createdAt)))throw Error('Invalid persisted order state');
+   if(order.rejection!==undefined&&(!venueCode(order.rejection?.reason)||!Number.isFinite(order.rejection.at)||order.rejection.at<order.createdAt))throw Error('Invalid persisted rejection');
+   const rejected=rejectedWithoutId(order);
+   if(typeof order.terminal!=='boolean'||!Number.isFinite(order.createdAt)||order.createdAt<=0||(!statuses.has(order.status)&&order.status!=='UNKNOWN')||(order.terminal&&(!terminal.has(order.status)||(order.orderId===null&&!rejected)))||(order.orderId===null&&order.status!=='UNKNOWN'&&!rejected)||(order.cancelRequestedAt!==null&&(!Number.isFinite(order.cancelRequestedAt)||order.cancelRequestedAt<order.createdAt)))throw Error('Invalid persisted order state');
    for(const field of ['filledSize','filledValue','fees'])nonnegative(order[field]);
    if(order!==intent&&order!==intent.child){validateOrderBody(order.body,{create:true,portfolioId:config.expectedPortfolioId});if(!id(order.clientOrderId)||seen.has(order.clientOrderId)||order.body.client_order_id!==order.clientOrderId||order.body.side!=='SELL'||order.body.product_id!==intent.product)throw Error('Invalid persisted exit');seen.add(order.clientOrderId);}
   }
@@ -197,21 +210,32 @@ export class Engine {
    try{
    let state=this.state,parent=state.intents[index];
    if(parent.closedAt!==null){if(auditedClosed||this.#now()-(parent.lastAuditAt??0)<3600)continue;auditedClosed=true;}
-   parent.orderId=await this.#resolve(parent);if(parent.orderId===null){this.#cycleHold='Submission outcome unknown; reservation retained and no retry';continue;}
+   parent.orderId=await this.#resolve(parent);
+   if(parent.orderId===null){
+    const now=this.#now();
+    if(rejectedWithoutId(parent)){parent.lastAuditAt=now;this.#save(state,'rejection_audit');this.#verified.add(index);continue;}
+    if(parent.rejection&&now-parent.rejection.at>=60){parent.status='REJECTED';parent.terminal=true;parent.closedAt=now;parent.lastAuditAt=now;state.cooldowns[parent.product]=cooldownUntil(parent,now);this.#save(state,'rejection_confirmed');this.#verified.add(index);continue;}
+    this.#cycleHold=parent.rejection?'Venue rejected the submission; confirming absence before releasing the reservation':'Submission outcome unknown; reservation retained and no retry';continue;
+   }
    this.#apply(state,parent,(await this.#broker.order(parent.orderId)).order,parent,'parent');
    this.#save(state,'parent_reconcile');parentObserved=true;
    if(parent.child&&D(parent.filledSize)>0n){const child=(await this.#broker.order(parent.child.orderId)).order;if(D(child.order_configuration?.trigger_bracket_gtc?.base_size??ZERO)>D(parent.filledSize))this.#apply(state,parent,(await this.#broker.order(parent.orderId)).order,parent,'parent');this.#apply(state,parent.child,child,parent,'child');}
-   for(const exit of parent.exits){exit.orderId=await this.#resolve(exit);if(exit.orderId!==null)this.#apply(state,exit,(await this.#broker.order(exit.orderId)).order,parent,'exit');}
+   for(const exit of parent.exits){
+    if(rejectedWithoutId(exit))continue;
+    exit.orderId=await this.#resolve(exit);
+    if(exit.orderId!==null)this.#apply(state,exit,(await this.#broker.order(exit.orderId)).order,parent,'exit');
+    else if(exit.rejection&&this.#now()-exit.rejection.at>=60){exit.status='REJECTED';exit.terminal=true;}
+   }
    const quantity=remaining(parent);
    if(parent.child&&D(parent.child.filledSize)>0n&&quantity>0n){state.hold='A protective SELL partially filled; remaining protection requires manual recovery';latch(state,state.hold,parent);}
    if(parent.terminal&&quantity>0n&&parent.child?.terminal&&!parent.exitReason){state.hold='Owned position has no verified active native bracket; manual recovery required';latch(state,state.hold,parent);}
-   if(parent.terminal&&quantity===0n&&parent.closedAt===null&&(!parent.child||parent.child.terminal)&&parent.exits.every(exit=>exit.terminal)){parent.closedAt=this.#now();state.cooldowns[parent.product]=parent.closedAt+21600;}
+   if(parent.terminal&&quantity===0n&&parent.closedAt===null&&(!parent.child||parent.child.terminal)&&parent.exits.every(exit=>exit.terminal)){parent.closedAt=this.#now();state.cooldowns[parent.product]=cooldownUntil(parent,parent.closedAt);}
    parent.lastAuditAt=this.#now();this.#save(state,'reconcile');this.#verified.add(index);
    }catch(error){if(this.#fatal)throw error;this.#cycleHold=error instanceof Hold?error.message:'Order reconciliation unavailable; affected position held';if(error instanceof Hold&&error.manual){const state=this.state;latch(state,this.#cycleHold,state.intents[index]);state.hold=state.recoveryReason;this.#save(state,'manual_recovery');}}
    // A child snapshot problem must never leave a freshly verified stale BUY
    // open. Cancellation is retried only after this tick's authoritative GET.
    const parent=this.#state.intents[index];
-   if(parentObserved&&!parent.terminal&&parent.status!=='FILLED'&&parent.orderId&&this.#now()-parent.createdAt>=30&&(parent.cancelRequestedAt===null||this.#now()-parent.cancelRequestedAt>=30)&&this.#config.mode==='live'){
+   if(parentObserved&&!parent.terminal&&parent.status!=='FILLED'&&parent.orderId&&this.#now()-parent.createdAt>=(parent.plan.restSeconds??30)&&(parent.cancelRequestedAt===null||this.#now()-parent.cancelRequestedAt>=30)&&this.#config.mode==='live'){
     try{this.#mutation();const state=this.state;state.intents[index].cancelRequestedAt=this.#now();this.#save(state,'cancel_intent');await this.#broker.cancel([parent.orderId]);}
     catch(error){if(this.#fatal)throw error;this.#cycleHold='BUY cancellation awaiting authoritative terminal reconciliation';}
    }
@@ -236,19 +260,23 @@ export class Engine {
   // Any response error leaves it UNKNOWN; a future tick only reconciles it.
   let response;try{response=await this.#broker.create(clone(record.body));}catch{hold('Submission outcome unknown; persisted intent must be reconciled');}
   const orderId=response?.success===true?response.success_response?.order_id:null;
-  if(!id(orderId))hold('Submission response is ambiguous; persisted intent must be reconciled');
+  if(!id(orderId)){
+   const code=response?.success===false?[response.error_response?.error,response.error_response?.new_order_failure_reason,response.error_response?.preview_failure_reason,response.failure_reason].find(venueCode):undefined;
+   if(code){const state=this.state,target=exitIndex===null?state.intents[index]:state.intents[index].exits[exitIndex];target.rejection={reason:code,at:this.#now()};this.#save(state,'submission_rejected');hold(`Venue rejected the submission (${code}); confirming absence before release`);}
+   hold('Submission response is ambiguous; persisted intent must be reconciled');
+  }
   if(response.success_response.client_order_id!==undefined&&response.success_response.client_order_id!==record.clientOrderId)hold('Submission response client identity mismatch',true);
   const state=this.state;state.marksComplete=false;(exitIndex===null?state.intents[index]:state.intents[index].exits[exitIndex]).orderId=orderId;this.#save(state,'submitted');
  }
  async #exits(feed,books,fees){
   let view;try{view=evaluateUniverse(feed?.markets??[],this.#now());}catch{view={markets:[]};}
+  const signals=new Map(this.#trendSignals(feed,this.#now()).map(signal=>[signal.product,signal]));
   let held=null;
   for(let index=0;index<this.#state.intents.length;index++){
    try{
    let parent=this.#state.intents[index];if(remaining(parent)===0n)continue;
    if(!this.#verified.has(index)||!books.has(parent.product))hold('Position awaits its own verified order and liquidation data');
-   const feature=view.markets.find(m=>m.product===parent.product),trend=feature?.status==='ready'&&feature.change6<-.015&&feature.price<feature.ema20;
-   if(!parent.exitReason&&(this.#state.lossLatched||this.#now()-parent.createdAt>=72*3600||trend)){const state=this.state;state.intents[index].exitReason=this.#state.lossLatched?'loss-trigger':trend?'trend-exit':'maximum-hold';this.#save(state,'exit_requested');parent=this.#state.intents[index];}
+   if(!parent.exitReason){const reason=this.#exitReason(parent,view,signals,books.get(parent.product),fees);if(reason){const state=this.state;state.intents[index].exitReason=reason;this.#save(state,'exit_requested');parent=this.#state.intents[index];}}
    if(!parent.exitReason)continue;
    if(parent.manualRecovery)hold('This position requires manual recovery');
    if(!parent.terminal)hold('Exit requested; waiting for originating BUY terminal reconciliation');
@@ -261,7 +289,9 @@ export class Engine {
    const step=D(product.base_increment),priceStep=D(product.price_increment??product.quote_increment);
    if(step<=0n||priceStep<=0n)hold('Exit increments invalid',true);
    const price=floorStep(mul(bids[0][0],D('0.999')),priceStep),budget=D(this.#config.maxOrder)-2n*CENT;
-   const quantity=floorStep(min(remaining(parent),div(budget,mul(bids[0][0],ONE+rate)),D(product.base_max_size)),step);
+   let quantity=floorStep(min(remaining(parent),div(budget,mul(bids[0][0],ONE+rate)),D(product.base_max_size)),step);
+   // A capped partial exit must leave a sellable remainder, never dust.
+   if(quantity<remaining(parent)){const least=(max(D(product.base_min_size),div(D(product.quote_min_size),price))*3n/2n+step-1n)/step*step;if(remaining(parent)-quantity<least)quantity=remaining(parent)>least?floorStep(remaining(parent)-least,step):0n;}
    if(quantity<=0n||quantity<D(product.base_min_size)||mul(quantity,price)<D(product.quote_min_size))hold('Owned remainder is below supported exit minimum; manual recovery required',true);
    const mark=liquidation(book,quantity,rate,parent.product,this.#now());if(mark.gross+upFee(mark.gross,rate)>D(this.#config.maxOrder))hold('Exit exceeds fee-inclusive order cap');
    if(!parent.child.terminal){
@@ -278,6 +308,67 @@ export class Engine {
    }catch(error){if(this.#fatal)throw error;held=error instanceof Hold?error:new Hold('Exit broker verification failed; no further action for this position');if(held.manual){const state=this.state;latch(state,held.message,state.intents[index]);this.#save(state,'manual_recovery');}}
   }
   if(held)throw held;
+ }
+ #trendSignals(feed,now){
+  const trend=feed?.trend;if(!trend||typeof trend!=='object')return [];
+  const held=this.#state.intents.filter(i=>trendPlan(i)&&remaining(i)>0n).map(i=>i.product);
+  return trendView({candles:trend.candles??{},fetchedAt:trend.fetchedAt??{},held,now});
+ }
+ #exitReason(parent,view,signals,book,fees){
+  if(this.#state.lossLatched)return 'loss-trigger';
+  if(trendPlan(parent)){const signal=signals.get(parent.product);return signal?.status==='ready'&&signal.action==='exit'?'trend-exit':null;}
+  // Switching strategies retires earlier holdings unless they are too small
+  // to sell; those keep their native bracket and original exit rules.
+  if(this.#config.strategy==='trend'){try{if(liquidation(book,remaining(parent),this.#fee(fees),parent.product,this.#now()).gross>=D('2'))return 'strategy-change';}catch{}}
+  const feature=view.markets.find(m=>m.product===parent.product),trend=feature?.status==='ready'&&feature.change6<-.015&&feature.price<feature.ema20;
+  return trend?'trend-exit':this.#now()-parent.createdAt>=72*3600?'maximum-hold':null;
+ }
+ #entryGates(){
+  if(this.#state.intents.some(i=>!i.terminal||i.exits.some(e=>!e.terminal)))hold('An order or ambiguous intent remains pending');
+  if(this.#state.intents.some(i=>i.child&&!i.child.terminal&&remaining(i)===0n))hold('Completed exit is awaiting final settlement before cash reuse');
+  if(this.#state.intents.some(i=>remaining(i)>0n&&(!i.child||i.child.terminal)))hold('Owned position protection is not yet verified; no new entries');
+  if(this.#state.intents.some(i=>i.exitReason&&remaining(i)>0n))hold('An exit is still in progress');
+  if(this.#state.intents.filter(i=>remaining(i)>0n).length>=this.#config.maxPositions)hold('Maximum owned positions reached');
+ }
+ async #trendEntry(feed,fees){
+  const now=this.#now();this.#entryGates();
+  const fetched=feed?.trend?.fetchedAt??{},signals=this.#trendSignals(feed,now);
+  const ready=signals.filter(s=>s.status==='ready'&&Number.isFinite(fetched[s.product])&&fetched[s.product]<=now&&now-fetched[s.product]<=7200);
+  if(!ready.length)hold('Fresh daily trend data unavailable for new entries');
+  const candidates=ready.filter(s=>s.action==='enter'&&!this.#state.intents.some(i=>i.product===s.product&&remaining(i)>0n)&&(this.#state.cooldowns[s.product]??0)<=now);
+  const state=this.state,kept={};for(const s of candidates)if(state.confirmations[s.product]?.signalId===s.signalId)kept[s.product]=state.confirmations[s.product];
+  state.confirmations=kept;this.#save(state,'confirmation');
+  if(!candidates.length)hold(`No trend entry: ${signals.map(s=>`${s.product} ${s.action}`).join(', ')}`);
+  let first=null;
+  for(const signal of candidates){
+   try{await this.#tryTrendEntry(signal,fees);}
+   catch(error){if(this.#fatal||!(error instanceof Hold)||error.manual||error.submitted)throw error;first??=error;}
+  }
+  throw first??new Hold('No trend entry qualified');
+ }
+ async #tryTrendEntry(signal,fees){
+  const product=await this.#broker.product(signal.product),book=await this.#broker.book(signal.product);freshBook(book,signal.product,this.#now());
+  const now=this.#now(),state=this.state,prior=state.confirmations[signal.product];
+  const confirmation=prior&&prior.signalId===signal.signalId&&now-prior.lastSeen<=1800?{...prior,lastSeen:now}:{signalId:signal.signalId,at:now,lastSeen:now};
+  state.confirmations={...state.confirmations,[signal.product]:confirmation};this.#save(state,'confirmation');
+  if(now-confirmation.at<this.#config.confirmationSeconds)hold('Waiting for a second qualifying scan at least 60 seconds later');
+  const decision={status:'candidate',strategyId:'trend',product:signal.product,id:signal.signalId,features:{price:signal.close,atr:signal.atr},stop:signal.stop,target:signal.target};
+  const balances=await this.#accounts(),rate=this.#fee(fees),cash=min(D(this.#state.cash),D(this.#config.allocation),balances.get('USD')??0n);
+  const plan=planEntry({decision,product,book,cash:S(cash),equity:S(min(D(this.#state.equity),D(this.#config.allocation))),exposure:this.#state.exposure,feeRate:S(rate),config:{allocation:this.#config.allocation,maxOrder:this.#config.maxOrder,capacityProfile:this.#config.capacityProfile,feeVerified:true,passive:true},now:this.#now()});
+  if(plan.hold)hold(plan.hold);
+  Object.assign(plan,{strategy:TREND_POLICY.id,signalId:signal.signalId,restSeconds:240});
+  const body={client_order_id:randomUUID(),product_id:signal.product,side:'BUY',retail_portfolio_id:this.#config.expectedPortfolioId,order_configuration:{limit_limit_gtc:{base_size:plan.quantity,limit_price:plan.limitPrice,post_only:false}},attached_order_configuration:{trigger_bracket_gtc:{limit_price:plan.target,stop_trigger_price:plan.stop}}};
+  const {client_order_id:_entryClientId,preview_id:_entryPreviewId,...previewBody}=body;
+  const preview=await this.#broker.preview(previewBody),checked=validatePreview(plan,preview,S(rate),this.#now());if(checked.hold)hold(checked.hold);
+  this.#fee(fees);freshBook(book,signal.product,this.#now());
+  if(((await this.#accounts()).get('USD')??0n)<D(plan.reserved))hold('Available USD fell below the reserved entry cost');
+  this.#fee(fees);freshBook(book,signal.product,this.#now());
+  if(this.#config.mode==='preview')hold('Preview passed; live submission remains disabled');
+  this.#mutation();body.preview_id=checked.previewId;
+  const next=this.state;next.marksComplete=false;next.intents.push({...record(body,this.#now()),product:signal.product,plan:clone(plan),child:null,exits:[],exitReason:null,closedAt:null,lastAuditAt:null,manualRecovery:false});next.confirmations={};this.#save(next,'entry_intent');
+  // Once persisted, no other candidate may be tried in this tick.
+  try{await this.#send(next.intents.length-1);}catch(error){if(error instanceof Hold)error.submitted=true;throw error;}
+  const submitted=new Hold('Entry submitted; reserved cash remains unavailable until terminal reconciliation');submitted.submitted=true;throw submitted;
  }
  async #entry(feed,fees){
   const now=this.#now(),at=feed?.generatedAt??feed?.universe?.generatedAt;
@@ -314,12 +405,12 @@ export class Engine {
  async tick(feed){
   if(this.#running)throw Error('Execution tick already running');if(this.#fatal)throw Error('Execution journal failed; restart required');this.#running=true;
   try{
-   this.#verified=new Set();this.#cycleHold=null;const start=this.state,capacityChanged=(start.capacityProfile??'standard')!==this.#config.capacityProfile;start.mode=this.#config.mode;start.capacityProfile=this.#config.capacityProfile;start.lastTickAt=this.#now();start.marksComplete=false;if(!start.manualRecovery)start.hold=null;this.#save(start,capacityChanged?'capacity_change':'tick');
+   this.#verified=new Set();this.#cycleHold=null;const start=this.state,capacityChanged=(start.capacityProfile??'standard')!==this.#config.capacityProfile;start.mode=this.#config.mode;start.capacityProfile=this.#config.capacityProfile;start.strategy=this.#config.strategy;start.lastTickAt=this.#now();start.marksComplete=false;if(!start.manualRecovery)start.hold=null;this.#save(start,capacityChanged?'capacity_change':'tick');
    await this.#permissions();await this.#reconcile();const fees=await this.#broker.fees();this.#fee(fees);const balances=await this.#accounts();
    if(!this.#state.funded){const initial=min(balances.get('USD')??0n,D(this.#config.allocation));if(initial<D('5'))hold('At least $5 available USD is required; existing crypto is never adopted or converted');const state=this.state;state.funded=true;state.initialCapital=S(initial);state.cash=state.initialCapital;state.equity=state.initialCapital;this.#save(state,'allocation_initialized');}
    const books=await this.#mark(fees);await this.#exits(feed,books,fees);
    if(this.#state.manualRecovery)hold(this.#state.hold??'Manual recovery required');if(this.#cycleHold)hold(this.#cycleHold);if(this.#state.lossLatched)hold('Loss trigger latched; new entries remain disabled');
-   const state=this.state;state.lastSuccessAt=this.#now();this.#save(state,'verified');await this.#entry(feed,await this.#refreshFees(fees));
+   const state=this.state;state.lastSuccessAt=this.#now();this.#save(state,'verified');const current=await this.#refreshFees(fees);if(this.#config.strategy==='trend')await this.#trendEntry(feed,current);else await this.#entry(feed,current);
   }catch(error){
    if(this.#fatal)throw error;
    const state=this.state;const reason=error instanceof Hold?error.message:'Broker data or transport could not be verified; no new action taken';if(error instanceof Hold&&error.manual)latch(state,reason);state.hold=state.recoveryReason??reason;this.#save(state,'held');

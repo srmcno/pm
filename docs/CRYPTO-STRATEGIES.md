@@ -100,3 +100,57 @@ extremes never fabricate fills. A five-minute cloud schedule does not guarantee
 continuous exits. Below 80 usable markets the collector still reconciles existing
 positions and preserves records, but fails its workflow to surface degraded
 coverage. The dashboard reports actual selected/fresh counts and book age.
+
+## Live bot strategy: BTC/ETH daily trend paper mirror
+
+The private Coinbase worker (see [COINBASE-WORKER.md](COINBASE-WORKER.md)) is
+configured with the daily trend policy in `dashboard/trend-core.mjs`
+(`2026-09-29-trend-v1`). Its real-money orders, balances and results are
+private and never appear in public snapshots. The public site instead shows a
+separate paper mirror of the same rules. It is not one of the eleven tournament
+accounts, shares no ledger or state file with them, and never submits orders.
+
+- **State:** `data/crypto-trend/state.json` (authoritative) and the browser
+  snapshot `dashboard/data/crypto-trend.json`, written atomically by
+  `scripts/collect-crypto-trend.mjs` in the five-minute opportunity workflow.
+  Pure accounting lives in `dashboard/crypto-trend-core.mjs`; public GET-only
+  collection lives in `scripts/crypto-trend-feed.mjs`.
+- **Start:** $1,000 paper, started prospectively at its first cycle. Nothing is
+  backfilled. Invalid state or a changed policy id is refused, not reset; a new
+  policy version needs an explicit migration.
+- **Signal:** completed UTC daily Coinbase candles (about 200 days). Enter when a
+  close is above its 100-day simple average plus 2%; exit below the average
+  less 2%. One entry per coin per completed bar, and never on a bar that closed
+  before that coin's latest exit.
+- **Fills and costs:** about 49% of paper equity per coin. Entry assumes the
+  worker's resting limit at the observed best bid fills there as maker (0.50%).
+  Unlike the tournament, the maker rate is credited here because it is the
+  worker's entry method; a real resting order may fill later, elsewhere or not
+  at all. Trend exits walk observed bids with the 0.90% taker fee plus the
+  0.10% slippage reserve.
+- **Native bracket:** the stop triggers at 80% of the entry signal close and is
+  filled at no better than 95% of the trigger (worse if the observed book is
+  lower). Stop evidence counts from observed books and daily lows from the UTC
+  day of entry; take-profit (160%) counts only book prices and highs of bars
+  that began after entry, is charged as taker, and loses to a stop when both
+  appear.
+- **Marks and benchmark:** equity is cash plus liquidation marks after taker
+  exit costs. A BTC buy-and-hold benchmark starts on the first usable BTC book
+  with the same maker entry and taker liquidation assumptions.
+- **Source failures:** each product records candle and book fetch times. A
+  failed read keeps the earlier good signal with its original times, marks it
+  retained and never trades on it; stale marks block new entries. A cycle in
+  which every read fails writes nothing, so a good snapshot is never replaced.
+- **Records:** trades are never truncated. The equity curve keeps hourly points
+  (90 days), daily points (about three years) and the last 288 cycle receipts.
+
+The crypto page and overview show each coin's close against its 100-day
+average and bands, the current action, paper equity against the BTC benchmark,
+trades and source times. They also show the historical study that motivated
+the rule, labeled "historical study, not live results": Coinbase daily bars from
+2024-01 to 2026-09 with maker-entry/taker-exit costs returned +118% (maximum
+drawdown -36%) versus +99% (-53%) for BTC buy-and-hold, and were positive in
+each third of the sample; many short-horizon altcoin strategies lost 70-95%
+without a market filter. The paper mirror never copies those returns. Cycles are
+scheduled and best effort; they are not continuous quotes or continuous
+protection.
