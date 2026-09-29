@@ -12,6 +12,7 @@ const files=[
  'focus.html','focus.css','focus.mjs','focus-model.mjs','deco.css','site-health.mjs','readiness.html','readiness-ui.mjs','execution-readiness.mjs',
  'crypto.html','crypto-strategies-core.mjs','crypto-strategies-ui.mjs','crypto-strategies.css','execution-estimate.mjs',
  'trend-core.mjs','crypto-trend-core.mjs','crypto-trend-ui.mjs',
+ 'crypto-lab-core.mjs','crypto-lab-ui.mjs','crypto-lab.css',
  'etf-schema.mjs','etf-transactions.csv','favicon.svg','favicon.png','_headers',
  'desk.html','legacy.css','archive.css','etf.html','stocks.html','arb.html','wallets.html',
  ...['predictions','etf-paper','etf-research','research-summary','desk','copy-trading',
@@ -23,6 +24,8 @@ for(const file of files)await cp(path.join(root,'dashboard',file),path.join(outp
 // A source deployment may precede the first scheduled strategy cycle. Do not
 // fabricate funded accounts or make that normal rollout a build failure.
 for(const name of ['crypto-strategies','crypto-trend'])try{await cp(path.join(root,`dashboard/data/${name}.json`),path.join(output,`data/${name}.json`));}catch(e){if(e.code!=='ENOENT')throw e;}
+// Strategy Lab snapshot: absent until its first scheduled cycle, and never a build failure.
+for(const name of ['crypto-lab'])try{await cp(path.join(root,`dashboard/data/${name}.json`),path.join(output,`data/${name}.json`));}catch(e){if(e.code!=='ENOENT')throw e;}
 const archive=await readFile(path.join(root,'dashboard/index.html'),'utf8');
 await writeFile(path.join(output,'archive-workspace.html'),archive.replace('<body>',
  '<body><div style="padding:12px 24px;display:flex;gap:20px;justify-content:space-between;border-bottom:1px solid var(--border,#dce3eb)"><a href="./">Back to main app</a><span>Advanced tools and archive</span></div>'));
