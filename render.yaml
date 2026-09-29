@@ -28,3 +28,7 @@ services:
         value: '7.25'
       - key: MM_ALLOCATION_USD
         value: '18.85'
+      - key: MM_STRATEGY
+        value: trend
+      - key: MM_CAPACITY_PROFILE
+        value: trend
