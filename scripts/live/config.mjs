@@ -9,6 +9,7 @@ export function configuration(env=process.env){
   const capacity=getCapacityProfile(env.MM_CAPACITY_PROFILE??'standard');
   const strategy=env.MM_STRATEGY??'rotation';
   if(!STRATEGIES.includes(strategy))throw Error('MM_STRATEGY must be rotation or trend.');
+  if(capacity.name==='trend'&&strategy!=='trend')throw Error('The trend capacity profile requires MM_STRATEGY=trend.');
   const allocation=D(env.MM_ALLOCATION_USD||'20');
   if(allocation<D('5')||allocation>D('20'))throw Error('Allocation must be between $5 and the $20 hard ceiling.');
   if(!['preview','live'].includes(mode))throw Error('MM_MODE must be preview or live.');

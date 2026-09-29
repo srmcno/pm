@@ -205,3 +205,40 @@ test('capability discovery only reads product listings and futures balance prese
  await assert.rejects(broker.request('GET','/api/v3/brokerage/transaction_summary',undefined,{product_type:'FUTURE'}),/spot/);
  await assert.rejects(broker.request('POST','/api/v3/brokerage/cfm/sweeps',{}),/not permitted/);
 });
+test('review H1: generic UNKNOWN failure codes never become a retryable rejection',async()=>{
+ for(const response of [
+  {success:false,error_response:{error:'UNKNOWN_FAILURE_REASON',preview_failure_reason:'UNKNOWN_PREVIEW_FAILURE_REASON',new_order_failure_reason:'UNKNOWN_FAILURE_REASON'}},
+  {success:false,error_response:{error:'INSUFFICIENT_FUND',new_order_failure_reason:'UNKNOWN_FAILURE_REASON'}},
+  {success:false,error_response:{error:'SOME_NEW_CODE'}},
+  {success:false,failure_reason:'INTERNAL_ERROR',error_response:{error:'INSUFFICIENT_FUND'}}]){
+  const f=fixture();f.broker.createResponse=response;const intent=await f.enter();assert.equal(intent.rejection,undefined,JSON.stringify(response));
+  f.advance(3600);await f.tick();assert.match(f.engine.state.hold,/unknown.*no retry/);assert.equal(f.creates().length,1);
+ }
+});
+test('review M1: an ambiguous SELL response is never resent as a second exit',async()=>{
+ const f=fixture(),btc=await f.enter();f.fill(btc);await f.tick();
+ f.trend.candles['BTC-USD']=exitBars();f.prices.set('BTC-USD',80);await f.tick();await f.tick();
+ f.broker.createResponse={success:false,error_response:{error:'INSUFFICIENT_FUND'}};
+ const sells=()=>f.creates().filter(c=>c.side==='SELL').length;const before=sells();
+ const persisted=f.journal.load();persisted.intents[0].exits=[];f.journal.save(persisted,{type:'exit_reset'});f.restart();
+ await f.tick();assert.equal(sells(),before+1);assert.equal(f.engine.state.intents[0].exits[0].rejection,undefined);
+ f.advance(3600);await f.tick();f.advance(3600);await f.tick();assert.equal(sells(),before+1,'Unknown exit outcome blocks further SELLs');
+});
+test('review M2: a rejected BUY that later appears at the venue latches manual recovery',async()=>{
+ const f=fixture();f.broker.createResponse={success:false,error_response:{error:'INSUFFICIENT_FUND'}};const intent=await f.enter();
+ f.advance(61);await f.tick();assert.equal(f.engine.state.intents[0].status,'REJECTED');
+ f.orders.set('late',{...copy(intent.body),order_id:'late',retail_portfolio_id:PORTFOLIO,product_type:'SPOT',status:'FILLED',settled:true,filled_size:intent.plan.quantity,filled_value:'1',total_fees:'0',total_value_after_fees:'1'});
+ f.advance(3601);f.broker.createResponse=null;await f.tick();assert.equal(f.engine.state.manualRecovery,true);assert.match(f.engine.state.hold,/later appeared/);
+});
+test('review M4 and L3: repeated zero-fill trend closes back off; trend profile requires trend strategy',async()=>{
+ const f=fixture();f.broker.createResponse={success:false,error_response:{error:'INSUFFICIENT_FUND'}};
+ const waits=[];f.trend.candles['ETH-USD']=daily(i=>200-i*.3);
+ for(let i=0;i<4;i++){f.trend.fetchedAt={'BTC-USD':f.now,'ETH-USD':f.now};await f.enter();f.advance(61);await f.tick();const s=f.engine.state;waits.push(s.cooldowns['BTC-USD']-s.intents.at(-1).closedAt);f.advance(waits.at(-1)+1);}
+ assert.deepEqual(waits,[60,120,240,480]);
+ assert.throws(()=>configuration({MM_DATA_DIR:'/var/data/test',MM_CAPACITY_PROFILE:'trend'}),/requires MM_STRATEGY=trend/);
+});
+test('review M5: a filled BUY without an attached bracket latches after its grace period',async()=>{
+ const f=fixture(),btc=await f.enter();f.fill(btc);const raw=f.orders.get(btc.orderId);delete raw.attached_order_id;
+ await f.tick();assert.equal(f.engine.state.manualRecovery,false,'Grace period for venue attachment');
+ f.advance(400);await f.tick();assert.equal(f.engine.state.manualRecovery,true);assert.match(f.engine.state.hold,/no attached native bracket/);
+});

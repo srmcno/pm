@@ -72,7 +72,9 @@ The replacement is a daily trend strategy. To switch the live worker, the accoun
 
 **Sizing:** the `trend` profile keeps the hard $5 order cap and $2 loss trigger. It allows at most one BTC and one ETH position, a 30% position weight and 90% exposure, with a 7% modeled per-entry risk budget. With the 80% crash stop that budget is spent almost entirely by one capped $5 order, so at $18.85 the bot holds roughly $9–10. It needs an allocation of at least about $6 to place an entry at all.
 
-**Strategy switch:** existing rotation holdings worth $2 or more at net liquidation are retired with exit reason `strategy-change`. Smaller holdings keep their native bracket and original rules, so the engine never tries to sell below a venue minimum.
+**Strategy switch:** existing rotation holdings whose gross liquidation value is $2 or more are retired with exit reason `strategy-change`. Smaller holdings keep their native bracket and the original rotation exit rules, including the 72-hour maximum hold; a holding that has fallen below the venue minimum can still require manual recovery at that point.
+
+**Do not roll back to a pre-trend commit.** Once the trend release has run, the journal can contain the `trend` profile, `strategy-change` exits and `REJECTED` intents without an order ID, which older code rejects at startup. Roll forward with a fix instead.
 
 **Historical evidence (a study, not a forecast):**
 - Coinbase daily bars from January 2024 to September 2026, with maker entry, taker exit and 0.1% slippage.
@@ -86,7 +88,9 @@ A public paper mirror of this policy runs on the crypto page. The worker's real-
 ### Other safety changes in this release
 
 - **Precision:** float strategy features are converted to exact 18-place decimals before sizing. This removes the "Decimal exceeds 18-place precision" hold.
-- **Definitive rejections:** a venue `success:false` with a specific error code is recorded on the intent. After 60 seconds, if order history still has no order with that client ID, the intent becomes terminal `REJECTED` with no order ID and its reservation is released. Timeouts and responses without a specific code stay unknown and are never retried.
+- **Definitive rejections (entries only):** a BUY answered with `success:false` and only allowlisted refusal codes (for example `INSUFFICIENT_FUND` or `INVALID_LIMIT_PRICE_POST_ONLY`) is recorded on the intent. After 60 seconds, if order history still has no order with that client ID, the intent becomes terminal `REJECTED` with no order ID and its reservation is released. Timeouts, any `UNKNOWN` or unlisted code, and every SELL failure stay unknown and are never retried. If a rejected client ID later appears at the venue, the worker latches manual recovery. Repeated unfilled or rejected trend entries back off from 60 seconds to at most an hour.
+- **Missing bracket:** a filled BUY that still has no attached native bracket two minutes after its resting time latches manual recovery.
+- **Configuration:** the `trend` capacity profile is only accepted with `MM_STRATEGY=trend`.
 - **Split exits:** a capped partial exit leaves a remainder of at least 1.5 times the venue minimum, never unsellable dust.
 - **Capability discovery:** once a day the worker logs `capability_discovery`, a read-only list of which Coinbase product families (futures, equities) the key can see and whether a futures balance summary exists. It uses GET requests only. Trading remains USD spot only: futures margin requires the default portfolio and transfer permission, and equity orders cannot be previewed, which the worker requires.
 
