@@ -242,3 +242,9 @@ test('review M5: a filled BUY without an attached bracket latches after its grac
  await f.tick();assert.equal(f.engine.state.manualRecovery,false,'Grace period for venue attachment');
  f.advance(400);await f.tick();assert.equal(f.engine.state.manualRecovery,true);assert.match(f.engine.state.hold,/no attached native bracket/);
 });
+test('leftover legacy holdings do not consume trend position slots',async()=>{
+ const g=fixture({usd:'7',config:{allocation:'7',maxPositions:1}}),first=await g.enter();g.fill(first);await g.tick();
+ const legacy=g.journal.load();delete legacy.intents[0].plan.strategy;g.journal.save(legacy,{type:'legacy_fixture'});g.restart();
+ await g.tick();g.advance(61);const state=await g.tick();
+ assert.equal(state.intents[0].exitReason,null,'Dust keeps its bracket');assert.notEqual(state.hold,'Maximum owned positions reached');
+});

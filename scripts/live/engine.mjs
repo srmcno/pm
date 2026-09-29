@@ -345,7 +345,9 @@ export class Engine {
   if(this.#state.intents.some(i=>i.child&&!i.child.terminal&&remaining(i)===0n))hold('Completed exit is awaiting final settlement before cash reuse');
   if(this.#state.intents.some(i=>remaining(i)>0n&&(!i.child||i.child.terminal)))hold('Owned position protection is not yet verified; no new entries');
   if(this.#state.intents.some(i=>i.exitReason&&remaining(i)>0n))hold('An exit is still in progress');
-  if(this.#state.intents.filter(i=>remaining(i)>0n).length>=this.#config.maxPositions)hold('Maximum owned positions reached');
+  // Trend mode counts its own positions; leftover legacy holdings stay bounded
+  // by the exposure budget and are retired or exit under their original rules.
+  if(this.#state.intents.filter(i=>remaining(i)>0n&&(this.#config.strategy!=='trend'||trendPlan(i))).length>=this.#config.maxPositions)hold('Maximum owned positions reached');
  }
  async #trendEntry(feed,fees){
   const now=this.#now();this.#entryGates();
