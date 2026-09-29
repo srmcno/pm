@@ -23,7 +23,7 @@ test('entry obeys allocation, fee reserve, conservative stop risk and decimal ve
   assert.ok(D(p.principal)<D('5'));
 });
 test('hard cap, verified fee, nonnegative balance and exact venue restrictions fail closed',()=>{
-  const changes=[x=>x.config.allocation='20.01',x=>x.config.maxOrder='5.01',x=>x.config.feeVerified=false,x=>x.cash='-1',x=>x.exposure='-1',x=>x.feeRate='NaN',x=>x.product.product_type='FUTURE',x=>x.product.quote_currency_id='USDC',x=>x.product.base_currency_id='WRONG',x=>x.product.cancel_only=true,x=>delete x.product.view_only,x=>x.decision.status='waiting',x=>x.decision.product='XYZ-USD'];
+  const changes=[x=>x.config.allocation='20.01',x=>x.config.maxOrder='10.01',x=>x.config.feeVerified=false,x=>x.cash='-1',x=>x.exposure='-1',x=>x.feeRate='NaN',x=>x.product.product_type='FUTURE',x=>x.product.quote_currency_id='USDC',x=>x.product.base_currency_id='WRONG',x=>x.product.cancel_only=true,x=>delete x.product.view_only,x=>x.decision.status='waiting',x=>x.decision.product='XYZ-USD'];
   for(const change of changes){const x=input();change(x);assert.ok(planEntry(x).hold,String(change));}
 });
 test('book freshness, stale server timestamp, crossed spread and malformed depth hold',()=>{
@@ -49,9 +49,9 @@ test('preview verifies fees, arithmetic and exact requested quantity against res
   const changes=[x=>delete x.preview_id,x=>delete x.errs,x=>x.errs=['PREVIEW_INVALID'],x=>x.warning='INSUFFICIENT_LIQUIDITY',x=>x.warnings=['WARNING_WITH_EMPTY_WARNING_ARRAY'],x=>x.est_average_filled_price='1.002',x=>x.commission_total='-1',x=>x.commission_total='NaN',x=>x.commission_total='0.05',x=>x.order_total='5.01',x=>x.base_size='999',x=>x.product_id='XYZ-USD',x=>x.side='SELL',x=>x.quote_size='9'];
   for(const change of changes){const r=preview(p);change(r);assert.ok(validatePreview(p,r,'0.009').hold,String(change));}
 });
-test('preview refuses a forged plan beyond the hard five-dollar cap',()=>{
-  const p={...planEntry(input()),reserved:'10',maxOrder:'10',quantity:'6',principal:'6.006'};
-  assert.ok(validatePreview(p,{preview_id:'p',errs:[],commission_total:'0.01',order_total:'6.02',quote_size:'6.006',base_size:'6'},'0.009').hold);
+test('preview refuses a forged plan beyond the hard ten-dollar cap',()=>{
+  const p={...planEntry(input()),reserved:'12',maxOrder:'12',quantity:'11',principal:'11.011'};
+  assert.ok(validatePreview(p,{preview_id:'p',errs:[],commission_total:'0.01',order_total:'11.02',quote_size:'11.011',base_size:'11'},'0.009').hold);
 });
 test('expanded capacity admits entries above the old exposure ceiling while preserving risk and cash bounds',()=>{
  const x=input();x.cash='6.85';x.equity='18.85';x.exposure='12';x.config.allocation='18.85';
@@ -66,7 +66,7 @@ test('expanded capacity admits entries above the old exposure ceiling while pres
 test('expanded profile never relaxes per-entry loss, authenticated fees or absolute allocation limits',()=>{
  const x=input(),standard=planEntry(x);x.config.capacityProfile='expanded';const expanded=planEntry(x);
  assert.equal(expanded.risk,standard.risk,'Risk-limited entries remain the same size');
- for(const change of [v=>v.config.capacityProfile='unlimited',v=>v.config.capacityProfile=null,v=>v.config.maxOrder='5.01',v=>v.config.allocation='20.01',v=>v.config.feeVerified=false,v=>v.cash='0.01',v=>v.product.quote_min_size='10']){
+ for(const change of [v=>v.config.capacityProfile='unlimited',v=>v.config.capacityProfile=null,v=>v.config.maxOrder='10.01',v=>v.config.allocation='20.01',v=>v.config.feeVerified=false,v=>v.cash='0.01',v=>v.product.quote_min_size='10']){
   const candidate=structuredClone(x);change(candidate);assert.ok(planEntry(candidate).hold,String(change));
  }
 });

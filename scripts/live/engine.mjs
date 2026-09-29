@@ -1,6 +1,6 @@
 import {createHash,randomUUID} from 'node:crypto';
 import {evaluateUniverse} from '../../dashboard/crypto-strategies-core.mjs';
-import {D,S,mul,div,floorStep,planEntry,validatePreview} from './risk.mjs';
+import {D,S,mul,div,floorStep,planEntry,validatePreview,HARD_ORDER_CAP} from './risk.mjs';
 import {validateOrderBody} from './coinbase.mjs';
 import {getCapacityProfile} from './capacity.mjs';
 import {TREND_POLICY,trendView} from '../../dashboard/trend-core.mjs';
@@ -51,7 +51,7 @@ function latch(state,reason,parent){
 function configOf(config={}){
  const capacity=getCapacityProfile(config.capacityProfile);
  const c={mode:config.mode??'preview',allocation:String(config.allocation??20),maxOrder:String(config.maxOrder??5),lossLimit:String(config.lossLimit??2),expectedPortfolioId:config.expectedPortfolioId??config.portfolioId,confirmationSeconds:config.confirmationSeconds??60,capacityProfile:capacity.name,maxPositions:config.maxPositions??capacity.maxPositions,strategy:config.strategy??'rotation'};
- if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>D('5')||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('2')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>capacity.maxPositions||!['rotation','trend'].includes(c.strategy))throw Error('Invalid bounded execution configuration');
+ if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>HARD_ORDER_CAP||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('5')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>capacity.maxPositions||!['rotation','trend'].includes(c.strategy))throw Error('Invalid bounded execution configuration');
  return Object.freeze(c);
 }
 function remaining(intent){return D(intent.filledSize)-D(intent.child?.filledSize??ZERO)-intent.exits.reduce((sum,exit)=>sum+D(exit.filledSize),0n);}
@@ -113,7 +113,14 @@ export class Engine {
   if(!broker||typeof journal?.load!=='function'||typeof journal.save!=='function'||typeof clock!=='function')throw Error('Broker and durable journal are required');
   if(typeof isStopping!=='function')throw Error('Invalid shutdown guard');this.#isStopping=isStopping;
   this.#broker=broker;this.#journal=journal;this.#config=configOf(config);this.#clock=clock;
-  const prior=journal.load(),c=this.#config;
+  let prior=journal.load();const c=this.#config;
+  // The owner may change the money limits between deploys. The journal keeps
+  // its own copy; a change within the hard ceilings is recorded as an event.
+  // It never unlatches a loss trigger and never touches fills or plans.
+  if(prior&&(prior.maxOrder!==c.maxOrder||prior.lossLimit!==c.lossLimit)&&prior.allocation===c.allocation){
+   prior={...clone(prior),maxOrder:c.maxOrder,lossLimit:c.lossLimit,limitsChangedFrom:{maxOrder:prior.maxOrder,lossLimit:prior.lossLimit}};
+   try{validateState(prior,c);journal.save(prior,{type:'limits_change',time:clock()});}catch{throw Error('Invalid execution journal; refusing to reset or adopt balances');}
+  }
   this.#state=prior?clone(validateState(prior,c)):{version:1,kind:'coinbase-rotation-engine',mode:c.mode,portfolioId:c.expectedPortfolioId,allocation:c.allocation,maxOrder:c.maxOrder,lossLimit:c.lossLimit,initialCapital:ZERO,funded:false,cash:ZERO,equity:ZERO,exposure:ZERO,marksComplete:false,lastMarkedAt:null,lossLatched:false,manualRecovery:false,hold:null,lastTickAt:null,lastSuccessAt:null,confirmations:{},cooldowns:{},intents:[]};
  }
  get state(){return clone(this.#state);}
