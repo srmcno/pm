@@ -154,3 +154,88 @@ each third of the sample; many short-horizon altcoin strategies lost 70-95%
 without a market filter. The paper mirror never copies those returns. Cycles are
 scheduled and best effort; they are not continuous quotes or continuous
 protection.
+
+## Strategy Lab: paper alternatives beside the live bot
+
+The Strategy Lab lets the owner watch several alternative daily strategies run
+prospectively next to the live bot. It is paper only, isolated like the trend
+mirror, and never submits an order, reads credentials or touches any ledger
+outside its own files. Its results are short-window observations, not evidence
+of an edge, and nothing is backfilled.
+
+- **State:** `data/crypto-lab/state.json` (authoritative) and the browser
+  snapshot `dashboard/data/crypto-lab.json`, written atomically by
+  `scripts/collect-crypto-lab.mjs` in the five-minute opportunity workflow
+  (`continue-on-error`, then surfaced). Pure accounting and signals live in
+  `dashboard/crypto-lab-core.mjs`; public GET-only collection in
+  `scripts/crypto-lab-feed.mjs`; the page section in
+  `dashboard/crypto-lab-ui.mjs` and `dashboard/crypto-lab.css`. The state files
+  are absent until the first scheduled run, which starts every book. The
+  collector takes an injectable root (`runLab({root})`, or `MM_LAB_ROOT` for a
+  dry run) so tests and experiments never write into the repository.
+- **Books:** five separate $1,000 paper accounts, each with its own cash,
+  positions, trades, fees, drawdown and bounded equity curve, plus a same-start
+  hold-3 benchmark.
+  1. `sma200-5`: enter when the completed daily close is above the 200-day
+     simple average x 1.05; exit when it is below the average x 0.95.
+  2. `donchian-100-50`: enter when the close is above the highest high of the
+     previous 100 daily bars (current bar excluded); exit when it is below the
+     lowest low of the previous 50.
+  3. `supertrend-10-3`: standard Supertrend on the high-low midpoint with the
+     simple mean of 10 true ranges and multiplier 3, the usual final-band
+     ratchet, initial trend down, computed from the full contiguous history
+     (at least 250 completed bars are required so the latest state does not
+     depend on where the fetch window begins). Long while the trend is up.
+  4. `sma100-2`: the live bot's rule (100-day average, plus or minus 2%) on all
+     three coins as a control, so SOL behavior is visible. It shares the live
+     rule's arithmetic but reads and writes none of the mirror's or worker's
+     files; a test compares its signals with `trendSignal`.
+  5. `hold-3`: equal-weight buy-and-hold of BTC, ETH and SOL, entered once at
+     the first usable book and never sold. It is the benchmark for the others.
+- **Universe and sizing:** long-only spot in BTC-USD, ETH-USD and SOL-USD, one
+  position per product, one third of book equity per product while long,
+  sized from equity after that cycle's exits. There are no stops or take
+  profits; the only exit is the rule's own completed-bar exit.
+- **Signals:** completed UTC daily bars only, from `normalizeDaily` and
+  `completedDaily` in `dashboard/trend-core.mjs` (imported, unchanged). About
+  420 days are fetched in windows of at most 300 candles. A stale latest bar, a
+  gap in the bars a rule needs or too little history makes that reading
+  unavailable rather than guessed.
+- **Entries:** one entry per product per completed daily bar (the signal id
+  carries the bar time), never on a bar that closed before the product's latest
+  exit, and never on a retained or failed reading. An entry signal that was
+  already in force when the book started is taken once and labeled an initial
+  entry; later entries are labeled bar-close entries. State alone never causes
+  a repeat entry.
+- **Fills and costs:** the trend mirror's model. Entries assume a resting buy
+  at the observed best bid fills as maker (0.50%); exits walk the observed
+  bids with the 0.90% taker fee plus the 0.10% slippage reserve. Equity and the
+  benchmark are marked at liquidation value after exit costs.
+- **Source failures:** each product records candle and book fetch times. A
+  failed read keeps the earlier good signal with its original times, marks it
+  retained and never trades on it; a stale or missing book leaves marks
+  incomplete and blocks new entries. A cycle in which every read fails writes
+  nothing, so a good snapshot is never replaced. hold-3 needs only a fresh
+  book; a benchmark leg whose book was unavailable at the first run starts,
+  with its own recorded start time, at the first usable book.
+- **Records:** trades are never truncated. Each book keeps hourly equity points
+  (30 days), daily points (about three years) and the lab keeps the last 288
+  cycle receipts. Invalid state, changed parameters or a changed policy id are
+  refused, not reset; new books or parameters need an explicit migration.
+- **Page:** a Strategy Lab section on `crypto.html` labeled "Paper experiments.
+  Not the live bot. Results so far are short-window and not evidence of an
+  edge.", one card per book (equity, return, difference from hold-3 in
+  percentage points, drawdown, trades, fees, per-coin signal state and source
+  times), and a static table labeled as a historical backtest, not live results
+  (February 2024 to September 2026, BTC/ETH/SOL, live-bot fee model): the
+  live SMA100 +/-2% rule 0.51 mean Sharpe, 12.5% mean CAGR, -71.9% worst
+  drawdown; Supertrend 10x3 0.48, 15.7%, -48.5%; SMA150 +/-2% 0.41, 8.4%,
+  -61.3%; Donchian 100/50 0.38, 7.9%, -56.8%; SMA200 +/-5% 0.36, 6.5%, -59.3%;
+  hold 0.45, 7.6%, -76.3%. Those results swing widely with small parameter
+  changes, and SOL lost money under the live rule. The paper books never copy
+  them.
+- **Boundaries:** it does not change the live worker, `TREND_POLICY`, the trend
+  mirror's saved state or the tournament. Selecting or changing the live
+  strategy remains the owner's decision; a lab book that looks good over a short
+  window is not a recommendation to change it. Scheduled cycles are best effort,
+  not continuous quotes.

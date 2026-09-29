@@ -32,6 +32,8 @@ const upMul=(a,b)=>{if(a<0n||b<0n)throw Error('Invalid unsigned multiplication')
 const positive=(x,label)=>{const n=D(x);if(n<=0n)throw Error(`${label} must be positive`);return n;};
 const nonnegative=(x,label)=>{const n=D(x);if(n<0n)throw Error(`${label} must be nonnegative`);return n;};
 const CENT=D('0.01');
+// Absolute ceiling for any single order, whatever the configured cap says.
+export const HARD_ORDER_CAP=D('10');
 // Strategy features are floats; venue-bound values must enter as exact decimals.
 const fixed18=value=>typeof value==='number'&&Number.isFinite(value)&&Math.abs(value)<1e15?value.toFixed(18):value;
 const booleanFlags=['trading_disabled','is_disabled','cancel_only','view_only','post_only','limit_only','auction_mode'];
@@ -56,7 +58,7 @@ export function planEntry({decision,product,book,cash,equity,exposure,feeRate,co
     if(config?.feeVerified!==true)throw Error('Fresh account fee verification required');
     const capacity=getCapacityProfile(config.capacityProfile);
     const allocation=positive(config.allocation,'Allocation'),maxOrder=positive(config.maxOrder,'Order cap');
-    if(allocation>D('20')||maxOrder>D('5'))throw Error('Allocation or order exceeds hard cash cap');
+    if(allocation>D('20')||maxOrder>HARD_ORDER_CAP||maxOrder>allocation)throw Error('Allocation or order exceeds hard cash cap');
     const passive=config.passive===true;
     const available=nonnegative(cash,'Cash'),accountEquity=positive(equity,'Equity'),used=nonnegative(exposure,'Exposure'),rate=nonnegative(feeRate,'Fee rate');
     if(rate>D('1'))throw Error('Invalid fee rate');
@@ -124,7 +126,7 @@ export function validatePreview(plan,response,feeRate,now){
     if(quote>upMul(quantity,limit))throw Error('Preview quote exceeds limit notional');
     const cost=max(total,quote+fees);
     if(fees>ceilStep(upMul(upMul(quantity,limit),rate),CENT))throw Error('Preview fee exceeds verified fee allowance');
-    if(cost>reserved||cost>D('5')||cost>positive(plan.maxOrder,'Order cap'))throw Error('Preview exceeds reserved cash or hard order cap');
+    if(cost>reserved||cost>HARD_ORDER_CAP||cost>positive(plan.maxOrder,'Order cap'))throw Error('Preview exceeds reserved cash or hard order cap');
     if(now!==undefined&&!Number.isFinite(now))throw Error('Invalid preview decision time');
     return {ok:true,previewId:response.preview_id,cost:S(cost),total:S(total),fees:S(fees),reserved:S(reserved)};
   }catch(error){return {hold:error.message};}

@@ -32,3 +32,7 @@ services:
         value: trend
       - key: MM_CAPACITY_PROFILE
         value: trend
+      - key: MM_MAX_ORDER_USD
+        value: '9.4'
+      - key: MM_LOSS_LIMIT_USD
+        value: '4'

@@ -12,6 +12,11 @@ export function configuration(env=process.env){
   if(capacity.name==='trend'&&strategy!=='trend')throw Error('The trend capacity profile requires MM_STRATEGY=trend.');
   const allocation=D(env.MM_ALLOCATION_USD||'20');
   if(allocation<D('5')||allocation>D('20'))throw Error('Allocation must be between $5 and the $20 hard ceiling.');
+  // Owner-set money limits. Defaults keep the original $5 order and $2 loss
+  // trigger; the ceilings ($10 per order, $5 loss, below the allocation) hold.
+  const maxOrder=D(env.MM_MAX_ORDER_USD||'5'),lossLimit=D(env.MM_LOSS_LIMIT_USD||'2');
+  if(maxOrder<D('1')||maxOrder>D('10')||maxOrder>allocation)throw Error('Order cap must be between $1 and $10 and within the allocation.');
+  if(lossLimit<D('1')||lossLimit>D('5')||lossLimit>=allocation)throw Error('Loss trigger must be between $1 and $5 and below the allocation.');
   if(!['preview','live'].includes(mode))throw Error('MM_MODE must be preview or live.');
   if(mode==='live'&&env.MM_LIVE_ACK!==LIVE_ACK)throw Error('Live activation requires the operator acknowledgement.');
   const scanSeconds=Number(env.MM_SCAN_SECONDS||300),monthlyHosting=Number(env.MM_MONTHLY_HOSTING_USD||7.25);
@@ -24,5 +29,5 @@ export function configuration(env=process.env){
   const present=fields.filter(k=>env[k]);
   if((present.length&&present.length!==fields.length)||(mode==='live'&&present.length!==fields.length))throw Error('Coinbase connection requires all three private variables.');
   const credentials=present.length?{keyName:env.COINBASE_KEY_NAME,privateKey:env.COINBASE_PRIVATE_KEY,portfolioId:env.COINBASE_PORTFOLIO_ID,allowSubmit:mode==='live'}:null;
-  return {dataDir,mode,scanSeconds,monthlyHosting,credentials,strategy,engine:{mode,strategy,allocation:S(allocation),maxOrder:'5',lossLimit:'2',capacityProfile:capacity.name,expectedPortfolioId:credentials?.portfolioId}};
+  return {dataDir,mode,scanSeconds,monthlyHosting,credentials,strategy,engine:{mode,strategy,allocation:S(allocation),maxOrder:S(maxOrder),lossLimit:S(lossLimit),capacityProfile:capacity.name,expectedPortfolioId:credentials?.portfolioId}};
 }

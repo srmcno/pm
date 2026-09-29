@@ -1,0 +1,29 @@
+/* Strategy Lab (paper experiments). Uses the page's Art Deco tokens; loaded only by crypto.html. */
+.lab-panel{margin:0 0 30px}.lab-panel h2{margin:4px 0 12px}.lab-meta{margin:14px 0}.lab-summary{margin:0 0 20px}.lab-summary b{font-weight:600}
+.lab-summary span{overflow-wrap:anywhere}.lab-grid{margin:0 0 8px;align-items:start}
+.lab-card{min-width:0}.lab-card .equity{font-size:36px;margin-top:14px}.lab-card .card-head{flex-wrap:wrap}.lab-card .venue{max-width:100%}
+.lab-metrics{grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px 12px}.lab-metrics dt{overflow-wrap:anywhere}.lab-metrics dd{margin:3px 0 0;font-size:16px;overflow-wrap:anywhere}
+.lab-rule{margin:12px 0;color:var(--muted);font-size:14px}
+.lab-signals{list-style:none;margin:0;padding:0;border-top:1px solid var(--border)}
+.lab-signal{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;overflow-wrap:anywhere}
+.lab-sig-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.lab-sig-head strong{font-size:16px;font-weight:600}
+.lab-state{font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--border);padding:1px 7px}
+.lab-state.long{color:var(--positive);border-color:var(--positive)}
+.lab-act{color:var(--muted);font-size:13px}
+.lab-sig-meta{margin-top:3px;color:var(--muted);font-size:13px}
+.lab-sig-note{margin-top:6px;padding:7px 10px;background:var(--notice);border-left:3px solid var(--gold);font-size:13px}
+.lab-card .account-state{margin-top:12px}.lab-card .account-state p{font-size:13px;color:var(--muted);min-height:0;margin:0}
+.lab-card .fee-line{margin:10px 0 0;font-size:13px}.lab-ledger{margin-top:12px;padding-top:10px}.lab-ledger .records{margin-top:10px}
+.lab-backtest{margin-top:24px}.lab-backtest h3{font-size:19px;line-height:1.3}
+.lab-table-wrap{margin:12px 0;overflow-x:auto}
+.lab-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+.lab-table th,.lab-table td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:right;vertical-align:baseline}
+.lab-table thead th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:2px solid var(--gold)}
+.lab-table th[scope=row],.lab-table thead th:first-child{text-align:left;font-weight:500}
+@media(max-width:860px){.lab-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.lab-panel{padding:18px 16px}.lab-card .equity{font-size:32px}.tournament-summary.lab-summary>div:nth-child(2){border-right:0}.lab-backtest{padding:16px}}
+@media(max-width:430px){
+  .tournament-summary.lab-summary{grid-template-columns:1fr}.tournament-summary.lab-summary>div{border-right:0;border-bottom:1px solid var(--border)}.tournament-summary.lab-summary>div:last-child{border-bottom:0}
+  .lab-table{font-size:13px}.lab-table th,.lab-table td{padding:8px 5px}.lab-table thead th{font-size:10px;letter-spacing:.02em}
+}

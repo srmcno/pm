@@ -131,8 +131,8 @@ test('trend exit cancels the bracket, then sells only the owned quantity',async(
  assert.equal(f.engine.state.cooldowns['BTC-USD'],Math.max(closed.closedAt+3600,(Math.floor(closed.closedAt/86400)+1)*86400+300),'Re-entry waits for the next daily bar');
 });
 test('switching strategies retires sellable legacy holdings and leaves dust with its native bracket',async()=>{
- for(const [allocation,retire] of [['18.85',true],['7',false]]){
-  const f=fixture({usd:allocation,config:{allocation}}),btc=await f.enter();f.fill(btc);await f.tick();
+ for(const [allocation,retire] of [['5',true],['1.5',false]]){
+  const f=fixture({config:{maxOrder:allocation}}),btc=await f.enter();f.fill(btc);await f.tick();
   const persisted=f.journal.load();delete persisted.intents[0].plan.strategy;delete persisted.intents[0].plan.restSeconds;f.journal.save(persisted,{type:'legacy_fixture'});
   f.restart();await f.tick();
   assert.equal(f.engine.state.lossLatched,false);
@@ -172,7 +172,10 @@ test('strategy and capacity configuration keep the hard order and loss limits',(
  assert.equal(configuration(env).engine.strategy,'rotation');
  assert.throws(()=>configuration({...env,MM_STRATEGY:'martingale'}));
  assert.throws(()=>new Engine({broker:{},journal:memoryJournal(),config:{expectedPortfolioId:PORTFOLIO,strategy:'grid'}}));
- assert.throws(()=>new Engine({broker:{},journal:memoryJournal(),config:{expectedPortfolioId:PORTFOLIO,maxOrder:'6'}}));
+ assert.throws(()=>new Engine({broker:{},journal:memoryJournal(),config:{expectedPortfolioId:PORTFOLIO,maxOrder:'10.01'}}));
+ assert.throws(()=>new Engine({broker:{},journal:memoryJournal(),config:{expectedPortfolioId:PORTFOLIO,lossLimit:'5.01'}}));
+ const owner=configuration({...env,MM_MAX_ORDER_USD:'9.4',MM_LOSS_LIMIT_USD:'4',MM_ALLOCATION_USD:'18.85'});assert.equal(owner.engine.maxOrder,'9.4');assert.equal(owner.engine.lossLimit,'4');
+ for(const bad of [{MM_MAX_ORDER_USD:'10.01'},{MM_LOSS_LIMIT_USD:'5.01'},{MM_MAX_ORDER_USD:'0.5'},{MM_LOSS_LIMIT_USD:'18.85',MM_ALLOCATION_USD:'18.85'}])assert.throws(()=>configuration({...env,MM_ALLOCATION_USD:'18.85',...bad}),String(Object.keys(bad)));
 });
 test('status reports public trend signals without balances or identities',()=>{
  const trend={candles:{'BTC-USD':daily(),'ETH-USD':exitBars()},fetchedAt:{'BTC-USD':BASE,'ETH-USD':BASE}};
@@ -243,8 +246,28 @@ test('review M5: a filled BUY without an attached bracket latches after its grac
  f.advance(400);await f.tick();assert.equal(f.engine.state.manualRecovery,true);assert.match(f.engine.state.hold,/no attached native bracket/);
 });
 test('leftover legacy holdings do not consume trend position slots',async()=>{
- const g=fixture({usd:'7',config:{allocation:'7',maxPositions:1}}),first=await g.enter();g.fill(first);await g.tick();
+ const g=fixture({config:{maxOrder:'1.5',maxPositions:1}}),first=await g.enter();g.fill(first);await g.tick();
  const legacy=g.journal.load();delete legacy.intents[0].plan.strategy;g.journal.save(legacy,{type:'legacy_fixture'});g.restart();
  await g.tick();g.advance(61);const state=await g.tick();
  assert.equal(state.intents[0].exitReason,null,'Dust keeps its bracket');assert.notEqual(state.hold,'Maximum owned positions reached');
+});
+
+test('the owner can raise the order cap and loss trigger; the journal follows within hard ceilings and never unlatches',async()=>{
+ const f=fixture(),first=await f.enter();f.fill(first);await f.tick();
+ assert.equal(f.engine.state.maxOrder,'5');assert.equal(f.engine.state.lossLimit,'2');
+ f.restart({maxOrder:'9.4',lossLimit:'4'});await f.tick();
+ assert.equal(f.engine.state.maxOrder,'9.4');assert.equal(f.engine.state.lossLimit,'4');assert.deepEqual(f.engine.state.limitsChangedFrom,{maxOrder:'5',lossLimit:'2'});
+ assert.equal(f.journal.events.some(e=>e.type==='limits_change'),true);
+ // A latched loss trigger stays latched after the limit changes.
+ const persisted=f.journal.load();persisted.lossLatched=true;f.journal.save(persisted,{type:'latch_fixture'});
+ f.restart({maxOrder:'9.4',lossLimit:'5'});await f.tick();assert.equal(f.engine.state.lossLatched,true);
+ // Changing the allocation is still refused rather than migrated.
+ assert.throws(()=>f.restart({allocation:'19',maxOrder:'9.4',lossLimit:'5'}),/Invalid execution journal/);
+});
+test('at the full-allocation setting each trend entry uses about half the allocation within the hard cap',async()=>{
+ const f=fixture({config:{maxOrder:'9.4',lossLimit:'4'}}),btc=await f.enter();
+ assert.ok(D(btc.plan.reserved)>D('8')&&D(btc.plan.reserved)<=D('9.4'),btc.plan.reserved);
+ f.fill(btc);await f.tick();f.advance(61);const state=await f.tick();
+ assert.equal(state.intents.length,2,state.hold);assert.ok(D(state.intents[1].plan.reserved)>D('7'),state.intents[1].plan.reserved);
+ assert.ok(D(state.intents[0].plan.reserved)+D(state.intents[1].plan.reserved)<=D('18.85'));
 });
