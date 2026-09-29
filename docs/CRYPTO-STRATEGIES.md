@@ -101,6 +101,113 @@ continuous exits. Below 80 usable markets the collector still reconciles existin
 positions and preserves records, but fails its workflow to surface degraded
 coverage. The dashboard reports actual selected/fresh counts and book age.
 
+## Listing Watch: public observation of Coinbase listings and delistings
+
+Listing Watch records what Coinbase does when it lists or delists assets, so
+listing-based ideas can be tested honestly later, and it flags delisting risk.
+It is observation only: no orders, no paper positions, no credentials, and no
+tie to any ledger. It does not trade and does not claim an edge. Earlier
+evidence (below) says buying at a Coinbase launch loses after fees on average.
+Like every workflow here it runs on the best effort five-minute schedule; reads
+are not continuous quotes, and a run can be delayed or skipped.
+
+- **Modules:** pure accounting in `dashboard/listing-watch-core.mjs`; public GET-only
+  collection in `scripts/collect-listing-watch.mjs` (injectable fetcher, clock and
+  root); HTML in `dashboard/listing-watch-ui.mjs` and `dashboard/listing-watch.css`,
+  mounted as a section of `crypto.html`; tests in `tests/listing-watch.test.mjs`.
+- **State and snapshot:** `data/listing-watch/state.json` (authoritative, atomic
+  writes, lock directory) and `dashboard/data/listing-watch.json` (public, compact).
+  The first scheduled run creates both. An unreadable or invalid state, a changed
+  policy id or a clock earlier than the saved state is refused, never reset.
+  Both files are written every usable run, state first. A run in which all three
+  sources fail writes nothing, so the last good files are retained unchanged.
+
+**Sources, each read and failed independently** (an error keeps the earlier good
+data with its original read time and is shown as an explicit error state):
+
+1. Exchange `GET /products`: id, status, status_message and the trading_disabled,
+   cancel_only, post_only, limit_only and auction_mode flags for every product.
+2. Advanced Trade `GET /api/v3/brokerage/market/products?product_type=SPOT`:
+   `new`, `new_at`, `is_disabled` and `view_only` for USD products. Coinbase's
+   2023-01-01 `new_at` placeholder is ignored. A paginated answer is an error.
+3. Exchange status `GET /api/v2/incidents.json`, classified as listing (auction,
+   limit-only, full trading, markets open), trading suspension or delisting, or
+   other. Events are deduplicated by incident id and update id, keep the source
+   time and the time first seen, and record referenced product ids and asset
+   symbols (best effort; unknown stays null). Bounded: 120 listing, 60 suspension
+   and 20 other events.
+4. Exchange `GET /products/{id}/candles?granularity=60`: see launches.
+
+A feed with fewer than 50 usable products, one that shrank by half, or one that
+adds or drops dozens of products at once is treated as a parse failure.
+
+**Times.** `at` is when this collector read a source, never when Coinbase changed
+it. Each transition also stores `since`, the previous successful read of that
+source, so the change happened in (since, at]. Source times (status updates,
+`new_at`) are kept as published.
+
+**Registry and transitions.** The first read of each source is a baseline: those
+products are marked `baseline` and are not launches, with one exception below.
+Later reads log first-seen
+ids, status changes, each flag on or off, status_message changes, and presence
+(left or returned to the feed) with from/to values. Registry entries are compact
+(non-default attributes only, 12 transitions per product with the first-seen
+entry kept); the global log keeps the latest 250, and a counter keeps the total.
+
+**Launches.** A product first seen after the baseline is a launch. Its
+first-seen read, the read interval it appeared in, each Exchange phase (auction,
+limit-only, post-only, full, and so on) with read interval, and Advanced Trade's
+`new_at` are recorded. A launch whose `new_at` predates first sight by more than
+15 minutes is marked detected late. A new pair of an asset that already trades
+is logged as `new-pair`. A real launch is listed in the Exchange feed cancel-only
+before its auction while Advanced Trade already flags it `new`. A baseline product
+in a pre-trading state (cancel-only, auction, post-only or disabled) that Advanced
+Trade flags `new` (with `new_at` under 30 days old) is therefore adopted as a launch
+in progress and marked `startedInProgress`: its first appearance and earlier phases
+were not observed and none are invented, but its later phases and candles are.
+Products that flip state after the baseline are not adopted. For new-asset USD launches only, the collector records
+public 1-minute candle closes and volumes from the last read that still saw the
+auction until 24 hours after the first observed trading state (limit-only or full;
+auction and post-only books do not match orders). It
+reads at most four ranges of at most 300 minutes per run, only minutes that
+ended at least two minutes earlier, and stores the exact covered ranges. A minute
+with no trade has no candle but counts as covered. A window that closes with gaps
+is marked `incomplete`. Nothing before collector start is backfilled. Rows live in
+state for the newest 12 launches (older rows are trimmed from state and remain in
+repository history); raw rows are never in the public snapshot. Up to seven
+listings found in the status feed are shown as observed in status feed, times
+only, without prices.
+
+**Risk flags.** The watchlist holds assets with an upcoming suspension or
+delisting notice (notice time, stated effective date and time when parseable,
+source incident) and notices that became effective within 30 days. A notice that
+names only non-USD pairs covers those pairs; a USD or asset-wide notice covers
+the asset. `isAvoid(product, state, now)` in the core module is true for a product
+with such a notice, one that is delisted, offline, trading-disabled or
+cancel-only, or one first seen less than 90 days ago. The age rule uses
+first-seen time for products seen after the baseline and dated Advanced Trade
+`new_at` otherwise; a baseline product with no dated listing has an unknown age
+and is not flagged.
+
+**Historical study, not live results.** 216 Coinbase listings, June 2023 to
+August 2026, public Coinbase daily candles, survivors only. After 1.8%
+round-trip taker fees, buying at the first daily open and selling at the day 1
+close returned +2.6% mean, -1.6% median and won 41% of the time; holding to day
+8, -6.9% mean, -13.6% median, 27% win; to day 31, -14.4% mean, -26.1% median, 25%
+win. Coins touched a median +15% above the open within three days, but that peak
+is not tradable, and survivorship makes real results worse. From the day 1
+close, median returns were -13% at day 8 and -40% at day 91, which is the basis of
+the 90 day rule. Coinbase opens a listing in phases, hours apart: an auction of
+at least 10 minutes with a single opening price, then limit-only, then full
+trading. The crypto page shows this study labeled as historical.
+
+**Operation.** `.github/workflows/opportunities.yml` runs the collector after the
+arbitrage comparison with `continue-on-error`, so a Listing Watch failure cannot
+block the tournament, and commits the two files if present. It is not in the
+failure-surfacing condition. `npm test` uses synthetic fixtures only; a dry run
+against the public APIs can be pointed at a scratch directory with
+`node scripts/collect-listing-watch.mjs --root <dir>`.
+
 ## Live bot strategy: BTC/ETH daily trend paper mirror
 
 The private Coinbase worker (see [COINBASE-WORKER.md](COINBASE-WORKER.md)) is

@@ -41,6 +41,10 @@ jobs:
         run: node scripts/collect-crypto-arbitrage.mjs
         id: crypto
         continue-on-error: true
+      - name: Observe Coinbase listings and delistings (public data only, best effort)
+        id: listingwatch
+        continue-on-error: true
+        run: node scripts/collect-listing-watch.mjs
       - name: Publish research snapshots without overwriting another writer
         run: |
           git config user.name 'moffitt-money-bot'
@@ -50,6 +54,9 @@ jobs:
             if [ -f "$file" ]; then git add "$file"; fi
           done
           for file in dashboard/data/crypto-lab.json data/crypto-lab/state.json; do
+            if [ -f "$file" ]; then git add "$file"; fi
+          done
+          for file in dashboard/data/listing-watch.json data/listing-watch/state.json; do
             if [ -f "$file" ]; then git add "$file"; fi
           done
           if git diff --cached --quiet; then exit 0; fi
