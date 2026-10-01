@@ -8,7 +8,7 @@ import {ENTRY_POLICY,entryForecast as forecast,entryPlan as planBet} from '../da
 import {runPaperCycle} from './predictions/cycle.mjs';
 import {collectPairs} from './predictions/arbitrage.mjs';
 import {studyOutcomes} from '../dashboard/prediction-study.mjs';
-import {BASE,get,discoverPolymarket,discoverKalshi,normalizePolymarket,normalizeKalshi,resolvedPolymarket,resolvedKalshi} from './predictions/venues.mjs';
+import {BASE,get,discoverPolymarket,discoverKalshi,normalizePolymarket,normalizeKalshi,resolvedPolymarket,resolvedKalshi,kalshiFeeChanges} from './predictions/venues.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const statePath=path.join(root,'data/predictions/state.json'),snapshotPath=path.join(root,'dashboard/data/predictions.json');
 const lock=path.join(root,'data/predictions/.collector.lock');
@@ -23,8 +23,10 @@ const start=Date.now()/1000;
 const state=await read(statePath,{schemaVersion:1,version:PREDICTION_VERSION,accounts:Object.fromEntries(VENUES.map(v=>[v,newAccount(v,start)])),observations:[],settlements:{}});
 if(state.schemaVersion!==1||state.version!==PREDICTION_VERSION||!Array.isArray(state.observations)||!state.settlements)throw new Error('Invalid prediction state; refusing to reset.');
 VENUES.forEach(v=>validateAccount(state.accounts?.[v],v));
+if(state.kalshiFeeChanges!==undefined&&(!state.kalshiFeeChanges||typeof state.kalshiFeeChanges!=='object'||Array.isArray(state.kalshiFeeChanges)))throw new Error('Invalid Kalshi fee cache; refusing to reset.');
+state.kalshiFeeChanges||={};
 const old=await read(snapshotPath,{markets:[],sources:[]}),markets=[],sources=[],errors=[],refreshers=new Map();
-const enc=encodeURIComponent,events=new Map(),series=new Map(),overrides=new Map();
+const enc=encodeURIComponent,events=new Map(),series=new Map();
 async function cached(map,key,url){if(!map.has(key))map.set(key,get(url));return map.get(key);}
 const milestones=new Map();
 async function gameMilestone(raw){
@@ -80,10 +82,11 @@ for(const venue of VENUES){
         }else{
           const ev=(await cached(events,raw.event_ticker,`${BASE.kalshi}/events/${enc(raw.event_ticker)}`)).event;
           const ser=(await cached(series,ev.series_ticker,`${BASE.kalshi}/series/${enc(ev.series_ticker)}`)).series;
-          let changes=null;
-          try{const d=await cached(overrides,raw.event_ticker,`${BASE.kalshi}/events/fee_changes?event_ticker=${enc(raw.event_ticker)}&limit=1000`);if(Array.isArray(d.event_fee_changes)&&!d.cursor)changes=d.event_fee_changes;}catch(e){errors.push({venue,source:'fees',message:e.message});}
+          let changes=null,feeError=null;
+          try{changes=await kalshiFeeChanges(raw.event_ticker,state.kalshiFeeChanges);}catch(e){feeError=e;errors.push({venue,source:'fees',message:e.message});}
           const book=await get(`${BASE.kalshi}/markets/${enc(raw.ticker)}/orderbook?depth=10`);
           m=normalizeKalshi(raw,ev,ser,changes,book,Date.now()/1000,await gameMilestone(raw));
+          if(feeError)m.sourceError='Current event fee rules unavailable';
         }
         collected.push(m);
         // Record when THIS book is received, before unrelated slow requests age it out.
@@ -96,9 +99,9 @@ for(const venue of VENUES){
           const fresh=(await get(`${BASE.kalshi}/markets/${enc(raw.ticker)}`)).market;
           const ev=(await get(`${BASE.kalshi}/events/${enc(raw.event_ticker)}`)).event;
           const ser=(await get(`${BASE.kalshi}/series/${enc(ev.series_ticker)}`)).series;
-          const fees=await get(`${BASE.kalshi}/events/fee_changes?event_ticker=${enc(raw.event_ticker)}&limit=1000`);
+          const fees=await kalshiFeeChanges(raw.event_ticker,state.kalshiFeeChanges);
           const book=await get(`${BASE.kalshi}/markets/${enc(raw.ticker)}/orderbook?depth=10`);
-          return normalizeKalshi(fresh,ev,ser,!fees.cursor?fees.event_fee_changes:null,book,Date.now()/1000,await gameMilestone(fresh));
+          return normalizeKalshi(fresh,ev,ser,fees,book,Date.now()/1000,await gameMilestone(fresh));
         });
       }catch(e){errors.push({venue,source:raw.slug||raw.ticker,message:e.message});}
     }));
@@ -136,7 +139,7 @@ const studies=Object.fromEntries(VENUES.map(v=>{const all=state.observations.fil
     brier:predicted.length?predicted.reduce((n,o)=>n+(o.prediction-o.payout)**2,0)/predicted.length:null,
     baselineBrier:predicted.length?predicted.reduce((n,o)=>n+(o.baseline-o.payout)**2,0)/predicted.length:null}];}));
 let arbitrage;
-try{arbitrage=await collectPairs(state.accounts,start+440);}catch(error){arbitrage={...(old.arbitrage||{}),generatedAt:old.arbitrage?.generatedAt??start,status:'error',error:error.message,pairs:old.arbitrage?.pairs||[],errors:[{message:error.message}],realEnabled:false};}
+try{arbitrage=await collectPairs(state.accounts,start+440,state.kalshiFeeChanges);}catch(error){arbitrage={...(old.arbitrage||{}),generatedAt:old.arbitrage?.generatedAt??start,status:'error',error:error.message,pairs:old.arbitrage?.pairs||[],errors:[{message:error.message}],realEnabled:false};}
 // Paired observations are research receipts, not trades or paper profits.
 if(arbitrage.status!=='error'&&arbitrage.generatedAt>(state.pairedScans?.at(-1)?.at||0))state.pairedScans=[...(state.pairedScans||[]),{at:arbitrage.generatedAt,pairs:(arbitrage.pairs||[]).map(p=>({id:p.id,observedAt:p.observedAt,status:p.status,
   quantity:p.best?.quantity??null,cost:p.best?.cost??null,normalNet:p.best?.normalNet??null,worstCaseNet:p.worstCaseNet,

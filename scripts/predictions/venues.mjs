@@ -10,6 +10,17 @@ export async function get(url,fetcher=fetch) {
   }
 }
 const e=encodeURIComponent;
+export const KALSHI_FEE_CACHE_TTL=3600;
+export async function kalshiFeeChanges(eventTicker,cache,{now=Date.now()/1000,ttl=KALSHI_FEE_CACHE_TTL,fetcher=get}={}) {
+  const prior=cache?.[eventTicker],age=now-prior?.checkedAt;
+  if(Array.isArray(prior?.changes)&&Number.isFinite(age)&&age>=0&&age<ttl)return prior.changes;
+  const d=await fetcher(`${BASE.kalshi}/events/fee_changes?event_ticker=${e(eventTicker)}&limit=1000`);
+  if(!Array.isArray(d?.event_fee_changes)||d.cursor)throw new Error('Incomplete Kalshi fee override response');
+  cache[eventTicker]={checkedAt:now,changes:d.event_fee_changes};
+  const rows=Object.entries(cache).sort((a,b)=>(b[1]?.checkedAt||0)-(a[1]?.checkedAt||0));
+  rows.forEach(([key,row],index)=>{if(index>=512||!Number.isFinite(row?.checkedAt)||now-row.checkedAt>30*86400)delete cache[key];});
+  return d.event_fee_changes;
+}
 export {normalizePolymarket,normalizeKalshi,effectiveKalshiFee} from '../../dashboard/prediction-venues.mjs';
 export async function discoverPolymarket() {
   const result=[],seen=new Set(),errors=[];let pages=0;
