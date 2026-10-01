@@ -1,12 +1,13 @@
 import {levels,numeric,timestamp,round} from '../../dashboard/prediction-core.mjs';
 export const BASE={polymarket:'https://gateway.polymarket.us/v1',kalshi:'https://api.elections.kalshi.com/trade-api/v2'};
-export async function get(url,fetcher=fetch) {
-  for(let attempt=0;attempt<2;attempt++){
+export async function get(url,fetcher=fetch,{sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),retryBaseMs=1000}={}) {
+  for(let attempt=0;attempt<3;attempt++){
     try{
       const r=await fetcher(url,{headers:{'User-Agent':'MoffittMoney/5.0 public paper research'},signal:AbortSignal.timeout(12000)});
-      if(!r.ok){const error=new Error(`HTTP ${r.status} at ${new URL(url).pathname}`);error.retryable=r.status===429||r.status>=500;throw error;}
+      if(!r.ok){const error=new Error(`HTTP ${r.status} at ${new URL(url).pathname}`);error.retryable=r.status===429||r.status>=500;
+        if(r.status===429){const seconds=Number(r.headers?.get?.('Retry-After'));error.retryAfterMs=Math.max(retryBaseMs,Number.isFinite(seconds)&&seconds>=0?seconds*1000:0);}throw error;}
       return await r.json();
-    }catch(error){if(attempt||error.retryable===false)throw error;await new Promise(resolve=>setTimeout(resolve,250));}
+    }catch(error){if(attempt===2||error.retryable===false)throw error;await sleep(error.retryAfterMs??250*(attempt+1));}
   }
 }
 const e=encodeURIComponent;
