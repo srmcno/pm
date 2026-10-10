@@ -56,6 +56,8 @@ Positions hold until official final settlement. There is no synthetic intraday s
 
 Remaining activation work is explicit: confirm account/venue eligibility, connect server-held credentials, implement and test authenticated previews and order adapters, align actual fee/quantity/tick rules, add order reconciliation/cancel/duplicate protection/kill switch, review forward results, select funded cash limits, and obtain the user's explicit real-money activation. Paper balances cannot be converted into deposited money. Never expose credentials through the static dashboard or GitHub snapshots.
 
+**October 10, 2026:** the owner authorized real-money trading, limited to positive-edge-after-fees **arbitrage**, through a separate private engine. See [PREDICTION-ARB-WORKER.md](PREDICTION-ARB-WORKER.md). That engine has its own journal and allocation and starts disarmed. Kalshi is live-capable. Polymarket US is scan-only because its retail order API has no client order ID. The `orderIntent()` lock above, both $100 paper accounts and the directional calibration strategy are unchanged and remain paper.
+
 ## Verification
 
 `npm test` includes prediction math, malformed ledger rejection, bid/ask complement, fee overrides, quote expiry, future-label exclusion, event deduplication, two-scan entry, cash conservation, fractional settlement, settlement idempotence, and locked real execution. Run `python3 scripts/check_site.py` and build the same committed source for Sites. DOM integration checks cover the mobile-oriented card structure, tabs, filters, ticket, forecast calculator and ledger export. No browser visual QA is claimed unless separately performed.
