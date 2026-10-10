@@ -85,6 +85,19 @@ The replacement is a daily trend strategy. To switch the live worker, the accoun
 
 A public paper mirror of this policy runs on the crypto page. The worker's real-money results remain private.
 
+## Hybrid strategy: BTC/ETH core plus a rotation sleeve (October 10)
+
+The owner found the BTC/ETH-only trend book too passive and asked for multi-coin trading back, improved. `MM_STRATEGY=hybrid` (with `MM_CAPACITY_PROFILE=trend`) keeps the daily BTC/ETH trend core unchanged and adds a rotation sleeve (`ROTATION_POLICY`, id `2026-10-10-rotation-v2`, in `scripts/live/engine.mjs`):
+
+- **Priority:** the core acts first. The sleeve only looks for entries when the core has nothing to buy.
+- **Market switch:** new alt entries only while BTC's daily trend state is long. When BTC leaves its uptrend, sleeve positions exit (`trend-exit`).
+- **Signal:** the shared hourly rotation momentum signal, excluding BTC and ETH, and excluding coins with less than 90 days of public daily history (checked once a day per product; unknown age never qualifies). Up to 5 ranked candidates are tried per check.
+- **Orders:** resting limit at the best bid for 180 seconds, at most 3 sleeve positions, at most $4 each (and never above `MM_MAX_ORDER_USD`). Native bracket stop at 88% and take-profit at 130% of the signal price.
+- **Exits:** the bracket, a 72-hour maximum hold, BTC leaving its uptrend, or the loss trigger. There is no hourly trend exit: in replay it caused most of the old rotation's losses.
+- **Cooldowns:** one hour after a filled sleeve position closes; repeated unfilled bids back off from 60 seconds to an hour.
+
+**Replay evidence (study, not a forecast):** 95 days of hourly Coinbase data to September 26, today's top-100 universe, 0.5% maker entry and 0.9% taker exit. The old live rotation averaged -2.4% per trade (90 trades). The sleeve rules averaged +4.0% per trade (47 trades, 47% winners), and about +3.3% with 50% higher costs. The sample is small, comes mostly from one rising stretch (the BTC switch was on 41% of the time), and survivorship flatters altcoins, so this is a reason to run it small, not proof of an edge.
+
 ### Other safety changes in this release
 
 - **Precision:** float strategy features are converted to exact 18-place decimals before sizing. This removes the "Decimal exceeds 18-place precision" hold.

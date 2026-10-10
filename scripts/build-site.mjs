@@ -17,6 +17,7 @@ const files=[
  'desk.html','legacy.css','archive.css','etf.html','stocks.html','arb.html','wallets.html',
  ...['predictions','etf-paper','etf-research','research-summary','desk','copy-trading',
  'copy-study','crypto-arbitrage','crypto-history','opportunities'].map(n=>`data/${n}.json`),
+ 'listing-watch-core.mjs','listing-watch-ui.mjs','listing-watch.css',
 ];
 // Prediction Lab (paper shadow books): interface modules ship with every build.
 files.push('prediction-lab-core.mjs','prediction-lab-ui.mjs','prediction-lab.css');
@@ -34,6 +35,8 @@ const archive=await readFile(path.join(root,'dashboard/index.html'),'utf8');
 await writeFile(path.join(output,'archive-workspace.html'),archive.replace('<body>',
  '<body><div style="padding:12px 24px;display:flex;gap:20px;justify-content:space-between;border-bottom:1px solid var(--border,#dce3eb)"><a href="./">Back to main app</a><span>Advanced tools and archive</span></div>'));
 await cp(path.join(root,'dashboard/focus.html'),path.join(output,'index.html'));
+// Listing Watch is best-effort public observation; the first scheduled run creates its snapshot.
+for(const name of ['listing-watch'])try{await cp(path.join(root,`dashboard/data/${name}.json`),path.join(output,`data/${name}.json`));}catch(e){if(e.code!=='ENOENT')throw e;}
 const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 const {version}=JSON.parse(await readFile(path.join(root,'package.json'),'utf8'));
 // Interface identity excludes collector snapshots. Frequent data commits must

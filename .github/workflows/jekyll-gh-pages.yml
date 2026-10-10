@@ -5,14 +5,10 @@ on:
   push:
     branches: ["claude/polymarket-wallets-analysis-m81p4j"]
     paths: ["dashboard/**", "scripts/build-site.mjs", "package.json", ".github/workflows/jekyll-gh-pages.yml"]
-  # Data commits from workflow tokens do not trigger push workflows.
-  # Scheduled publishing is best effort; source timestamps remain visible.
+  # Data-only commits are read live from GitHub raw and do not need a deployment.
+  # Refresh the bundled fallback hourly; interface/build pushes still publish immediately.
   schedule:
     - cron: "17 * * * *"
-  workflow_run:
-    workflows: ["Opportunity and copy study scan", "Prediction market paper cycle", "Monthly ETF paper cycle"]
-    types: [completed]
-    branches: ["claude/polymarket-wallets-analysis-m81p4j"]
   workflow_dispatch: {}
 
 permissions:
@@ -20,10 +16,11 @@ permissions:
   pages: write
   id-token: write
 
-# One queue for every trigger and ref: deployments of the same commit never overlap.
+# Keep only the newest publication request. Interface pushes safely supersede an
+# older scheduled fallback build, preventing stale pending runs from accumulating.
 concurrency:
   group: "pages-v6"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -45,11 +42,11 @@ jobs:
           python3 scripts/check_site.py
           npm run build
           python3 scripts/check_site.py dist
-      # Scheduled and collector-triggered runs skip a commit and interface that are
-      # already live. Push and manual runs always publish; an unreadable release never skips.
+      # Scheduled runs skip a commit and interface already live. Push and manual
+      # runs always publish; an unreadable release never skips.
       - name: Compare with the live release
         id: live
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_run'
+        if: github.event_name == 'schedule'
         continue-on-error: true
         run: |
           live=$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://srmcno.github.io/pm/build-info.json?t=$(date +%s)" || true)

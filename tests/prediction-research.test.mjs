@@ -285,6 +285,28 @@ test("public GET retries transient failures once, without retrying missing contr
   assert.equal(attempts, 1);
 });
 
+test("public GET honors rate-limit delay and survives two consecutive 429s", async () => {
+  const { get } = await import("../scripts/predictions/venues.mjs");
+  let attempts = 0;
+  const sleeps = [];
+  const actual = await get(
+    "https://example.com/rate-limited-book",
+    async () => {
+      attempts++;
+      return attempts < 3
+        ? new Response("", {
+            status: 429,
+            headers: { "Retry-After": attempts === 1 ? "2" : "0" },
+          })
+        : new Response('{"book":true}');
+    },
+    { sleep: async (ms) => sleeps.push(ms) },
+  ).catch((error) => ({ error: error.message }));
+  assert.deepEqual(actual, { book: true });
+  assert.equal(attempts, 3);
+  assert.deepEqual(sleeps, [2000, 1000]);
+});
+
 test("valid discovery pages survive a malformed later response from either venue", async (t) => {
   const { discoverPolymarket, discoverKalshi } =
     await import("../scripts/predictions/venues.mjs");

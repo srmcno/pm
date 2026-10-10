@@ -5,6 +5,7 @@ import {
   discoverPolymarket,
   normalizePolymarket,
   normalizeKalshi,
+  kalshiFeeChanges,
 } from "./venues.mjs";
 import {
   PAIR_VERSION,
@@ -84,6 +85,7 @@ export function kalshiIdentity(raw, milestone, targets, league) {
 export async function collectPairs(
   accounts,
   deadline = Date.now() / 1000 + 180,
+  feeCache = {},
 ) {
   if (Date.now() / 1000 >= deadline)
     throw new Error("Paired scan deferred: collection time budget exhausted.");
@@ -182,12 +184,8 @@ export async function collectPairs(
                 const [ev, ser, fees] = await Promise.all([
                   cached(`${BASE.kalshi}/events/${enc(eventId)}`),
                   cached(`${BASE.kalshi}/series/${config.series}`),
-                  cached(
-                    `${BASE.kalshi}/events/fee_changes?event_ticker=${enc(eventId)}&limit=1000`,
-                  ),
+                  kalshiFeeChanges(eventId, feeCache),
                 ]);
-                if (fees.cursor)
-                  throw new Error("Fee override page incomplete");
                 const [praw, kraw] = await Promise.all([
                   get(`${BASE.polymarket}/market/slug/${enc(pr.raw.slug)}`),
                   get(`${BASE.kalshi}/markets/${enc(kr.ticker)}`),
@@ -211,7 +209,7 @@ export async function collectPairs(
                       kraw.market,
                       ev.event,
                       ser.series,
-                      fees.event_fee_changes,
+                      fees,
                       book,
                       Date.now() / 1000,
                       milestone,

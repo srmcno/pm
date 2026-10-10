@@ -2,14 +2,14 @@ import path from 'node:path';
 import {D,S} from './risk.mjs';
 import {getCapacityProfile} from './capacity.mjs';
 export const LIVE_ACK='I_ACCEPT_REAL_MONEY_TRADING';
-export const STRATEGIES=Object.freeze(['rotation','trend']);
+export const STRATEGIES=Object.freeze(['rotation','trend','hybrid']);
 export function configuration(env=process.env){
   if(env.MM_LIVE_ENABLED!==undefined)throw Error('Use MM_MODE and the explicit operator acknowledgement; the legacy live flag is unsupported.');
   const mode=env.MM_MODE||'preview';
   const capacity=getCapacityProfile(env.MM_CAPACITY_PROFILE??'standard');
   const strategy=env.MM_STRATEGY??'rotation';
-  if(!STRATEGIES.includes(strategy))throw Error('MM_STRATEGY must be rotation or trend.');
-  if(capacity.name==='trend'&&strategy!=='trend')throw Error('The trend capacity profile requires MM_STRATEGY=trend.');
+  if(!STRATEGIES.includes(strategy))throw Error('MM_STRATEGY must be rotation, trend or hybrid.');
+  if(capacity.name==='trend'&&strategy==='rotation')throw Error('The trend capacity profile requires MM_STRATEGY=trend or hybrid.');
   const allocation=D(env.MM_ALLOCATION_USD||'20');
   if(allocation<D('5')||allocation>D('20'))throw Error('Allocation must be between $5 and the $20 hard ceiling.');
   // Owner-set money limits. Defaults keep the original $5 order and $2 loss

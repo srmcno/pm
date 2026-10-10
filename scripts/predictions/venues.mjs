@@ -1,15 +1,27 @@
 import {levels,numeric,timestamp,round} from '../../dashboard/prediction-core.mjs';
 export const BASE={polymarket:'https://gateway.polymarket.us/v1',kalshi:'https://api.elections.kalshi.com/trade-api/v2'};
-export async function get(url,fetcher=fetch) {
-  for(let attempt=0;attempt<2;attempt++){
+export async function get(url,fetcher=fetch,{sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),retryBaseMs=1000}={}) {
+  for(let attempt=0;attempt<3;attempt++){
     try{
       const r=await fetcher(url,{headers:{'User-Agent':'MoffittMoney/5.0 public paper research'},signal:AbortSignal.timeout(12000)});
-      if(!r.ok){const error=new Error(`HTTP ${r.status} at ${new URL(url).pathname}`);error.retryable=r.status===429||r.status>=500;throw error;}
+      if(!r.ok){const error=new Error(`HTTP ${r.status} at ${new URL(url).pathname}`);error.retryable=r.status===429||r.status>=500;
+        if(r.status===429){const seconds=Number(r.headers?.get?.('Retry-After'));error.retryAfterMs=Math.max(retryBaseMs,Number.isFinite(seconds)&&seconds>=0?seconds*1000:0);}throw error;}
       return await r.json();
-    }catch(error){if(attempt||error.retryable===false)throw error;await new Promise(resolve=>setTimeout(resolve,250));}
+    }catch(error){if(attempt===2||error.retryable===false)throw error;await sleep(error.retryAfterMs??250*(attempt+1));}
   }
 }
 const e=encodeURIComponent;
+export const KALSHI_FEE_CACHE_TTL=3600;
+export async function kalshiFeeChanges(eventTicker,cache,{now=Date.now()/1000,ttl=KALSHI_FEE_CACHE_TTL,fetcher=get}={}) {
+  const prior=cache?.[eventTicker],age=now-prior?.checkedAt;
+  if(Array.isArray(prior?.changes)&&Number.isFinite(age)&&age>=0&&age<ttl)return prior.changes;
+  const d=await fetcher(`${BASE.kalshi}/events/fee_changes?event_ticker=${e(eventTicker)}&limit=1000`);
+  if(!Array.isArray(d?.event_fee_changes)||d.cursor)throw new Error('Incomplete Kalshi fee override response');
+  cache[eventTicker]={checkedAt:now,changes:d.event_fee_changes};
+  const rows=Object.entries(cache).sort((a,b)=>(b[1]?.checkedAt||0)-(a[1]?.checkedAt||0));
+  rows.forEach(([key,row],index)=>{if(index>=512||!Number.isFinite(row?.checkedAt)||now-row.checkedAt>30*86400)delete cache[key];});
+  return d.event_fee_changes;
+}
 export {normalizePolymarket,normalizeKalshi,effectiveKalshiFee} from '../../dashboard/prediction-venues.mjs';
 export async function discoverPolymarket() {
   const result=[],seen=new Set(),errors=[];let pages=0;

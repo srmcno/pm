@@ -40,6 +40,9 @@ dashboard/data/crypto-strategies.json.*.tmp
 data/crypto-trend/.collector.lock/
 data/crypto-trend/*.tmp
 dashboard/data/crypto-trend.json.*.tmp
+data/listing-watch/.collector.lock/
+data/listing-watch/*.tmp
+dashboard/data/listing-watch.json.*.tmp
 work/
 
 # Prediction Lab collector lock and atomic-write leftovers
