@@ -41,3 +41,8 @@ data/crypto-trend/.collector.lock/
 data/crypto-trend/*.tmp
 dashboard/data/crypto-trend.json.*.tmp
 work/
+
+# Prediction Lab collector lock and atomic-write leftovers
+data/prediction-lab/.collector.lock/
+data/prediction-lab/*.tmp
+dashboard/data/prediction-lab.json.*.tmp

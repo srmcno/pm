@@ -1,0 +1,30 @@
+/* Prediction Lab (paper shadow experiments). Uses the Art Deco tokens from deco.css; loaded only by focus.html. */
+.lab-section{margin:8px 0 34px;padding-top:6px;border-top:4px double var(--gold)}
+.lab-section .section-heading{margin-top:22px}
+.lab-banner{margin:0 0 16px;padding:14px 18px;background:var(--surface);border:1px solid var(--gold);border-left:5px solid var(--gold);font-weight:600;font-size:16px;overflow-wrap:anywhere}
+.lab-banner span{display:block;margin-top:4px;font-weight:400;font-size:14px;color:var(--muted)}
+.lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start;margin:0 0 8px}
+.lab-card{min-width:0;padding:22px}
+.lab-card .card-head{flex-wrap:wrap}.lab-card .venue{max-width:100%;overflow-wrap:anywhere}
+.lab-id{margin:8px 0 0;font-size:12px;letter-spacing:.04em;color:var(--muted);overflow-wrap:anywhere}
+.lab-acct{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);min-width:0}
+.lab-acct:first-of-type{margin-top:12px}
+.lab-venue,.lab-venue-line{margin:0;font:600 13px/1.4 Jost,system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+.lab-acct .equity{font-size:36px;margin-top:6px}
+.lab-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.lab-metrics dt{font-size:13px;overflow-wrap:anywhere}.lab-metrics dd{font-size:17px;overflow-wrap:anywhere}
+.lab-evidence{margin-top:14px}.lab-evidence>strong{display:block;font-size:15px;line-height:1.4;font-weight:600;overflow-wrap:anywhere}
+.lab-progress{height:9px;margin:10px 0 6px;background:var(--soft);border:1px solid var(--border)}.lab-progress i{display:block;height:100%;background:var(--gold)}
+.lab-count{margin:0 0 8px;font-size:13px}
+.lab-criteria{list-style:none;margin:0;padding:0;border-top:1px solid var(--border)}
+.lab-crit{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;overflow-wrap:anywhere}
+.lab-crit span{flex:1 1 55%;min-width:0}.lab-crit b{font-weight:600;font-variant-numeric:tabular-nums}
+.lab-crit small{flex:0 0 auto;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border);padding:0 6px;color:var(--muted)}
+.lab-crit.pass small{color:var(--positive);border-color:var(--positive)}.lab-crit.fail small{color:var(--negative);border-color:var(--negative)}
+.lab-stats{margin:10px 0 0;font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.lab-alert{margin:12px 0 0;font-size:13px;overflow-wrap:anywhere}
+.lab-source{margin:12px 0 0;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.lab-ledger,.lab-rule{margin-top:10px;padding-top:8px}.lab-ledger .records{margin-top:10px}.lab-ledger .record{padding:12px 14px}.lab-ledger .record-title{font-size:14px}.lab-ledger .record-meta{font-size:12px}
+.lab-rule p{font-size:14px;overflow-wrap:anywhere}
+.lab-section .footnote{overflow-wrap:anywhere}
+@media(max-width:860px){.lab-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:720px){.lab-card{padding:18px 16px}.lab-acct .equity{font-size:32px}.lab-banner{padding:12px 14px;font-size:15px}.lab-metrics dd{font-size:15px}.lab-ledger .record{display:block}.lab-ledger .record-money{text-align:left;max-width:none;margin-top:6px}}

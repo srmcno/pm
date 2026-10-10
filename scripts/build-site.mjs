@@ -18,6 +18,8 @@ const files=[
  ...['predictions','etf-paper','etf-research','research-summary','desk','copy-trading',
  'copy-study','crypto-arbitrage','crypto-history','opportunities'].map(n=>`data/${n}.json`),
 ];
+// Prediction Lab (paper shadow books): interface modules ship with every build.
+files.push('prediction-lab-core.mjs','prediction-lab-ui.mjs','prediction-lab.css');
 await rm(output,{recursive:true,force:true});
 await mkdir(path.join(output,'data'),{recursive:true});
 for(const file of files)await cp(path.join(root,'dashboard',file),path.join(output,file));
@@ -26,6 +28,8 @@ for(const file of files)await cp(path.join(root,'dashboard',file),path.join(outp
 for(const name of ['crypto-strategies','crypto-trend'])try{await cp(path.join(root,`dashboard/data/${name}.json`),path.join(output,`data/${name}.json`));}catch(e){if(e.code!=='ENOENT')throw e;}
 // Strategy Lab snapshot: absent until its first scheduled cycle, and never a build failure.
 for(const name of ['crypto-lab'])try{await cp(path.join(root,`dashboard/data/${name}.json`),path.join(output,`data/${name}.json`));}catch(e){if(e.code!=='ENOENT')throw e;}
+// Prediction Lab snapshot: absent until its first scheduled run, and never a build failure.
+for(const name of ['prediction-lab'])try{await cp(path.join(root,`dashboard/data/${name}.json`),path.join(output,`data/${name}.json`));}catch(e){if(e.code!=='ENOENT')throw e;}
 const archive=await readFile(path.join(root,'dashboard/index.html'),'utf8');
 await writeFile(path.join(output,'archive-workspace.html'),archive.replace('<body>',
  '<body><div style="padding:12px 24px;display:flex;gap:20px;justify-content:space-between;border-bottom:1px solid var(--border,#dce3eb)"><a href="./">Back to main app</a><span>Advanced tools and archive</span></div>'));
