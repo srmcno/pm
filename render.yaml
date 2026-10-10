@@ -36,3 +36,28 @@ services:
         value: '9.4'
       - key: MM_LOSS_LIMIT_USD
         value: '4'
+      # Separate prediction-arbitrage engine (docs/PREDICTION-ARB-WORKER.md).
+      # preview never submits. Secrets and owner choices use sync:false, so
+      # no value is stored here; enter them in Render's private Environment.
+      - key: PM_MODE
+        value: preview
+      - key: PM_SCAN_SECONDS
+        value: '300'
+      - key: PM_ALLOW_SPORTS
+        value: 'false'
+      - key: PM_MAX_TRADE_USD
+        value: '5'
+      - key: PM_LOSS_LIMIT_USD
+        value: '5'
+      - key: PM_KALSHI_ALLOCATION_USD
+        sync: false
+      - key: PM_LIVE_ACK
+        sync: false
+      - key: KALSHI_KEY_ID
+        sync: false
+      - key: KALSHI_PRIVATE_KEY
+        sync: false
+      - key: POLYMARKET_US_KEY_ID
+        sync: false
+      - key: POLYMARKET_US_SECRET_KEY
+        sync: false

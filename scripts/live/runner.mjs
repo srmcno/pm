@@ -10,6 +10,7 @@ import {D,S} from './risk.mjs';
 import {getCapacityProfile} from './capacity.mjs';
 import {TrendFeed,AgeFeed} from './trend-feed.mjs';
 import {trendView,TREND_POLICY} from '../../dashboard/trend-core.mjs';
+import {startPredictionWorker} from '../predlive/worker.mjs';
 export {configuration} from './config.mjs';
 
 export function validateState(state){
@@ -98,7 +99,7 @@ export async function run(env=process.env,dependencies={}){
   const createBroker=dependencies.createBroker||(credentials=>new CoinbaseLive(credentials));
   const createEngine=dependencies.createEngine||(async options=>{const {Engine}=await import('./engine.mjs');return new Engine(options);});
   const monitor=dependencies.monitor||monitorCycle,writeStatus=dependencies.writeStatus||exportStatus,log=dependencies.log||(value=>console.log(JSON.stringify(value)));
-  const controller=new AbortController();let stopping=false,journal,executionJournal,state,engine=null,unresolvedExecution=null;
+  const controller=new AbortController();let stopping=false,journal,executionJournal,state,engine=null,unresolvedExecution=null,prediction=null;
   const stop=()=>{stopping=true;controller.abort();};signals.once('SIGTERM',stop);signals.once('SIGINT',stop);
   try{
     await (dependencies.ensureDirectory||mkdir)(config.dataDir,{recursive:true,mode:0o700});
@@ -133,6 +134,11 @@ export async function run(env=process.env,dependencies={}){
     const trendFeed=config.strategy!=='rotation'?(dependencies.createTrendFeed||(options=>new TrendFeed(options)))({clock}):null;
     const ageFeed=config.strategy==='hybrid'?(dependencies.createAgeFeed||(options=>new AgeFeed(options)))({clock}):null;
     log({event:'worker_started',mode:config.mode,realOrdersEnabled:config.mode==='live',credentialsConfigured:!!broker,revision:env.RENDER_GIT_COMMIT||null});
+    // Separate prediction-arbitrage engine: only when PM_MODE is set, with its
+    // own journal under MM_DATA_DIR/predictions. It runs in the background and
+    // every error stays inside it, so Coinbase reconciliation is never blocked.
+    try{prediction=(dependencies.startPrediction||startPredictionWorker)(env,{clock,isStopping:()=>stopping,log});}
+    catch{prediction={status:()=>({mode:'error',realOrdersEnabled:false,hold:'Prediction engine failed to start'}),poll(){},async finish(){},async stop(){}};}
     while(!stopping){
       const requiredProducts=engine?[...new Set((engine.state.intents||[]).map(i=>i.productId??i.product).filter(Boolean))]:[];
       refresher.start(state.feedCache,config.scanSeconds,requiredProducts);
@@ -159,14 +165,18 @@ export async function run(env=process.env,dependencies={}){
       }
       const trend=trendFeed?.snapshot()??null;
       if(engine&&!stopping)await engine.tick({...(feed&&clock()-state.lastSuccessAt<=900?feed:{markets:[]}),...(trend?{trend}:{}),...(ageFeed?{ages:ageFeed.snapshot()}:{})});
+      if(prediction&&!stopping){try{prediction.poll();if(env.MM_ONCE==='true')await prediction.finish();}catch{}}
       if(completed||stopping||clock()-lastOutput>=30){
-        const status=receipt(state,config,clock(),engine?.state||unresolvedExecution,trend);await writeStatus(config.dataDir,status);log(status);lastOutput=clock();
+        const status=receipt(state,config,clock(),engine?.state||unresolvedExecution,trend);
+        if(prediction){try{status.prediction_arbitrage=prediction.status();}catch{status.prediction_arbitrage={mode:'error',realOrdersEnabled:false,hold:'Prediction status unavailable'};}}
+        await writeStatus(config.dataDir,status);log(status);lastOutput=clock();
       }
       if(env.MM_ONCE==='true')break;
       if(!stopping)await (dependencies.wait||waitForTick)(15000,controller.signal);
     }
   }finally{
     signals.removeListener('SIGTERM',stop);signals.removeListener('SIGINT',stop);
+    try{await prediction?.stop();}catch{}
     try{executionJournal?.close();}finally{journal?.close();}
   }
   if(state?.consecutiveFailures&&env.MM_ONCE==='true')process.exitCode=1;
