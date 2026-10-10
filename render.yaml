@@ -29,7 +29,7 @@ services:
       - key: MM_ALLOCATION_USD
         value: '18.85'
       - key: MM_STRATEGY
-        value: trend
+        value: hybrid
       - key: MM_CAPACITY_PROFILE
         value: trend
       - key: MM_MAX_ORDER_USD

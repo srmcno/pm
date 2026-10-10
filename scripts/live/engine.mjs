@@ -33,12 +33,17 @@ const definitiveRejection=response=>{
 // only after order history confirms the client ID never became an order.
 const rejectedWithoutId=order=>order.orderId===null&&order.status==='REJECTED'&&order.terminal===true&&venueCode(order.rejection?.reason)&&[order.filledSize,order.filledValue,order.fees].every(v=>D(v)===0n);
 const trendPlan=intent=>intent.plan?.strategy===TREND_POLICY.id;
+// Hybrid rotation sleeve: momentum alts bought only while BTC is in its daily
+// uptrend, resting at the bid, with a wide crash bracket. Exits are the
+// bracket, a 72-hour maximum hold, or BTC leaving its uptrend; no hourly churn.
+export const ROTATION_POLICY=Object.freeze({id:'2026-10-10-rotation-v2',maxPositions:3,maxOrder:'4',stopFraction:0.88,targetMultiple:1.30,maxHoldSeconds:72*3600,minAgeDays:90,perTick:5,restSeconds:180});
+const rotationPlan=intent=>intent.plan?.strategy===ROTATION_POLICY.id;
 // Unfilled orders may retry soon. A closed trend position waits for the next
 // completed daily bar, so a stop-out is never re-bought on the same signal.
 // Repeated unfilled or rejected trend entries back off exponentially to an hour.
 const cooldownUntil=(intent,now,intents=[])=>{
- if(!trendPlan(intent))return now+21600;
- if(D(intent.filledSize)>0n)return Math.max(now+3600,(Math.floor(now/86400)+1)*86400+300);
+ if(!trendPlan(intent)&&!rotationPlan(intent))return now+21600;
+ if(D(intent.filledSize)>0n)return rotationPlan(intent)?now+3600:Math.max(now+3600,(Math.floor(now/86400)+1)*86400+300);
  let streak=0;for(let i=intents.length-1;i>=0;i--){const x=intents[i];if(x.product!==intent.product||x.closedAt===null&&x!==intent)continue;if(D(x.filledSize)!==0n)break;streak++;}
  return now+Math.min(3600,60*2**Math.max(0,Math.min(streak,7)-1));
 };
@@ -51,7 +56,7 @@ function latch(state,reason,parent){
 function configOf(config={}){
  const capacity=getCapacityProfile(config.capacityProfile);
  const c={mode:config.mode??'preview',allocation:String(config.allocation??20),maxOrder:String(config.maxOrder??5),lossLimit:String(config.lossLimit??2),expectedPortfolioId:config.expectedPortfolioId??config.portfolioId,confirmationSeconds:config.confirmationSeconds??60,capacityProfile:capacity.name,maxPositions:config.maxPositions??capacity.maxPositions,strategy:config.strategy??'rotation'};
- if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>HARD_ORDER_CAP||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('5')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>capacity.maxPositions||!['rotation','trend'].includes(c.strategy))throw Error('Invalid bounded execution configuration');
+ if(!['preview','live'].includes(c.mode)||!id(c.expectedPortfolioId)||D(c.allocation)<=0n||D(c.allocation)>D('20')||D(c.maxOrder)<=0n||D(c.maxOrder)>HARD_ORDER_CAP||D(c.maxOrder)>D(c.allocation)||D(c.lossLimit)<=0n||D(c.lossLimit)>D('5')||D(c.lossLimit)>=D(c.allocation)||!Number.isFinite(c.confirmationSeconds)||c.confirmationSeconds<60||c.confirmationSeconds>1800||!Number.isInteger(c.maxPositions)||c.maxPositions<1||c.maxPositions>capacity.maxPositions||!['rotation','trend','hybrid'].includes(c.strategy))throw Error('Invalid bounded execution configuration');
  return Object.freeze(c);
 }
 function remaining(intent){return D(intent.filledSize)-D(intent.child?.filledSize??ZERO)-intent.exits.reduce((sum,exit)=>sum+D(exit.filledSize),0n);}
@@ -341,6 +346,11 @@ export class Engine {
  #exitReason(parent,view,signals,book,fees){
   if(this.#state.lossLatched)return 'loss-trigger';
   if(trendPlan(parent)){const signal=signals.get(parent.product);return signal?.status==='ready'&&signal.action==='exit'?'trend-exit':null;}
+  if(rotationPlan(parent)){
+   const btc=signals.get('BTC-USD');
+   if(btc?.status==='ready'&&btc.state==='flat')return 'trend-exit';
+   return this.#now()-parent.createdAt>=ROTATION_POLICY.maxHoldSeconds?'maximum-hold':null;
+  }
   // Switching strategies retires earlier holdings unless they are too small
   // to sell; those keep their native bracket and original exit rules.
   if(this.#config.strategy==='trend'){try{if(liquidation(book,remaining(parent),this.#fee(fees),parent.product,this.#now()).gross>=D('2'))return 'strategy-change';}catch{}}
@@ -354,7 +364,7 @@ export class Engine {
   if(this.#state.intents.some(i=>i.exitReason&&remaining(i)>0n))hold('An exit is still in progress');
   // Trend mode counts its own positions; leftover legacy holdings stay bounded
   // by the exposure budget and are retired or exit under their original rules.
-  if(this.#state.intents.filter(i=>remaining(i)>0n&&(this.#config.strategy!=='trend'||trendPlan(i))).length>=this.#config.maxPositions)hold('Maximum owned positions reached');
+  if(this.#state.intents.filter(i=>remaining(i)>0n&&(this.#config.strategy==='rotation'||trendPlan(i))).length>=this.#config.maxPositions)hold('Maximum owned positions reached');
  }
  async #trendEntry(feed,fees){
   const now=this.#now();this.#entryGates();
@@ -362,8 +372,11 @@ export class Engine {
   const ready=signals.filter(s=>s.status==='ready'&&Number.isFinite(fetched[s.product])&&fetched[s.product]<=now&&now-fetched[s.product]<=7200);
   if(!ready.length)hold('Fresh daily trend data unavailable for new entries');
   const candidates=ready.filter(s=>s.action==='enter'&&!this.#state.intents.some(i=>i.product===s.product&&remaining(i)>0n)&&(this.#state.cooldowns[s.product]??0)<=now);
-  const state=this.state,kept={};for(const s of candidates)if(state.confirmations[s.product]?.signalId===s.signalId)kept[s.product]=state.confirmations[s.product];
-  state.confirmations=kept;this.#save(state,'confirmation');
+  // Only core confirmations are pruned here; the rotation sleeve keeps its own.
+  const state=this.state,kept={},core=new Set(TREND_POLICY.products);
+  for(const [product,confirmation] of Object.entries(state.confirmations))if(!core.has(product))kept[product]=confirmation;
+  for(const s of candidates)if(state.confirmations[s.product]?.signalId===s.signalId)kept[s.product]=state.confirmations[s.product];
+  if(JSON.stringify(kept)!==JSON.stringify(state.confirmations)){state.confirmations=kept;this.#save(state,'confirmation');}
   if(!candidates.length)hold(`No trend entry: ${signals.map(s=>`${s.product} ${s.action}`).join(', ')}`);
   let first=null;
   for(const signal of candidates){
@@ -393,6 +406,54 @@ export class Engine {
   this.#mutation();body.preview_id=checked.previewId;
   const next=this.state;next.marksComplete=false;next.intents.push({...record(body,this.#now()),product:signal.product,plan:clone(plan),child:null,exits:[],exitReason:null,closedAt:null,lastAuditAt:null,manualRecovery:false});next.confirmations={};this.#save(next,'entry_intent');
   // Once persisted, no other candidate may be tried in this tick.
+  try{await this.#send(next.intents.length-1);}catch(error){if(error instanceof Hold)error.submitted=true;throw error;}
+  const submitted=new Hold('Entry submitted; reserved cash remains unavailable until terminal reconciliation');submitted.submitted=true;throw submitted;
+ }
+ async #rotationEntry(feed,fees){
+  const now=this.#now(),at=feed?.generatedAt??feed?.universe?.generatedAt;this.#entryGates();
+  if(!Array.isArray(feed?.markets)||feed.markets.length>1000||!Number.isFinite(at)||at>now||now-at>900)hold('Fresh full-universe feed unavailable for rotation entries');
+  const btc=this.#trendSignals(feed,now).find(s=>s.product==='BTC-USD');
+  if(btc?.status!=='ready'||btc.state!=='long')hold('Rotation paused: BTC is not in its daily uptrend');
+  const open=this.#state.intents.filter(i=>remaining(i)>0n&&!trendPlan(i)).length;
+  if(open>=ROTATION_POLICY.maxPositions)hold('Rotation sleeve is full');
+  const ages=feed.ages??{},core=new Set(TREND_POLICY.products);
+  const view=evaluateUniverse(feed.markets,at),candidates=view.decisions.filter(d=>d.strategyId==='rotation'&&d.status==='candidate'&&!core.has(d.product)&&ages[d.product]?.oldEnough===true&&!this.#state.intents.some(i=>i.product===d.product&&remaining(i)>0n)&&(this.#state.cooldowns[d.product]??0)<=now).slice(0,ROTATION_POLICY.perTick);
+  const state=this.state,kept={};for(const d of candidates)if(state.confirmations[d.product]?.signalId===d.id)kept[d.product]=state.confirmations[d.product];
+  for(const [k,v] of Object.entries(state.confirmations))if(core.has(k))kept[k]=v;
+  state.confirmations=kept;this.#save(state,'confirmation');
+  if(!candidates.length)hold('No qualifying rotation candidate');
+  let first=null;
+  for(const candidate of candidates){
+   try{await this.#tryRotationEntry(feed,candidate,fees);}
+   catch(error){if(this.#fatal||!(error instanceof Hold)||error.manual||error.submitted)throw error;first??=error;}
+  }
+  throw first??new Hold('No rotation entry qualified');
+ }
+ async #tryRotationEntry(feed,candidate,fees){
+  const product=await this.#broker.product(candidate.product),book=await this.#broker.book(candidate.product),btcBook=await this.#broker.book('BTC-USD');
+  freshBook(book,candidate.product,this.#now());freshBook(btcBook,'BTC-USD',this.#now());
+  const refreshed=feed.markets.map(m=>m.product===candidate.product?{...m,sourceError:undefined,status:product.status,tradingDisabled:product.trading_disabled,increment:Number(product.base_increment),minSize:Number(product.base_min_size),minNotional:Number(product.quote_min_size),book}:m.product==='BTC-USD'?{...m,sourceError:undefined,book:btcBook}:m);
+  const fresh=evaluateUniverse(refreshed,this.#now()).decisions.find(d=>d.strategyId==='rotation'&&d.product===candidate.product);
+  if(fresh?.status!=='candidate')hold('Candidate no longer qualifies against refreshed books');
+  const now=this.#now(),state=this.state,prior=state.confirmations[candidate.product];
+  const confirmation=prior&&prior.signalId===fresh.id&&now-prior.lastSeen<=1800?{...prior,lastSeen:now}:{signalId:fresh.id,at:now,lastSeen:now};
+  state.confirmations={...state.confirmations,[candidate.product]:confirmation};this.#save(state,'confirmation');
+  if(now-confirmation.at<this.#config.confirmationSeconds)hold('Waiting for a second qualifying scan at least 60 seconds later');
+  const price=fresh.features.price,decision={...fresh,stop:price*ROTATION_POLICY.stopFraction,target:price*ROTATION_POLICY.targetMultiple};
+  const balances=await this.#accounts(),rate=this.#fee(fees),cash=min(D(this.#state.cash),D(this.#config.allocation),balances.get('USD')??0n);
+  const maxOrder=S(min(D(this.#config.maxOrder),D(ROTATION_POLICY.maxOrder)));
+  const plan=planEntry({decision,product,book,cash:S(cash),equity:S(min(D(this.#state.equity),D(this.#config.allocation))),exposure:this.#state.exposure,feeRate:S(rate),config:{allocation:this.#config.allocation,maxOrder,capacityProfile:this.#config.capacityProfile,feeVerified:true,passive:true},now:this.#now()});
+  if(plan.hold)hold(plan.hold);
+  Object.assign(plan,{strategy:ROTATION_POLICY.id,signalId:fresh.id,restSeconds:ROTATION_POLICY.restSeconds});
+  const body={client_order_id:randomUUID(),product_id:candidate.product,side:'BUY',retail_portfolio_id:this.#config.expectedPortfolioId,order_configuration:{limit_limit_gtc:{base_size:plan.quantity,limit_price:plan.limitPrice,post_only:false}},attached_order_configuration:{trigger_bracket_gtc:{limit_price:plan.target,stop_trigger_price:plan.stop}}};
+  const {client_order_id:_entryClientId,preview_id:_entryPreviewId,...previewBody}=body;
+  const preview=await this.#broker.preview(previewBody),checked=validatePreview(plan,preview,S(rate),this.#now());if(checked.hold)hold(checked.hold);
+  this.#fee(fees);freshBook(book,candidate.product,this.#now());
+  if(((await this.#accounts()).get('USD')??0n)<D(plan.reserved))hold('Available USD fell below the reserved entry cost');
+  this.#fee(fees);freshBook(book,candidate.product,this.#now());
+  if(this.#config.mode==='preview')hold('Preview passed; live submission remains disabled');
+  this.#mutation();body.preview_id=checked.previewId;
+  const next=this.state;next.marksComplete=false;next.intents.push({...record(body,this.#now()),product:candidate.product,plan:clone(plan),child:null,exits:[],exitReason:null,closedAt:null,lastAuditAt:null,manualRecovery:false});next.confirmations={};this.#save(next,'entry_intent');
   try{await this.#send(next.intents.length-1);}catch(error){if(error instanceof Hold)error.submitted=true;throw error;}
   const submitted=new Hold('Entry submitted; reserved cash remains unavailable until terminal reconciliation');submitted.submitted=true;throw submitted;
  }
@@ -436,7 +497,15 @@ export class Engine {
    if(!this.#state.funded){const initial=min(balances.get('USD')??0n,D(this.#config.allocation));if(initial<D('5'))hold('At least $5 available USD is required; existing crypto is never adopted or converted');const state=this.state;state.funded=true;state.initialCapital=S(initial);state.cash=state.initialCapital;state.equity=state.initialCapital;this.#save(state,'allocation_initialized');}
    const books=await this.#mark(fees);await this.#exits(feed,books,fees);
    if(this.#state.manualRecovery)hold(this.#state.hold??'Manual recovery required');if(this.#cycleHold)hold(this.#cycleHold);if(this.#state.lossLatched)hold('Loss trigger latched; new entries remain disabled');
-   const state=this.state;state.lastSuccessAt=this.#now();this.#save(state,'verified');const current=await this.#refreshFees(fees);if(this.#config.strategy==='trend')await this.#trendEntry(feed,current);else await this.#entry(feed,current);
+   const state=this.state;state.lastSuccessAt=this.#now();this.#save(state,'verified');const current=await this.#refreshFees(fees);if(this.#config.strategy==='rotation')await this.#entry(feed,current);
+   else if(this.#config.strategy==='trend')await this.#trendEntry(feed,current);
+   else{
+    // Hybrid: the BTC/ETH core has priority; the rotation sleeve only acts
+    // when the core has nothing to buy.
+    try{await this.#trendEntry(feed,current);}
+    catch(error){if(this.#fatal||!(error instanceof Hold)||error.manual||error.submitted||!error.message.startsWith('No trend entry'))throw error;}
+    await this.#rotationEntry(feed,current);
+   }
   }catch(error){
    if(this.#fatal)throw error;
    const state=this.state;const reason=error instanceof Hold?error.message:'Broker data or transport could not be verified; no new action taken';if(error instanceof Hold&&error.manual)latch(state,reason);state.hold=state.recoveryReason??reason;this.#save(state,'held');
