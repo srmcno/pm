@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {generateKeyPairSync} from 'node:crypto';
-import {Engine} from '../scripts/live/engine.mjs';
+import {Engine,ROTATION_POLICY} from '../scripts/live/engine.mjs';
 import {D,S,mul,planEntry} from '../scripts/live/risk.mjs';
 import {CoinbaseLive} from '../scripts/live/coinbase.mjs';
 import {configuration,receipt,newState,trendSummary} from '../scripts/live/runner.mjs';
-import {TrendFeed} from '../scripts/live/trend-feed.mjs';
+import {TrendFeed,AgeFeed} from '../scripts/live/trend-feed.mjs';
 import {TREND_POLICY,trendSignal,completedDaily} from '../dashboard/trend-core.mjs';
 
 const DAY=86400,BASE=1789603200,PORTFOLIO='portfolio-fixture';
@@ -43,7 +43,8 @@ function fixture({mode='live',usd='18.85',rate='0.009',journal=memoryJournal(),c
  const f={broker,journal,orders,calls,prices,trend,get engine(){return engine;},get now(){return now;},
   advance(seconds){now+=seconds;},
   restart(patch={}){engine=new Engine({broker,journal,config:{...base,...patch},clock:()=>now});return engine;},
-  tick:()=>engine.tick({markets:[],trend:copy(trend)}),
+  markets:[],ages:{},
+  tick:()=>engine.tick({markets:copy(f.markets),generatedAt:f.feedAt??BASE,trend:copy(trend),ages:copy(f.ages)}),
   creates:()=>calls.filter(c=>c.create).map(c=>c.create)};
  f.enter=async()=>{const before=f.engine.state.intents.length;await f.tick();f.advance(61);const state=await f.tick();assert.equal(state.intents.length,before+1,state.hold);return state.intents.at(-1);};
  f.fill=intent=>{
@@ -270,4 +271,55 @@ test('at the full-allocation setting each trend entry uses about half the alloca
  f.fill(btc);await f.tick();f.advance(61);const state=await f.tick();
  assert.equal(state.intents.length,2,state.hold);assert.ok(D(state.intents[1].plan.reserved)>D('7'),state.intents[1].plan.reserved);
  assert.ok(D(state.intents[0].plan.reserved)+D(state.intents[1].plan.reserved)<=D('18.85'));
+});
+
+// Hourly market rows for the shared rotation signal (rising alt, BTC reference).
+function hourly(product,slope,end=BASE){const candles=Array.from({length:100},(_,i)=>{const c=100+i*slope;return [end-(100-i)*3600,c-4,c+4,c-.05,c,1000];});const price=candles.at(-1)[4];return {product,status:'online',tradingDisabled:false,candles,increment:.000001,minSize:.000001,minNotional:.1,book:{bids:[[price-.01,100]],asks:[[price+.01,100]],receivedAt:end,requestAt:end-1}};}
+function fresh(f){f.feedAt=f.now-30;for(const m of f.markets){m.book.receivedAt=f.feedAt;m.book.requestAt=f.feedAt-1;}}
+async function hybridWithCore(options={}){
+ const f=fixture({config:{strategy:'hybrid',maxOrder:'9.4',lossLimit:'4',...options.config},...options});
+ f.markets=[hourly('BTC-USD',.01),hourly('ABC-USD',.1)];f.ages={'ABC-USD':{oldEnough:true,checkedAt:BASE}};f.feedAt=BASE+60;
+ f.prices.set('ABC-USD',109.9);
+ const btc=await f.enter();f.fill(btc);await f.tick();f.advance(61);let state=await f.tick();
+ assert.equal(state.intents.at(-1).product,'ETH-USD',state.hold);f.fill(state.intents.at(-1));await f.tick();
+ return f;
+}
+test('hybrid keeps the BTC/ETH core first, then rotates into a momentum alt with a passive bid and wide bracket',async()=>{
+ const f=await hybridWithCore();fresh(f);
+ await f.tick();f.advance(61);fresh(f);const state=await f.tick();
+ const alt=state.intents.at(-1);assert.equal(alt.product,'ABC-USD',state.hold);
+ assert.equal(alt.plan.strategy,ROTATION_POLICY.id);assert.equal(alt.plan.passive,true);assert.equal(alt.plan.restSeconds,180);
+ assert.ok(D(alt.plan.reserved)<=D('4'),'Rotation positions are capped at $4');
+ assert.ok(Number(alt.plan.stop)<=109.9*.88+.01&&Number(alt.plan.target)>=109.9*1.29,JSON.stringify(alt.plan));
+ assert.equal(alt.body.order_configuration.limit_limit_gtc.limit_price,alt.plan.limitPrice);
+});
+test('hybrid rotation waits while BTC is below its trend line, and skips young or unknown listings',async()=>{
+ const f=await hybridWithCore();f.ages={};fresh(f);await f.tick();f.advance(61);fresh(f);
+ let state=await f.tick();assert.match(state.hold,/No qualifying rotation candidate/);assert.equal(state.intents.length,2);
+ f.ages={'ABC-USD':{oldEnough:false,checkedAt:f.now}};f.advance(61);fresh(f);state=await f.tick();assert.match(state.hold,/No qualifying rotation candidate/);
+ const g=fixture({config:{strategy:'hybrid'}});g.trend.candles['BTC-USD']=daily(i=>200-i*.3);g.trend.candles['ETH-USD']=daily(i=>200-i*.3);
+ g.markets=[hourly('BTC-USD',.01),hourly('ABC-USD',.1)];g.ages={'ABC-USD':{oldEnough:true}};g.prices.set('ABC-USD',109.9);fresh(g);
+ await g.tick();g.advance(61);fresh(g);state=await g.tick();assert.match(state.hold,/Rotation paused: BTC is not in its daily uptrend/);assert.equal(g.creates().length,0);
+});
+test('rotation positions exit on the 72-hour limit or when BTC leaves its uptrend, never on hourly churn',async()=>{
+ const f=await hybridWithCore();fresh(f);await f.tick();f.advance(61);fresh(f);let state=await f.tick();
+ const alt=state.intents.at(-1);f.fill(alt);await f.tick();
+ f.markets=[hourly('BTC-USD',.01),hourly('ABC-USD',-.2,f.now)];fresh(f);f.advance(3600);f.trend.fetchedAt={'BTC-USD':f.now,'ETH-USD':f.now};
+ state=await f.tick();assert.equal(state.intents.at(-1).exitReason,null,'A falling hourly chart alone does not exit');
+ f.trend.candles['BTC-USD']=exitBars();f.prices.set('BTC-USD',80);state=await f.tick();
+ assert.equal(state.intents.find(i=>i.product==='ABC-USD').exitReason,'trend-exit');
+ const g=await hybridWithCore();fresh(g);await g.tick();g.advance(61);fresh(g);state=await g.tick();g.fill(state.intents.at(-1));await g.tick();
+ g.advance(72*3600);g.trend.fetchedAt={'BTC-USD':g.now,'ETH-USD':g.now};for(const p of ['BTC-USD','ETH-USD'])g.trend.candles[p]=daily(i=>60+i*.3,150,BASE+3*86400);
+ state=await g.tick();assert.equal(state.intents.find(i=>i.product==='ABC-USD').exitReason,'maximum-hold');
+ assert.equal(state.intents.filter(i=>i.product!=='ABC-USD').every(i=>i.exitReason===null),true,'The core is unaffected');
+});
+test('hybrid configuration and the listing-age feed',async()=>{
+ const env={MM_DATA_DIR:'/var/data/test',MM_STRATEGY:'hybrid',MM_CAPACITY_PROFILE:'trend'};
+ assert.equal(configuration(env).engine.strategy,'hybrid');
+ assert.throws(()=>configuration({...env,MM_STRATEGY:'rotation'}),/trend or hybrid/);
+ let now=BASE;const rows=n=>Array.from({length:n},(_,k)=>[BASE-(k+1)*86400,1,2,1,1,1]);const answers={'OLD-USD':rows(100),'NEW-USD':rows(30)},seen=[];
+ const ages=new AgeFeed({clock:()=>now,fetcher:async url=>{const p=decodeURIComponent(url.split('/products/')[1].split('/')[0]);seen.push(p);if(p==='BAD-USD')return new Response('x',{status:500});return new Response(JSON.stringify(answers[p]),{status:200});}});
+ assert.equal(ages.refresh(['OLD-USD','NEW-USD','BAD-USD']),true);await ages.finish();
+ const snap=ages.snapshot();assert.equal(snap['OLD-USD'].oldEnough,true);assert.equal(snap['NEW-USD'].oldEnough,false);assert.equal(snap['BAD-USD'],undefined,'Unknown age is never old enough');
+ assert.equal(ages.refresh(['OLD-USD','NEW-USD']),false,'Checked products wait a day');now+=86400;assert.equal(ages.refresh(['OLD-USD']),true);await ages.finish();
 });

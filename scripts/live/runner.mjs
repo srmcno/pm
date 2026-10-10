@@ -8,7 +8,7 @@ import {monitorCycle} from './monitor.mjs';
 import {configuration} from './config.mjs';
 import {D,S} from './risk.mjs';
 import {getCapacityProfile} from './capacity.mjs';
-import {TrendFeed} from './trend-feed.mjs';
+import {TrendFeed,AgeFeed} from './trend-feed.mjs';
 import {trendView,TREND_POLICY} from '../../dashboard/trend-core.mjs';
 export {configuration} from './config.mjs';
 
@@ -130,13 +130,14 @@ export async function run(env=process.env,dependencies={}){
       }
     }
     const refresher=new FeedRefresh({clock,collect:dependencies.collect||collectCoinbaseMarkets});let feed=null,lastOutput=0,lastDiscovery=-Infinity;
-    const trendFeed=config.strategy==='trend'?(dependencies.createTrendFeed||(options=>new TrendFeed(options)))({clock}):null;
+    const trendFeed=config.strategy!=='rotation'?(dependencies.createTrendFeed||(options=>new TrendFeed(options)))({clock}):null;
+    const ageFeed=config.strategy==='hybrid'?(dependencies.createAgeFeed||(options=>new AgeFeed(options)))({clock}):null;
     log({event:'worker_started',mode:config.mode,realOrdersEnabled:config.mode==='live',credentialsConfigured:!!broker,revision:env.RENDER_GIT_COMMIT||null});
     while(!stopping){
       const requiredProducts=engine?[...new Set((engine.state.intents||[]).map(i=>i.productId??i.product).filter(Boolean))]:[];
       refresher.start(state.feedCache,config.scanSeconds,requiredProducts);
-      trendFeed?.refresh();
-      if(env.MM_ONCE==='true'){await refresher.finish();await trendFeed?.finish();}
+      trendFeed?.refresh();ageFeed?.refresh((feed?.markets??[]).map(m=>m.product));
+      if(env.MM_ONCE==='true'){await refresher.finish();await trendFeed?.finish();await ageFeed?.finish();}
       if(stopping)break;
       // Read-only account capability scan: which Coinbase product families
       // this key can see. It never places, previews or cancels anything.
@@ -157,7 +158,7 @@ export async function run(env=process.env,dependencies={}){
         journal.save(state,{type:good?'scan':'source_error'});
       }
       const trend=trendFeed?.snapshot()??null;
-      if(engine&&!stopping)await engine.tick({...(feed&&clock()-state.lastSuccessAt<=900?feed:{markets:[]}),...(trend?{trend}:{})});
+      if(engine&&!stopping)await engine.tick({...(feed&&clock()-state.lastSuccessAt<=900?feed:{markets:[]}),...(trend?{trend}:{}),...(ageFeed?{ages:ageFeed.snapshot()}:{})});
       if(completed||stopping||clock()-lastOutput>=30){
         const status=receipt(state,config,clock(),engine?.state||unresolvedExecution,trend);await writeStatus(config.dataDir,status);log(status);lastOutput=clock();
       }

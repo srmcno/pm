@@ -40,3 +40,29 @@ export class TrendFeed {
     return {policyId:this.policy.id,candles,fetchedAt};
   }
 }
+
+// Listing age for the rotation sleeve: a product counts as old enough when
+// public daily candles reach back 90 days. Checked once a day per product,
+// a few products per refresh; unknown age is never treated as old enough.
+export class AgeFeed {
+  #fetcher;#clock;#ages=new Map();#pending=null;
+  constructor({fetcher=fetch,clock=()=>Date.now()/1000,minAgeDays=90,perRefresh=8}={}){this.#fetcher=fetcher;this.#clock=clock;this.minAgeDays=minAgeDays;this.perRefresh=perRefresh;}
+  async #check(product){
+    const now=this.#clock(),end=Math.floor(now/DAY)*DAY,start=end-(this.minAgeDays+10)*DAY;
+    const url=`${BASE}/${encodeURIComponent(product)}/candles?granularity=${DAY}&start=${new Date(start*1000).toISOString()}&end=${new Date(end*1000).toISOString()}`;
+    const response=await this.#fetcher(url,{method:'GET',headers:{'User-Agent':'MoffittMoney/7 private trend worker'},signal:AbortSignal.timeout(15000)});
+    if(!response.ok)throw Error(`Public daily candles HTTP ${response.status}`);
+    const rows=await response.json();if(!Array.isArray(rows))throw Error('Malformed daily candles');
+    const earliest=rows.reduce((m,row)=>Array.isArray(row)&&Number.isFinite(row[0])?Math.min(m,row[0]):m,Infinity);
+    this.#ages.set(product,{oldEnough:Number.isFinite(earliest)&&earliest<=end-this.minAgeDays*DAY,checkedAt:now});
+  }
+  refresh(products=[]){
+    if(this.#pending)return false;
+    const now=this.#clock(),due=[...new Set(products)].filter(p=>typeof p==='string'&&(!this.#ages.has(p)||now-this.#ages.get(p).checkedAt>=DAY)).slice(0,this.perRefresh);
+    if(!due.length)return false;
+    this.#pending=(async()=>{for(const product of due){try{await this.#check(product);}catch{}}})().finally(()=>{this.#pending=null;});
+    return true;
+  }
+  async finish(){await this.#pending;}
+  snapshot(){return Object.fromEntries(this.#ages);}
+}
