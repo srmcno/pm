@@ -5,7 +5,7 @@ on:
     - cron: '6-56/10 * * * *'
   push:
     branches: [claude/polymarket-wallets-analysis-m81p4j]
-    paths: ['scripts/collect-predictions.mjs', 'scripts/predictions/**', 'dashboard/prediction-core.mjs', 'dashboard/prediction-entry.mjs', 'dashboard/prediction-venues.mjs', 'dashboard/prediction-arbitrage.mjs', 'dashboard/prediction-study.mjs', 'tests/prediction-entry.test.mjs', '.github/workflows/predictions.yml']
+    paths: ['scripts/collect-predictions.mjs', 'scripts/predictions/**', 'dashboard/prediction-core.mjs', 'dashboard/prediction-entry.mjs', 'dashboard/prediction-venues.mjs', 'dashboard/prediction-arbitrage.mjs', 'dashboard/prediction-study.mjs', 'tests/prediction-entry.test.mjs', 'scripts/collect-prediction-lab.mjs', 'scripts/prediction-lab-feed.mjs', 'scripts/analyze-predictions.mjs', 'dashboard/prediction-lab-core.mjs', 'tests/prediction-lab.test.mjs', 'tests/analyze-predictions.test.mjs', '.github/workflows/predictions.yml']
 permissions:
   contents: write
 concurrency:
@@ -14,7 +14,7 @@ concurrency:
 jobs:
   paper:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,9 +41,43 @@ jobs:
             if git push origin 'HEAD:${{ github.event.repository.default_branch }}'; then exit 0; fi
           done
           exit 1
+      # Prediction Lab: isolated paper shadow books. These steps run only after the two
+      # accounts above are already published, and none of them can fail the job or the accounts.
+      - name: Verify Prediction Lab rules and isolation (never blocks the two accounts)
+        id: labtest
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node --test tests/prediction-lab.test.mjs tests/analyze-predictions.test.mjs
+      - name: Advance the isolated paper Prediction Lab (public data, shadow books only)
+        id: lab
+        if: steps.labtest.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 4
+        run: node scripts/collect-prediction-lab.mjs
+      - name: Publish the Prediction Lab without replacing another writer
+        id: labpublish
+        if: steps.labtest.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 3
+        run: |
+          git config user.name 'moffitt-money-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          for file in dashboard/data/prediction-lab.json data/prediction-lab/state.json; do
+            if [ -f "$file" ]; then git add "$file"; fi
+          done
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'auto: prediction lab shadow books'
+          for attempt in 1 2 3; do
+            git pull --rebase origin '${{ github.event.repository.default_branch }}' || { git rebase --abort; exit 1; }
+            if git push origin 'HEAD:${{ github.event.repository.default_branch }}'; then exit 0; fi
+          done
+          exit 1
       # Pages tests use frozen fixtures; the live snapshot is checked where it is written.
       - name: Check the published snapshot against the dashboard contract
         run: MM_LIVE_SNAPSHOTS=1 node --test --test-name-pattern='current real prediction snapshot' tests/app-schema.test.mjs
+      - name: Note a Prediction Lab problem without failing the job
+        if: steps.labtest.outcome == 'failure' || steps.lab.outcome == 'failure' || steps.labpublish.outcome == 'failure'
+        run: echo "::warning::Prediction Lab step did not complete (rules test ${{ steps.labtest.outcome }}, collector ${{ steps.lab.outcome }}, publish ${{ steps.labpublish.outcome }}). The two prediction accounts were not affected."
       - name: Report collector failure
         if: steps.collect.outcome == 'failure'
         run: exit 1

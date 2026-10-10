@@ -44,3 +44,8 @@ data/listing-watch/.collector.lock/
 data/listing-watch/*.tmp
 dashboard/data/listing-watch.json.*.tmp
 work/
+
+# Prediction Lab collector lock and atomic-write leftovers
+data/prediction-lab/.collector.lock/
+data/prediction-lab/*.tmp
+dashboard/data/prediction-lab.json.*.tmp

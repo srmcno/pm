@@ -69,3 +69,15 @@ The new Desk presents markets and paired-contract price gaps separately. `script
 New learning rows use `observationPolicy: one-event-per-horizon-v1`. An event may contribute one observation in each predeclared time horizon, rather than being permanently limited to the first horizon seen. Prior rows remain intact. Calibration still counts unique events within each cohort and excludes labels learned after the forecast time; the Research overview counts distinct events across horizons. The model version and trading thresholds are unchanged, and the sampling policy change is explicitly recorded rather than backfilled.
 
 Prediction liquidation marks now walk all available bid levels; entry sizing requires depth for the full modeled liquidation quantity. Full-game Kalshi contracts require a matching milestone start for entry timing; contractual expiry is not kickoff. Open positions and due observed contracts receive settlement-check priority. Whole-venue collection failures retain original data with an explicit source error. Both $100 accounts and the real-order lock are preserved.
+
+## September 29 Prediction Lab (separate shadow books)
+
+The [Prediction Lab](PREDICTION-LAB.md) runs pre-registered paper shadow books beside the two accounts. It never runs inside them. Each book has its own $100 paper account per venue, starting at the book's first scheduled run. The Lab reads this collector's snapshot, calibration observations and verified settlements as read-only inputs. It writes only `data/prediction-lab/state.json` and `dashboard/data/prediction-lab.json`. It uses the same fee, rounding and slippage functions.
+
+The two $100 accounts, their ledgers, the frozen strategy versions, the experimental entry policy and the Polymarket US drawdown halt are untouched. The Lab's `polymarket-fresh` book is a labeled shadow of that policy, with retrieval-time freshness and a resettable pause. It is not a change to the policy. The Lab has no order path, and real execution stays locked.
+
+`node scripts/analyze-predictions.mjs` is a read-only report. From `data/predictions/state.json` observations and settlements it prints:
+
+- calibration by price band and venue;
+- the walk-forward Brier score of the experimental estimator against the market midpoint;
+- a comparison of claimed and realized edge on the settled trades.
