@@ -15,7 +15,7 @@
 .lab-evidence{margin-top:14px}.lab-evidence>strong{display:block;font-size:15px;line-height:1.4;font-weight:600;overflow-wrap:anywhere}
 .lab-progress{height:9px;margin:10px 0 6px;background:var(--soft);border:1px solid var(--border)}.lab-progress i{display:block;height:100%;background:var(--gold)}
 .lab-count{margin:0 0 8px;font-size:13px}
-.lab-criteria{list-style:none;margin:0;padding:0;border-top:1px solid var(--border)}
+.lab-screen summary{font-size:14px;min-height:40px}.lab-criteria{list-style:none;margin:4px 0 0;padding:0;border-top:1px solid var(--border)}
 .lab-crit{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;overflow-wrap:anywhere}
 .lab-crit span{flex:1 1 55%;min-width:0}.lab-crit b{font-weight:600;font-variant-numeric:tabular-nums}
 .lab-crit small{flex:0 0 auto;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border);padding:0 6px;color:var(--muted)}

@@ -19,7 +19,8 @@ const CRITERION_STATE={true:'met',false:'not met',null:'not assessed yet'};
 export function labDelay(s,now=Date.now()/1000){return {age:finite(s?.generatedAt)?now-s.generatedAt:null,delayed:!(now-s?.generatedAt<=LAB_DELAY_SECONDS)};}
 
 function criteriaList(ev){
-  return `<ul class="lab-criteria" aria-label="Promotion screen progress">${ev.criteria.map(c=>`<li class="lab-crit ${c.pass===true?'pass':c.pass===false?'fail':'pending'}"><span>${esc(c.label)}</span><b>${esc(c.value)}</b><small>${CRITERION_STATE[c.pass]}</small></li>`).join('')}</ul>`;
+  const met=ev.criteria.filter(c=>c.pass===true).length;
+  return `<details class="lab-screen"><summary>Promotion screen: ${met} of ${ev.criteria.length} criteria met</summary><ul class="lab-criteria" aria-label="Promotion screen progress">${ev.criteria.map(c=>`<li class="lab-crit ${c.pass===true?'pass':c.pass===false?'fail':'pending'}"><span>${esc(c.label)}</span><b>${esc(c.value)}</b><small>${CRITERION_STATE[c.pass]}</small></li>`).join('')}</ul></details>`;
 }
 function sourceLines(a,generatedAt){
   const s=a.sourceState||{},lines=[];
